@@ -22,15 +22,15 @@
 //!
 
 use sc_extract::generated::{
-    CraftingBlueprintRecord, CraftingBlueprintTier_BasePtr, CraftingBlueprint_Base_NonRefPtr,
-    CraftingCostContext_BasePtr, CraftingCost_BasePtr, CraftingDisplayTransformation_BasePtr,
-    CraftingGameplayPropertyDef, CraftingGameplayPropertyModifierValueRange_BasePtr,
-    CraftingGameplayPropertyModifier_BasePtr, CraftingGameplayPropertyModifiers_BasePtr,
-    CraftingGlobalParams, CraftingOptionalEffect_BasePtr, CraftingPropertyNameOverride,
-    CraftingPropertyNameOverrideCondition_BasePtr, CraftingProcess_BasePtr,
-    CraftingQualityDistribution_BasePtr, CraftingQualityDistribution_Base_NonRefPtr,
+    CraftingBlueprint_Base_NonRefPtr, CraftingBlueprintRecord, CraftingBlueprintTier_BasePtr,
+    CraftingCost_BasePtr, CraftingCostContext_BasePtr, CraftingDisplayTransformation_BasePtr,
+    CraftingGameplayPropertyDef, CraftingGameplayPropertyModifier_BasePtr,
+    CraftingGameplayPropertyModifierValueRange_BasePtr, CraftingGameplayPropertyModifiers_BasePtr,
+    CraftingGlobalParams, CraftingOptionalEffect_BasePtr, CraftingProcess_BasePtr,
+    CraftingPropertyNameOverride, CraftingPropertyNameOverrideCondition_BasePtr,
+    CraftingQualityDistribution_Base_NonRefPtr, CraftingQualityDistribution_BasePtr,
     CraftingQualityLocationOverride_Base_NonRefPtr, CraftingQualityQuantization_Base_NonRefPtr,
-    CraftingRecipeCosts_BasePtr, CraftingRecipeResults_BasePtr, CraftingRecipe_BasePtr,
+    CraftingRecipe_BasePtr, CraftingRecipeCosts_BasePtr, CraftingRecipeResults_BasePtr,
     CraftingResearch_BasePtr, CraftingResearchUnlock_BasePtr, CraftingResult_BasePtr, DataPools,
     DefaultBlueprintSelection_BasePtr, ECraftingCostResultCompositionOption, EItemSubType,
     EItemType, RecordIndex, RecordLookup, SBaseCargoUnitPtr, TimeValue_BasePtr,
@@ -69,7 +69,9 @@ impl Blueprints {
         let records = &datacore.records().records;
         let mut bp = Self::default();
         for (&guid, &handle) in &records.multi_feature.crafting_blueprint_record {
-            let Some(record) = handle.get(pools) else { continue };
+            let Some(record) = handle.get(pools) else {
+                continue;
+            };
             let blueprint = build_blueprint(guid, record, records, pools, items);
             let idx = bp.entries.len();
             bp.by_record_guid.insert(guid, idx);
@@ -621,19 +623,26 @@ fn build_blueprint(
         tiers: Vec::new(),
     };
 
-    let Some(bp_ptr) = &record.blueprint else { return bp };
+    let Some(bp_ptr) = &record.blueprint else {
+        return bp;
+    };
     let CraftingBlueprint_Base_NonRefPtr::CraftingBlueprint(bh) = bp_ptr else {
         // CraftingBlueprint_Base_NonRef (empty base) — leave bp with default Process::Other.
         return bp;
     };
-    let Some(blueprint) = bh.get(pools) else { return bp };
+    let Some(blueprint) = bh.get(pools) else {
+        return bp;
+    };
 
     bp.category = blueprint.category;
     if !blueprint.blueprint_name.is_empty() {
         bp.blueprint_name_key = Some(blueprint.blueprint_name.clone());
     }
     bp.process = build_process(&blueprint.process_specific_data, pools);
-    if let Process::Creation { entity_class: Some(eg) } = &bp.process {
+    if let Process::Creation {
+        entity_class: Some(eg),
+    } = &bp.process
+    {
         bp.entity_name_key = items.name_key(eg).cloned();
     }
     bp.tiers = blueprint
@@ -645,10 +654,7 @@ fn build_blueprint(
     bp
 }
 
-fn build_process(
-    process: &Option<CraftingProcess_BasePtr>,
-    pools: &DataPools,
-) -> Process {
+fn build_process(process: &Option<CraftingProcess_BasePtr>, pools: &DataPools) -> Process {
     let Some(p) = process else {
         return Process::Other {
             type_name: "(none)".into(),
@@ -663,9 +669,7 @@ fn build_process(
             type_name: "CraftingProcess_Base".into(),
             struct_index: 0,
         },
-        CraftingProcess_BasePtr::Unknown {
-            struct_index, ..
-        } => Process::Other {
+        CraftingProcess_BasePtr::Unknown { struct_index, .. } => Process::Other {
             type_name: format!("struct#{struct_index}"),
             struct_index: *struct_index,
         },
@@ -728,7 +732,13 @@ fn build_recipe(ptr: &CraftingRecipe_BasePtr, pools: &DataPools) -> Recipe {
                         effect_kind: oe.effect.as_ref().map(build_effect_kind),
                     })
                     .collect();
-                (time, Some(RecipeCosts { mandatory, optional }))
+                (
+                    time,
+                    Some(RecipeCosts {
+                        mandatory,
+                        optional,
+                    }),
+                )
             } else {
                 (None, None)
             }
@@ -775,7 +785,10 @@ fn build_cost(ptr: &CraftingCost_BasePtr, pools: &DataPools) -> Cost {
         CraftingCost_BasePtr::CraftingCost_Resource(h) => match h.get(pools) {
             Some(r) => Cost::Resource(ResourceCost {
                 resource: r.resource,
-                quantity: r.quantity.as_ref().map(|q| cargo_quantity_from_ptr(q, pools)),
+                quantity: r
+                    .quantity
+                    .as_ref()
+                    .map(|q| cargo_quantity_from_ptr(q, pools)),
                 min_quality: r.min_quality,
                 context: build_context(&r.context, pools),
             }),
@@ -798,12 +811,14 @@ fn build_cost(ptr: &CraftingCost_BasePtr, pools: &DataPools) -> Cost {
         },
         CraftingCost_BasePtr::CraftingCost_Select(h) => match h.get(pools) {
             Some(sel) => Cost::Select {
-                name_info: sel.name_info.as_ref().and_then(|nih| nih.get(pools)).map(|ni| {
-                    SlotName {
+                name_info: sel
+                    .name_info
+                    .as_ref()
+                    .and_then(|nih| nih.get(pools))
+                    .map(|ni| SlotName {
                         debug_name: ni.debug_name.clone(),
                         display_name: ni.display_name.clone(),
-                    }
-                }),
+                    }),
                 count: sel.count,
                 options: sel.options.iter().map(|o| build_cost(o, pools)).collect(),
                 context: build_context(&sel.context, pools),
@@ -817,9 +832,7 @@ fn build_cost(ptr: &CraftingCost_BasePtr, pools: &DataPools) -> Cost {
             type_name: "CraftingCost_Base".into(),
             struct_index: 0,
         },
-        CraftingCost_BasePtr::Unknown {
-            struct_index, ..
-        } => Cost::Other {
+        CraftingCost_BasePtr::Unknown { struct_index, .. } => Cost::Other {
             type_name: format!("struct#{struct_index}"),
             struct_index: *struct_index,
         },
@@ -876,7 +889,9 @@ fn build_modifier_list(
     else {
         return Vec::new();
     };
-    let Some(list) = h.get(pools) else { return Vec::new() };
+    let Some(list) = h.get(pools) else {
+        return Vec::new();
+    };
     list.gameplay_property_modifiers
         .iter()
         .filter_map(|m| build_modifier(m, pools))
@@ -920,19 +935,20 @@ fn build_value_range(
                 struct_index: 0,
             },
         },
-        V::CraftingGameplayPropertyModifierValueRange_LinearIntegerAdditive(h) => match h.get(pools)
-        {
-            Some(v) => ValueRange::LinearIntegerAdditive {
-                start_quality: v.start_quality,
-                end_quality: v.end_quality,
-                additive_at_start: v.additive_modifier_at_start,
-                additive_at_end: v.additive_modifier_at_end,
-            },
-            None => ValueRange::Other {
-                type_name: "LinearIntegerAdditive(empty)".into(),
-                struct_index: 0,
-            },
-        },
+        V::CraftingGameplayPropertyModifierValueRange_LinearIntegerAdditive(h) => {
+            match h.get(pools) {
+                Some(v) => ValueRange::LinearIntegerAdditive {
+                    start_quality: v.start_quality,
+                    end_quality: v.end_quality,
+                    additive_at_start: v.additive_modifier_at_start,
+                    additive_at_end: v.additive_modifier_at_end,
+                },
+                None => ValueRange::Other {
+                    type_name: "LinearIntegerAdditive(empty)".into(),
+                    struct_index: 0,
+                },
+            }
+        }
         V::CraftingGameplayPropertyModifierValueRange_Base(_) => ValueRange::Other {
             type_name: "CraftingGameplayPropertyModifierValueRange_Base".into(),
             struct_index: 0,
@@ -956,9 +972,7 @@ fn build_effect_kind(ptr: &CraftingOptionalEffect_BasePtr) -> OptionalEffectKind
                 struct_index: 0,
             }
         }
-        CraftingOptionalEffect_BasePtr::Unknown {
-            struct_index, ..
-        } => OptionalEffectKind::Other {
+        CraftingOptionalEffect_BasePtr::Unknown { struct_index, .. } => OptionalEffectKind::Other {
             type_name: format!("struct#{struct_index}"),
             struct_index: *struct_index,
         },
@@ -974,9 +988,7 @@ fn build_result(ptr: &CraftingResult_BasePtr, pools: &DataPools) -> RecipeResult
             type_name: "CraftingResult_Base".into(),
             struct_index: 0,
         },
-        CraftingResult_BasePtr::Unknown {
-            struct_index, ..
-        } => RecipeResult::Other {
+        CraftingResult_BasePtr::Unknown { struct_index, .. } => RecipeResult::Other {
             type_name: format!("struct#{struct_index}"),
             struct_index: *struct_index,
         },
@@ -999,17 +1011,15 @@ fn build_research(ptr: &CraftingResearch_BasePtr, pools: &DataPools) -> Research
 
     let unlock = research.unlock_requirements.as_ref().map(|u| match u {
         CraftingResearchUnlock_BasePtr::CraftingResearchUnlock_Base(_) => ResearchUnlock::Default,
-        CraftingResearchUnlock_BasePtr::Unknown {
-            struct_index, ..
-        } => ResearchUnlock::Other {
+        CraftingResearchUnlock_BasePtr::Unknown { struct_index, .. } => ResearchUnlock::Other {
             type_name: format!("struct#{struct_index}"),
             struct_index: *struct_index,
         },
     });
 
     let costs = match research.research_costs.as_ref() {
-        Some(CraftingRecipeCosts_BasePtr::CraftingRecipeCosts(ch)) => ch.get(pools).map(|c| {
-            RecipeCosts {
+        Some(CraftingRecipeCosts_BasePtr::CraftingRecipeCosts(ch)) => {
+            ch.get(pools).map(|c| RecipeCosts {
                 mandatory: c.mandatory_cost.as_ref().map(|m| build_cost(m, pools)),
                 optional: c
                     .optional_costs
@@ -1020,8 +1030,8 @@ fn build_research(ptr: &CraftingResearch_BasePtr, pools: &DataPools) -> Research
                         effect_kind: oe.effect.as_ref().map(build_effect_kind),
                     })
                     .collect(),
-            }
-        }),
+            })
+        }
         _ => None,
     };
 
@@ -1065,14 +1075,11 @@ impl<'a> sc_extract::RecordVisitor for BlueprintsBuilder<'a> {
         let Some(handle) = CraftingBlueprintRecord::lookup(&store.records, &item.guid) else {
             return;
         };
-        let Some(record) = handle.get(&store.pools) else { return };
-        let blueprint = build_blueprint(
-            item.guid,
-            record,
-            &store.records,
-            &store.pools,
-            self.items,
-        );
+        let Some(record) = handle.get(&store.pools) else {
+            return;
+        };
+        let blueprint =
+            build_blueprint(item.guid, record, &store.records, &store.pools, self.items);
         let idx = self.inner.entries.len();
         self.inner.by_record_guid.insert(item.guid, idx);
         if let Some(cat) = blueprint.category {
@@ -1209,7 +1216,12 @@ impl GlobalParams {
     /// production builds).
     pub fn build(datacore: &Datacore) -> Option<Self> {
         let pools = &datacore.records().pools;
-        let gp = pools.crafting.crafting_global_params.iter().flatten().next()?;
+        let gp = pools
+            .crafting
+            .crafting_global_params
+            .iter()
+            .flatten()
+            .next()?;
         Some(Self::from_record(gp, pools))
     }
 
@@ -1324,7 +1336,9 @@ impl GameplayProperties {
         let db = datacore.db();
         let mut props = Self::default();
         for (&guid, &handle) in &records.multi_feature.crafting_gameplay_property_def {
-            let Some(rec) = handle.get(pools) else { continue };
+            let Some(rec) = handle.get(pools) else {
+                continue;
+            };
             let record_name = db
                 .record(&guid)
                 .and_then(|r| r.name())
@@ -1426,21 +1440,54 @@ impl GameplayStat {
         ("GPP_Weapon_FireRate", GameplayStat::WeaponFireRate),
         ("GPP_Weapon_Damage", GameplayStat::WeaponDamage),
         ("GPP_Weapon_Recoil_Kick", GameplayStat::WeaponRecoilKick),
-        ("GPP_Weapon_Recoil_Handling", GameplayStat::WeaponRecoilHandling),
-        ("GPP_Weapon_Recoil_Smoothness", GameplayStat::WeaponRecoilSmoothness),
+        (
+            "GPP_Weapon_Recoil_Handling",
+            GameplayStat::WeaponRecoilHandling,
+        ),
+        (
+            "GPP_Weapon_Recoil_Smoothness",
+            GameplayStat::WeaponRecoilSmoothness,
+        ),
         ("GPP_Weapon_Spread", GameplayStat::WeaponSpread),
-        ("GPP_Armor_DamageMitigation", GameplayStat::ArmorDamageMitigation),
-        ("GPP_Armor_TemperatureMin", GameplayStat::ArmorTemperatureMin),
-        ("GPP_Armor_TemperatureMax", GameplayStat::ArmorTemperatureMax),
-        ("GPP_Armor_RadiationDissipation", GameplayStat::ArmorRadiationDissipation),
+        (
+            "GPP_Armor_DamageMitigation",
+            GameplayStat::ArmorDamageMitigation,
+        ),
+        (
+            "GPP_Armor_TemperatureMin",
+            GameplayStat::ArmorTemperatureMin,
+        ),
+        (
+            "GPP_Armor_TemperatureMax",
+            GameplayStat::ArmorTemperatureMax,
+        ),
+        (
+            "GPP_Armor_RadiationDissipation",
+            GameplayStat::ArmorRadiationDissipation,
+        ),
         ("GPP_Health_MaxHealth", GameplayStat::Integrity),
         ("GPP_Quantum_Speed", GameplayStat::QuantumSpeed),
-        ("GPP_Quantum_FuelRequirement", GameplayStat::QuantumFuelRequirement),
+        (
+            "GPP_Quantum_FuelRequirement",
+            GameplayStat::QuantumFuelRequirement,
+        ),
         ("GPP_Shield_MaxHealth", GameplayStat::ShieldMaxHealth),
-        ("GPP_ItemResource_CoolantGeneration", GameplayStat::CoolantGeneration),
-        ("GPP_ItemResource_PowerGeneration", GameplayStat::PowerGeneration),
-        ("GPP_Radar_MinAimAssistDistance", GameplayStat::RadarMinAimAssist),
-        ("GPP_Radar_MaxAimAssistDistance", GameplayStat::RadarMaxAimAssist),
+        (
+            "GPP_ItemResource_CoolantGeneration",
+            GameplayStat::CoolantGeneration,
+        ),
+        (
+            "GPP_ItemResource_PowerGeneration",
+            GameplayStat::PowerGeneration,
+        ),
+        (
+            "GPP_Radar_MinAimAssistDistance",
+            GameplayStat::RadarMinAimAssist,
+        ),
+        (
+            "GPP_Radar_MaxAimAssistDistance",
+            GameplayStat::RadarMaxAimAssist,
+        ),
     ];
 
     /// Resolve a GPP record name (full `TypeName.Suffix` or bare suffix) to a
@@ -1849,7 +1896,9 @@ impl Quality {
         let pools = &datacore.records().pools;
         let mut q = Self::default();
         for (&guid, &handle) in &records.multi_feature.crafting_quality_distribution_record {
-            let Some(rec) = handle.get(pools) else { continue };
+            let Some(rec) = handle.get(pools) else {
+                continue;
+            };
             q.distributions.insert(
                 guid,
                 QualityDistribution {
@@ -1861,10 +1910,19 @@ impl Quality {
                 },
             );
         }
-        for (&guid, &handle) in &records.multi_feature.crafting_quality_location_override_record {
-            let Some(rec) = handle.get(pools) else { continue };
+        for (&guid, &handle) in &records
+            .multi_feature
+            .crafting_quality_location_override_record
+        {
+            let Some(rec) = handle.get(pools) else {
+                continue;
+            };
             let entries = match rec.location_override.as_ref() {
-                Some(CraftingQualityLocationOverride_Base_NonRefPtr::CraftingQualityLocationOverride(h)) => h
+                Some(
+                    CraftingQualityLocationOverride_Base_NonRefPtr::CraftingQualityLocationOverride(
+                        h,
+                    ),
+                ) => h
                     .get(pools)
                     .map(|co| {
                         co.location_override_list
@@ -1886,9 +1944,13 @@ impl Quality {
                 .insert(guid, QualityLocationOverride { guid, entries });
         }
         for (&guid, &handle) in &records.multi_feature.crafting_quality_quantization_record {
-            let Some(rec) = handle.get(pools) else { continue };
+            let Some(rec) = handle.get(pools) else {
+                continue;
+            };
             let bands = match rec.quality_quantization.as_ref() {
-                Some(CraftingQualityQuantization_Base_NonRefPtr::CraftingQualityQuantization(h)) => h
+                Some(CraftingQualityQuantization_Base_NonRefPtr::CraftingQualityQuantization(
+                    h,
+                )) => h
                     .get(pools)
                     .map(|qq| {
                         qq.bands
@@ -1995,11 +2057,12 @@ fn build_distribution_ref(
                 struct_index: 0,
             },
         },
-        P::CraftingQualityDistribution_Base(_)
-        | P::CraftingQualityDistribution_Base_NonRef(_) => DistributionRef::Other {
-            type_name: "CraftingQualityDistribution_Base(_NonRef)".into(),
-            struct_index: 0,
-        },
+        P::CraftingQualityDistribution_Base(_) | P::CraftingQualityDistribution_Base_NonRef(_) => {
+            DistributionRef::Other {
+                type_name: "CraftingQualityDistribution_Base(_NonRef)".into(),
+                struct_index: 0,
+            }
+        }
         P::Unknown { struct_index, .. } => DistributionRef::Other {
             type_name: format!("struct#{struct_index}"),
             struct_index: *struct_index,
@@ -2097,10 +2160,7 @@ mod tests {
             minutes: 3,
             seconds: 4.5,
         };
-        assert_eq!(
-            d.to_seconds(),
-            86_400.0 + 2.0 * 3600.0 + 3.0 * 60.0 + 4.5
-        );
+        assert_eq!(d.to_seconds(), 86_400.0 + 2.0 * 3600.0 + 3.0 * 60.0 + 4.5);
     }
 
     #[test]

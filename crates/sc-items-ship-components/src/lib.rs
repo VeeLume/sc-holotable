@@ -99,7 +99,9 @@ impl ShipComponents {
             let Some(kind) = ShipComponentKind::from_item_type(&item.item_type) else {
                 continue;
             };
-            let Some(rec) = db.record(&guid) else { continue };
+            let Some(rec) = db.record(&guid) else {
+                continue;
+            };
             let inst = rec.as_instance();
 
             let integrity_hp = find_component(db, &inst, "SHealthComponentParams")
@@ -111,21 +113,27 @@ impl ShipComponents {
                 .and_then(|q| q.get_instance("params"))
                 .and_then(|p| p.get_f32("driveSpeed"))
                 .map(|m_per_s| m_per_s / 1_000_000.0);
-            let quantum_fuel_requirement =
-                qd.as_ref().and_then(|q| q.get_f32("quantumFuelRequirement"));
+            let quantum_fuel_requirement = qd
+                .as_ref()
+                .and_then(|q| q.get_f32("quantumFuelRequirement"));
 
             let shield = find_component(db, &inst, "SCItemShieldGeneratorParams");
             let shield_max_health = shield.as_ref().and_then(|s| s.get_f32("MaxShieldHealth"));
             let shield_regen = shield.as_ref().and_then(|s| s.get_f32("MaxShieldRegen"));
 
-            let (coolant_rate, power_output) = find_component(db, &inst, "ItemResourceComponentParams")
-                .map(|irc| resource_generation(db, &irc))
-                .unwrap_or((None, None));
+            let (coolant_rate, power_output) =
+                find_component(db, &inst, "ItemResourceComponentParams")
+                    .map(|irc| resource_generation(db, &irc))
+                    .unwrap_or((None, None));
 
             let radar = find_component(db, &inst, "SCItemRadarComponentParams")
                 .and_then(|r| r.get_instance("aimAssist"));
-            let radar_aim_assist_min = radar.as_ref().and_then(|a| a.get_f32("distanceMinAssignment"));
-            let radar_aim_assist_max = radar.as_ref().and_then(|a| a.get_f32("distanceMaxAssignment"));
+            let radar_aim_assist_min = radar
+                .as_ref()
+                .and_then(|a| a.get_f32("distanceMinAssignment"));
+            let radar_aim_assist_max = radar
+                .as_ref()
+                .and_then(|a| a.get_f32("distanceMaxAssignment"));
 
             by_guid.insert(
                 guid,
@@ -207,30 +215,37 @@ fn value_to_instance<'a>(db: &'a DataCoreDatabase, v: &Value<'a>) -> Option<Inst
 /// `"Power"`) is the only structural tag distinguishing them — a typed-enum
 /// match, the data's own discriminator (no alternative). The per-second amount
 /// is `standardResourceUnits` (coolant) or `units` (power pips).
-fn resource_generation(
-    db: &DataCoreDatabase,
-    irc: &Instance<'_>,
-) -> (Option<f32>, Option<f32>) {
+fn resource_generation(db: &DataCoreDatabase, irc: &Instance<'_>) -> (Option<f32>, Option<f32>) {
     let mut coolant = None;
     let mut power = None;
     let Some(states) = irc.get_array("states") else {
         return (None, None);
     };
     for state_v in states {
-        let Some(state) = value_to_instance(db, &state_v) else { continue };
-        let Some(deltas) = state.get_array("deltas") else { continue };
+        let Some(state) = value_to_instance(db, &state_v) else {
+            continue;
+        };
+        let Some(deltas) = state.get_array("deltas") else {
+            continue;
+        };
         for delta_v in deltas {
-            let Some(delta) = value_to_instance(db, &delta_v) else { continue };
-            let Some(generation) = delta.get_instance("generation") else { continue };
+            let Some(delta) = value_to_instance(db, &delta_v) else {
+                continue;
+            };
+            let Some(generation) = delta.get_instance("generation") else {
+                continue;
+            };
             let resource = generation.get_str("resource").unwrap_or_default();
             // Coolant uses a float `standardResourceUnits`; power uses an
             // integer `units` (pip count) — try both representations.
-            let amount = generation.get_instance("resourceAmountPerSecond").and_then(|u| {
-                u.get_f32("standardResourceUnits")
-                    .or_else(|| u.get_f32("units"))
-                    .or_else(|| u.get_i32("units").map(|v| v as f32))
-                    .or_else(|| u.get_i32("standardResourceUnits").map(|v| v as f32))
-            });
+            let amount = generation
+                .get_instance("resourceAmountPerSecond")
+                .and_then(|u| {
+                    u.get_f32("standardResourceUnits")
+                        .or_else(|| u.get_f32("units"))
+                        .or_else(|| u.get_i32("units").map(|v| v as f32))
+                        .or_else(|| u.get_i32("standardResourceUnits").map(|v| v as f32))
+                });
             match resource {
                 "Coolant" => coolant = coolant.or(amount),
                 "Power" => power = power.or(amount),
@@ -251,7 +266,10 @@ mod tests {
             ShipComponentKind::from_item_type(&EItemType::QuantumDrive),
             Some(ShipComponentKind::QuantumDrive)
         );
-        assert_eq!(ShipComponentKind::from_item_type(&EItemType::WeaponPersonal), None);
+        assert_eq!(
+            ShipComponentKind::from_item_type(&EItemType::WeaponPersonal),
+            None
+        );
     }
 
     #[test]

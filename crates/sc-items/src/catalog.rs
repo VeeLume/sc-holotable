@@ -186,8 +186,7 @@ impl ItemCatalog {
                 format!("solo:{guid}:{it}:{ist}")
             } else {
                 let col_key = format!("{cat}:{}", col_design.to_lowercase());
-                let model_key =
-                    format!("{col_key}:{it}:{ist}:{}:{}", item.size, item.grade);
+                let model_key = format!("{col_key}:{it}:{ist}:{}:{}", item.size, item.grade);
                 design_of_model
                     .entry(model_key.clone())
                     .or_insert_with(|| (col_key, col_design));
@@ -235,7 +234,9 @@ impl ItemCatalog {
         // unlinked.
         let mut grouped: HashMap<String, (String, Vec<ModelId>)> = HashMap::new();
         for (mid, (col_key, design)) in design_of_model {
-            let entry = grouped.entry(col_key).or_insert_with(|| (design, Vec::new()));
+            let entry = grouped
+                .entry(col_key)
+                .or_insert_with(|| (design, Vec::new()));
             entry.1.push(mid);
         }
         let mut by_collection: HashMap<CollectionId, Collection> = HashMap::new();
@@ -253,7 +254,14 @@ impl ItemCatalog {
                     m.collection = Some(ck.clone());
                 }
             }
-            by_collection.insert(ck.clone(), Collection { id: ck, name, models: mids });
+            by_collection.insert(
+                ck.clone(),
+                Collection {
+                    id: ck,
+                    name,
+                    models: mids,
+                },
+            );
         }
 
         info!(
@@ -262,7 +270,11 @@ impl ItemCatalog {
             "ItemCatalog built"
         );
 
-        Self { by_member, by_model, by_collection }
+        Self {
+            by_member,
+            by_model,
+            by_collection,
+        }
     }
 
     /// The model a member belongs to.
@@ -380,7 +392,11 @@ fn base_rank(name: Option<&str>, item_type: Option<&str>, guid: Guid, paths: &Re
     {
         return r;
     }
-    if is_canonical_first(guid, paths) { 2 } else { 3 }
+    if is_canonical_first(guid, paths) {
+        2
+    } else {
+        3
+    }
 }
 
 /// Display-name base signal: `0` = the plain item, `1` = a "…Base" default,
@@ -487,19 +503,28 @@ mod tests {
 
     #[test]
     fn design_strips_at_slot_noun() {
-        assert_eq!(derive_design("Geist Armor Helmet", "Char_Armor_Helmet"), "Geist Armor");
+        assert_eq!(
+            derive_design("Geist Armor Helmet", "Char_Armor_Helmet"),
+            "Geist Armor"
+        );
         assert_eq!(derive_design("Lynx Arms", "Char_Armor_Arms"), "Lynx");
         assert_eq!(
             derive_design("Field Recon Suit Helmet", "Char_Armor_Helmet"),
             "Field Recon Suit"
         );
-        assert_eq!(derive_design("CSP-68L Backpack", "Char_Armor_Backpack"), "CSP-68L");
+        assert_eq!(
+            derive_design("CSP-68L Backpack", "Char_Armor_Backpack"),
+            "CSP-68L"
+        );
     }
 
     #[test]
     fn design_ignores_colorway_after_slot_noun() {
         // No bare base: base name carries a colorway after the slot noun.
-        assert_eq!(derive_design("ORC-mkX Core Arctic", "Char_Armor_Torso"), "ORC-mkX");
+        assert_eq!(
+            derive_design("ORC-mkX Core Arctic", "Char_Armor_Torso"),
+            "ORC-mkX"
+        );
         assert_eq!(
             derive_design("Geist Armor Helmet Snow Camo", "Char_Armor_Helmet"),
             "Geist Armor"
@@ -509,10 +534,16 @@ mod tests {
     #[test]
     fn design_falls_back_to_first_word() {
         // Slot noun absent from the name → leading word.
-        assert_eq!(derive_design("Antium Core Jet", "Char_Armor_Helmet"), "Antium");
+        assert_eq!(
+            derive_design("Antium Core Jet", "Char_Armor_Helmet"),
+            "Antium"
+        );
         // Non-armor types have no slot noun.
         assert_eq!(derive_design("LH86 Pistol", "WeaponPersonal"), "LH86");
-        assert_eq!(derive_design("LH86 Pistol Magazine (25 cap)", "WeaponAttachment"), "LH86");
+        assert_eq!(
+            derive_design("LH86 Pistol Magazine (25 cap)", "WeaponAttachment"),
+            "LH86"
+        );
     }
 
     #[test]
@@ -526,16 +557,37 @@ mod tests {
         assert_eq!(display_base_rank("Inquisitor Arms", "Char_Armor_Arms"), 0);
         assert_eq!(display_base_rank("ORC-mkV Core", "Char_Armor_Torso"), 0);
         // A "…Base" default beats a colorway.
-        assert_eq!(display_base_rank("Inquisitor Arms Base", "Char_Armor_Arms"), 1);
-        assert_eq!(display_base_rank("TrueDef-Pro Core Base", "Char_Armor_Torso"), 1);
-        // Ordinary colorways → 3 (entity-name hint, then length, decide later).
-        assert_eq!(display_base_rank("Inquisitor Arms Red", "Char_Armor_Arms"), 3);
-        assert_eq!(display_base_rank("TrueDef-Pro Core CDF", "Char_Armor_Torso"), 3);
-        assert_eq!(display_base_rank("Corbel Helmet Mire", "Char_Armor_Helmet"), 3);
-        // Weapons: the plain (unquoted) name is the base; quoted paints aren't.
-        assert_eq!(display_base_rank("Parallax Energy Assault Rifle", "WeaponPersonal"), 0);
         assert_eq!(
-            display_base_rank("Parallax \"ArcCorp\" Energy Assault Rifle", "WeaponPersonal"),
+            display_base_rank("Inquisitor Arms Base", "Char_Armor_Arms"),
+            1
+        );
+        assert_eq!(
+            display_base_rank("TrueDef-Pro Core Base", "Char_Armor_Torso"),
+            1
+        );
+        // Ordinary colorways → 3 (entity-name hint, then length, decide later).
+        assert_eq!(
+            display_base_rank("Inquisitor Arms Red", "Char_Armor_Arms"),
+            3
+        );
+        assert_eq!(
+            display_base_rank("TrueDef-Pro Core CDF", "Char_Armor_Torso"),
+            3
+        );
+        assert_eq!(
+            display_base_rank("Corbel Helmet Mire", "Char_Armor_Helmet"),
+            3
+        );
+        // Weapons: the plain (unquoted) name is the base; quoted paints aren't.
+        assert_eq!(
+            display_base_rank("Parallax Energy Assault Rifle", "WeaponPersonal"),
+            0
+        );
+        assert_eq!(
+            display_base_rank(
+                "Parallax \"ArcCorp\" Energy Assault Rifle",
+                "WeaponPersonal"
+            ),
             3
         );
         assert_eq!(display_base_rank("LH86 Pistol", "WeaponPersonal"), 0);

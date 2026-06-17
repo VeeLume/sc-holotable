@@ -35,17 +35,35 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     match GlobalParams::build(&datacore) {
         None => println!("(no CraftingGlobalParams record found)"),
         Some(gp) => {
-            println!("refining_multiplier             : {}", gp.refining_quality_unit_multiplier);
-            println!("default_composition_quality     : {}", gp.default_composition_quality);
-            println!("dismantle blacklist resources   : {}", gp.dismantle_blacklist_resources.len());
-            println!("dismantle blacklist entityclass : {}", gp.dismantle_blacklist_entity_classes.len());
-            println!("default whitelist               : {} blueprints unlocked at start", gp.default_blueprint_whitelist.len());
+            println!(
+                "refining_multiplier             : {}",
+                gp.refining_quality_unit_multiplier
+            );
+            println!(
+                "default_composition_quality     : {}",
+                gp.default_composition_quality
+            );
+            println!(
+                "dismantle blacklist resources   : {}",
+                gp.dismantle_blacklist_resources.len()
+            );
+            println!(
+                "dismantle blacklist entityclass : {}",
+                gp.dismantle_blacklist_entity_classes.len()
+            );
+            println!(
+                "default whitelist               : {} blueprints unlocked at start",
+                gp.default_blueprint_whitelist.len()
+            );
             println!("  (with resolved paths:)");
             for g in &gp.default_blueprint_whitelist {
                 let path = paths.get(g).map(|rp| rp.path.as_str()).unwrap_or("?");
                 println!("    {g} → {path}");
             }
-            println!("default_selection_is_non_whitelist : {}", gp.default_selection_is_non_whitelist);
+            println!(
+                "default_selection_is_non_whitelist : {}",
+                gp.default_selection_is_non_whitelist
+            );
         }
     }
 
@@ -146,7 +164,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let total_bands: usize = quality.quantizations().map(|q| q.bands.len()).sum();
     println!("  quantization bands total: {total_bands}");
     if let Some(q) = quality.quantizations().next() {
-        println!("  sample quantization {} → {} bands:", q.guid, q.bands.len());
+        println!(
+            "  sample quantization {} → {} bands:",
+            q.guid,
+            q.bands.len()
+        );
         for b in q.bands.iter().take(3) {
             println!(
                 "    Band {{ start={}, end={}, mapped_value={} }}",
@@ -167,7 +189,11 @@ fn format_transform(t: &DisplayTransformation) -> String {
         ConvertValueToFactorOfBaseValue => "ConvertValueToFactorOfBaseValue".into(),
         Sequence(items) => format!(
             "Sequence([{}])",
-            items.iter().map(format_transform).collect::<Vec<_>>().join(", ")
+            items
+                .iter()
+                .map(format_transform)
+                .collect::<Vec<_>>()
+                .join(", ")
         ),
         Other { type_name, .. } => format!("Other({type_name})"),
     }

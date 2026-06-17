@@ -194,7 +194,9 @@ impl Resources {
         let pools = &store.pools;
         let mut catalog = Self::new();
         for (&guid, &handle) in &store.records.multi_feature.resource_type {
-            let Some(rt) = handle.get(pools) else { continue };
+            let Some(rt) = handle.get(pools) else {
+                continue;
+            };
             catalog.insert(resource_for(guid, rt, pools));
         }
         catalog
@@ -268,9 +270,7 @@ fn extract_density(rt: &ResourceType, pools: &DataPools) -> Option<Density> {
             type_name: "BaseDensityUnit".into(),
             struct_index: 0,
         },
-        BaseDensityUnitPtr::Unknown {
-            struct_index, ..
-        } => DensityUnit::Other {
+        BaseDensityUnitPtr::Unknown { struct_index, .. } => DensityUnit::Other {
             type_name: format!("struct#{struct_index}"),
             struct_index: *struct_index,
         },

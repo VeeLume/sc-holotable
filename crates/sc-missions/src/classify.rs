@@ -127,10 +127,7 @@ impl TagBag {
     /// Tags under `AI ▸ Spawning ▸ *` (`Target`, `Defenders`). Canonical
     /// typed role markers in 4.7 — 3,073 + 318 references across all
     /// ship spawns.
-    pub fn spawn_identifiers<'a>(
-        &'a self,
-        tree: &'a Tags,
-    ) -> impl Iterator<Item = &'a str> + 'a {
+    pub fn spawn_identifiers<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str> + 'a {
         self.subtree_iter(tree, "AI", Some("Spawning"))
     }
 

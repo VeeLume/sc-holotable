@@ -45,11 +45,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("══════════════════════════════════════════════════════════");
         println!("RECIPE  {}", bp.display_name(locale).unwrap_or(target));
-        println!("  crafted entity : {} ({ent_guid})", ent.name().unwrap_or("?"));
+        println!(
+            "  crafted entity : {} ({ent_guid})",
+            ent.name().unwrap_or("?")
+        );
         println!("  blueprint GUID : {}", bp.blueprint_record_guid);
         println!("  category GUID  : {:?}", bp.category);
         match &bp.process {
-            Process::Creation { entity_class } => println!("  process        : Creation -> {entity_class:?}"),
+            Process::Creation { entity_class } => {
+                println!("  process        : Creation -> {entity_class:?}")
+            }
             Process::Other { type_name, .. } => println!("  process        : Other({type_name})"),
         }
         println!("  tiers          : {}", bp.tiers.len());
@@ -91,7 +96,12 @@ fn print_cost(
 ) {
     let pad = " ".repeat(indent);
     match cost {
-        Cost::Select { name_info, count, options, context } => {
+        Cost::Select {
+            name_info,
+            count,
+            options,
+            context,
+        } => {
             let slot = name_info
                 .as_ref()
                 .map(|n| {
@@ -102,7 +112,10 @@ fn print_cost(
                         .unwrap_or_else(|| format!("<{}>", n.debug_name))
                 })
                 .unwrap_or_else(|| "(unnamed)".into());
-            println!("{pad}● Select  slot=\"{slot}\"  count={count}  options={}", options.len());
+            println!(
+                "{pad}● Select  slot=\"{slot}\"  count={count}  options={}",
+                options.len()
+            );
             print_context(context, indent + 2, gp, locale, db);
             for o in options {
                 print_cost(o, indent + 4, gp, resources, items, locale, db);
@@ -156,7 +169,11 @@ fn print_context(
                                 .and_then(|p| locale.resolve(&p.property_name_key))
                                 .unwrap_or("?")
                                 .to_string();
-                            let rec = db.record(&g).and_then(|r| r.name()).unwrap_or("?").to_string();
+                            let rec = db
+                                .record(&g)
+                                .and_then(|r| r.name())
+                                .unwrap_or("?")
+                                .to_string();
                             let unit = p
                                 .and_then(|p| locale.resolve(&p.unit_format_key))
                                 .filter(|s| !s.is_empty())
@@ -173,14 +190,24 @@ fn print_context(
                     println!("{pad}    unit={unit}  transform={transform}");
                     for vr in &m.value_ranges {
                         match vr {
-                            ValueRange::Linear { start_quality, end_quality, modifier_at_start, modifier_at_end } => {
+                            ValueRange::Linear {
+                                start_quality,
+                                end_quality,
+                                modifier_at_start,
+                                modifier_at_end,
+                            } => {
                                 let ev = m.evaluate(Q);
                                 println!(
                                     "{pad}    Linear  Q{start_quality}-{end_quality}  ×{modifier_at_start}→{modifier_at_end}   eval@Q{Q}={}",
                                     fmt_mv(ev)
                                 );
                             }
-                            ValueRange::LinearIntegerAdditive { start_quality, end_quality, additive_at_start, additive_at_end } => {
+                            ValueRange::LinearIntegerAdditive {
+                                start_quality,
+                                end_quality,
+                                additive_at_start,
+                                additive_at_end,
+                            } => {
                                 let ev = m.evaluate(Q);
                                 println!(
                                     "{pad}    LinearAdditive  Q{start_quality}-{end_quality}  +{additive_at_start}→+{additive_at_end}   eval@Q{Q}={}",

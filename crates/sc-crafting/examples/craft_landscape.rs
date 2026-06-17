@@ -34,7 +34,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut by_type: BTreeMap<String, Bucket> = BTreeMap::new();
 
     for bp in blueprints.iter() {
-        let Some(ent) = bp.crafted_entity_guid() else { continue };
+        let Some(ent) = bp.crafted_entity_guid() else {
+            continue;
+        };
         let ty = items
             .item_type(&ent)
             .map(|t| t.as_dcb_str().to_string())

@@ -52,7 +52,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         cols.sort_by(|a, b| a.name.cmp(&b.name));
         println!("-- {} collection(s) matching {filter:?} --\n", cols.len());
         for col in cols {
-            println!("██ {}  ({} models)  [{}]", col.name, col.model_count(), col.id);
+            println!(
+                "██ {}  ({} models)  [{}]",
+                col.name,
+                col.model_count(),
+                col.id
+            );
             for m in catalog.models_in(col) {
                 println!("  ▸ ({}) {}/{}", m.len(), m.item_type, m.item_sub_type);
                 for (i, g) in m.members.iter().enumerate() {
@@ -81,9 +86,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("items            : {}", items.len());
     println!(
         "inventory items  : {}",
-        items.iter().filter(|(_, it)| it.is_inventory_item()).count()
+        items
+            .iter()
+            .filter(|(_, it)| it.is_inventory_item())
+            .count()
     );
-    println!("models           : {}  ({multi} multi-member)", catalog.model_count());
+    println!(
+        "models           : {}  ({multi} multi-member)",
+        catalog.model_count()
+    );
     println!("collections      : {}", catalog.collection_count());
     println!("-- model size histogram (size: count) --");
     for (sz, n) in &size_hist {
@@ -111,8 +122,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if types.len() > 1 {
             mixed_type += 1;
         }
-        if m
-            .members
+        if m.members
             .iter()
             .any(|g| !items.get(g).map(|i| i.is_inventory_item()).unwrap_or(false))
         {
@@ -134,7 +144,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("\n-- {flagged} / {multi} multi-member models flagged --\n");
 
     let show: Vec<&ModelRow> = match mode {
-        Mode::Summary => rows.iter().filter(|r| !r.flags.is_empty()).take(40).collect(),
+        Mode::Summary => rows
+            .iter()
+            .filter(|r| !r.flags.is_empty())
+            .take(40)
+            .collect(),
         Mode::All => rows.iter().collect(),
         Mode::Collection(_) => unreachable!(),
     };
@@ -277,7 +291,13 @@ fn member(
         }
     }
 
-    Member { name, display, item_type, sub_type, tag_paths }
+    Member {
+        name,
+        display,
+        item_type,
+        sub_type,
+        tag_paths,
+    }
 }
 
 fn truncate(s: &str, n: usize) -> String {

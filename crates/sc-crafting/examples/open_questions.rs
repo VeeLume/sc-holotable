@@ -29,11 +29,10 @@
 use std::collections::BTreeMap;
 
 use sc_extract::generated::{
-    CraftingDisplayTransformation_BasePtr, CraftingQualityDistributionNormal,
-    CraftingQualityDistribution_Base_NonRefPtr,
-    CraftingQualityLocationOverride_Base_NonRefPtr,
-    CraftingQualityQuantization_Base_NonRefPtr, CraftingRecipeCosts_BasePtr,
-    CraftingRecipe_BasePtr, DataPools, DefaultBlueprintSelection_BasePtr, ResourceType,
+    CraftingDisplayTransformation_BasePtr, CraftingQualityDistribution_Base_NonRefPtr,
+    CraftingQualityDistributionNormal, CraftingQualityLocationOverride_Base_NonRefPtr,
+    CraftingQualityQuantization_Base_NonRefPtr, CraftingRecipe_BasePtr,
+    CraftingRecipeCosts_BasePtr, DataPools, DefaultBlueprintSelection_BasePtr, ResourceType,
     ResourceTypePropertiesPtr, TimeValue_BasePtr,
 };
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, RecordPaths};
@@ -60,17 +59,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut craft_time_present = 0usize;
     let mut craft_time_none = 0usize;
     for handle in records.multi_feature.crafting_blueprint_record.values() {
-        let Some(bp_rec) = handle.get(pools) else { continue };
-        let Some(bp_ptr) = &bp_rec.blueprint else { continue };
+        let Some(bp_rec) = handle.get(pools) else {
+            continue;
+        };
+        let Some(bp_ptr) = &bp_rec.blueprint else {
+            continue;
+        };
         use sc_extract::generated::CraftingBlueprint_Base_NonRefPtr;
-        let CraftingBlueprint_Base_NonRefPtr::CraftingBlueprint(bh) = bp_ptr else { continue };
+        let CraftingBlueprint_Base_NonRefPtr::CraftingBlueprint(bh) = bp_ptr else {
+            continue;
+        };
         let Some(bp) = bh.get(pools) else { continue };
         for tier_ptr in &bp.tiers {
             use sc_extract::generated::CraftingBlueprintTier_BasePtr as T;
-            let T::CraftingBlueprintTier(th) = tier_ptr else { continue };
+            let T::CraftingBlueprintTier(th) = tier_ptr else {
+                continue;
+            };
             let Some(tier) = th.get(pools) else { continue };
-            let Some(CraftingRecipe_BasePtr::CraftingRecipe(rh)) = &tier.recipe else { continue };
-            let Some(recipe) = rh.get(pools) else { continue };
+            let Some(CraftingRecipe_BasePtr::CraftingRecipe(rh)) = &tier.recipe else {
+                continue;
+            };
+            let Some(recipe) = rh.get(pools) else {
+                continue;
+            };
             let Some(CraftingRecipeCosts_BasePtr::CraftingRecipeCosts(ch)) = &recipe.costs else {
                 continue;
             };
@@ -84,7 +95,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             *tv_variants.entry("TimeValue_Base (empty)").or_default() += 1;
                         }
                         TimeValue_BasePtr::Unknown { struct_index, .. } => {
-                            let n = db.struct_name(*struct_index as usize).unwrap_or("?").to_string();
+                            let n = db
+                                .struct_name(*struct_index as usize)
+                                .unwrap_or("?")
+                                .to_string();
                             *tv_unknown_struct.entry(n).or_default() += 1;
                             *tv_variants.entry("Unknown").or_default() += 1;
                         }
@@ -92,11 +106,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         // LongSeconds is dormant; Partitioned is multi_feature behind crafting.
                         #[allow(unreachable_patterns)]
                         _ => {
-                            *tv_variants.entry("(typed variant, see direct match)").or_default() += 1;
+                            *tv_variants
+                                .entry("(typed variant, see direct match)")
+                                .or_default() += 1;
                         }
                     }
                     // Direct concrete-typed inspection for Partitioned (reachable under crafting).
-                    if let TimeValue_BasePtr::Unknown { struct_index, instance_index } = tv {
+                    if let TimeValue_BasePtr::Unknown {
+                        struct_index,
+                        instance_index,
+                    } = tv
+                    {
                         let name = db.struct_name(*struct_index as usize).unwrap_or("?");
                         if name == "TimeValue_Partitioned" && sample_partitioned.is_none() {
                             // Read raw bytes via the typed pool — TimeValue_Partitioned is multi_feature/crafting-gated.
@@ -159,12 +179,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut sample_properties_marker: Option<Guid> = None;
     let mut total_property_ptrs = 0usize;
     for (&guid, &handle) in &records.multi_feature.resource_type {
-        let Some(rt) = handle.get(pools) else { continue };
+        let Some(rt) = handle.get(pools) else {
+            continue;
+        };
         for p in &rt.properties {
             total_property_ptrs += 1;
             match p {
                 ResourceTypePropertiesPtr::ResourceTypeProperties(_) => {
-                    *prop_variants.entry("ResourceTypeProperties (marker name only)").or_default() += 1;
+                    *prop_variants
+                        .entry("ResourceTypeProperties (marker name only)")
+                        .or_default() += 1;
                     sample_properties_marker.get_or_insert(guid);
                 }
                 ResourceTypePropertiesPtr::ResourceTypeCraftingData(_) => {
@@ -228,7 +252,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut density_none = 0usize;
     let mut density_unknown_struct: BTreeMap<String, usize> = BTreeMap::new();
     for handle in records.multi_feature.resource_type.values() {
-        let Some(rt) = handle.get(pools) else { continue };
+        let Some(rt) = handle.get(pools) else {
+            continue;
+        };
         match &rt.density_type {
             Some(d) => {
                 density_some += 1;
@@ -289,7 +315,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut display_variants: BTreeMap<&'static str, usize> = BTreeMap::new();
     let mut display_unknown_struct: BTreeMap<String, usize> = BTreeMap::new();
     let mut display_none = 0usize;
-    for handle in records.multi_feature.crafting_gameplay_property_def.values() {
+    for handle in records
+        .multi_feature
+        .crafting_gameplay_property_def
+        .values()
+    {
         let Some(d) = handle.get(pools) else { continue };
         match &d.display_transformation {
             None => display_none += 1,
@@ -298,12 +328,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let label: &'static str = match dt {
                     D::CraftingDisplayTransformation_Base(_) => "Base",
                     D::CraftingDisplayTransformation_Scale(_) => "Scale",
-                    D::CraftingDisplayTransformation_ConvertFactorToPercentChange(_) =>
-                        "ConvertFactorToPercentChange",
-                    D::CraftingDisplayTransformation_ConvertFactorToNegatedPercentChange(_) =>
-                        "ConvertFactorToNegatedPercentChange",
-                    D::CraftingDisplayTransformation_ConvertValueToFactorOfBaseValue(_) =>
-                        "ConvertValueToFactorOfBaseValue",
+                    D::CraftingDisplayTransformation_ConvertFactorToPercentChange(_) => {
+                        "ConvertFactorToPercentChange"
+                    }
+                    D::CraftingDisplayTransformation_ConvertFactorToNegatedPercentChange(_) => {
+                        "ConvertFactorToNegatedPercentChange"
+                    }
+                    D::CraftingDisplayTransformation_ConvertValueToFactorOfBaseValue(_) => {
+                        "ConvertValueToFactorOfBaseValue"
+                    }
                     D::CraftingDisplayTransformation_Sequence(_) => "Sequence",
                     D::Unknown { struct_index, .. } => {
                         let n = db.struct_name(*struct_index as usize).unwrap_or("?");
@@ -315,8 +348,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
-    println!("  display_transformation present : {} / none {display_none}",
-        display_variants.values().sum::<usize>());
+    println!(
+        "  display_transformation present : {} / none {display_none}",
+        display_variants.values().sum::<usize>()
+    );
     for (k, v) in &display_variants {
         println!("    {k:<46} {v}");
     }
@@ -332,7 +367,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     schema_dump(db, "CraftingPropertyNameOverride");
     let mut total_overrides = 0usize;
     let mut props_with_overrides = 0usize;
-    for handle in records.multi_feature.crafting_gameplay_property_def.values() {
+    for handle in records
+        .multi_feature
+        .crafting_gameplay_property_def
+        .values()
+    {
         let Some(d) = handle.get(pools) else { continue };
         total_overrides += d.name_overrides.len();
         if !d.name_overrides.is_empty() {
@@ -351,7 +390,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  Records: {}", dist_pool.len());
     let mut dist_leaves: BTreeMap<&'static str, usize> = BTreeMap::new();
     for handle in dist_pool.values() {
-        let Some(rec) = handle.get(pools) else { continue };
+        let Some(rec) = handle.get(pools) else {
+            continue;
+        };
         let Some(d) = &rec.quality_distribution else {
             *dist_leaves.entry("(empty distribution)").or_default() += 1;
             continue;
@@ -359,7 +400,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let label = label_dist_nonref(d);
         *dist_leaves.entry(label).or_default() += 1;
     }
-    let n_uniform_dormant = db.records_by_type("CraftingQualityDistributionUniform").count();
+    let n_uniform_dormant = db
+        .records_by_type("CraftingQualityDistributionUniform")
+        .count();
     let sample_normal = pools
         .multi_feature
         .crafting_quality_distribution_normal
@@ -375,24 +418,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (k, v) in &dist_leaves {
         println!("    {k:<46} {v}");
     }
-    println!("    CraftingQualityDistributionUniform records in raw db (dormant — typed unreachable): {n_uniform_dormant}");
-    if let Some(s) = &sample_normal  { println!("    sample {s}"); }
+    println!(
+        "    CraftingQualityDistributionUniform records in raw db (dormant — typed unreachable): {n_uniform_dormant}"
+    );
+    if let Some(s) = &sample_normal {
+        println!("    sample {s}");
+    }
 
     println!("  --- LocationOverride ---");
-    let loc_pool = &records.multi_feature.crafting_quality_location_override_record;
+    let loc_pool = &records
+        .multi_feature
+        .crafting_quality_location_override_record;
     println!("  Records: {}", loc_pool.len());
     let mut loc_leaves: BTreeMap<&'static str, usize> = BTreeMap::new();
     let mut total_entries = 0usize;
     let mut sample_loc_entry: Option<String> = None;
     for handle in loc_pool.values() {
-        let Some(rec) = handle.get(pools) else { continue };
+        let Some(rec) = handle.get(pools) else {
+            continue;
+        };
         let Some(o) = &rec.location_override else {
             *loc_leaves.entry("(empty location_override)").or_default() += 1;
             continue;
         };
         let label = label_loc_nonref(o);
         *loc_leaves.entry(label).or_default() += 1;
-        if let CraftingQualityLocationOverride_Base_NonRefPtr::CraftingQualityLocationOverride(h) = o
+        if let CraftingQualityLocationOverride_Base_NonRefPtr::CraftingQualityLocationOverride(h) =
+            o
             && let Some(co) = h.get(pools)
         {
             for entry_h in &co.location_override_list {
@@ -413,7 +465,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("    {k:<46} {v}");
     }
     println!("    total override entries: {total_entries}");
-    if let Some(s) = sample_loc_entry { println!("    {s}"); }
+    if let Some(s) = sample_loc_entry {
+        println!("    {s}");
+    }
 
     println!("  --- Quantization ---");
     let qz_pool = &records.multi_feature.crafting_quality_quantization_record;
@@ -422,7 +476,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut total_bands = 0usize;
     let mut sample_band: Option<String> = None;
     for handle in qz_pool.values() {
-        let Some(rec) = handle.get(pools) else { continue };
+        let Some(rec) = handle.get(pools) else {
+            continue;
+        };
         let Some(q) = &rec.quality_quantization else {
             *qz_leaves.entry("(empty quantization)").or_default() += 1;
             continue;
@@ -449,7 +505,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("    {k:<46} {v}");
     }
     println!("    total bands: {total_bands}");
-    if let Some(s) = sample_band { println!("    sample {s}"); }
+    if let Some(s) = sample_band {
+        println!("    sample {s}");
+    }
 
     // ------- 9. Confirm per-resource crafting data wiring -------
     println!("\n=== Q9: per-resource CraftingData wiring ===");
@@ -458,7 +516,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut resources_with_location_override = 0usize;
     let mut resources_with_quantization = 0usize;
     for handle in records.multi_feature.resource_type.values() {
-        let Some(rt) = handle.get(pools) else { continue };
+        let Some(rt) = handle.get(pools) else {
+            continue;
+        };
         let mut has_cd = false;
         for p in &rt.properties {
             if let ResourceTypePropertiesPtr::ResourceTypeCraftingData(h) = p

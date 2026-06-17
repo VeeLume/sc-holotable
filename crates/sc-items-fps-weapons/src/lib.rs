@@ -120,15 +120,21 @@ impl FpsWeapons {
 
         let mut by_guid = HashMap::new();
         for (&guid, &handle) in ecd_map {
-            let Some(item) = items.get(&guid) else { continue };
+            let Some(item) = items.get(&guid) else {
+                continue;
+            };
             if !matches!(item.item_type, EItemType::WeaponPersonal) {
                 continue;
             }
             if matches!(item.item_sub_type, EItemSubType::Gadget) {
                 continue;
             }
-            let Some(ecd) = handle.get(pools) else { continue };
-            let Some(wc) = weapon_params(ecd, pools) else { continue };
+            let Some(ecd) = handle.get(pools) else {
+                continue;
+            };
+            let Some(wc) = weapon_params(ecd, pools) else {
+                continue;
+            };
 
             let (fire_rate, spread_min, spread_max, recoil_guid) =
                 primary_action(wc.fire_actions.first(), pools);
@@ -215,15 +221,15 @@ fn primary_action(
 ) -> (Option<i32>, Option<f32>, Option<f32>, Option<Guid>) {
     use SWeaponActionParamsPtr as P;
     let parts: Option<(i32, Option<&SLauncherBasePtr>, Option<Guid>)> = match action {
-        Some(P::SWeaponActionFireSingleParams(h)) => {
-            h.get(pools).map(|s| (s.fire_rate, s.launch_params.as_ref(), s.recoil))
-        }
-        Some(P::SWeaponActionFireRapidParams(h)) => {
-            h.get(pools).map(|s| (s.fire_rate, s.launch_params.as_ref(), s.recoil))
-        }
-        Some(P::SWeaponActionFireBurstParams(h)) => {
-            h.get(pools).map(|s| (s.fire_rate, s.launch_params.as_ref(), s.recoil))
-        }
+        Some(P::SWeaponActionFireSingleParams(h)) => h
+            .get(pools)
+            .map(|s| (s.fire_rate, s.launch_params.as_ref(), s.recoil)),
+        Some(P::SWeaponActionFireRapidParams(h)) => h
+            .get(pools)
+            .map(|s| (s.fire_rate, s.launch_params.as_ref(), s.recoil)),
+        Some(P::SWeaponActionFireBurstParams(h)) => h
+            .get(pools)
+            .map(|s| (s.fire_rate, s.launch_params.as_ref(), s.recoil)),
         _ => None,
     };
     let Some((fire_rate, launch, recoil)) = parts else {
@@ -234,14 +240,13 @@ fn primary_action(
 }
 
 /// Spread cone min/max from a projectile launcher's `spreadParams`.
-fn spread(
-    launch: Option<&SLauncherBasePtr>,
-    pools: &DataPools,
-) -> (Option<f32>, Option<f32>) {
+fn spread(launch: Option<&SLauncherBasePtr>, pools: &DataPools) -> (Option<f32>, Option<f32>) {
     let Some(SLauncherBasePtr::SProjectileLauncher(h)) = launch else {
         return (None, None);
     };
-    let Some(launcher) = h.get(pools) else { return (None, None) };
+    let Some(launcher) = h.get(pools) else {
+        return (None, None);
+    };
     match launcher.spread_params.and_then(|sp| sp.get(pools)) {
         Some(sp) => (Some(sp.min), Some(sp.max)),
         None => (None, None),
@@ -255,7 +260,9 @@ fn spread(
 /// sniper (1.55° / 0.44° / 0.090s). The sibling `max` Vec2 is a separate,
 /// often-zero field and is *not* what the stat panel shows.
 fn resolve_recoil(db: &DataCoreDatabase, guid: &Guid) -> (Option<f32>, Option<f32>, Option<f32>) {
-    let Some(cfg) = db.record(guid) else { return (None, None, None) };
+    let Some(cfg) = db.record(guid) else {
+        return (None, None, None);
+    };
     let Some(aim) = cfg.get_instance("weaponProceduralAimRecoil") else {
         return (None, None, None);
     };
@@ -345,7 +352,11 @@ mod tests {
 
     #[test]
     fn damage_total_sums_all_types() {
-        let d = Damage { physical: 100.0, energy: 5.0, ..Default::default() };
+        let d = Damage {
+            physical: 100.0,
+            energy: 5.0,
+            ..Default::default()
+        };
         assert!((d.total() - 105.0).abs() < f32::EPSILON);
     }
 

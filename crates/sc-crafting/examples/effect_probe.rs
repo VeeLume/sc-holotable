@@ -11,10 +11,10 @@
 use std::collections::BTreeMap;
 
 use sc_extract::generated::{
-    CraftingBlueprintTier_BasePtr, CraftingBlueprint_Base_NonRefPtr, CraftingCost_BasePtr,
-    CraftingCostContext_BasePtr, CraftingGameplayPropertyModifierValueRange_BasePtr,
-    CraftingGameplayPropertyModifier_BasePtr, CraftingGameplayPropertyModifiers_BasePtr,
-    CraftingRecipeCosts_BasePtr, CraftingRecipe_BasePtr, DataPools,
+    CraftingBlueprint_Base_NonRefPtr, CraftingBlueprintTier_BasePtr, CraftingCost_BasePtr,
+    CraftingCostContext_BasePtr, CraftingGameplayPropertyModifier_BasePtr,
+    CraftingGameplayPropertyModifierValueRange_BasePtr, CraftingGameplayPropertyModifiers_BasePtr,
+    CraftingRecipe_BasePtr, CraftingRecipeCosts_BasePtr, DataPools,
 };
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, LocaleMap};
 use sc_items::Items;
@@ -88,9 +88,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("gameplay property defs : {}", p.prop_names.len());
 
     for handle in records.multi_feature.crafting_blueprint_record.values() {
-        let Some(bp_record) = handle.get(pools) else { continue };
-        let Some(bp_ptr) = &bp_record.blueprint else { continue };
-        let CraftingBlueprint_Base_NonRefPtr::CraftingBlueprint(bh) = bp_ptr else { continue };
+        let Some(bp_record) = handle.get(pools) else {
+            continue;
+        };
+        let Some(bp_ptr) = &bp_record.blueprint else {
+            continue;
+        };
+        let CraftingBlueprint_Base_NonRefPtr::CraftingBlueprint(bh) = bp_ptr else {
+            continue;
+        };
         let Some(bp) = bh.get(pools) else { continue };
 
         let crafted_name = match &bp.process_specific_data {
@@ -105,10 +111,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
 
         for tier_ptr in &bp.tiers {
-            let CraftingBlueprintTier_BasePtr::CraftingBlueprintTier(th) = tier_ptr else { continue };
+            let CraftingBlueprintTier_BasePtr::CraftingBlueprintTier(th) = tier_ptr else {
+                continue;
+            };
             let Some(tier) = th.get(pools) else { continue };
-            let Some(CraftingRecipe_BasePtr::CraftingRecipe(rh)) = &tier.recipe else { continue };
-            let Some(recipe) = rh.get(pools) else { continue };
+            let Some(CraftingRecipe_BasePtr::CraftingRecipe(rh)) = &tier.recipe else {
+                continue;
+            };
+            let Some(recipe) = rh.get(pools) else {
+                continue;
+            };
             let Some(CraftingRecipeCosts_BasePtr::CraftingRecipeCosts(ch)) = &recipe.costs else {
                 continue;
             };
@@ -129,7 +141,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n=== Select slot labels (CraftingCost_Select.name_info) ===");
     println!("  Select nodes seen           : {}", p.selects_seen);
-    println!("  with name_info              : {}", p.selects_with_name_info);
+    println!(
+        "  with name_info              : {}",
+        p.selects_with_name_info
+    );
     println!("  distinct slot labels:");
     for (k, v) in &p.slot_labels {
         println!("    {:<32} : {}", k, v);
@@ -137,23 +152,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n=== gameplay property modifier chain ===");
     println!("  modifier lists reached      : {}", p.modifier_lists);
-    println!("  CraftingGameplayPropertyModifierCommon : {}", p.modifiers_common);
+    println!(
+        "  CraftingGameplayPropertyModifierCommon : {}",
+        p.modifiers_common
+    );
     println!("  value-range variant distribution:");
     for (k, v) in &p.value_ranges {
         println!("    {:<52} : {}", k, v);
     }
 
-    println!("\n=== sample effect lines (first {}) ===", p.samples.len().min(40));
+    println!(
+        "\n=== sample effect lines (first {}) ===",
+        p.samples.len().min(40)
+    );
     for s in p.samples.iter().take(40) {
         println!("  {}", s);
     }
 
     // ── gameplay property def table: record name vs display name vs unit ──
-    println!("\n=== CraftingGameplayPropertyDef table (record name | display | unit | transform | uses) ===");
+    println!(
+        "\n=== CraftingGameplayPropertyDef table (record name | display | unit | transform | uses) ==="
+    );
     let db = datacore.db();
     let mut rows: Vec<(String, String, String, String, usize)> = Vec::new();
     for (&guid, &handle) in &records.multi_feature.crafting_gameplay_property_def {
-        let Some(rec) = handle.get(pools) else { continue };
+        let Some(rec) = handle.get(pools) else {
+            continue;
+        };
         let record_name = db
             .record(&guid)
             .and_then(|r| r.name())
@@ -182,7 +207,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     rows.sort_by(|a, b| b.4.cmp(&a.4).then(a.0.cmp(&b.0)));
     for (rn, disp, unit, tf, uses) in &rows {
-        println!("  {:<42} | {:<26} | {:<14} | {:<24} | {}", rn, disp, unit, tf, uses);
+        println!(
+            "  {:<42} | {:<26} | {:<14} | {:<24} | {}",
+            rn, disp, unit, tf, uses
+        );
     }
 
     Ok(())
@@ -254,7 +282,9 @@ fn walk_context(
     for c in ctx {
         match c {
             CraftingCostContext_BasePtr::CraftingCostContext_ResultGameplayPropertyModifiers(h) => {
-                *p.context_variant.entry("ResultGameplayPropertyModifiers").or_default() += 1;
+                *p.context_variant
+                    .entry("ResultGameplayPropertyModifiers")
+                    .or_default() += 1;
                 if let Some(rec) = h.get(pools)
                     && let Some(mods) = &rec.gameplay_property_modifiers
                 {
@@ -262,7 +292,9 @@ fn walk_context(
                 }
             }
             CraftingCostContext_BasePtr::CraftingCostContext_ResultCompositionInclusion(_) => {
-                *p.context_variant.entry("ResultCompositionInclusion").or_default() += 1;
+                *p.context_variant
+                    .entry("ResultCompositionInclusion")
+                    .or_default() += 1;
             }
             CraftingCostContext_BasePtr::CraftingCostContext_QuantityMultiplier(_) => {
                 *p.context_variant.entry("QuantityMultiplier").or_default() += 1;
@@ -290,11 +322,14 @@ fn walk_modifiers(
     let Some(list) = h.get(pools) else { return };
     p.modifier_lists += 1;
     for m in &list.gameplay_property_modifiers {
-        let CraftingGameplayPropertyModifier_BasePtr::CraftingGameplayPropertyModifierCommon(mh) = m
+        let CraftingGameplayPropertyModifier_BasePtr::CraftingGameplayPropertyModifierCommon(mh) =
+            m
         else {
             continue;
         };
-        let Some(common) = mh.get(pools) else { continue };
+        let Some(common) = mh.get(pools) else {
+            continue;
+        };
         p.modifiers_common += 1;
         if let Some(g) = common.gameplay_property_record {
             *p.prop_usage.entry(g).or_default() += 1;

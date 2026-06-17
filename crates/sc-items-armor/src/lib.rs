@@ -112,7 +112,9 @@ impl Armor {
             let Some(kind) = ArmorKind::from_item_type(&item.item_type) else {
                 continue;
             };
-            let Some(rec) = db.record(&guid) else { continue };
+            let Some(rec) = db.record(&guid) else {
+                continue;
+            };
             let inst = rec.as_instance();
 
             let clothing = find_component(db, &inst, "SCItemClothingParams");
@@ -209,7 +211,10 @@ fn value_to_instance<'a>(db: &'a DataCoreDatabase, v: &Value<'a>) -> Option<Inst
 
 /// `SCItemSuitArmorParams.damageResistance` is a cross-record `Reference` to a
 /// `DamageResistanceMacro`; resolve it and pull the per-type entries.
-fn resolve_damage_resistance(db: &DataCoreDatabase, suit: &Instance<'_>) -> Option<DamageResistance> {
+fn resolve_damage_resistance(
+    db: &DataCoreDatabase,
+    suit: &Instance<'_>,
+) -> Option<DamageResistance> {
     let macro_guid = match suit.get("damageResistance")? {
         Value::Reference(Some(r)) => r.guid,
         _ => return None,

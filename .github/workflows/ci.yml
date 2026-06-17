@@ -6,8 +6,3 @@ on:
 jobs:
   ci:
     uses: VeeLume/ci/.github/workflows/rust-ci.yml@main
-    with:
-      # Staged: prove build + test off-machine first.
-      # fmt/clippy enabled once the generated crate is excluded/allow'd.
-      fmt: false
-      clippy: false

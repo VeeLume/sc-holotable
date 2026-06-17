@@ -415,18 +415,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Sample 5 markup_tags entries with their resolved names.
     println!();
     println!("  Sample markup_tags resolutions:");
-    let mut shown = 0;
-    for s in samples.iter().filter(|s| !s.markup_tags.is_empty()) {
-        if shown >= 5 {
-            break;
-        }
+    for s in samples.iter().filter(|s| !s.markup_tags.is_empty()).take(5) {
         let names: Vec<String> = s
             .markup_tags
             .iter()
             .filter_map(|g| tag_tree.get(g).map(|n| n.name.clone()))
             .collect();
         println!("    {} → {}", s.var_name, names.join(", "));
-        shown += 1;
     }
     println!();
     println!("[done]");

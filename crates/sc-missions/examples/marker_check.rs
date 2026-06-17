@@ -17,7 +17,11 @@ fn dump_vars(m: &sc_missions::Mission, locale: &LocaleMap) -> String {
                     .iter()
                     .map(|o| {
                         let l = locale.resolve(&o.label_key).unwrap_or("?");
-                        if o.gated { format!("{l}(gated)") } else { l.to_string() }
+                        if o.gated {
+                            format!("{l}(gated)")
+                        } else {
+                            l.to_string()
+                        }
                     })
                     .collect();
                 format!("Choice[{}]", labels.join(","))

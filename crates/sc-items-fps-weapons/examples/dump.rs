@@ -25,9 +25,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let target = "behr_sniper_ballistic_01";
     let p6 = weapons
         .iter()
-        .find(|(g, _)| db.record(g).and_then(|r| r.name()).map(|n| n.ends_with(target)).unwrap_or(false))
+        .find(|(g, _)| {
+            db.record(g)
+                .and_then(|r| r.name())
+                .map(|n| n.ends_with(target))
+                .unwrap_or(false)
+        })
         .map(|(_, s)| s);
-    println!("\n=== {target} (expect: fire 55, dmg.phys 100, speed 725, spread 11/21, recoil 1.55/0.44/0.09, mag 8) ===");
+    println!(
+        "\n=== {target} (expect: fire 55, dmg.phys 100, speed 725, spread 11/21, recoil 1.55/0.44/0.09, mag 8) ==="
+    );
     match p6 {
         Some(s) => {
             println!("  fire_rate     = {:?}", s.fire_rate);
@@ -35,7 +42,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("  ammo_speed    = {:?}", s.ammo_speed);
             println!("  ammo_lifetime = {:?}", s.ammo_lifetime);
             println!("  spread        = {:?} / {:?}", s.spread_min, s.spread_max);
-            println!("  recoil p/y/s  = {:?} / {:?} / {:?}", s.recoil_pitch, s.recoil_yaw, s.recoil_smooth);
+            println!(
+                "  recoil p/y/s  = {:?} / {:?} / {:?}",
+                s.recoil_pitch, s.recoil_yaw, s.recoil_smooth
+            );
             println!("  mag_size      = {:?}", s.mag_size);
         }
         None => println!("  !! not found"),

@@ -76,14 +76,13 @@ fn section_1_name_property(datacore: &Datacore) {
             if let Some(name) = raw_inst.and_then(|i| {
                 i.get_instance("value")
                     .and_then(|v| v.get_str("name").map(String::from))
-            }) {
-                if sample_ainame.len() < 8 {
-                    sample_ainame.push((
-                        prop.mission_variable_name.clone(),
-                        prop.extended_text_token.clone(),
-                        name,
-                    ));
-                }
+            }) && sample_ainame.len() < 8
+            {
+                sample_ainame.push((
+                    prop.mission_variable_name.clone(),
+                    prop.extended_text_token.clone(),
+                    name,
+                ));
             }
         } else if kind != "<no value>" && sample_other.len() < 6 {
             sample_other.push((

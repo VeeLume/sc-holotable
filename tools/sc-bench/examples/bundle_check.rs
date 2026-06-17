@@ -58,10 +58,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .iter()
         .filter(|(g, it)| items_b.get(g) != Some(*it))
         .count();
-    assert_eq!(
-        item_mismatch, 0,
-        "Items content differs ({item_mismatch})"
-    );
+    assert_eq!(item_mismatch, 0, "Items content differs ({item_mismatch})");
 
     let path_mismatch = paths_sep
         .iter()

@@ -152,11 +152,7 @@ fn section_2_not_wanted_during_combat(index: &Missions) {
 
 // ── §3 Foxwell ambush deep dive ──────────────────────────────────────────────
 
-fn section_3_foxwell_dig(
-    index: &Missions,
-    datacore: &Datacore,
-    locale: &sc_extract::LocaleMap,
-) {
+fn section_3_foxwell_dig(index: &Missions, datacore: &Datacore, locale: &sc_extract::LocaleMap) {
     println!("=== §3 Foxwell Enforcement Ship Ambush — deep dive ===");
     let pattern = "foxwellenforcement_shipambush_";
 

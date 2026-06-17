@@ -18,7 +18,10 @@ use sc_locations::{Location, Locations};
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().skip(1).collect();
     // Default demo CRC: Nyx_Levski's subject_id.
-    let crc: u32 = args.first().and_then(|s| s.parse().ok()).unwrap_or(3_723_364_946);
+    let crc: u32 = args
+        .first()
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(3_723_364_946);
 
     let install = sc_discovery::discover_primary()?;
     println!("{} v{}\n", install.channel, install.short_version());
@@ -53,8 +56,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("  kind   : {}", loc.kind.as_dcb_str());
             println!("  icon   : {}", loc.nav_icon.as_dcb_str());
             print!("  parents: ");
-            let chain: Vec<String> = locations.ancestors(&guid).map(|a| display(a, locale)).collect();
-            println!("{}", if chain.is_empty() { "<root>".into() } else { chain.join(" → ") });
+            let chain: Vec<String> = locations
+                .ancestors(&guid)
+                .map(|a| display(a, locale))
+                .collect();
+            println!(
+                "{}",
+                if chain.is_empty() {
+                    "<root>".into()
+                } else {
+                    chain.join(" → ")
+                }
+            );
             // round-trip sanity: the CRC must come back from the guid.
             assert_eq!(class_crc(&guid), crc, "crc round-trip mismatch");
         }
@@ -70,7 +83,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .collect();
     lzs.sort_by_key(|l| display(l, locale));
     for l in lzs {
-        let chain: Vec<String> = locations.ancestors(&l.guid).map(|a| display(a, locale)).collect();
+        let chain: Vec<String> = locations
+            .ancestors(&l.guid)
+            .map(|a| display(a, locale))
+            .collect();
         println!("  {:<20} {}", display(l, locale), chain.join(" → "));
     }
 

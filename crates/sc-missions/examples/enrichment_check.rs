@@ -21,7 +21,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let with_cat = index.iter().filter(|m| m.category.is_some()).count();
     let with_fac = index.iter().filter(|m| m.faction.is_some()).count();
     let with_diff = index.iter().filter(|m| m.difficulty.is_some()).count();
-    let with_chain = index.iter().filter(|m| !m.grants_completion_tags.is_empty()).count();
+    let with_chain = index
+        .iter()
+        .filter(|m| !m.grants_completion_tags.is_empty())
+        .count();
     let with_buyin = index.iter().filter(|m| m.buy_in > 0).count();
     let with_rep = index
         .iter()
@@ -36,10 +39,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .filter(|m| m.origin.kind == HandlerKind::ServiceBeacon)
         .count();
     println!("missions={n}");
-    println!("  category={with_cat}  faction={with_fac}  difficulty={with_diff}  grantsChainTags={with_chain}  buyIn>0={with_buyin}  repRequired={with_rep}");
+    println!(
+        "  category={with_cat}  faction={with_fac}  difficulty={with_diff}  grantsChainTags={with_chain}  buyIn>0={with_buyin}  repRequired={with_rep}"
+    );
     println!("  ServiceBeacon missions (newly covered)={svc}");
-    println!("  registries: factions={} missionTypes={} repStandings={}",
-        index.factions.len(), index.mission_types.len(), index.rep_standings.len());
+    println!(
+        "  registries: factions={} missionTypes={} repStandings={}",
+        index.factions.len(),
+        index.mission_types.len(),
+        index.rep_standings.len()
+    );
 
     // ── Spot-check Ling Family ──────────────────────────────────────────────
     println!("\n=== Ling Family Hauling spot-check ===");
@@ -64,7 +73,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .unwrap_or("—");
         let diff = m
             .difficulty
-            .map(|d| format!("[{},{},{},{}]", d.mechanical_skill, d.mental_load, d.risk_of_loss, d.game_knowledge))
+            .map(|d| {
+                format!(
+                    "[{},{},{},{}]",
+                    d.mechanical_skill, d.mental_load, d.risk_of_loss, d.game_knowledge
+                )
+            })
             .unwrap_or_else(|| "—".into());
         let prereqs = index.prerequisite_missions(m).len();
         // location kinds across the mission's localities
@@ -77,7 +91,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .collect::<std::collections::BTreeSet<_>>()
             .into_iter()
             .collect();
-        let bp = if m.rewards.blueprints.is_empty() { "" } else { " ⚑BP" };
+        let bp = if m.rewards.blueprints.is_empty() {
+            ""
+        } else {
+            " ⚑BP"
+        };
         println!(
             "  [{category}] diff={diff} buyIn={} grantsTags={} prereqMissions={prereqs}{bp}\n      kinds={kinds:?} :: {t}",
             m.buy_in,

@@ -64,7 +64,6 @@ pub use blueprint_pools::{BlueprintPool, BlueprintPoolEntry, BlueprintPools};
 pub use categories::{MissionTypeInfo, MissionTypes};
 pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencies};
-pub use reputation::{FactionRep, FactionReputations, ReputationStandings, Standing};
 pub use expand::{
     Availability, BlueprintReward, Cooldowns, Difficulty, DurationRange, Encounter, EncounterPhase,
     EntityEncounter, EntitySlot, HandlerKind, ItemReward, Mission, MissionOrigin, MissionRewards,
@@ -73,10 +72,11 @@ pub use expand::{
 };
 pub use index::Missions;
 pub use locality::{Localities, LocalityView, LocationRef, Locations, SystemKey};
+pub use reputation::{FactionRep, FactionReputations, ReputationStandings, Standing};
 // Re-exported so consumers can read `LocationRef::kind` without a direct
 // sc-locations dep. Type identity is preserved (same workspace `sc-extract`).
-pub use sc_locations::LocationKind;
 pub use pools::MissionPools;
+pub use sc_locations::LocationKind;
 pub use ships::{ShipCandidate, ShipEntity, Ships};
 pub use titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
 

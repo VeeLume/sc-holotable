@@ -124,7 +124,7 @@ pub fn render(ui: &mut Context, state: &mut ExplorerState, set: &WeaponSet) {
             let _ = ui
                 .bordered(Border::Rounded)
                 .title("Weapons")
-                .pad(1)
+                .p(1)
                 .grow(1)
                 .col(|ui| {
                     if filtered.is_empty() {
@@ -143,7 +143,7 @@ pub fn render(ui: &mut Context, state: &mut ExplorerState, set: &WeaponSet) {
             let _ = ui
                 .bordered(Border::Rounded)
                 .title("Detail")
-                .pad(1)
+                .p(1)
                 .grow(2)
                 .col(|ui| match filtered.get(state.list.selected).copied() {
                     Some(idx) => render_detail(ui, &mut state.detail_scroll, &set.ships[idx]),

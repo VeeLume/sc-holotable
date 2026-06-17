@@ -487,7 +487,7 @@ fn section_6_ext_token_distribution(rows: &[Row<'_>]) {
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
-fn top_by_count<'a, K>(map: &'a BTreeMap<K, usize>, n: usize) -> Vec<(&'a K, &'a usize)>
+fn top_by_count<K>(map: &BTreeMap<K, usize>, n: usize) -> Vec<(&K, &usize)>
 where
     K: Ord,
 {

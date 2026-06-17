@@ -42,10 +42,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut by_type: BTreeMap<String, usize> = BTreeMap::new();
         for guid in paths.under(&sub) {
             let Some(rp) = paths.get(guid) else { continue };
-            let t = paths
-                .type_name(rp.struct_index)
-                .unwrap_or("?")
-                .to_string();
+            let t = paths.type_name(rp.struct_index).unwrap_or("?").to_string();
             *by_type.entry(t).or_default() += 1;
         }
         println!("  {child}/");
@@ -83,8 +80,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let gp_dir = format!("{ROOT}/globalparams");
         for guid in paths.under(&gp_dir) {
             if let Some(rp) = paths.get(guid) {
-                println!("  found under globalparams/: {} ({})", rp.path,
-                    paths.type_name(rp.struct_index).unwrap_or("?"));
+                println!(
+                    "  found under globalparams/: {} ({})",
+                    rp.path,
+                    paths.type_name(rp.struct_index).unwrap_or("?")
+                );
             }
         }
     } else {

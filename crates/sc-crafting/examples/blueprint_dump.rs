@@ -141,10 +141,9 @@ fn print_blueprint(
                             "      Item entity={:?} qty={} tier={}",
                             entity_class, quantity, tier
                         ),
-                        RecipeResult::Resource { resource, quantity } => println!(
-                            "      Resource res={:?} qty={:?}",
-                            resource, quantity
-                        ),
+                        RecipeResult::Resource { resource, quantity } => {
+                            println!("      Resource res={:?} qty={:?}", resource, quantity)
+                        }
                         RecipeResult::Other { type_name, .. } => {
                             println!("      Other({type_name})")
                         }
@@ -179,10 +178,7 @@ fn print_cost(
                 .and_then(CargoQuantity::to_scu)
                 .map(|s| format!("{s} SCU"))
                 .unwrap_or("?".into());
-            println!(
-                "{pad}Resource: {rname} (minQ={}) qty={scu}",
-                rc.min_quality
-            );
+            println!("{pad}Resource: {rname} (minQ={}) qty={scu}", rc.min_quality);
             print_effects(cost, locale, gpps, indent + 2);
         }
         Cost::Item(ic) => {
@@ -202,7 +198,10 @@ fn print_cost(
                 .as_ref()
                 .and_then(|n| locale.resolve(&n.display_name))
                 .unwrap_or("(unnamed slot)");
-            println!("{pad}Slot \"{slot}\" (count={count}, options={})", options.len());
+            println!(
+                "{pad}Slot \"{slot}\" (count={count}, options={})",
+                options.len()
+            );
             print_effects(cost, locale, gpps, indent + 2);
             for opt in options {
                 print_cost(opt, locale, resources, gpps, indent + 2);

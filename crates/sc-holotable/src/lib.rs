@@ -122,6 +122,15 @@ pub use foundations::{Foundations, HOLOTABLE_COOK_VERSION, HolotableSnapshot, bu
 
 /// The common types in one `use sc_holotable::prelude::*`.
 pub mod prelude {
+    #[cfg(feature = "crafting")]
+    pub use sc_crafting::{
+        Blueprint, Blueprints, Categories, Category, CompositionInclusion, Cost, CostContext,
+        Duration, GameplayProperties, GameplayProperty, GameplayPropertyModifier, GameplayStat,
+        GlobalParams, ItemCost, ModifierValue, Process, ProductStat, ProductStatSource, Quality,
+        QualityDistribution, QualityDistributionShape, QualityLocationOverride,
+        QualityQuantization, Recipe, RecipeCosts, RecipeResult, Research, ResourceCost, SlotName,
+        Tier, ValueRange,
+    };
     #[cfg(feature = "extract")]
     pub use sc_extract::{
         AssetConfig, AssetData, AssetSource, CrcIndex, Datacore, ExtractSnapshot, Guid, LocaleKey,
@@ -129,6 +138,14 @@ pub mod prelude {
     };
     #[cfg(feature = "items")]
     pub use sc_items::{Item, Items};
+    #[cfg(feature = "armor")]
+    pub use sc_items_armor::{Armor, ArmorKind, ArmorStats, DamageResistance, ResistanceEntry};
+    #[cfg(feature = "fps-weapons")]
+    pub use sc_items_fps_weapons::{Damage, FpsWeaponStats, FpsWeapons};
+    #[cfg(feature = "ship-components")]
+    pub use sc_items_ship_components::{ShipComponentKind, ShipComponentStats, ShipComponents};
+    #[cfg(feature = "ship-weapons")]
+    pub use sc_items_ship_weapons::{ShipWeaponKind, ShipWeaponStats, ShipWeapons};
     #[cfg(feature = "locations")]
     pub use sc_locations::{Location, LocationKind, Locations};
     #[cfg(feature = "manufacturers")]
@@ -141,22 +158,6 @@ pub mod prelude {
     pub use sc_tags::Tags;
     #[cfg(feature = "weapons")]
     pub use sc_weapons::{FpsWeapon, Missile, ShipWeapon, WeaponPools, Weapons};
-    #[cfg(feature = "fps-weapons")]
-    pub use sc_items_fps_weapons::{Damage, FpsWeaponStats, FpsWeapons};
-    #[cfg(feature = "armor")]
-    pub use sc_items_armor::{Armor, ArmorKind, ArmorStats, DamageResistance, ResistanceEntry};
-    #[cfg(feature = "ship-components")]
-    pub use sc_items_ship_components::{ShipComponentKind, ShipComponentStats, ShipComponents};
-    #[cfg(feature = "ship-weapons")]
-    pub use sc_items_ship_weapons::{ShipWeaponKind, ShipWeaponStats, ShipWeapons};
-    #[cfg(feature = "crafting")]
-    pub use sc_crafting::{
-        Blueprint, Blueprints, Categories, Category, CompositionInclusion, Cost, CostContext,
-        Duration, GameplayProperties, GameplayProperty, GameplayPropertyModifier, GameplayStat,
-        GlobalParams, ItemCost, ModifierValue, Process, ProductStat, ProductStatSource, Quality,
-        QualityDistribution, QualityDistributionShape, QualityLocationOverride, QualityQuantization,
-        Recipe, RecipeCosts, RecipeResult, Research, ResourceCost, SlotName, Tier, ValueRange,
-    };
 
     #[cfg(feature = "foundations")]
     pub use crate::{Foundations, HolotableSnapshot, build_foundations};

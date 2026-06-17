@@ -247,7 +247,11 @@ impl Missions {
         for p in &mission.prerequisites {
             if let PrereqView::CompletedContractTags { required_tags, .. } = p {
                 for tag in required_tags {
-                    for &grantor in self.grantors_by_tag.get(tag).map(Vec::as_slice).unwrap_or(&[])
+                    for &grantor in self
+                        .grantors_by_tag
+                        .get(tag)
+                        .map(Vec::as_slice)
+                        .unwrap_or(&[])
                     {
                         if grantor != mission.id && seen.insert(grantor) {
                             out.push(grantor);

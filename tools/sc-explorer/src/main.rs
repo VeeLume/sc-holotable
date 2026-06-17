@@ -22,9 +22,7 @@
 use std::time::Instant;
 
 use anyhow::{Context as _, Result};
-use sc_missions::{
-    AssetConfig, AssetData, AssetSource, Datacore, Items, LocaleMap, Missions,
-};
+use sc_missions::{AssetConfig, AssetData, AssetSource, Datacore, Items, LocaleMap, Missions};
 use slt::{
     Border, Color, Context, KeyCode, KeyModifiers, RunConfig, ScrollState, TabsState, Theme,
 };
@@ -188,7 +186,7 @@ fn draw(ui: &mut Context, app: &mut AppState) {
     let _ = ui
         .bordered(Border::Rounded)
         .title("sc-explorer")
-        .pad(1)
+        .p(1)
         .grow(1)
         .col(|ui| {
             // Header

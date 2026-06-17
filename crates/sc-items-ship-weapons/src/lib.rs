@@ -100,7 +100,9 @@ impl ShipWeapons {
             let Some(kind) = ShipWeaponKind::from_item_type(&item.item_type) else {
                 continue;
             };
-            let Some(rec) = db.record(&guid) else { continue };
+            let Some(rec) = db.record(&guid) else {
+                continue;
+            };
             let inst = rec.as_instance();
 
             let integrity_hp = find_component(db, &inst, "SHealthComponentParams")
@@ -257,12 +259,18 @@ mod tests {
             ShipWeaponKind::from_item_type(&EItemType::WeaponMining),
             Some(ShipWeaponKind::Mining)
         );
-        assert_eq!(ShipWeaponKind::from_item_type(&EItemType::WeaponPersonal), None);
+        assert_eq!(
+            ShipWeaponKind::from_item_type(&EItemType::WeaponPersonal),
+            None
+        );
     }
 
     #[test]
     fn damage_total() {
-        let d = Damage { energy: 2100.0, ..Default::default() };
+        let d = Damage {
+            energy: 2100.0,
+            ..Default::default()
+        };
         assert_eq!(d.total(), 2100.0);
     }
 }

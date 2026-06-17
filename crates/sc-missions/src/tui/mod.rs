@@ -153,7 +153,7 @@ pub fn render(
             let _ = ui
                 .bordered(Border::Rounded)
                 .title("Contracts")
-                .pad(1)
+                .p(1)
                 .grow(1)
                 .col(|ui| {
                     if filtered.is_empty() {
@@ -175,7 +175,7 @@ pub fn render(
             let _ = ui
                 .bordered(Border::Rounded)
                 .title("Detail")
-                .pad(1)
+                .p(1)
                 .grow(2)
                 .col(|ui| match filtered.get(state.list.selected).copied() {
                     Some(idx) => {

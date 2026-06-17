@@ -54,7 +54,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut gpp_disp: HashMap<Guid, String> = HashMap::new(); // guid -> display name
 
     println!("=========================================================");
-    println!("§1  GPP CATALOG  ({} CraftingGameplayPropertyDef records)", gp.len());
+    println!(
+        "§1  GPP CATALOG  ({} CraftingGameplayPropertyDef records)",
+        gp.len()
+    );
     println!("=========================================================");
     for prop in gp.iter() {
         gpp_set.insert(prop.guid);
@@ -129,7 +132,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         if !non_crafting.is_empty() {
             found_non_crafting = true;
-            println!("    {} -> {non_crafting:?}", gpp_name.get(guid).map(|s| s.as_str()).unwrap_or("?"));
+            println!(
+                "    {} -> {non_crafting:?}",
+                gpp_name.get(guid).map(|s| s.as_str()).unwrap_or("?")
+            );
         }
     }
     if !found_non_crafting {
@@ -140,8 +146,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let blueprints = Blueprints::build(&datacore, &items);
     let mut fps: Vec<(Guid, Guid, String)> = Vec::new(); // (bp_guid, entity_guid, name)
     for bp in blueprints.iter() {
-        let Some(ent) = bp.crafted_entity_guid() else { continue };
-        let Some(ty) = items.item_type(&ent) else { continue };
+        let Some(ent) = bp.crafted_entity_guid() else {
+            continue;
+        };
+        let Some(ty) = items.item_type(&ent) else {
+            continue;
+        };
         if *ty != EItemType::WeaponPersonal {
             continue;
         }
@@ -214,7 +224,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("=========================================================");
     let mut any_entity_gpp_hit = false;
     for (bp_guid, ent, name) in &fps {
-        let Some(bp) = blueprints.get(*bp_guid) else { continue };
+        let Some(bp) = blueprints.get(*bp_guid) else {
+            continue;
+        };
         // Collect (slot, modifiers) over the typed cost tree.
         let mut slots: Vec<(String, Vec<&GameplayPropertyModifier>)> = Vec::new();
         for tier in &bp.tiers {
@@ -245,10 +257,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .filter_map(|vr| vr.quality_band())
                     .map(|(s, e)| format!("Q{s}-{e}"))
                     .collect();
-                println!(
-                    "    [{slot}] {gname}  ({grec})  bands={}",
-                    bands.join(",")
-                );
+                println!("    [{slot}] {gname}  ({grec})  bands={}", bands.join(","));
             }
         }
         // Entity-side: does this weapon's entity tree reference any GPP guid
@@ -257,7 +266,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let inst = rec.as_instance();
             let mut hits: Vec<String> = Vec::new();
             let mut budget = 400_000usize;
-            scan_gpp_refs(db, &inst, "", 0, &gpp_set, &gpp_name, &mut hits, &mut budget);
+            scan_gpp_refs(
+                db,
+                &inst,
+                "",
+                0,
+                &gpp_set,
+                &gpp_name,
+                &mut hits,
+                &mut budget,
+            );
             if !hits.is_empty() {
                 any_entity_gpp_hit = true;
                 println!("    !! ENTITY REFERENCES GPP:");
@@ -285,7 +303,10 @@ fn collect_components<'a>(db: &'a DataCoreDatabase, entity: &Instance<'a>) -> Ve
         {
             for elem in arr {
                 if let Some(ci) = value_to_instance(db, &elem)
-                    && ci.type_name().map(|t| t.contains("Component")).unwrap_or(false)
+                    && ci
+                        .type_name()
+                        .map(|t| t.contains("Component"))
+                        .unwrap_or(false)
                 {
                     out.push(ci);
                 }
@@ -297,7 +318,9 @@ fn collect_components<'a>(db: &'a DataCoreDatabase, entity: &Instance<'a>) -> Ve
 
 fn value_to_instance<'a>(db: &'a DataCoreDatabase, v: &Value<'a>) -> Option<Instance<'a>> {
     match v {
-        Value::Class { struct_index, data } => Some(Instance::from_inline_data(db, *struct_index, data)),
+        Value::Class { struct_index, data } => {
+            Some(Instance::from_inline_data(db, *struct_index, data))
+        }
         Value::ClassRef(r) | Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
             Some(db.instance(r.struct_index, r.instance_index))
         }
@@ -335,10 +358,21 @@ fn dump(
                     }
                     for (i, elem) in inst.get_array(p.name).unwrap().enumerate() {
                         if i >= MAX_ELEMS {
-                            out.push(format!("{child_path}[..{total}] (+{} more)", total - MAX_ELEMS));
+                            out.push(format!(
+                                "{child_path}[..{total}] (+{} more)",
+                                total - MAX_ELEMS
+                            ));
                             break;
                         }
-                        dump_value(db, &elem, &format!("{child_path}[{i}]"), depth, gpp_set, out, budget);
+                        dump_value(
+                            db,
+                            &elem,
+                            &format!("{child_path}[{i}]"),
+                            depth,
+                            gpp_set,
+                            out,
+                            budget,
+                        );
                     }
                 }
             }
@@ -357,27 +391,52 @@ fn dump_value(
     budget: &mut usize,
 ) {
     match v {
-        Value::Bool(_) | Value::Int8(_) | Value::Int16(_) | Value::Int32(_) | Value::Int64(_)
-        | Value::UInt8(_) | Value::UInt16(_) | Value::UInt32(_) | Value::UInt64(_)
-        | Value::Float(_) | Value::Double(_) => out.push(format!("{path} = {v}")),
+        Value::Bool(_)
+        | Value::Int8(_)
+        | Value::Int16(_)
+        | Value::Int32(_)
+        | Value::Int64(_)
+        | Value::UInt8(_)
+        | Value::UInt16(_)
+        | Value::UInt32(_)
+        | Value::UInt64(_)
+        | Value::Float(_)
+        | Value::Double(_) => out.push(format!("{path} = {v}")),
         Value::String(s) | Value::Locale(s) | Value::Enum(s) => {
             if !s.is_empty() {
                 out.push(format!("{path} = {s:?}"));
             }
         }
         Value::Guid(g) => {
-            let tag = if gpp_set.contains(g) { "  <<< GPP GUID!" } else { "" };
+            let tag = if gpp_set.contains(g) {
+                "  <<< GPP GUID!"
+            } else {
+                ""
+            };
             out.push(format!("{path} = guid {g}{tag}"));
         }
         Value::Reference(Some(r)) => {
-            let tt = db.record(&r.guid).and_then(|x| x.type_name()).unwrap_or("?");
-            let tag = if gpp_set.contains(&r.guid) { "  <<< GPP GUID!" } else { "" };
+            let tt = db
+                .record(&r.guid)
+                .and_then(|x| x.type_name())
+                .unwrap_or("?");
+            let tag = if gpp_set.contains(&r.guid) {
+                "  <<< GPP GUID!"
+            } else {
+                ""
+            };
             out.push(format!("{path} -> Ref({tt}){tag}"));
         }
-        Value::Class { .. } | Value::ClassRef(_) | Value::StrongPointer(Some(_)) | Value::WeakPointer(Some(_)) => {
+        Value::Class { .. }
+        | Value::ClassRef(_)
+        | Value::StrongPointer(Some(_))
+        | Value::WeakPointer(Some(_)) => {
             if depth >= MAX_DEPTH {
                 if let Some(ci) = value_to_instance(db, v) {
-                    out.push(format!("{path} : {} (depth cap)", ci.type_name().unwrap_or("?")));
+                    out.push(format!(
+                        "{path} : {} (depth cap)",
+                        ci.type_name().unwrap_or("?")
+                    ));
                 }
                 return;
             }
@@ -415,15 +474,30 @@ fn scan_gpp_refs(
         let cp = format!("{path}.{}", p.name);
         match &p.value {
             Value::Guid(g) if gpp_set.contains(g) => {
-                hits.push(format!("{cp} = guid {}", gpp_name.get(g).map(|s| s.as_str()).unwrap_or("?")));
+                hits.push(format!(
+                    "{cp} = guid {}",
+                    gpp_name.get(g).map(|s| s.as_str()).unwrap_or("?")
+                ));
             }
             Value::Reference(Some(r)) if gpp_set.contains(&r.guid) => {
-                hits.push(format!("{cp} -> Ref {}", gpp_name.get(&r.guid).map(|s| s.as_str()).unwrap_or("?")));
+                hits.push(format!(
+                    "{cp} -> Ref {}",
+                    gpp_name.get(&r.guid).map(|s| s.as_str()).unwrap_or("?")
+                ));
             }
             Value::Array(_) => {
                 if let Some(arr) = inst.get_array(p.name) {
                     for (i, elem) in arr.enumerate() {
-                        scan_value(db, &elem, &format!("{cp}[{i}]"), depth, gpp_set, gpp_name, hits, budget);
+                        scan_value(
+                            db,
+                            &elem,
+                            &format!("{cp}[{i}]"),
+                            depth,
+                            gpp_set,
+                            gpp_name,
+                            hits,
+                            budget,
+                        );
                     }
                 }
             }
@@ -444,12 +518,21 @@ fn scan_value(
 ) {
     match v {
         Value::Guid(g) if gpp_set.contains(g) => {
-            hits.push(format!("{path} = guid {}", gpp_name.get(g).map(|s| s.as_str()).unwrap_or("?")));
+            hits.push(format!(
+                "{path} = guid {}",
+                gpp_name.get(g).map(|s| s.as_str()).unwrap_or("?")
+            ));
         }
         Value::Reference(Some(r)) if gpp_set.contains(&r.guid) => {
-            hits.push(format!("{path} -> Ref {}", gpp_name.get(&r.guid).map(|s| s.as_str()).unwrap_or("?")));
+            hits.push(format!(
+                "{path} -> Ref {}",
+                gpp_name.get(&r.guid).map(|s| s.as_str()).unwrap_or("?")
+            ));
         }
-        Value::Class { .. } | Value::ClassRef(_) | Value::StrongPointer(Some(_)) | Value::WeakPointer(Some(_)) => {
+        Value::Class { .. }
+        | Value::ClassRef(_)
+        | Value::StrongPointer(Some(_))
+        | Value::WeakPointer(Some(_)) => {
             if let Some(ci) = value_to_instance(db, v) {
                 if ci.type_name() == Some("CraftingGameplayPropertyDef") {
                     hits.push(format!("{path} -> ptr to CraftingGameplayPropertyDef"));
@@ -470,7 +553,9 @@ fn walk_cost<'a>(
     out: &mut Vec<(String, Vec<&'a GameplayPropertyModifier>)>,
 ) {
     let slot = match cost {
-        Cost::Select { name_info: Some(n), .. } => locale
+        Cost::Select {
+            name_info: Some(n), ..
+        } => locale
             .resolve(&n.display_name)
             .map(|s| s.to_string())
             .filter(|s| !s.is_empty() && !s.contains("PLACEHOLDER"))
@@ -497,15 +582,24 @@ fn walk_cost<'a>(
 fn render_value(db: &DataCoreDatabase, v: &Value<'_>) -> String {
     match v {
         Value::Reference(Some(r)) => {
-            let tt = db.record(&r.guid).and_then(|x| x.type_name()).unwrap_or("?");
+            let tt = db
+                .record(&r.guid)
+                .and_then(|x| x.type_name())
+                .unwrap_or("?");
             format!("Ref({tt} {})", r.guid)
         }
         Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) | Value::ClassRef(r) => {
-            let tn = db.instance(r.struct_index, r.instance_index).type_name().unwrap_or("?");
+            let tn = db
+                .instance(r.struct_index, r.instance_index)
+                .type_name()
+                .unwrap_or("?");
             format!("ptr({tn})")
         }
         Value::Class { struct_index, .. } => {
-            format!("class({})", db.struct_name(*struct_index as usize).unwrap_or("?"))
+            format!(
+                "class({})",
+                db.struct_name(*struct_index as usize).unwrap_or("?")
+            )
         }
         Value::Array(a) => format!("array[{}]", a.count),
         other => format!("{other}"),

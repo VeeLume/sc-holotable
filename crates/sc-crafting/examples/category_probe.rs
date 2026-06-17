@@ -46,11 +46,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let name_offset = { p.name_offset };
             let data_type = { p.data_type };
             let name = db.get_string2(&name_offset);
-            println!(
-                "    {:<32} (type tag {:?})",
-                name.unwrap_or("?"),
-                data_type
-            );
+            println!("    {:<32} (type tag {:?})", name.unwrap_or("?"), data_type);
         }
 
         // sample one record of this type if any

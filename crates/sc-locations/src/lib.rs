@@ -238,7 +238,9 @@ impl From<LocationsRepr> for Locations {
 
 impl From<Locations> for LocationsRepr {
     fn from(locations: Locations) -> Self {
-        LocationsRepr { by_guid: locations.by_guid }
+        LocationsRepr {
+            by_guid: locations.by_guid,
+        }
     }
 }
 
@@ -253,7 +255,11 @@ impl Locations {
     /// points ([`build`](Self::build) / [`LocationsBuilder`]) delegate here.
     pub fn from_locations(locations: impl IntoIterator<Item = Location>) -> Self {
         let by_guid = locations.into_iter().map(|l| (l.guid, l)).collect();
-        let mut index = Locations { by_guid, by_crc: HashMap::new(), children: HashMap::new() };
+        let mut index = Locations {
+            by_guid,
+            by_crc: HashMap::new(),
+            children: HashMap::new(),
+        };
         index.rebuild_indices();
         index
     }
@@ -268,7 +274,9 @@ impl Locations {
             .multi_feature
             .star_map_object
             .iter()
-            .filter_map(|(&guid, &handle)| handle.get(pools).map(|obj| location_for(guid, obj, store)));
+            .filter_map(|(&guid, &handle)| {
+                handle.get(pools).map(|obj| location_for(guid, obj, store))
+            });
         Self::from_locations(locations)
     }
 
@@ -538,6 +546,12 @@ mod tests {
         // ...but they're rebuilt on load.
         assert_eq!(decoded.len(), 2);
         assert_eq!(decoded.guid_by_crc(class_crc(&lz)), Some(lz));
-        assert_eq!(decoded.children_of(&sys).map(|l| l.guid).collect::<Vec<_>>(), vec![lz]);
+        assert_eq!(
+            decoded
+                .children_of(&sys)
+                .map(|l| l.guid)
+                .collect::<Vec<_>>(),
+            vec![lz]
+        );
     }
 }

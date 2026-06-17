@@ -16,12 +16,11 @@ use std::collections::{BTreeMap, HashSet};
 
 use sc_extract::generated::{
     BaseDataSetMatchConditionPtr, BaseMissionPropertyValuePtr, BlueprintRewards, CareerContract,
-    Contract, ContractAvailability,
-    ContractBoolParam, ContractBoolParamType, ContractClass_Contract, ContractClassBasePtr,
-    ContractDifficultyProfile, ContractGeneratorHandlerBasePtr, ContractIntParam,
-    ContractIntParamType, ContractLegacy, ContractParamOverrides,
-    ContractPrerequisite_CompletedContractTags, ContractPrerequisite_CrimeStat,
-    ContractPrerequisite_Locality, ContractPrerequisite_Location,
+    Contract, ContractAvailability, ContractBoolParam, ContractBoolParamType,
+    ContractClass_Contract, ContractClassBasePtr, ContractDifficultyProfile,
+    ContractGeneratorHandlerBasePtr, ContractIntParam, ContractIntParamType, ContractLegacy,
+    ContractParamOverrides, ContractPrerequisite_CompletedContractTags,
+    ContractPrerequisite_CrimeStat, ContractPrerequisite_Locality, ContractPrerequisite_Location,
     ContractPrerequisite_LocationProperty, ContractPrerequisite_Reputation,
     ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, ContractTemplate,
     DataPools, ELocationTypeLevel, Handle, MissionProperty, SubContract,
@@ -1328,7 +1327,13 @@ fn emit_from_career(
         c.template,
         None, /*Career*/
     );
-    apply_career_rep(&mut m, career_faction, career_scope, c.min_standing, c.max_standing);
+    apply_career_rep(
+        &mut m,
+        career_faction,
+        career_scope,
+        c.min_standing,
+        c.max_standing,
+    );
     out.push(m);
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
@@ -1351,7 +1356,13 @@ fn emit_from_career(
                 c.template,
                 Some(c.id),
             );
-            apply_career_rep(&mut m, career_faction, career_scope, c.min_standing, c.max_standing);
+            apply_career_rep(
+                &mut m,
+                career_faction,
+                career_scope,
+                c.min_standing,
+                c.max_standing,
+            );
             out.push(m);
         }
     }
@@ -1589,14 +1600,21 @@ fn resolve_meta(
                 weights,
             }
         });
-    (difficulty, results.contract_buy_in_amount, results.time_to_complete)
+    (
+        difficulty,
+        results.contract_buy_in_amount,
+        results.time_to_complete,
+    )
 }
 
 /// Parse the trailing `_N` level off an `EDifficultyRange_*` DCB string
 /// (`"Easy_PvE_only_action_3"` → `3`). `0` when there's no numeric suffix
 /// (e.g. an `Unrecognized` value).
 fn difficulty_level(dcb: &str) -> u8 {
-    dcb.rsplit('_').next().and_then(|n| n.parse().ok()).unwrap_or(0)
+    dcb.rsplit('_')
+        .next()
+        .and_then(|n| n.parse().ok())
+        .unwrap_or(0)
 }
 
 /// Extract the unique Locality GUIDs from a prerequisite list (the
@@ -2276,19 +2294,21 @@ fn collect_property_vars(
             continue;
         };
         let var = match value_ptr {
-            BaseMissionPropertyValuePtr::MissionPropertyValue_StringHash(h) => h.get(pools).map(|v| {
-                MissionVar::Choice(
-                    v.options
-                        .iter()
-                        .filter_map(|o| o.get(pools))
-                        .map(|o| VarOption {
-                            label_key: o.text_id.clone(),
-                            value: o.value.clone(),
-                            gated: !o.dependent_properties.is_empty(),
-                        })
-                        .collect(),
-                )
-            }),
+            BaseMissionPropertyValuePtr::MissionPropertyValue_StringHash(h) => {
+                h.get(pools).map(|v| {
+                    MissionVar::Choice(
+                        v.options
+                            .iter()
+                            .filter_map(|o| o.get(pools))
+                            .map(|o| VarOption {
+                                label_key: o.text_id.clone(),
+                                value: o.value.clone(),
+                                gated: !o.dependent_properties.is_empty(),
+                            })
+                            .collect(),
+                    )
+                })
+            }
             BaseMissionPropertyValuePtr::MissionPropertyValue_Integer(h) => h.get(pools).map(|v| {
                 MissionVar::Number(
                     v.options
@@ -2300,12 +2320,12 @@ fn collect_property_vars(
             }),
             // Location query → static tag facets (system / setting). The plural
             // `_Locations` carries the same `matchConditions` shape.
-            BaseMissionPropertyValuePtr::MissionPropertyValue_Location(h) => {
-                h.get(pools).and_then(|v| location_var(pools, tree, &v.match_conditions))
-            }
-            BaseMissionPropertyValuePtr::MissionPropertyValue_Locations(h) => {
-                h.get(pools).and_then(|v| location_var(pools, tree, &v.match_conditions))
-            }
+            BaseMissionPropertyValuePtr::MissionPropertyValue_Location(h) => h
+                .get(pools)
+                .and_then(|v| location_var(pools, tree, &v.match_conditions)),
+            BaseMissionPropertyValuePtr::MissionPropertyValue_Locations(h) => h
+                .get(pools)
+                .and_then(|v| location_var(pools, tree, &v.match_conditions)),
             // Float / AIName / spawn / org variants aren't captured here: Float
             // is rare, spawns are encounters, names are runtime generators.
             _ => None,
@@ -2439,10 +2459,7 @@ fn build_ship_encounter(
 
 /// Assemble a [`SlotGroup`] from a flat option list. Computes the
 /// per-axis [`AxisDiff`] and the convenience min/max ranges.
-fn build_ship_group(
-    options: Vec<ShipSlot>,
-    tree: &sc_tags::Tags,
-) -> Option<SlotGroup<ShipSlot>> {
+fn build_ship_group(options: Vec<ShipSlot>, tree: &sc_tags::Tags) -> Option<SlotGroup<ShipSlot>> {
     if options.is_empty() {
         return None;
     }

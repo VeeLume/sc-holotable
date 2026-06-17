@@ -298,7 +298,7 @@ fn knowledge_label(v: &EDifficultyRange_GameKnowledge) -> String {
 fn count_tag_carriers(tag: Guid, pools: &sc_extract::DataPools) -> usize {
     let mut count = 0;
     for ecd in pools.multi_feature.entity_class_definition.iter().flatten() {
-        if ecd.tags.iter().any(|t| *t == tag) {
+        if ecd.tags.contains(&tag) {
             count += 1;
         }
     }

@@ -19,9 +19,9 @@ use sc_extract::generated::{
     CraftingProcess_BasePtr, CraftingRecipe_BasePtr, CraftingRecipeCosts_BasePtr,
     CraftingRecipeResults_BasePtr, CraftingResearch_BasePtr, DataPools, RecordIndex,
 };
-use std::collections::HashSet;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 use sc_items::Items;
+use std::collections::HashSet;
 
 #[derive(Default, Debug)]
 struct Census {
@@ -250,8 +250,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!("\n=== inline recipe results ===");
-    println!("  inline result containers seen : {}", c.inline_recipe_results_seen);
-    println!("  with empty results vec        : {}", c.inline_recipe_results_empty);
+    println!(
+        "  inline result containers seen : {}",
+        c.inline_recipe_results_seen
+    );
+    println!(
+        "  with empty results vec        : {}",
+        c.inline_recipe_results_empty
+    );
     println!("  CraftingResult_* variants seen (typed):");
     for (k, v) in &c.results_variant_top {
         println!("    {:<30} : {}", k, v);
@@ -287,7 +293,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!("\n=== resource GUID probe ===");
-    println!("  unique resource GUIDs in costs : {}", c.resource_guids.len());
+    println!(
+        "  unique resource GUIDs in costs : {}",
+        c.resource_guids.len()
+    );
     let mut by_type: BTreeMap<String, usize> = BTreeMap::new();
     let mut unresolved = 0usize;
     let mut samples: Vec<(sc_extract::Guid, String, Option<String>)> = Vec::new();
@@ -311,7 +320,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     println!("  samples:");
     for (g, t, p) in &samples {
-        println!("    {} → type={:<28} path={}", g, t, p.as_deref().unwrap_or("?"));
+        println!(
+            "    {} → type={:<28} path={}",
+            g,
+            t,
+            p.as_deref().unwrap_or("?")
+        );
     }
 
     // sample: pick three blueprints — P4-AR if found, a Select-cost one, one with research
@@ -324,7 +338,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if samples_emitted >= 3 {
             break;
         }
-        let Some(bp_record) = handle.get(pools) else { continue };
+        let Some(bp_record) = handle.get(pools) else {
+            continue;
+        };
         let CraftingBlueprint_Base_NonRefPtr::CraftingBlueprint(bh) =
             bp_record.blueprint.as_ref().unwrap()
         else {
@@ -537,7 +553,9 @@ fn count_research(
     datacore: &Datacore,
 ) {
     c.research_seen += 1;
-    let CraftingResearch_BasePtr::CraftingResearch(h) = ptr else { return };
+    let CraftingResearch_BasePtr::CraftingResearch(h) = ptr else {
+        return;
+    };
     let Some(research) = h.get(pools) else { return };
     if let Some(unlock) = &research.unlock_requirements {
         c.research_unlock_some += 1;
@@ -550,13 +568,19 @@ fn count_research(
                 .map(|n| format!("Unknown({})", n))
                 .unwrap_or_else(|| format!("Unknown(struct#{})", struct_index)),
         };
-        *c.research_unlock_variant_by_struct.entry(label).or_default() += 1;
+        *c.research_unlock_variant_by_struct
+            .entry(label)
+            .or_default() += 1;
     }
     if let Some(costs) = &research.research_costs {
         c.research_costs_some += 1;
         let label = match costs {
-            CraftingRecipeCosts_BasePtr::CraftingRecipeCosts(_) => "CraftingRecipeCosts (inline)".to_string(),
-            CraftingRecipeCosts_BasePtr::CraftingRecipeCosts_Base(_) => "CraftingRecipeCosts_Base".to_string(),
+            CraftingRecipeCosts_BasePtr::CraftingRecipeCosts(_) => {
+                "CraftingRecipeCosts (inline)".to_string()
+            }
+            CraftingRecipeCosts_BasePtr::CraftingRecipeCosts_Base(_) => {
+                "CraftingRecipeCosts_Base".to_string()
+            }
             CraftingRecipeCosts_BasePtr::CraftingRecipeCosts_Base_NonRef(_) => {
                 "CraftingRecipeCosts_Base_NonRef".to_string()
             }
@@ -572,15 +596,22 @@ fn count_research(
 
 fn recipe_has_select(bp: &sc_extract::generated::CraftingBlueprint, pools: &DataPools) -> bool {
     for t in &bp.tiers {
-        let CraftingBlueprintTier_BasePtr::CraftingBlueprintTier(th) = t else { continue };
+        let CraftingBlueprintTier_BasePtr::CraftingBlueprintTier(th) = t else {
+            continue;
+        };
         let Some(tier) = th.get(pools) else { continue };
-        let Some(CraftingRecipe_BasePtr::CraftingRecipe(rh)) = &tier.recipe else { continue };
+        let Some(CraftingRecipe_BasePtr::CraftingRecipe(rh)) = &tier.recipe else {
+            continue;
+        };
         let Some(r) = rh.get(pools) else { continue };
-        let Some(CraftingRecipeCosts_BasePtr::CraftingRecipeCosts(ch)) = &r.costs else { continue };
+        let Some(CraftingRecipeCosts_BasePtr::CraftingRecipeCosts(ch)) = &r.costs else {
+            continue;
+        };
         let Some(costs) = ch.get(pools) else { continue };
-        if matches!(&costs.mandatory_cost,
-            Some(CraftingCost_BasePtr::CraftingCost_Select(_)))
-        {
+        if matches!(
+            &costs.mandatory_cost,
+            Some(CraftingCost_BasePtr::CraftingCost_Select(_))
+        ) {
             return true;
         }
     }
@@ -601,13 +632,18 @@ fn dump_blueprint(
                 let name = entity
                     .and_then(|g| items.name_key(&g))
                     .and_then(|k| locale.resolve(k));
-                println!("  process: Creation → entity_class={:?} ({:?})", entity, name);
+                println!(
+                    "  process: Creation → entity_class={:?} ({:?})",
+                    entity, name
+                );
             }
             other => println!("  process: {:?}", std::mem::discriminant(other)),
         }
     }
     for (i, t) in bp.tiers.iter().enumerate() {
-        let CraftingBlueprintTier_BasePtr::CraftingBlueprintTier(th) = t else { continue };
+        let CraftingBlueprintTier_BasePtr::CraftingBlueprintTier(th) = t else {
+            continue;
+        };
         let Some(tier) = th.get(pools) else { continue };
         println!("  tier[{}]:", i);
         if let Some(CraftingRecipe_BasePtr::CraftingRecipe(rh)) = &tier.recipe
@@ -627,8 +663,10 @@ fn dump_blueprint(
             match &recipe.results {
                 Some(CraftingRecipeResults_BasePtr::CraftingRecipeResults(rh)) => {
                     if let Some(rs) = rh.get(pools) {
-                        println!("    results: {} entries (typed: see census, dormant=Unknown)",
-                            rs.results.len());
+                        println!(
+                            "    results: {} entries (typed: see census, dormant=Unknown)",
+                            rs.results.len()
+                        );
                     }
                 }
                 Some(other) => {
@@ -665,19 +703,28 @@ fn dump_cost(
                     .and_then(|g| items.name_key(&g))
                     .and_then(|k| locale.resolve(k))
                     .unwrap_or("?");
-                println!("{}Item   qty={} minQ={} → {} ({:?})",
-                    pad, i.quantity, i.min_quality, nm, i.entity_class);
+                println!(
+                    "{}Item   qty={} minQ={} → {} ({:?})",
+                    pad, i.quantity, i.min_quality, nm, i.entity_class
+                );
             }
         }
         CraftingCost_BasePtr::CraftingCost_Resource(h) => {
             if let Some(r) = h.get(pools) {
-                println!("{}Res    minQ={} resource={:?}", pad, r.min_quality, r.resource);
+                println!(
+                    "{}Res    minQ={} resource={:?}",
+                    pad, r.min_quality, r.resource
+                );
             }
         }
         CraftingCost_BasePtr::CraftingCost_Select(h) => {
             if let Some(sel) = h.get(pools) {
-                println!("{}Select count={} options={}",
-                    pad, sel.count, sel.options.len());
+                println!(
+                    "{}Select count={} options={}",
+                    pad,
+                    sel.count,
+                    sel.options.len()
+                );
                 for o in &sel.options {
                     print!("{}  → ", pad);
                     dump_cost(o, pools, items, locale, depth + 1);
