@@ -28,6 +28,7 @@ sc-manufacturers = { workspace = true, optional = true }
 sc-resources = { workspace = true, optional = true }
 sc-weapons = { workspace = true, optional = true }
 sc-crafting = { workspace = true, optional = true }
+sc-gathering = { workspace = true, optional = true }
 sc-missions = { workspace = true, optional = true }
 serde = { workspace = true }
 
@@ -53,15 +54,18 @@ armor = ["dep:sc-items-armor", "extract", "items"]
 ship-components = ["dep:sc-items-ship-components", "extract", "items"]
 ship-weapons = ["dep:sc-items-ship-weapons", "extract", "items"]
 crafting = ["dep:sc-crafting", "extract", "items", "resources", "fps-weapons", "armor", "ship-components", "ship-weapons"]
+# sc-gathering self-enables its sc-extract leaf features (harvestable / mining /
+# entities-mineable); the umbrella pulls the crate + the location surface it joins.
+gathering = ["dep:sc-gathering", "extract", "locations"]
 missions = ["dep:sc-missions", "extract", "items", "tags"]
 
 # ── Cross-cutting ────────────────────────────────────────────────────────────
 # The coordination build-context + HolotableSnapshot need every foundational
 # index, so they're gated on having them all.
-foundations = ["extract", "items", "tags", "manufacturers", "resources", "locations"]
+foundations = ["extract", "items", "tags", "manufacturers", "resources", "locations", "gathering"]
 
 # ── Aggregators ──────────────────────────────────────────────────────────────
-all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "crafting", "foundations"]
+all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "crafting", "gathering", "foundations"]
 full = ["all-t1", "missions"]
 
 [dev-dependencies]

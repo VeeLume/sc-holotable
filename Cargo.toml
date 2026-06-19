@@ -34,6 +34,7 @@ sc-discovery = { path = "crates/sc-discovery" }
 sc-extract = { path = "crates/sc-extract" }
 sc-extract-generated = { path = "crates/sc-extract-generated" }
 sc-crafting = { path = "crates/sc-crafting" }
+sc-gathering = { path = "crates/sc-gathering" }
 sc-items = { path = "crates/sc-items" }
 sc-items-armor = { path = "crates/sc-items-armor" }
 sc-items-fps-weapons = { path = "crates/sc-items-fps-weapons" }

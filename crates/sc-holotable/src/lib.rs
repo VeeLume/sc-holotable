@@ -109,6 +109,13 @@ pub mod crafting {
     pub use sc_crafting::*;
 }
 
+#[cfg(feature = "gathering")]
+pub mod gathering {
+    //! Resource gathering ([`sc_gathering`]) — mining / salvage / plants
+    //! providers and the `StarMapObject` ↔ provider location join.
+    pub use sc_gathering::*;
+}
+
 #[cfg(feature = "missions")]
 pub mod missions {
     //! Missions / contracts ([`sc_missions`]).
@@ -133,6 +140,11 @@ pub mod prelude {
     pub use sc_extract::{
         AssetConfig, AssetData, AssetSource, CrcIndex, Datacore, ExtractSnapshot, Guid, LocaleKey,
         LocaleMap, ProcessedSnapshot, RecordPath, RecordPaths, SnapshotMeta, class_crc,
+    };
+    #[cfg(feature = "gathering")]
+    pub use sc_gathering::{
+        Cluster, Deposit, GatherableElement, Gathering, GatheringMode, Provider, ProviderGroup,
+        ProviderLocations,
     };
     #[cfg(feature = "items")]
     pub use sc_items::{Item, Items};
