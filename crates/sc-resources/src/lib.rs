@@ -44,8 +44,9 @@ use serde::{Deserialize, Serialize};
 
 mod quality;
 pub use quality::{
-    DistributionRef, LocationOverrideEntry, Quality, QualityDistribution, QualityDistributionShape,
-    QualityLocationOverride, QualityQuantization, QuantizationBand,
+    DistributionRef, LocationOverrideEntry, LocationOverrideRef, Quality, QualityDistribution,
+    QualityDistributionShape, QualityLocationOverride, QualityQuantization, QuantizationBand,
+    QuantizationRef, ResourceQuality,
 };
 
 // ── Cargo quantity ──────────────────────────────────────────────────────
@@ -172,13 +173,13 @@ pub struct Resource {
     pub density: Option<Density>,
     /// Decay/volatility, if defined. SC 4.8: 1 / 206 carry this.
     pub volatility: Option<Volatility>,
+    /// Per-resource quality wiring from `properties[ResourceTypeCraftingData]`:
+    /// the distribution / quantization / location-override refs. `Record` refs
+    /// resolve against the [`Quality`] catalog. `None` for most resources.
+    pub quality: Option<ResourceQuality>,
     // `default_cargo_containers: Option<Handle<SResourceTypeDefaultCargoContainers>>`
     // on the raw record is an inline nested struct (Handle, not Guid). Not
     // surfaced — add when a consumer needs cargo-box defaults.
-    //
-    // `ResourceTypeCraftingData` (the inline per-resource quality wiring)
-    // is sc-crafting's domain; it reads `ResourceType.properties` directly
-    // and builds its own typed surface on top.
 }
 
 /// Flat lookup over every `ResourceType` record in the DCB. Build once,
@@ -254,6 +255,7 @@ fn resource_for(guid: Guid, rt: &ResourceType, pools: &DataPools) -> Resource {
         validate_default_cargo_box: rt.validate_default_cargo_box,
         density: extract_density(rt, pools),
         volatility: extract_volatility(rt, pools),
+        quality: quality::resource_quality_for(rt, pools),
     }
 }
 
@@ -356,6 +358,7 @@ mod tests {
                 unit: Some(DensityUnit::GramsPerCm3(2.7)),
             }),
             volatility: None,
+            quality: None,
         }
     }
 

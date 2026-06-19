@@ -16,8 +16,9 @@ use std::collections::HashMap;
 
 use sc_extract::generated::{
     CraftingQualityDistribution_Base_NonRefPtr, CraftingQualityDistribution_BasePtr,
-    CraftingQualityLocationOverride_Base_NonRefPtr, CraftingQualityQuantization_Base_NonRefPtr,
-    DataPools,
+    CraftingQualityLocationOverride_Base_NonRefPtr, CraftingQualityLocationOverride_BasePtr,
+    CraftingQualityQuantization_Base_NonRefPtr, CraftingQualityQuantization_BasePtr, DataPools,
+    ResourceType, ResourceTypePropertiesPtr,
 };
 use sc_extract::{Guid, RecordStore};
 use serde::{Deserialize, Serialize};
@@ -285,6 +286,169 @@ fn build_distribution_ref(
             }
         }
         P::Unknown { struct_index, .. } => DistributionRef::Other {
+            type_name: format!("struct#{struct_index}"),
+            struct_index: *struct_index,
+        },
+    }
+}
+
+// ── Per-resource bridge: ResourceType.properties[ResourceTypeCraftingData] ──
+
+/// A resource's quality wiring — the inline-or-record refs read off its
+/// `ResourceTypeCraftingData` property. Resolve `Record(guid)` refs against the
+/// [`Quality`] catalog; `Inline` carries the shape/bands/entries directly.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub struct ResourceQuality {
+    pub distribution: Option<DistributionRef>,
+    pub quantization: Option<QuantizationRef>,
+    pub location_override: Option<LocationOverrideRef>,
+}
+
+/// A reference to a quantization — inline bands or a shared record.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum QuantizationRef {
+    Inline(Vec<QuantizationBand>),
+    /// → `CraftingQualityQuantizationRecord` GUID ([`Quality::quantization`]).
+    Record(Guid),
+    Other {
+        type_name: String,
+        struct_index: u32,
+    },
+}
+
+/// A reference to a location override — inline entries or a shared record.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum LocationOverrideRef {
+    Inline(Vec<LocationOverrideEntry>),
+    /// → `CraftingQualityLocationOverrideRecord` GUID ([`Quality::location_override`]).
+    Record(Guid),
+    Other {
+        type_name: String,
+        struct_index: u32,
+    },
+}
+
+/// Resolve `ResourceType.properties[ResourceTypeCraftingData]` into the resource's
+/// quality refs. `None` when the resource carries no crafting-data property or it
+/// has no quality wiring (most resources).
+pub(crate) fn resource_quality_for(
+    rt: &ResourceType,
+    pools: &DataPools,
+) -> Option<ResourceQuality> {
+    let data = rt.properties.iter().find_map(|p| match p {
+        ResourceTypePropertiesPtr::ResourceTypeCraftingData(h) => h.get(pools),
+        _ => None,
+    })?;
+    let q = ResourceQuality {
+        distribution: data
+            .quality_distribution
+            .as_ref()
+            .map(|d| build_distribution_ref(d, pools)),
+        quantization: data
+            .quality_quantization
+            .as_ref()
+            .map(|d| build_quantization_ref(d, pools)),
+        location_override: data
+            .quality_location_override
+            .as_ref()
+            .map(|d| build_location_override_ref(d, pools)),
+    };
+    (q != ResourceQuality::default()).then_some(q)
+}
+
+fn build_quantization_ref(
+    d: &CraftingQualityQuantization_BasePtr,
+    pools: &DataPools,
+) -> QuantizationRef {
+    use CraftingQualityQuantization_BasePtr as P;
+    match d {
+        P::CraftingQualityQuantization(h) => match h.get(pools) {
+            Some(qq) => QuantizationRef::Inline(
+                qq.bands
+                    .iter()
+                    .filter_map(|bh| bh.get(pools))
+                    .map(|b| QuantizationBand {
+                        start: b.start,
+                        end: b.end,
+                        mapped_value: b.mapped_value,
+                    })
+                    .collect(),
+            ),
+            None => QuantizationRef::Other {
+                type_name: "Quantization(empty)".into(),
+                struct_index: 0,
+            },
+        },
+        P::CraftingQualityQuantization_RecordRef(h) => match h.get(pools) {
+            Some(r) => match r.quality_quantization_record {
+                Some(g) => QuantizationRef::Record(g),
+                None => QuantizationRef::Other {
+                    type_name: "RecordRef(none)".into(),
+                    struct_index: 0,
+                },
+            },
+            None => QuantizationRef::Other {
+                type_name: "RecordRef(empty)".into(),
+                struct_index: 0,
+            },
+        },
+        P::CraftingQualityQuantization_Base(_) | P::CraftingQualityQuantization_Base_NonRef(_) => {
+            QuantizationRef::Other {
+                type_name: "CraftingQualityQuantization_Base(_NonRef)".into(),
+                struct_index: 0,
+            }
+        }
+        P::Unknown { struct_index, .. } => QuantizationRef::Other {
+            type_name: format!("struct#{struct_index}"),
+            struct_index: *struct_index,
+        },
+    }
+}
+
+fn build_location_override_ref(
+    d: &CraftingQualityLocationOverride_BasePtr,
+    pools: &DataPools,
+) -> LocationOverrideRef {
+    use CraftingQualityLocationOverride_BasePtr as P;
+    match d {
+        P::CraftingQualityLocationOverride(h) => match h.get(pools) {
+            Some(co) => LocationOverrideRef::Inline(
+                co.location_override_list
+                    .iter()
+                    .filter_map(|eh| eh.get(pools))
+                    .map(|e| LocationOverrideEntry {
+                        location: e.location,
+                        distribution: e
+                            .quality_distribution
+                            .as_ref()
+                            .map(|d| build_distribution_ref(d, pools)),
+                    })
+                    .collect(),
+            ),
+            None => LocationOverrideRef::Other {
+                type_name: "LocationOverride(empty)".into(),
+                struct_index: 0,
+            },
+        },
+        P::CraftingQualityLocationOverride_RecordRef(h) => match h.get(pools) {
+            Some(r) => match r.location_override_record {
+                Some(g) => LocationOverrideRef::Record(g),
+                None => LocationOverrideRef::Other {
+                    type_name: "RecordRef(none)".into(),
+                    struct_index: 0,
+                },
+            },
+            None => LocationOverrideRef::Other {
+                type_name: "RecordRef(empty)".into(),
+                struct_index: 0,
+            },
+        },
+        P::CraftingQualityLocationOverride_Base(_)
+        | P::CraftingQualityLocationOverride_Base_NonRef(_) => LocationOverrideRef::Other {
+            type_name: "CraftingQualityLocationOverride_Base(_NonRef)".into(),
+            struct_index: 0,
+        },
+        P::Unknown { struct_index, .. } => LocationOverrideRef::Other {
             type_name: format!("struct#{struct_index}"),
             struct_index: *struct_index,
         },
