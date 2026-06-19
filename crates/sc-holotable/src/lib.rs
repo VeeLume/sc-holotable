@@ -126,10 +126,8 @@ pub mod prelude {
     pub use sc_crafting::{
         Blueprint, Blueprints, Categories, Category, CompositionInclusion, Cost, CostContext,
         Duration, GameplayProperties, GameplayProperty, GameplayPropertyModifier, GameplayStat,
-        GlobalParams, ItemCost, ModifierValue, Process, ProductStat, ProductStatSource, Quality,
-        QualityDistribution, QualityDistributionShape, QualityLocationOverride,
-        QualityQuantization, Recipe, RecipeCosts, RecipeResult, Research, ResourceCost, SlotName,
-        Tier, ValueRange,
+        GlobalParams, ItemCost, ModifierValue, Process, ProductStat, ProductStatSource, Recipe,
+        RecipeCosts, RecipeResult, Research, ResourceCost, SlotName, Tier, ValueRange,
     };
     #[cfg(feature = "extract")]
     pub use sc_extract::{
@@ -153,7 +151,11 @@ pub mod prelude {
     #[cfg(feature = "missions")]
     pub use sc_missions::Missions;
     #[cfg(feature = "resources")]
-    pub use sc_resources::{CargoQuantity, Density, DensityUnit, Resource, Resources, Volatility};
+    pub use sc_resources::{
+        CargoQuantity, Density, DensityUnit, Quality, QualityDistribution,
+        QualityDistributionShape, QualityLocationOverride, QualityQuantization, Resource,
+        Resources, Volatility,
+    };
     #[cfg(feature = "tags")]
     pub use sc_tags::Tags;
     #[cfg(feature = "weapons")]

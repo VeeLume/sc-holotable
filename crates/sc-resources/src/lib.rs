@@ -42,6 +42,12 @@ use sc_extract::generated::{RecordLookup, ResourceType};
 use sc_extract::{DataPools, Guid, LocaleKey, RecordStore};
 use serde::{Deserialize, Serialize};
 
+mod quality;
+pub use quality::{
+    DistributionRef, LocationOverrideEntry, Quality, QualityDistribution, QualityDistributionShape,
+    QualityLocationOverride, QualityQuantization, QuantizationBand,
+};
+
 // ── Cargo quantity ──────────────────────────────────────────────────────
 //
 // `SBaseCargoUnit` is a 4-variant unit-of-measure hierarchy:

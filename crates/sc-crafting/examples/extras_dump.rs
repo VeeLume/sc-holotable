@@ -5,11 +5,9 @@
 //! cargo run -p sc-crafting --release --example extras_dump
 //! ```
 
-use sc_crafting::{
-    Categories, DisplayTransformation, DistributionRef, GameplayProperties, GlobalParams, Quality,
-    QualityDistributionShape,
-};
+use sc_crafting::{Categories, DisplayTransformation, GameplayProperties, GlobalParams};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, RecordPaths};
+use sc_resources::{DistributionRef, Quality, QualityDistributionShape};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_discovery::discover_primary()?;
@@ -114,7 +112,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // -- Quality --
-    let quality = Quality::build(&datacore);
+    let quality = Quality::build(datacore.records());
     println!("\n=== Quality ===");
     println!(
         "distributions: {}  location_overrides: {}  quantizations: {}",
