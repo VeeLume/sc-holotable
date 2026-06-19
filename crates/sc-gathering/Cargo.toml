@@ -20,3 +20,6 @@ tracing = { workspace = true }
 
 [dev-dependencies]
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+# Tier-3 join demo: gathering exposes resource GUIDs; quality lives on
+# sc_resources::Resource. The dump_provider example resolves it downstream.
+sc-resources = { workspace = true }

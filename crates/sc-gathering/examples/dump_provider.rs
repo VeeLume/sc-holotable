@@ -1,18 +1,20 @@
-//! Build the provider spine from the loose probe DCB and print one provider.
+//! Build a provider from the loose probe DCB and print its fully-resolved view,
+//! then the Tier-3 resource→quality join.
 //!
-//! Validates Tier 1 against the trace numbers — Clio (`HPP_Stanton4b`): three
-//! groups with mode-shares 13.8% / 28.7% / 57.5%, ship elements Ice/Copper 40%,
-//! Taranite 18%, Quantainium 2%.
+//! Validates against the trace — Clio (`HPP_Stanton4b`): mode-shares
+//! 13.8/28.7/57.5%, deposits (Ice/Copper/…), signals (Ice 4.300, …), and quality
+//! distributions (ship ores mean 500; FPS/ROC gems mean 201 / σ 298).
 //!
 //! ```bash
 //! cargo run -p sc-gathering --example dump_provider                  # Clio
 //! cargo run -p sc-gathering --example dump_provider -- <provider-guid>
 //! ```
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashSet};
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, RecordPaths};
 use sc_gathering::Gathering;
+use sc_resources::{DistributionRef, Quality, Resources};
 
 const DCB: &str = "target/probe-resources/dcbfile/Data/Game2.dcb";
 const CLIO: &str = "703a18ca-7f7c-4489-a64a-cd0cd359b8fe"; // HPP_Stanton4b
@@ -76,6 +78,39 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 e.relative_probability,
                 e.share * 100.0
             );
+        }
+    }
+
+    // ── Tier-3 join: gathering's resource GUIDs → sc_resources Resource.quality,
+    //    record refs resolved against the Quality catalog. ──
+    let resources = Resources::build(dc.records());
+    let quality = Quality::build(dc.records());
+    println!("\n== resource quality (via sc-resources + the Quality catalog) ==");
+    let mut seen: HashSet<Guid> = HashSet::new();
+    for e in p.groups.iter().flat_map(|g| &g.elements) {
+        let Some(dep) = &e.deposit else { continue };
+        for part in dep.parts.iter().filter_map(|p| p.resource) {
+            if !seen.insert(part) {
+                continue;
+            }
+            let Some(r) = resources.get(&part) else {
+                continue;
+            };
+            let dist = r
+                .quality
+                .as_ref()
+                .and_then(|q| q.distribution.as_ref())
+                .map(|d| match d {
+                    DistributionRef::Inline(s) => format!("inline {s:?}"),
+                    DistributionRef::Record(g) => quality
+                        .distribution(g)
+                        .and_then(|qd| qd.shape.as_ref())
+                        .map(|s| format!("{s:?}"))
+                        .unwrap_or_else(|| "record(unresolved)".into()),
+                    DistributionRef::Other { type_name, .. } => format!("other({type_name})"),
+                })
+                .unwrap_or_else(|| "<no quality>".to_string());
+            println!("  {:?}  {dist}", r.name_key);
         }
     }
     Ok(())
