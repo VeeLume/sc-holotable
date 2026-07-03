@@ -6,7 +6,7 @@
 //! ```
 
 use sc_extract::{AssetConfig, AssetData, AssetSource};
-use sc_tags::Tags;
+use sc_tags::{RecordCollection, Tags};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_discovery::discover_primary()?;
@@ -22,7 +22,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Sample a few deepest paths to confirm hierarchy is wired.
     let mut by_depth: Vec<(usize, String)> = tags
-        .iter()
+        .values()
         .map(|n| {
             let path = tags.path(&n.guid);
             (path.len(), path.join(" > "))

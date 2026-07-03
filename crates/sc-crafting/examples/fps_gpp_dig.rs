@@ -31,7 +31,7 @@ use sc_extract::{
     AssetConfig, AssetData, AssetSource, DataCoreDatabase, Datacore, Guid, Instance, LocaleMap,
     ReferenceGraph, Value,
 };
-use sc_items::Items;
+use sc_items::{Items, RecordCollection};
 
 const MAX_DEPTH: usize = 9;
 const MAX_ELEMS: usize = 12;
@@ -145,7 +145,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // ── §3  Craftable FPS weapons ──
     let blueprints = Blueprints::build(&datacore, &items);
     let mut fps: Vec<(Guid, Guid, String)> = Vec::new(); // (bp_guid, entity_guid, name)
-    for bp in blueprints.iter() {
+    for bp in blueprints.values() {
         let Some(ent) = bp.crafted_entity_guid() else {
             continue;
         };
@@ -224,7 +224,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("=========================================================");
     let mut any_entity_gpp_hit = false;
     for (bp_guid, ent, name) in &fps {
-        let Some(bp) = blueprints.get(*bp_guid) else {
+        let Some(bp) = blueprints.get(bp_guid) else {
             continue;
         };
         // Collect (slot, modifiers) over the typed cost tree.

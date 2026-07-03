@@ -67,7 +67,7 @@ use sc_extract::{Guid, LocaleMap, RecordPaths};
 use serde::{Deserialize, Serialize};
 use tracing::info;
 
-use crate::Items;
+use crate::{Items, RecordCollection};
 
 /// Opaque model identifier. Treat as an opaque grouping key.
 pub type ModelId = String;

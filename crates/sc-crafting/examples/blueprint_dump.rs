@@ -11,7 +11,7 @@ use sc_crafting::{
     RecipeResult, ValueRange,
 };
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, LocaleMap};
-use sc_items::Items;
+use sc_items::{Items, RecordCollection};
 use sc_resources::{CargoQuantity, Resources};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -36,7 +36,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut with_research = 0;
     let mut with_optional = 0;
     let mut with_results = 0;
-    for bp in blueprints.iter() {
+    for bp in blueprints.values() {
         let key = match &bp.process {
             Process::Creation { .. } => "Creation",
             Process::Other { .. } => "Other",
@@ -74,7 +74,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("\n=== Sample blueprints ===");
     let mut sampled = 0;
     // P4-AR (behr_rifle_ballistic_01)
-    for bp in blueprints.iter() {
+    for bp in blueprints.values() {
         if let Some(name) = bp.display_name(locale)
             && name.contains("P4-AR")
         {
@@ -84,7 +84,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     // Any blueprint that has research
-    for bp in blueprints.iter() {
+    for bp in blueprints.values() {
         if sampled >= 3 {
             break;
         }

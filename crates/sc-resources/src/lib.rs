@@ -42,6 +42,10 @@ use sc_extract::generated::{RecordLookup, ResourceType};
 use sc_extract::{DataPools, Guid, LocaleKey, RecordStore};
 use serde::{Deserialize, Serialize};
 
+// Re-export the canonical accessor trait (get / iter / len / values) so consumers
+// can bring it into scope alongside the collection.
+pub use sc_extract::RecordCollection;
+
 mod quality;
 pub use quality::{
     DistributionRef, LocationOverrideEntry, LocationOverrideRef, Quality, QualityDistribution,
@@ -214,11 +218,6 @@ impl Resources {
         self.by_guid.insert(resource.guid, resource);
     }
 
-    /// Look up a resource by GUID.
-    pub fn get(&self, guid: &Guid) -> Option<&Resource> {
-        self.by_guid.get(guid)
-    }
-
     /// One step along the refining graph: the resource that `guid`
     /// refines into, or `None` if there's no refined version (or the
     /// referenced resource isn't in the catalog).
@@ -226,18 +225,21 @@ impl Resources {
         let next = self.by_guid.get(guid)?.refined_version?;
         self.by_guid.get(&next)
     }
+}
 
-    /// Iterate over every resource. Order is unspecified.
-    pub fn all(&self) -> impl Iterator<Item = &Resource> + '_ {
-        self.by_guid.values()
+impl sc_extract::RecordCollection for Resources {
+    type Item = Resource;
+
+    fn get(&self, guid: &Guid) -> Option<&Resource> {
+        self.by_guid.get(guid)
     }
 
-    pub fn len(&self) -> usize {
+    fn len(&self) -> usize {
         self.by_guid.len()
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.by_guid.is_empty()
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &Resource)> + '_ {
+        self.by_guid.iter()
     }
 }
 

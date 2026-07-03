@@ -6,7 +6,7 @@
 //! ```
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, LocaleMap};
-use sc_missions::{MissionVar, Missions};
+use sc_missions::{MissionVar, Missions, RecordCollection};
 
 fn dump_vars(m: &sc_missions::Mission, locale: &LocaleMap) -> String {
     let mut parts = Vec::new();
@@ -46,7 +46,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut shown_loc = 0;
     let mut shown_eliminate = false;
-    for m in index.iter() {
+    for m in index.values() {
         let title = m.title(locale).unwrap_or("");
         let desc = m.description(locale).unwrap_or("");
         let has_loc = title.contains("Location")

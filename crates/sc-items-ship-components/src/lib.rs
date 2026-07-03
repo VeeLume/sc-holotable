@@ -29,6 +29,10 @@ use sc_extract::{DataCoreDatabase, Datacore, Guid, Instance, LocaleKey, Value};
 use sc_items::Items;
 use serde::{Deserialize, Serialize};
 
+/// Re-export the canonical accessor trait so consumers can bring the
+/// `get` / `iter` / `len` / `values` surface into scope alongside the collection.
+pub use sc_extract::RecordCollection;
+
 /// Which ship-component family a piece belongs to.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ShipComponentKind {
@@ -157,21 +161,21 @@ impl ShipComponents {
         }
         Self { by_guid }
     }
+}
 
-    pub fn get(&self, guid: &Guid) -> Option<&ShipComponentStats> {
+impl sc_extract::RecordCollection for ShipComponents {
+    type Item = ShipComponentStats;
+
+    fn get(&self, guid: &Guid) -> Option<&ShipComponentStats> {
         self.by_guid.get(guid)
     }
 
-    pub fn iter(&self) -> impl Iterator<Item = (&Guid, &ShipComponentStats)> + '_ {
-        self.by_guid.iter()
-    }
-
-    pub fn len(&self) -> usize {
+    fn len(&self) -> usize {
         self.by_guid.len()
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.by_guid.is_empty()
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &ShipComponentStats)> + '_ {
+        self.by_guid.iter()
     }
 }
 

@@ -27,6 +27,10 @@ use sc_extract::generated::{RecordLookup, Tag};
 use sc_extract::{Guid, RecordStore};
 use serde::{Deserialize, Serialize};
 
+// Re-export the canonical accessor trait (get / iter / len / values) so consumers
+// can bring it into scope alongside the collection.
+pub use sc_extract::RecordCollection;
+
 /// A single node in the [`Tags`].
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TagNode {
@@ -117,11 +121,6 @@ impl Tags {
         self.by_guid.insert(node.guid, node);
     }
 
-    /// Look up a node by GUID.
-    pub fn get(&self, guid: &Guid) -> Option<&TagNode> {
-        self.by_guid.get(guid)
-    }
-
     /// Look up all tag GUIDs with a given name. Name collisions produce
     /// multiple results.
     pub fn by_name(&self, name: &str) -> &[Guid] {
@@ -131,20 +130,6 @@ impl Tags {
     /// Iterate over every root node (nodes with no parent).
     pub fn roots(&self) -> impl Iterator<Item = &TagNode> + '_ {
         self.by_guid.values().filter(|n| n.parent.is_none())
-    }
-
-    /// Iterate over every node in the tree. Order is unspecified.
-    pub fn iter(&self) -> impl Iterator<Item = &TagNode> + '_ {
-        self.by_guid.values()
-    }
-
-    /// Total number of tags in the tree.
-    pub fn len(&self) -> usize {
-        self.by_guid.len()
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.by_guid.is_empty()
     }
 
     /// Walk upward from `guid` to the root, yielding each ancestor in
@@ -199,6 +184,22 @@ impl Tags {
         }
         stack.reverse();
         stack
+    }
+}
+
+impl sc_extract::RecordCollection for Tags {
+    type Item = TagNode;
+
+    fn get(&self, guid: &Guid) -> Option<&TagNode> {
+        self.by_guid.get(guid)
+    }
+
+    fn len(&self) -> usize {
+        self.by_guid.len()
+    }
+
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &TagNode)> + '_ {
+        self.by_guid.iter()
     }
 }
 

@@ -53,6 +53,10 @@ use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, RecordStore};
 use serde::{Deserialize, Serialize};
 use tracing::warn;
 
+// Re-export the canonical accessor trait (get / iter / len / values) so consumers
+// can bring it into scope alongside the collection.
+pub use sc_extract::RecordCollection;
+
 pub mod catalog;
 pub mod variants;
 
@@ -251,11 +255,6 @@ impl Items {
         self.by_record.get(self.by_crc.get(&crc)?)
     }
 
-    /// Look up the entry for a record GUID.
-    pub fn get(&self, guid: &Guid) -> Option<&Item> {
-        self.by_record.get(guid)
-    }
-
     /// Convenience: the `Name` key for a record.
     pub fn name_key(&self, guid: &Guid) -> Option<&LocaleKey> {
         self.by_record.get(guid).and_then(|i| i.name_key.as_ref())
@@ -282,18 +281,20 @@ impl Items {
     pub fn item_sub_type(&self, guid: &Guid) -> Option<&EItemSubType> {
         self.by_record.get(guid).map(|i| &i.item_sub_type)
     }
+}
 
-    /// Number of cached entities.
-    pub fn len(&self) -> usize {
+impl sc_extract::RecordCollection for Items {
+    type Item = Item;
+
+    fn get(&self, guid: &Guid) -> Option<&Item> {
+        self.by_record.get(guid)
+    }
+
+    fn len(&self) -> usize {
         self.by_record.len()
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.by_record.is_empty()
-    }
-
-    /// Iterate `(guid, item)` pairs.
-    pub fn iter(&self) -> impl Iterator<Item = (&Guid, &Item)> + '_ {
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &Item)> + '_ {
         self.by_record.iter()
     }
 }

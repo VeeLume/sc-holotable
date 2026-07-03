@@ -13,6 +13,7 @@
 
 use std::time::Instant;
 
+use sc_extract::RecordCollection;
 use sc_extract::{AssetConfig, AssetData, AssetSource};
 use sc_manufacturers::Manufacturers;
 use sc_weapons::*;

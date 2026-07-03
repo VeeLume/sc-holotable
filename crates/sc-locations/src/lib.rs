@@ -30,8 +30,16 @@ use sc_extract::{Guid, LocaleKey, LocaleMap, RecordStore, class_crc};
 use serde::{Deserialize, Serialize};
 use tracing::warn;
 
-mod containers;
-pub use containers::LocationContainers;
+// Re-export the canonical accessor trait (get / iter / len / values) so consumers
+// can bring it into scope alongside the collection.
+pub use sc_extract::RecordCollection;
+
+mod object_containers;
+pub use object_containers::{
+    ObjectContainers, Orbit, Placement, PlacementId, normalize_socpak_path,
+};
+mod universe;
+pub use universe::{Place, Universe};
 
 /// Typed location category, resolved from a `StarMapObjectType.name`. The known
 /// variants are the 21 type records observed in live DCB data; a value the
@@ -306,11 +314,6 @@ impl Locations {
         self.children = children;
     }
 
-    /// Look up a location by record GUID.
-    pub fn get(&self, guid: &Guid) -> Option<&Location> {
-        self.by_guid.get(guid)
-    }
-
     /// Resolve an EntityGraph wire CRC back to its location. The typed
     /// counterpart to [`sc_extract::CrcIndex`] — returns `&Location`.
     pub fn by_crc(&self, crc: u32) -> Option<&Location> {
@@ -359,19 +362,21 @@ impl Locations {
             Some(loc)
         })
     }
+}
 
-    /// Iterate `(guid, location)` pairs. Order unspecified.
-    pub fn iter(&self) -> impl Iterator<Item = (&Guid, &Location)> + '_ {
-        self.by_guid.iter()
+impl sc_extract::RecordCollection for Locations {
+    type Item = Location;
+
+    fn get(&self, guid: &Guid) -> Option<&Location> {
+        self.by_guid.get(guid)
     }
 
-    /// Number of indexed locations.
-    pub fn len(&self) -> usize {
+    fn len(&self) -> usize {
         self.by_guid.len()
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.by_guid.is_empty()
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &Location)> + '_ {
+        self.by_guid.iter()
     }
 }
 

@@ -33,6 +33,7 @@
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 
+use sc_extract::RecordCollection;
 use sc_extract::generated::{
     BaseMissionPropertyValuePtr, MissionPropertyValue_ShipSpawnDescriptions, SpawnDescription_Ship,
     SpawnDescription_ShipOptions, TagList,
@@ -279,7 +280,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // All candidate role tags anywhere in the tree (not just AI subtree —
     // we want to see whether role markers are scattered beyond AI).
     let mut role_tags: Vec<(String, Guid, Vec<String>)> = Vec::new();
-    for node in tag_tree.iter() {
+    for node in tag_tree.values() {
         let lower = node.name.to_lowercase();
         if role_keywords.iter().any(|kw| lower.contains(kw)) {
             role_tags.push((

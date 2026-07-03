@@ -6,6 +6,7 @@
 //! cargo run -p sc-bench --release --example bundle_check
 //! ```
 
+use sc_extract::RecordCollection;
 use sc_extract::{
     AssetConfig, AssetData, AssetSource, BundledWalk, RecordPaths, RecordPathsBuilder,
 };
@@ -71,7 +72,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Tags: parent links must match too (the finish-time pass-2).
     let tag_mismatch = tags_sep
-        .iter()
+        .values()
         .filter(|n| tags_b.get(&n.guid) != Some(*n))
         .count();
     assert_eq!(tag_mismatch, 0, "Tags content differs ({tag_mismatch})");

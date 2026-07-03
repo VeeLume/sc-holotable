@@ -16,16 +16,19 @@ use std::collections::{BTreeMap, HashSet};
 
 use sc_extract::generated::{
     BaseDataSetMatchConditionPtr, BaseMissionPropertyValuePtr, BlueprintRewards, CareerContract,
-    Contract, ContractAvailability, ContractBoolParam, ContractBoolParamType,
+    ChildMissionPhase, Contract, ContractAvailability, ContractBoolParam, ContractBoolParamType,
     ContractClass_Contract, ContractClassBasePtr, ContractDifficultyProfile,
     ContractGeneratorHandlerBasePtr, ContractIntParam, ContractIntParamType, ContractLegacy,
     ContractParamOverrides, ContractPrerequisite_CompletedContractTags,
     ContractPrerequisite_CrimeStat, ContractPrerequisite_Locality, ContractPrerequisite_Location,
     ContractPrerequisite_LocationProperty, ContractPrerequisite_Reputation,
     ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, ContractTemplate,
-    DataPools, ELocationTypeLevel, Handle, MissionProperty, SubContract,
+    DataPools, ELocationTypeLevel, Handle, HaulingOrderBasePtr, HaulingOrderContentBasePtr,
+    MissionProperty, ObjectiveHandlerBasePtr, ObjectivePropertyBasePtr, ObjectiveToken,
+    RecordIndex, SubContract,
 };
-use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
+use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap, RecordCollection};
+use sc_resources::{Resource, Resources};
 
 use crate::axes::{AxisDiff, SharedTag};
 use crate::classify::TagBag;
@@ -33,13 +36,30 @@ use crate::currency::RewardCurrencies;
 use crate::locality::Localities;
 use crate::ships::{ShipCandidate, Ships};
 use crate::titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
+use serde::{Deserialize, Serialize};
+
+/// Serde shim for the generated (serde-free) `ELocationTypeLevel` enum — mirrors
+/// the `sc-locations` `enum_serde` pattern: serialize via the round-tripping DCB
+/// string. Used by `PrereqView::LocationProperty.level` so the full `Mission`
+/// round-trips through the holotable snapshot without serde leaking into the
+/// generated layer.
+mod elocation_level {
+    use sc_extract::generated::ELocationTypeLevel;
+    use serde::{Deserialize, Deserializer, Serializer};
+    pub fn serialize<S: Serializer>(v: &ELocationTypeLevel, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(v.as_dcb_str())
+    }
+    pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<ELocationTypeLevel, D::Error> {
+        Ok(ELocationTypeLevel::from_dcb_str(&String::deserialize(d)?))
+    }
+}
 
 /// One concrete contract node in the expanded generator graph.
 ///
 /// A contract with three sub-contract tiers produces three
 /// `Mission`s (one per tier, each with the tier's overridden
 /// fields). A contract with no sub-contracts produces one.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Mission {
     /// GUID of the contract (or sub-contract — see
     /// [`MissionOrigin::subcontract_of`]).
@@ -156,13 +176,23 @@ pub struct Mission {
     /// runtime-only location queries are not captured here yet. Used by the
     /// marker substitutor ([`crate::Missions::title_text`]).
     pub variables: BTreeMap<String, MissionVar>,
+
+    /// The cargo manifest for a hauling contract — one [`HaulingLeg`] per
+    /// `HaulingOrderContent_Resource` (commodity + min/max SCU + max box size),
+    /// from `MissionPropertyValue_HaulingOrders`. Unlike [`Self::variables`] this
+    /// is read from the template's `contractProperties` (where procedural-haul
+    /// manifests live) as well as the override/sub layers, and is NOT
+    /// token-gated. MIXED hauls carry several legs. Empty for non-hauling
+    /// contracts. This is the gRPC-side commodity/SCU/box source that lets the
+    /// planner drop the OCR'd manifest.
+    pub cargo: Vec<HaulingLeg>,
 }
 
 /// A resolved non-spawn `MissionProperty` value (see [`Mission::variables`]).
 /// The engine picks a final value at spawn from the (possibly gated) options;
 /// a static view exposes the option set so consumers can show a single value or
 /// a "drawn from" candidate list.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum MissionVar {
     /// A `MissionPropertyValue_StringHash` — one or more label options. Resolve
     /// each option's [`VarOption::label_key`] against a `LocaleMap` at the call
@@ -184,7 +214,7 @@ pub enum MissionVar {
 }
 
 /// One option of a [`MissionVar::Choice`] StringHash value.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct VarOption {
     /// `textId` — the player-facing label key. Resolve against a `LocaleMap`.
     pub label_key: LocaleKey,
@@ -195,6 +225,46 @@ pub struct VarOption {
     /// under a runtime condition (held reputation, chosen cargo). When several
     /// options are gated the static value is a candidate set, not a guarantee.
     pub gated: bool,
+}
+
+/// One commodity leg of a hauling contract's manifest (see [`Mission::cargo`]),
+/// from a `HaulingOrderContent_Resource`. A MIXED haul has several.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct HaulingLeg {
+    /// `resource` — the `ResourceType` record GUID, i.e. the **canonical commodity
+    /// id**. Stored as the GUID (not just its name key) so the commodity stays
+    /// joinable to pricing / a commodity catalog / the dictionary. Resolve the
+    /// display name via [`Self::commodity_name`]. `None` when the leg sets none.
+    pub resource: Option<Guid>,
+    /// Manifest minimum SCU for this commodity.
+    pub min_scu: f32,
+    /// Manifest maximum SCU for this commodity (the manifest total the log's
+    /// `Deliver 0/M` reports; the per-leg gRPC `progress_counter_max`).
+    pub max_scu: f32,
+    /// Largest container (box) size this leg accepts — the "max box" the planner
+    /// needs and the log never carries. `-1` when the leg has no box constraint
+    /// (e.g. salvage RMC).
+    pub max_box: f32,
+}
+
+impl HaulingLeg {
+    /// The [`Resource`] catalog entry for this leg's commodity — name key,
+    /// density, refining edge, etc. Resolved via [`sc_resources`] (build a
+    /// [`Resources`] once with `Resources::build`) rather than re-walking the
+    /// `ResourceType` pool. `None` when the leg sets no resource or it isn't in
+    /// the catalog.
+    pub fn commodity<'a>(&self, resources: &'a Resources) -> Option<&'a Resource> {
+        resources.get(self.resource.as_ref()?)
+    }
+
+    /// Convenience: resolve the commodity display name.
+    pub fn commodity_name<'a>(
+        &self,
+        resources: &Resources,
+        locale: &'a LocaleMap,
+    ) -> Option<&'a str> {
+        locale.resolve(&self.commodity(resources)?.name_key)
+    }
 }
 
 impl Mission {
@@ -310,7 +380,7 @@ impl Mission {
 /// `handler_kind`, `handler_debug_name`, `generator_id`, and origin
 /// enum into one struct with `subcontract_of: Option<Guid>` carrying
 /// the parent reference for sub-contracts.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionOrigin {
     /// Typed handler kind — which `ContractGeneratorHandler_*` shape
     /// owns this mission.
@@ -333,7 +403,7 @@ pub struct MissionOrigin {
 /// bool / int param overrides override specific fields. Fields that
 /// never got a value stay at the `ContractAvailability` default (all
 /// zero/false).
-#[derive(Debug, Clone, Default, PartialEq)]
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Availability {
     pub once_only: bool,
     pub can_reaccept_after_abandoning: bool,
@@ -349,7 +419,7 @@ pub struct Availability {
 /// Personal / abandon / fail cooldown model. All times in seconds
 /// (matching the DCB's `ContractAvailability` fields). `None` means
 /// no cooldown of that kind.
-#[derive(Debug, Clone, Default, PartialEq)]
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Cooldowns {
     /// Post-completion personal cooldown. Present iff
     /// `has_personal_cooldown` is true. `variation` is ± jitter on
@@ -362,7 +432,7 @@ pub struct Cooldowns {
     pub fail: Option<DurationRange>,
 }
 
-#[derive(Debug, Clone, Copy, Default, PartialEq)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Serialize, Deserialize)]
 pub struct DurationRange {
     pub mean_seconds: f32,
     pub variation_seconds: f32,
@@ -375,7 +445,7 @@ pub struct DurationRange {
 /// query a single axis read `rewards.uec` / `rewards.scrip` / etc.;
 /// consumers that want "any reward at all" can iterate one struct
 /// instead of six.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct MissionRewards {
     /// UEC reward. Most contracts use [`RewardAmount::Calculated`]
     /// (engine-computed at runtime); occasional contracts pay a
@@ -430,7 +500,7 @@ impl MissionRewards {
 /// splitting missions by payout is implicitly splitting by this. The four
 /// levels + [`Self::weights`] + buy-in + time are the inputs the (community-
 /// derived "evergr3n") reward formula consumes.
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Difficulty {
     pub mechanical_skill: u8,
     pub mental_load: u8,
@@ -447,7 +517,7 @@ pub struct Difficulty {
 }
 
 /// How a reward amount is delivered.
-#[derive(Debug, Clone, Copy, PartialEq, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Default, Serialize, Deserialize)]
 pub enum RewardAmount {
     /// No reward of this kind.
     #[default]
@@ -465,7 +535,7 @@ pub enum RewardAmount {
 ///
 /// Display name is intentionally absent — resolve via
 /// [`crate::RewardCurrencies::display_name`] at the call site.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScripReward {
     pub currency_guid: Guid,
     /// Catalog record name (stable across patches, useful for
@@ -475,7 +545,7 @@ pub struct ScripReward {
 }
 
 /// One reputation reward.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RepReward {
     pub faction: Option<Guid>,
     pub scope: Option<Guid>,
@@ -490,7 +560,7 @@ pub struct RepReward {
 /// Display name is intentionally absent — resolve through
 /// [`sc_items::Items`] keyed by `entity_class` and the
 /// active [`LocaleMap`].
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemReward {
     pub entity_class: Guid,
     pub amount: i32,
@@ -498,7 +568,7 @@ pub struct ItemReward {
 
 /// Other reward kinds classified but not yet fully modelled. Keeps
 /// the raw reward kind so stage-4 / consumer code can dispatch.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum OtherReward {
     BadgeAward,
     ScenarioProgress,
@@ -520,7 +590,7 @@ pub enum OtherReward {
 /// Resolved view of a `ContractPrerequisiteBase` subclass. Mirrors
 /// the typed enum variants in [`ContractPrerequisiteBasePtr`] but
 /// flattens handle lookups so downstream code doesn't need `pools`.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum PrereqView {
     Locality {
         locality: Option<Guid>,
@@ -531,6 +601,7 @@ pub enum PrereqView {
     LocationProperty {
         variable_name: String,
         extended_text_token: String,
+        #[serde(with = "elocation_level")]
         level: ELocationTypeLevel,
     },
     CrimeStat {
@@ -563,7 +634,7 @@ pub enum PrereqView {
 }
 
 /// Which `ContractGeneratorHandler_*` subtype owns this contract.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub enum HandlerKind {
     Legacy,
     Career,
@@ -587,7 +658,7 @@ pub enum HandlerKind {
 /// encounters per mission). The [`Self::Unknown`] variant carries the
 /// raw `MissionProperty` GUID so consumers can walk the underlying
 /// instance via `datacore.db()` if a future poly variant lands.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Encounter {
     /// Ship spawn description — by far the most common shape (~3,045
     /// of 4,678 spawn-encoded properties on SC 4.7 LIVE).
@@ -634,7 +705,7 @@ impl Encounter {
 
 /// Ship spawn encounter — the original v1 shape, now wrapped in
 /// [`Encounter::Ships`].
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShipEncounter {
     /// `missionVariableName` the property was attached to.
     pub variable_name: String,
@@ -650,7 +721,7 @@ pub struct ShipEncounter {
 }
 
 /// NPC (FPS) spawn encounter.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NpcEncounter {
     pub variable_name: String,
     pub extended_text_token: String,
@@ -660,7 +731,7 @@ pub struct NpcEncounter {
 /// Generic entity spawn encounter. Less constrained than
 /// [`ShipEncounter`] / [`NpcEncounter`] — used for spawn buckets that
 /// don't fit the ship or NPC mold.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityEncounter {
     pub variable_name: String,
     pub extended_text_token: String,
@@ -679,7 +750,7 @@ pub struct EntityEncounter {
 /// single group the engine picks **one** of the `options` based on
 /// runtime state (player profile / weight RNG / party size). See the
 /// [`SlotGroup`] doc for the full rationale.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EncounterPhase<S> {
     /// `SpawnDescription_*Group.Name` — sometimes empty, sometimes
     /// `Wave1`, sometimes a flavour name like `Allies` (which the
@@ -719,7 +790,7 @@ pub struct EncounterPhase<S> {
 /// alternatives that differ only on hull pick by RNG. Display code
 /// should NEVER pretend it knows which option fires — render the
 /// range or the alternatives honestly.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SlotGroup<S> {
     /// The weighted alternatives. Engine picks one per spawn.
     pub options: Vec<S>,
@@ -772,7 +843,7 @@ impl<S> EncounterPhase<S> {
 /// fields on the underlying `SpawnDescription_Ship`. They're surfaced
 /// symmetrically so consumers can read or classify any of them with
 /// the same shape — see [`TagBag`] for classifier methods.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShipSlot {
     /// `concurrentAmount` from `SpawnDescription_Ship` — how many
     /// ships this slot spawns at once.
@@ -827,7 +898,7 @@ pub struct ShipSlot {
 /// FPS scope tags (closet / room / defendArea / scheduleArea) are not
 /// surfaced yet — they belong in a future v3 follow-up driven by an
 /// actual FPS consumer.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NpcSlot {
     /// `priority` from `SpawnDescription_NPCOption`. Used by the
     /// engine for spawn-priority ordering.
@@ -860,7 +931,7 @@ pub struct NpcSlot {
 /// `SpawnDescription_Entity` carries the same four tag lists as
 /// `SpawnDescription_Ship` plus an `amount` count — but no candidate
 /// resolution and no per-slot location-tag merge flag.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntitySlot {
     /// `amount` from `SpawnDescription_Entity` — how many entities
     /// this slot spawns. Different name from ship's `concurrent`
@@ -889,7 +960,7 @@ pub struct EntitySlot {
 /// A mission with multiple `BlueprintRewards` entries in its
 /// `contractResults` produces multiple `BlueprintReward` rows in
 /// [`MissionRewards::blueprints`].
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct BlueprintReward {
     /// 0.0 – 1.0 chance the blueprint is awarded.
     pub chance: f32,
@@ -1418,6 +1489,13 @@ fn build_expansion(
     template_guid: Option<Guid>,
     subcontract_of: Option<Guid>,
 ) -> Mission {
+    // Procedural (ContractLegacy) contracts carry no HaulingOrders property — their
+    // manifest is in the broker entry's objective tree. Pull the broker id off the
+    // anchor before it's consumed.
+    let broker = match &anchor {
+        ContractAnchor::ContractLegacy(c) => c.mission_broker_entry,
+        _ => None,
+    };
     let ResolvedKeys {
         title_key,
         description_key,
@@ -1469,6 +1547,16 @@ fn build_expansion(
         ctx.contract_params,
     );
 
+    let cargo = resolve_hauling_legs(
+        &datacore.records().records,
+        pools,
+        template_guid,
+        broker,
+        sub_contract,
+        contract_param_overrides,
+        ctx.contract_params,
+    );
+
     let mission_span = collect_mission_span(&prerequisites, localities);
 
     let category = resolve_category(template_guid, datacore);
@@ -1503,6 +1591,7 @@ fn build_expansion(
         mission_span,
         grants_completion_tags,
         variables,
+        cargo,
     }
 }
 
@@ -2275,6 +2364,199 @@ fn resolve_variables(
         collect_property_vars(pools, tree, &sub.property_overrides, &mut out);
     }
     out
+}
+
+/// Resolve the hauling cargo manifest — every `HaulingOrderContent_Resource`
+/// across the template's `contractProperties` (where procedural-haul manifests
+/// live) and the handler / contract / sub-contract override layers. Legs
+/// accumulate (a MIXED haul lists several); unlike [`resolve_variables`] this is
+/// **not** gated on `extendedTextToken`, and it reads the template layer.
+fn resolve_hauling_legs(
+    records: &RecordIndex,
+    pools: &DataPools,
+    template: Option<Guid>,
+    broker: Option<Guid>,
+    sub: Option<&SubContract>,
+    contract_params: Option<&Handle<ContractParamOverrides>>,
+    handler_params: Option<&Handle<ContractParamOverrides>>,
+) -> Vec<HaulingLeg> {
+    let mut out = Vec::new();
+    if let Some(t) = template
+        && let Some(tmpl) = records
+            .multi_feature
+            .contract_template
+            .get(&t)
+            .and_then(|h| h.get(pools))
+    {
+        legs_from_props(pools, &tmpl.contract_properties, &mut out);
+    }
+    for params in [handler_params, contract_params] {
+        if let Some(po) = params.and_then(|h| h.get(pools)) {
+            legs_from_props(pools, &po.property_overrides, &mut out);
+        }
+    }
+    if let Some(sub) = sub {
+        legs_from_props(pools, &sub.property_overrides, &mut out);
+    }
+    // Procedural contracts carry no HaulingOrders property — their manifest lives
+    // in the objective tree (`template` / `broker` → `objective_tokens` →
+    // `ObjectiveHandler_Hauling`). Fall back to it when the property path is empty.
+    if out.is_empty() {
+        let mut tokens: Vec<Handle<ObjectiveToken>> = Vec::new();
+        if let Some(t) = template
+            && let Some(tmpl) = records
+                .multi_feature
+                .contract_template
+                .get(&t)
+                .and_then(|h| h.get(pools))
+        {
+            tokens.extend(tmpl.objective_tokens.iter().copied());
+        }
+        if let Some(b) = broker
+            && let Some(be) = records
+                .multi_feature
+                .mission_broker_entry
+                .get(&b)
+                .and_then(|h| h.get(pools))
+        {
+            tokens.extend(be.objective_tokens.iter().copied());
+        }
+        let mut seen = HashSet::new();
+        for th in &tokens {
+            if let Some(t) = th.get(pools) {
+                legs_from_objective_token(pools, t, &mut seen, &mut out);
+            }
+        }
+    }
+    out
+}
+
+/// Walk an `ObjectiveToken` (and its recursive child phases) collecting every
+/// `ObjectiveHandler_Hauling` leg.
+fn legs_from_objective_token(
+    pools: &DataPools,
+    t: &ObjectiveToken,
+    seen: &mut HashSet<Guid>,
+    out: &mut Vec<HaulingLeg>,
+) {
+    if !seen.insert(t.id) {
+        return;
+    }
+    legs_from_objective_handler(pools, &t.objective_handler, out);
+    for cp in &t.child_mission_phases {
+        if let Some(c) = cp.get(pools) {
+            legs_from_child_phase(pools, c, seen, out);
+        }
+    }
+}
+fn legs_from_child_phase(
+    pools: &DataPools,
+    p: &ChildMissionPhase,
+    seen: &mut HashSet<Guid>,
+    out: &mut Vec<HaulingLeg>,
+) {
+    if !seen.insert(p.id) {
+        return;
+    }
+    legs_from_objective_handler(pools, &p.objective_handler, out);
+    for cp in &p.child_mission_phases {
+        if let Some(c) = cp.get(pools) {
+            legs_from_child_phase(pools, c, seen, out);
+        }
+    }
+}
+/// Pull the `HaulingOrder*` legs out of an `ObjectiveHandler_Hauling`.
+/// `HaulingOrder_Resource` carries the resource inline; `HaulingOrder_Property`
+/// indirects through an `ObjectiveProperty` → `MissionProperty` → `HaulingOrders`.
+fn legs_from_objective_handler(
+    pools: &DataPools,
+    oh: &Option<ObjectiveHandlerBasePtr>,
+    out: &mut Vec<HaulingLeg>,
+) {
+    let Some(ObjectiveHandlerBasePtr::ObjectiveHandler_Hauling(h)) = oh else {
+        return;
+    };
+    let Some(handler) = h.get(pools) else { return };
+    for ho in &handler.hauling_orders {
+        match ho {
+            HaulingOrderBasePtr::HaulingOrder_Resource(rh) => {
+                if let Some(r) = rh.get(pools) {
+                    out.push(HaulingLeg {
+                        resource: r.resource,
+                        min_scu: r.min_scu,
+                        max_scu: r.max_scu,
+                        max_box: r.max_container_size,
+                    });
+                }
+            }
+            HaulingOrderBasePtr::HaulingOrder_Property(ph) => {
+                let Some(p) = ph.get(pools) else { continue };
+                // Reuse the property-list walker so a manifest nested under
+                // `CombinedDataSetEntries` resolves here too, same as the
+                // template/override path.
+                if let Some(mp) = p
+                    .hauling_orders_property
+                    .as_ref()
+                    .and_then(|op| objective_property_target(pools, op))
+                {
+                    legs_from_props(pools, &[mp], out);
+                }
+            }
+            _ => {}
+        }
+    }
+}
+/// An `ObjectiveProperty` → its backing `MissionProperty` handle.
+fn objective_property_target(
+    pools: &DataPools,
+    op: &ObjectivePropertyBasePtr,
+) -> Option<Handle<MissionProperty>> {
+    use ObjectivePropertyBasePtr::*;
+    match op {
+        ObjectiveProperty_Referenced(h) => h.get(pools)?.property,
+        ObjectiveProperty_Embedded(h) => h.get(pools)?.property,
+        ObjectiveProperty_Output(h) => h.get(pools)?.property,
+        ObjectiveProperty_Input(h) => h.get(pools)?.property,
+        _ => None,
+    }
+}
+
+/// Pull every `HaulingOrderContent_Resource` leg out of a `MissionProperty` list,
+/// keeping the raw `resource` commodity GUID (name resolution is deferred to
+/// [`HaulingLeg::commodity_name`]). Recurses into `CombinedDataSetEntries`, where
+/// the numbered split-delivery contracts (`SingleToMulti*` / `Multi*ToSingle`)
+/// nest their `HaulingOrders` rather than carrying them at the top level.
+fn legs_from_props(
+    pools: &DataPools,
+    props: &[Handle<MissionProperty>],
+    out: &mut Vec<HaulingLeg>,
+) {
+    for ph in props {
+        let Some(prop) = ph.get(pools) else { continue };
+        match prop.value.as_ref() {
+            Some(BaseMissionPropertyValuePtr::MissionPropertyValue_HaulingOrders(h)) => {
+                let Some(ho) = h.get(pools) else { continue };
+                for c in &ho.hauling_order_content {
+                    let HaulingOrderContentBasePtr::HaulingOrderContent_Resource(rh) = c else {
+                        continue;
+                    };
+                    let Some(r) = rh.get(pools) else { continue };
+                    out.push(HaulingLeg {
+                        resource: r.resource,
+                        min_scu: r.min_scu,
+                        max_scu: r.max_scu,
+                        max_box: r.max_container_size,
+                    });
+                }
+            }
+            Some(BaseMissionPropertyValuePtr::MissionPropertyValue_CombinedDataSetEntries(h)) => {
+                if let Some(combined) = h.get(pools) {
+                    legs_from_props(pools, &combined.data_set_entry_properties, out);
+                }
+            }
+            _ => {}
+        }
+    }
 }
 
 fn collect_property_vars(

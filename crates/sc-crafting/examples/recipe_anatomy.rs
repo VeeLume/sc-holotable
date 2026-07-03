@@ -10,7 +10,7 @@ use sc_crafting::{
     Blueprints, Cost, CostContext, GameplayProperties, ModifierValue, Process, ValueRange,
 };
 use sc_extract::{AssetConfig, AssetData, AssetSource, DataCoreDatabase, Datacore, LocaleMap};
-use sc_items::Items;
+use sc_items::{Items, RecordCollection};
 use sc_resources::Resources;
 
 const TARGETS: &[&str] = &["behr_sniper_ballistic_01", "klwe_pistol_energy_01"];
@@ -38,7 +38,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         };
         let ent_guid = ent.id();
-        let Some(bp) = blueprints.for_crafted_entity(ent_guid) else {
+        let Some(bp) = blueprints.for_crafted_entity(&ent_guid) else {
             println!("!! no blueprint for {target}\n");
             continue;
         };

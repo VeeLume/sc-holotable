@@ -38,7 +38,7 @@
 //!         }
 //!     }
 //! }
-//! # Ok::<(), sc_extract::Error>(())
+//! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 
 use std::io::{Cursor, Read};

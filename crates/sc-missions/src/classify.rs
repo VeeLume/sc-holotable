@@ -25,9 +25,11 @@
 //! materialises [`crate::ShipCandidate`]s on the slot. Consumers that
 //! want the raw Ship-rooted tag GUIDs use [`TagBag::guids`].
 
+use sc_extract::RecordCollection;
 use sc_extract::generated::{Handle, TagList};
 use sc_extract::{DataPools, Guid};
 use sc_tags::Tags;
+use serde::{Deserialize, Serialize};
 
 /// One resolved tag list — the canonical shape exposed for each of the
 /// four `SpawnDescription_Ship` tag slots (positive / negative / markup
@@ -38,7 +40,7 @@ use sc_tags::Tags;
 /// construction — there's nothing useful a consumer can do with an
 /// unresolved GUID, and dropping keeps the parallel-vec invariant
 /// trivial.
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TagBag {
     /// Resolved tag GUIDs, sorted (by name primarily, by GUID secondary)
     /// and deduplicated.

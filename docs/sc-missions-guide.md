@@ -6,14 +6,14 @@
 
 ```rust
 use sc_missions::Missions;
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 
 let install = sc_discovery::discover_primary()?;
 let assets  = AssetSource::from_install(&install)?;
 let data    = AssetData::extract(&assets, &AssetConfig::standard())?;
-let dc      = Datacore::parse(&assets, &data, &DatacoreConfig::standard())?;
+let dc      = Datacore::parse(&assets, &data)?;
 
-let index = Missions::build(&dc, &data.locale);
+let index = Missions::build(&dc);
 
 for mission in &index.contracts {
     if let Some(title) = &mission.title {

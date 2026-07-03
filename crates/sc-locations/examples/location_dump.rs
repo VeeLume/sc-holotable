@@ -13,7 +13,7 @@
 use std::collections::BTreeMap;
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, LocaleMap, class_crc};
-use sc_locations::{Location, Locations};
+use sc_locations::{Location, Locations, RecordCollection};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().skip(1).collect();

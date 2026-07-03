@@ -25,8 +25,10 @@
 //! `_PU_AI` / `_pu_ai` record-name substrings and drops entities outside
 //! that filter even when contracts reference them.
 
+use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 
+use sc_extract::RecordCollection;
 use sc_extract::generated::{
     DataForgeComponentParamsPtr, DataPools, EntityClassDefinition, TagList,
 };
@@ -64,7 +66,7 @@ pub struct ShipEntity {
 ///
 /// Display name is intentionally absent — resolve via
 /// [`Ships::display_name`] keyed by `entity_guid`.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ShipCandidate {
     pub size: i32,
     /// Back-reference to the underlying ship entity in case the consumer
@@ -236,7 +238,7 @@ impl Ships {
         //
         // Plus runtime directives by name prefix (Arrive* / Ignore*).
         let mut spawn_state_tags: HashSet<Guid> = HashSet::new();
-        for node in tag_tree.iter() {
+        for node in tag_tree.values() {
             let path = tag_tree.path(&node.guid);
             let in_spawn_flags =
                 path.len() >= 3 && path[0] == "AI" && path[1] == "Ship" && path[2] == "SpawnFlags";

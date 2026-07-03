@@ -25,7 +25,6 @@
 
 mod classify;
 mod damage;
-mod error;
 mod fire_action;
 mod fps;
 mod missile;
@@ -38,7 +37,6 @@ pub mod tui;
 
 pub use classify::WeaponCategory;
 pub use damage::DamageSummary;
-pub use error::WeaponError;
 pub use fire_action::{ChargeModifier, FireActionKind};
 pub use fps::FpsWeapon;
 pub use missile::{Missile, TrackingProfile};

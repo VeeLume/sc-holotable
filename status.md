@@ -5,12 +5,19 @@
 
 ## Next session -- start here
 
-The whole workspace is feature-complete for v2. `sc-discovery`,
-`sc-extract`, `sc-extract-generated`, `sc-generator`, `sc-weapons`
-(v1 + v2 phases 1-3), and `sc-missions` (v2 all 7 phases + resolver
-fix) are all shipped and on green tests. `sc-explorer` is the live
-TUI for browsing the data; pair it with the `cargo run … --example
-<dig>` investigation tools when something looks off.
+Active work is on the `resource-gathering` branch: `sc-gathering` (provider
+spine + location join) is built and wired into `Foundations`. The wider crate
+set is in place — the `sc-items*` stat sheets, `sc-crafting` product stats, the
+`sc-resources` / `sc-tags` / `sc-manufacturers` / `sc-locations` foundations,
+and the `sc-holotable` umbrella. See the status table below.
+
+The **consistency pass has landed** — see `docs/CONVENTIONS.md`: a shared
+`RecordCollection` read-trait plus naming/construction conventions to stop API
+drift across the now-17-crate workspace. Outstanding follow-ups are listed in
+its "Convergence status" section.
+
+`sc-explorer` is the live TUI for browsing; pair it with the `cargo run …
+--example <dig>` investigation tools when something looks off.
 
 ## Last worked on
 
@@ -72,15 +79,20 @@ These tools are kept committed; they're the canonical way to run a quick dig aga
 | `sc-crafting` | Complete + product-stats integrator (`GameplayStat`, `ProductStatSource`, `product_stats`). 11 lib tests. |
 | `sc-missions` | **v2 complete (all 7 phases + resolver fix). 22 lib tests.** |
 | `sc-locations` | Complete. Typed `StarMapObject` surface — `Location` / `LocationKind` (21 kinds) / `Locations` with class-CRC resolution + hierarchy. `sc-extract[starmap]`. 5 lib tests. |
+| `sc-items` | Foundational. Universal item envelope (AttachDef metadata, type/subtype). `RecordVisitor` builder. |
+| `sc-tags` | Foundational. Tag tree (roots / ancestors / descendants). `RecordVisitor` builder. |
+| `sc-manufacturers` | Foundational. Manufacturer registry (by GUID / by code). `RecordVisitor` builder. |
+| `sc-resources` | Foundational. `ResourceType` catalog + refining graph + per-resource quality bridge. `RecordVisitor` builder. |
+| `sc-gathering` | Foundational. Resource-gathering providers (mining / salvage / plants). Provider spine + location join built. |
+| `sc-holotable` | Umbrella. `build_foundations` (bundled walk) + `HolotableSnapshot`; re-exports the workspace. |
 | `sc-explorer` | Tools binary — three tabs (Pools / Contracts / Weapons). Per-crate `tui` modules own their domain views. |
 
-**Total: 191 tests + 4 doctests, all passing.**
+**Test counts above are indicative, not maintained — run `cargo test --workspace` for the live number.**
 
 ## Open issues
 
 - **`Tags` / `Manufacturers` field names speculative.** Working (18,313 tags, 1,084 manufacturers) but individual field names unverified.
 - **`Language` enum** -- only English. Add others when needed.
-- **Svarog `[patch]` override is machine-local.** Remove once the `DataCoreReference::is_null` fix lands upstream.
 - **255 ship-encounter slots still resolve to candidates=0** after the resolver fix — spawn_dig §3 lists them grouped by mission family. Top offenders include Foxwell / HeadHunters Stanton variants where the slot tags genuinely don't match any ECD (likely real CIG data bugs).
 
 ## What's next (open work, no current driver)
@@ -92,7 +104,6 @@ These tools are kept committed; they're the canonical way to run a quick dig aga
 - **Charged-weapon per-shot interval** -- Singe S3 shows my `burst_dps` is 27% higher than spviewer due to an unaccounted ~0.675s cycle component.
 - **Burst-fire sustained DPS model** -- `SWeaponActionFireBurstParams.cooldown_time` needs a burst-cycle model to produce honest rate.
 - **Validate `Tags` / `Manufacturers` field names** against real DCB records.
-- **Upstream the `is_null` fix** to Svarog, bump pinned rev, drop `[patch]` override.
 
 ## Numbers
 
@@ -106,7 +117,7 @@ These tools are kept committed; they're the canonical way to run a quick dig aga
 | Cold check (ships) | ~18s |
 | Cold release build (ships) | ~1m 44s |
 | Runtime parse (ships, standard) | ~27s |
-| svarog commit | `ce06ec67` + local `[patch]` |
+| svarog commit | `7f06225` (4 crates incl. svarog-cryxml; `is_null` fix upstreamed, no `[patch]`) |
 | Missions on SC 4.7 LIVE | 4,590 |
 | Ship-encounter slots / NPC slots / Entity slots | 11,599 / 3,749 / 228 |
 | Empty ship-encounter slots after resolver fix | 255 (2.2%) |

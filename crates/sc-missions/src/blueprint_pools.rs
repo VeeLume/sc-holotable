@@ -11,6 +11,7 @@
 use std::collections::HashMap;
 
 use sc_crafting::{Blueprint, Blueprints, Process};
+use sc_extract::RecordCollection;
 use sc_extract::{Datacore, Guid};
 use sc_items::Items;
 
@@ -79,7 +80,7 @@ impl BlueprintPools {
                 };
                 // Every CraftingBlueprintRecord is in the catalog; the stub
                 // only guards a feature-gated/missing record.
-                let blueprint = catalog.get(record_guid).cloned().unwrap_or(Blueprint {
+                let blueprint = catalog.get(&record_guid).cloned().unwrap_or(Blueprint {
                     blueprint_record_guid: record_guid,
                     category: None,
                     process: Process::Other {

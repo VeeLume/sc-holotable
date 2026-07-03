@@ -15,8 +15,8 @@ sc-extract = { workspace = true, features = [
     "mining",
     "resourcetypedatabase",
 ] }
-# Location join: LocationContainers (place ↔ socpak) composes with each socpak's
-# HarvestableProviderComponent.preset to key providers by StarMapObject.
+# Location join: ObjectContainers (socpak placement graph) composes with each
+# socpak's HarvestableProviderComponent.preset to key providers by StarMapObject.
 sc-locations = { workspace = true }
 serde = { workspace = true }
 tracing = { workspace = true }

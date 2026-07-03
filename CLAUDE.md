@@ -28,6 +28,8 @@ sc-holotable/
 │   ├── datacore.md                DCB binary format reference
 │   ├── sc-discovery.md             install discovery crate spec
 │   ├── sc-extract.md              foundational extraction crate spec
+│   ├── CONVENTIONS.md             API conventions — the normative contract every crate follows
+│   ├── workspace-structure.md     T0/T1/T2 crate architecture + umbrella crate
 │   ├── codegen.md                 sc-generator design
 │   ├── feature-gating-v2.md       feature-gating v2 — data-driven scoping + poly (implemented)
 │   ├── benchmarks.md              canonical benchmark numbers — re-run via tools/bench/bench.ps1
@@ -37,20 +39,32 @@ sc-holotable/
 │   ├── sc-missions-v2.md         contracts v2 design + landing-phase log (current)
 │   ├── sc-missions-guide.md      contracts consumer guide
 │   ├── sc-locations.md           typed StarMapObject location surface (implemented)
-│   ├── resource-gathering.md     mining/plants/salvage data-source map + crate plan (investigated, not built)
+│   ├── resource-gathering.md     mining/plants/salvage data-source map + crate plan (sc-gathering: Tier-1+ built)
+│   ├── sc-crafting.md             blueprints + quality model spec
+│   ├── sc-product-stats.md        product-stat integrator + sc-items-* stat sheets
 │   ├── dcb-exploration-guide.md  reusable playbook for DCB + object-container data digs (method behind resource-gathering)
 │   └── feature-request-*.md       feature requests filed by sc-langpatch
 ├── implementing/                  non-obvious implementation context (not code restated in prose)
-│   ├── sc-discovery.md             port lineage + consumer switch-over plan
+│   ├── sc-installs.md              port lineage + consumer switch-over plan
 │   └── sc-extract-2c.md           open caveats (tag/manufacturer field names, locale path)
-├── crates/
-│   ├── sc-discovery/               ✅ implemented, 51 tests passing
-│   ├── sc-extract/                ✅ phase 2a + 2c + 2d done; API reworked 2026-04-13 (staged entry points)
-│   ├── sc-extract-generated/      ✅ workspace-internal — core/dormant/multi_feature + leaf feature dirs
-│   │   └── src/generated/         245 leaf feature dirs + core/ + dormant/ + multi_feature/
-│   ├── sc-missions/              ✅ v2 complete — Mission, Missions, MissionPools, Encounter enum
-│   ├── sc-locations/             ✅ typed StarMapObject surface — Location, LocationKind, class-CRC + hierarchy
-│   └── sc-weapons/                ✅ v1 + v2 phases 1-3 + localization keys + Missile + penetration
+├── crates/                        see status.md for live status; docs/CONVENTIONS.md for the role taxonomy
+│   ├── sc-discovery/              I/O-boundary — install discovery (standalone, no svarog)
+│   ├── sc-extract/                I/O-boundary — DCB + locale extraction; re-exports svarog + generated surface
+│   ├── sc-extract-generated/      workspace-internal — generated DCB bindings (core/dormant/multi_feature + ~245 leaf dirs)
+│   ├── sc-items/                  foundational — universal item envelope (AttachDef metadata, type/subtype)
+│   ├── sc-tags/                   foundational — tag tree (roots / ancestors / descendants)
+│   ├── sc-manufacturers/          foundational — manufacturer registry (by GUID / by code)
+│   ├── sc-resources/              foundational — ResourceType catalog + refining graph
+│   ├── sc-locations/              foundational — typed StarMapObject surface (Location / LocationKind + hierarchy)
+│   ├── sc-gathering/              foundational — resource-gathering providers (mining / salvage / plants)
+│   ├── sc-crafting/               domain — blueprints + product-stat integrator (quality model)
+│   ├── sc-items-armor/            domain — armor base-stat sheet
+│   ├── sc-items-fps-weapons/      domain — FPS-weapon base-stat sheet
+│   ├── sc-items-ship-components/  domain — ship-component base-stat sheet
+│   ├── sc-items-ship-weapons/     domain — ship-weapon base-stat sheet
+│   ├── sc-weapons/                domain — legacy weapon/damage model (superseded by sc-items-* for product stats)
+│   ├── sc-missions/               domain — Mission / Missions / MissionPools / Encounter
+│   └── sc-holotable/              umbrella — build_foundations + HolotableSnapshot; re-exports the lot
 └── tools/
     ├── sc-generator/              ✅ implemented — offline DCB schema → Rust codegen
     ├── sc-bench/                  ✅ runtime benchmark binary — exercises full sc-extract API
@@ -147,8 +161,8 @@ These are load-bearing — deviating from them should be a deliberate decision, 
 - **svarog is a git dep from `https://github.com/19h/Svarog.git`** (the canonical upstream; an earlier bulkhead-fixes branch was merged there)
 - **`svarog-common` needs the `serde` feature enabled** — its derives are feature-gated. Forgetting this produces ~1000 `CigGuid: Deserialize` errors.
 - **svarog is re-exported** from `sc-extract` as both full namespace (`sc_extract::svarog_datacore`) and cherry-picked types (`sc_extract::Guid`, `sc_extract::Value`, etc.). Consumers should never depend on svarog directly — go through `sc-extract`. `sc-extract-generated` takes svarog as a direct dep because the generated code does `use svarog_common::CigGuid;` etc. — that's fine because `sc-extract-generated` is workspace-internal, not public API.
-- **Pinned to commit `ce06ec67`.** All svarog crates are workspace dependencies in the root `Cargo.toml` with `rev = "ce06ec67"`. Individual crate Cargo.toml files use `{ workspace = true }`. To bump svarog, update the rev in one place.
-- **Local `[patch]` override for `DataCoreReference::is_null`.** The root `Cargo.toml` carries a `[patch."https://github.com/19h/Svarog.git"]` section pointing at `E:/repros/Svarog` with a one-line fix: treat `instance_index == -1` as a null sentinel. Without this, svarog parses thousands of explicit-null scalar `Reference` fields as `Some(garbage_guid)`. **The path is absolute and only resolves on Valerie's machine** — `cargo build` will fail on any other environment until either (a) the fix is upstreamed and the pinned rev is bumped, or (b) the path is made relative / the override is removed. Drop it as soon as the upstream fix lands.
+- **Pinned to commit `7f06225`.** All four svarog crates (`svarog-common`, `svarog-datacore`, `svarog-p4k`, `svarog-cryxml`) are workspace dependencies in the root `Cargo.toml` with `rev = "7f06225"`. Individual crate Cargo.toml files use `{ workspace = true }`. To bump svarog, update the rev in one place. (`svarog-cryxml` was added for the resource-gathering `.soc` work.)
+- **The `DataCoreReference::is_null` fix is now upstream** in the pinned rev — `is_null()` treats `instance_index == -1` as the null sentinel (`svarog-datacore/src/structs/reference.rs`), so svarog no longer parses thousands of explicit-null scalar `Reference` fields as `Some(garbage_guid)`. The old machine-local `[patch."https://github.com/19h/Svarog.git"]` override pointing at `E:/repros/Svarog` has been **removed** — there is no `[patch]` section in `Cargo.toml` and the build is reproducible on any machine.
 
 ### Feature gates and version pins that bite
 
@@ -293,26 +307,19 @@ These are real bugs that were hit and fixed — future edits should not re-intro
 
 ## What's done and what isn't
 
-See `status.md` for the always-current version. Brief snapshot:
+**`status.md` is the single source of truth for per-crate status** — this section
+intentionally does not duplicate it (the duplication is exactly how the two drifted
+apart). For the role taxonomy (I/O-boundary / foundational / domain) and the API
+contract each crate is held to, see [docs/CONVENTIONS.md](docs/CONVENTIONS.md).
 
-- ✅ **`sc-discovery`** — fully implemented, 51 tests
-- ✅ **`sc-extract`** — phases 2a + 2c + 2d done. API reworked 2026-04-13 into three staged entry points (`AssetSource::from_install` → `AssetData::extract` → `Datacore::parse`). `Datacore` owns the live `DataCoreDatabase` so raw svarog queries stay available post-parse. **Snapshot format reworked 2026-04-15 (later) to v5**: `ExtractSnapshot` now archives raw DCB + locale bytes (`{meta, files: BTreeMap<String, Vec<u8>>}`) instead of the cooked `DatacoreSnapshot`; the quartet is `capture` / `save` / `load` / `hydrate`. `AssetSource` became dual-sourced (live P4K or memory-backed byte map from a snapshot). 94 tests + 1 ignored live-roundtrip integration test.
-- ⏭️ **`sc-extract` phase 2b** — vehicle XML — **deliberately skipped**
-- ✅ **`sc-extract-generated`** — core/dormant/multi_feature split + 245 leaf feature dirs, typed enums, typed `LocaleKey`, poly enums with raw escape-hatch `Unknown`.
-- ✅ **`sc-generator`** — codegen + data-driven feature classification + Cargo.toml generation, typed enum/locale emission, ~3s run
-- 📦 **`sc-ammo`** — spec exists (`docs/sc-ammo.md`), crate not scaffolded
-- ✅ **`sc-weapons`** — v1 + v2 phases 1-3 shipped, plus the
-  sc-langpatch follow-up (localization keys on `ShipWeapon` /
-  `FpsWeapon`, new `Missile` model with `TrackingProfile`,
-  unified `WeaponPools` keyed off `LocaleKey → Vec<Guid>` across all
-  three families, `penetration_m` from `BulletProjectileParams`).
-  See `docs/feature-request-sc-weapons-langpatch.md`. 28 unit tests.
-- ✅ **`sc-missions`** — v2 complete (all 7 phases). `Mission` + `Missions` + `MissionPools` + `Encounter` enum (Ships / NPCs / Entities / Unknown). 22 lib tests. Design history in `docs/sc-missions.md` (v1, historical) + `docs/sc-missions-v2.md` (v2, current); consumer guide in `docs/sc-missions-guide.md`.
-- ✅ **`sc-locations`** — typed surface over `StarMapObject` (2,054 universe places). `Location` + `LocationKind` (21 kinds) + `Locations` with class-CRC resolution (`by_crc` → typed location, the counterpart to `sc-extract`'s generic `CrcIndex`) and parent/children/ancestors hierarchy. Feature closure is `sc-extract[starmap]`. 5 lib tests. Spec: `docs/sc-locations.md`.
-- ✅ **`sc-explorer`** — interactive TUI binary at `tools/sc-explorer`. Per-crate `tui` modules in sc-missions + sc-weapons own their domain views.
+Two things worth knowing up front, since they're stable non-status facts:
+
+- ⏭️ **`sc-extract` phase 2b** (vehicle XML) is **deliberately skipped**.
+- 📦 **`sc-ammo`** has a spec (`docs/sc-ammo.md`) but no crate yet.
 
 ## Where to read more
 
+- **API conventions (the contract)**: `docs/CONVENTIONS.md` — naming, construction, the `RecordCollection` trait, error policy. Read before adding a crate or a public type.
 - **Design history and rationale**: `docs/*.md` — the specs. Read `sc-extract.md` and `codegen.md` first; they cover the most ground.
 - **Implementation caveats**: `implementing/*.md` — non-obvious context (port lineage, open field-name assumptions, design constraints).
 - **Current work state**: `status.md`.

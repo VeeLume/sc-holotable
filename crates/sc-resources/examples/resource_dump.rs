@@ -7,7 +7,7 @@
 //! ```
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
-use sc_resources::Resources;
+use sc_resources::{RecordCollection, Resources};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_discovery::discover_primary()?;
@@ -26,7 +26,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut refining_pairs = 0;
     let mut with_density = 0;
     let mut with_volatility = 0;
-    let mut sorted: Vec<_> = resources.all().collect();
+    let mut sorted: Vec<_> = resources.values().collect();
     sorted.sort_by(|a, b| {
         let an = asset_data.locale.resolve(&a.name_key).unwrap_or("");
         let bn = asset_data.locale.resolve(&b.name_key).unwrap_or("");

@@ -6,7 +6,7 @@
 //! ```
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
-use sc_missions::{HandlerKind, Missions};
+use sc_missions::{HandlerKind, Missions, RecordCollection};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_discovery::discover_primary()?;
@@ -18,16 +18,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // ── Coverage ─────────────────────────────────────────────────────────────
     let n = index.len();
-    let with_cat = index.iter().filter(|m| m.category.is_some()).count();
-    let with_fac = index.iter().filter(|m| m.faction.is_some()).count();
-    let with_diff = index.iter().filter(|m| m.difficulty.is_some()).count();
+    let with_cat = index.values().filter(|m| m.category.is_some()).count();
+    let with_fac = index.values().filter(|m| m.faction.is_some()).count();
+    let with_diff = index.values().filter(|m| m.difficulty.is_some()).count();
     let with_chain = index
-        .iter()
+        .values()
         .filter(|m| !m.grants_completion_tags.is_empty())
         .count();
-    let with_buyin = index.iter().filter(|m| m.buy_in > 0).count();
+    let with_buyin = index.values().filter(|m| m.buy_in > 0).count();
     let with_rep = index
-        .iter()
+        .values()
         .filter(|m| {
             m.prerequisites
                 .iter()
@@ -35,7 +35,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         })
         .count();
     let svc = index
-        .iter()
+        .values()
         .filter(|m| m.origin.kind == HandlerKind::ServiceBeacon)
         .count();
     println!("missions={n}");
@@ -53,7 +53,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // ── Spot-check Ling Family ──────────────────────────────────────────────
     println!("\n=== Ling Family Hauling spot-check ===");
     let mut shown = 0;
-    for m in index.iter() {
+    for m in index.values() {
         let Some(t) = m.title(locale) else { continue };
         if !t.to_lowercase().contains("ling") {
             continue;

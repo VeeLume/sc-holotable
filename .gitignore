@@ -1,2 +1,5 @@
 /target
 .claude/
+
+# Investigation data dumps (dig outputs) — never commit
+/*.tsv

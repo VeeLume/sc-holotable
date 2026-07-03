@@ -13,7 +13,7 @@
 use std::collections::{BTreeMap, HashSet};
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, RecordPaths};
-use sc_gathering::Gathering;
+use sc_gathering::{Providers, RecordCollection};
 use sc_resources::{DistributionRef, Quality, Resources};
 
 const DCB: &str = "target/probe-resources/dcbfile/Data/Game2.dcb";
@@ -26,14 +26,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let asset_data = AssetData::extract(&assets, &AssetConfig::minimal())?;
     let dc = Datacore::parse(&assets, &asset_data)?;
     let paths = RecordPaths::build(&dc);
-    let gathering = Gathering::build(dc.records(), &paths);
+    let gathering = Providers::build(dc.records(), &paths);
     eprintln!("providers: {}", gathering.len());
 
     let guid: Guid = std::env::args()
         .nth(1)
         .unwrap_or_else(|| CLIO.to_string())
         .parse()?;
-    let Some(p) = gathering.provider(&guid) else {
+    let Some(p) = gathering.get(&guid) else {
         eprintln!("no provider for {guid}");
         std::process::exit(1);
     };

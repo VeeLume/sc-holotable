@@ -27,9 +27,11 @@
 //! (sc-langpatch's renderer, sc-explorer's TUI, ...) walk the
 //! [`AxisDiff`]'s [`AxisValues`] fields to discover what to display.
 
+use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashSet};
 
 use sc_extract::Guid;
+use sc_extract::RecordCollection;
 use sc_tags::Tags;
 
 /// Classification of a single tag by the tag-tree family it lives in.
@@ -44,7 +46,7 @@ use sc_tags::Tags;
 /// (`Hull`, `ShipClass`, `Effect`, `SpawnFlags`) before scaling axes
 /// (`Skill`, `CombatClass`). This is just a stylistic hint for code
 /// review — there's no semantic dependence on the enum order.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub enum AxisKind {
     /// Specific ship hull or series. `Ship / Model / *`,
     /// `Ship / Series / *`. Examples: `Scythe`, `Blade`, `135c`,
@@ -129,7 +131,7 @@ impl AxisKind {
 /// (renderers, mission-level helpers like [`crate::Mission::combat_class`])
 /// scan for tags of a particular family without re-walking the tag
 /// tree at query time.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SharedTag {
     pub guid: Guid,
     pub name: String,
@@ -142,7 +144,7 @@ pub struct SharedTag {
 /// *don't* appear in every other option (i.e., the varying tags).
 /// Renderers walk [`Self::per_option`] to see which tag fired on which
 /// alternative.
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AxisValues {
     /// Outer length == number of options. Inner vec holds the
     /// `(guid, name)` of every tag on that option that classifies to
@@ -177,7 +179,7 @@ impl AxisValues {
 /// Every recognised [`AxisKind`] gets a slot. `other` collects tags
 /// that didn't match any family — useful for debugging and for
 /// future-proofing against new CIG tags we haven't classified yet.
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AxisDiff {
     pub hull: AxisValues,
     pub ship_class: AxisValues,

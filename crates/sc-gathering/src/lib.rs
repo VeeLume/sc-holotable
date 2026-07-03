@@ -3,8 +3,8 @@
 //! It joins, it does not duplicate: rarity/cluster come from the
 //! `HarvestableProviderPreset` spine here; resource identity resolves to
 //! `sc-resources`' catalog; quality to `sc-crafting`; and *where* a provider
-//! applies resolves through `sc-locations`' `LocationContainers` (the system-OC
-//! `StarMapObject ↔ socpak` bridge). See `docs/resource-gathering.md`.
+//! applies resolves through `sc-locations`' `ObjectContainers` (the
+//! `StarMapObject ↔ realized-socpak` bridge). See `docs/resource-gathering.md`.
 //!
 //! **Status: Tier 1** — the provider spine (groups → elements with normalized
 //! rarity + clusters). Resource identity + gathering mode (Tier 2), quality
@@ -25,13 +25,17 @@ use std::collections::HashMap;
 use sc_extract::{Guid, RecordPaths, RecordStore};
 use serde::{Deserialize, Serialize};
 
+// Re-export the canonical accessor trait (get / iter / len / values) so consumers
+// can bring it into scope alongside the collection.
+pub use sc_extract::RecordCollection;
+
 /// Every resource provider, keyed by its `HarvestableProviderPreset` GUID.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct Gathering {
+pub struct Providers {
     by_guid: HashMap<Guid, Provider>,
 }
 
-impl Gathering {
+impl Providers {
     /// Empty index.
     pub fn new() -> Self {
         Self::default()
@@ -53,22 +57,20 @@ impl Gathering {
         }
         g
     }
+}
 
-    /// The provider for a body/field, by its `HarvestableProviderPreset` GUID.
-    pub fn provider(&self, guid: &Guid) -> Option<&Provider> {
+impl sc_extract::RecordCollection for Providers {
+    type Item = Provider;
+
+    fn get(&self, guid: &Guid) -> Option<&Provider> {
         self.by_guid.get(guid)
     }
 
-    /// Every provider. Order is unspecified.
-    pub fn providers(&self) -> impl Iterator<Item = &Provider> + '_ {
-        self.by_guid.values()
-    }
-
-    pub fn len(&self) -> usize {
+    fn len(&self) -> usize {
         self.by_guid.len()
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.by_guid.is_empty()
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &Provider)> + '_ {
+        self.by_guid.iter()
     }
 }

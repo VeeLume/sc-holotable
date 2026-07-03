@@ -69,15 +69,18 @@ pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencies};
 pub use expand::{
     Availability, BlueprintReward, Cooldowns, Difficulty, DurationRange, Encounter, EncounterPhase,
-    EntityEncounter, EntitySlot, HandlerKind, ItemReward, Mission, MissionOrigin, MissionRewards,
-    MissionVar, NpcEncounter, NpcSlot, OtherReward, PrereqView, RepReward, RewardAmount,
-    ScripReward, ShipEncounter, ShipSlot, SlotGroup, VarOption, expand_all,
+    EntityEncounter, EntitySlot, HandlerKind, HaulingLeg, ItemReward, Mission, MissionOrigin,
+    MissionRewards, MissionVar, NpcEncounter, NpcSlot, OtherReward, PrereqView, RepReward,
+    RewardAmount, ScripReward, ShipEncounter, ShipSlot, SlotGroup, VarOption, expand_all,
 };
 pub use index::Missions;
+// Re-export the canonical accessor trait (get / iter / len / values) so consumers
+// can bring it into scope alongside the collection.
 pub use locality::{Localities, LocalityView, LocationRef, Locations, SystemKey};
 #[cfg(feature = "payout")]
 pub use payout::UecCurve;
 pub use reputation::{FactionRep, FactionReputations, ReputationStandings, Standing};
+pub use sc_extract::RecordCollection;
 // Re-exported so consumers can read `LocationRef::kind` without a direct
 // sc-locations dep. Type identity is preserved (same workspace `sc-extract`).
 pub use pools::MissionPools;

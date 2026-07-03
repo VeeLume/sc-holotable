@@ -4,6 +4,7 @@ use std::collections::HashSet;
 use std::path::PathBuf;
 use std::time::Instant;
 
+use sc_extract::RecordCollection;
 use sc_extract::{
     AssetConfig, AssetData, AssetSource, Datacore, ExtractSnapshot, Guid, SnapshotCaptureConfig,
     SnapshotMeta,
@@ -129,7 +130,7 @@ fn exercise_tags(tree: &sc_tags::Tags, r: &mut BenchResult) {
     // Measure max depth by sampling ancestry on all nodes (the tree is
     // small enough — ~18k nodes — that this is cheap).
     let mut max_depth = 0usize;
-    for node in tree.iter() {
+    for node in tree.values() {
         let depth = tree.ancestors(&node.guid).count();
         if depth > max_depth {
             max_depth = depth;
@@ -153,7 +154,7 @@ fn exercise_tags(tree: &sc_tags::Tags, r: &mut BenchResult) {
 
 fn exercise_manufacturers(mfrs: &sc_manufacturers::Manufacturers, r: &mut BenchResult) {
     // Count manufacturers with a name_key.
-    r.manufacturers_with_name_key = mfrs.all().filter(|m| m.name_key.is_some()).count();
+    r.manufacturers_with_name_key = mfrs.values().filter(|m| m.name_key.is_some()).count();
 
     // Exercise by_code lookups on known manufacturer codes.
     let _aegs = mfrs.by_code("AEGS");

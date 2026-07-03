@@ -10,7 +10,7 @@ use std::path::Path;
 use sc_extract::{
     BundledWalk, Datacore, ProcessedSnapshot, RecordPaths, RecordPathsBuilder, Result, SnapshotMeta,
 };
-use sc_gathering::Gathering;
+use sc_gathering::Providers;
 use sc_items::{Items, ItemsBuilder};
 use sc_locations::{Locations, LocationsBuilder};
 use sc_manufacturers::{Manufacturers, ManufacturersBuilder};
@@ -30,7 +30,7 @@ pub struct Foundations {
     /// Resource-gathering providers (mining/salvage/plants spine). Built after
     /// the bundled walk because it needs `paths` (to classify gathering mode
     /// from the rock's `MiningGlobalParams` record name).
-    pub gathering: Gathering,
+    pub gathering: Providers,
 }
 
 /// Build all foundational indices in a single bundled `all_records` pass.
@@ -50,7 +50,7 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
         ));
     // gathering needs `paths` (mode classification), so it's a cheap post-walk
     // build over the ~49 provider presets rather than a bundled visitor.
-    let gathering = Gathering::build(datacore.records(), &paths);
+    let gathering = Providers::build(datacore.records(), &paths);
     Foundations {
         items,
         tags,
@@ -67,7 +67,7 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
 ///
 /// v2 (2026-05-31): added optional `resources: Resources` field.
 /// v3 (2026-06-03): added optional `locations: Locations` field.
-/// v4 (2026-06-18): added optional `gathering: Gathering` field.
+/// v4 (2026-06-18): added optional `gathering: Providers` field.
 pub const HOLOTABLE_COOK_VERSION: u32 = 4;
 
 /// A batteries-included bundle of cooked indices, serializable for fast load.
@@ -84,7 +84,7 @@ pub struct HolotableSnapshot {
     pub resources: Option<Resources>,
     pub locations: Option<Locations>,
     pub paths: Option<RecordPaths>,
-    pub gathering: Option<Gathering>,
+    pub gathering: Option<Providers>,
 }
 
 impl HolotableSnapshot {

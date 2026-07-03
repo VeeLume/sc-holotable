@@ -68,7 +68,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // one displayed payout in Hearth, so showing them once matches the UI.
         let mut seen: BTreeSet<(u32, u32)> = BTreeSet::new();
         let mut rows: Vec<(f32, f32, [u8; 4], Option<i32>)> = Vec::new();
-        for m in index.iter() {
+        for m in index.values() {
             let Some(title) = m.title(locale) else {
                 continue;
             };

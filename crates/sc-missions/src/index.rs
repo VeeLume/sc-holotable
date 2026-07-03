@@ -26,6 +26,7 @@
 
 use std::collections::HashMap;
 
+use sc_extract::RecordCollection;
 use sc_extract::{Datacore, Guid};
 use sc_items::Items;
 use sc_tags::Tags;
@@ -127,6 +128,22 @@ pub struct Missions {
     /// mission-chain join — [`Self::prerequisite_missions`] walks a mission's
     /// `CompletedContractTags` requirements back through this.
     grantors_by_tag: HashMap<Guid, Vec<Guid>>,
+}
+
+impl sc_extract::RecordCollection for Missions {
+    type Item = Mission;
+
+    fn get(&self, id: &Guid) -> Option<&Mission> {
+        self.by_id.get(id).map(|&i| &self.contracts[i])
+    }
+
+    fn len(&self) -> usize {
+        self.contracts.len()
+    }
+
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &Mission)> + '_ {
+        self.contracts.iter().map(|m| (&m.id, m))
+    }
 }
 
 impl Missions {
@@ -263,32 +280,11 @@ impl Missions {
         out
     }
 
-    /// Look up a contract by GUID. Each `Mission` has a
-    /// unique GUID (sub-contracts and their parents are sibling rows
-    /// after the merge step's removal in v2 phase 4).
-    pub fn get(&self, id: Guid) -> Option<&Mission> {
-        self.by_id.get(&id).map(|&i| &self.contracts[i])
-    }
-
-    /// Convenience — iterate every contract in index order.
-    pub fn iter(&self) -> impl Iterator<Item = &Mission> + '_ {
-        self.contracts.iter()
-    }
-
-    /// Number of contract expansions in the index.
-    pub fn len(&self) -> usize {
-        self.contracts.len()
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.contracts.is_empty()
-    }
-
     /// Iterate the contracts whose ids are in `ids`, in order. Skips
     /// ids that don't resolve. Use with [`MissionPools`] field values:
     /// `index.iter_pool(ids).filter(...)`.
     pub fn iter_pool<'a>(&'a self, ids: &'a [Guid]) -> impl Iterator<Item = &'a Mission> + 'a {
-        ids.iter().filter_map(|id| self.get(*id))
+        ids.iter().filter_map(|id| self.get(id))
     }
 
     // ── Divergence helpers ──────────────────────────────────────────────────
@@ -460,7 +456,7 @@ mod tests {
         };
         assert_eq!(idx.len(), 0);
         assert!(idx.is_empty());
-        assert!(idx.get(Guid::default()).is_none());
+        assert!(idx.get(&Guid::default()).is_none());
         assert_eq!(idx.iter().count(), 0);
     }
 }

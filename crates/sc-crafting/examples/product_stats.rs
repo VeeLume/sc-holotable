@@ -12,7 +12,7 @@
 
 use sc_crafting::{Blueprints, GameplayProperties};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
-use sc_items::Items;
+use sc_items::{Items, RecordCollection};
 use sc_items_armor::Armor;
 use sc_items_fps_weapons::FpsWeapons;
 use sc_items_ship_components::ShipComponents;
@@ -118,7 +118,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
     if let Some(guid) = blueprints
-        .iter()
+        .values()
         .find(|bp| {
             bp.display_name(locale)
                 .map(|n| n.contains("C-788"))

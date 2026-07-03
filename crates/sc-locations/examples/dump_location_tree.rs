@@ -14,7 +14,7 @@
 use std::collections::BTreeMap;
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
-use sc_locations::{Location, LocationKind, Locations};
+use sc_locations::{Location, LocationKind, Locations, RecordCollection};
 
 const DCB: &str = "target/probe-resources/dcbfile/Data/Game2.dcb";
 /// Pyro solar system (`starmap/pu/pyrosolarsystem.xml`).

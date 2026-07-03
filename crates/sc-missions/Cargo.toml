@@ -28,8 +28,12 @@ sc-items = { workspace = true }
 # richer replacement for the bespoke parent-walk in locality.rs. Brings the
 # `starmap` sc-extract feature with it.
 sc-locations = { workspace = true }
+# Resource catalog (ResourceType → name + density + refining) — resolves a
+# hauling leg's commodity GUID without re-walking the ResourceType pool.
+sc-resources = { workspace = true }
 sc-tags = { workspace = true }
 svarog-common = { workspace = true }
+serde = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }
 

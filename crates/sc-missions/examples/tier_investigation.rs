@@ -24,6 +24,7 @@
 
 use std::collections::{BTreeMap, HashMap};
 
+use sc_extract::RecordCollection;
 use sc_extract::generated::{
     Contract, ContractDifficulty, ContractResults, EDifficultyRange_GameKnowledge,
     EDifficultyRange_MechanicalSkill, EDifficultyRange_MentalLoad, EDifficultyRange_RiskOfLoss,
@@ -134,7 +135,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "difficulty",
     ];
     let mut hits: Vec<(String, usize)> = Vec::new();
-    for node in tag_tree.iter() {
+    for node in tag_tree.values() {
         let lower = node.name.to_lowercase();
         if needles.iter().any(|n| lower.contains(n)) {
             // Count how many ECDs carry this tag (rough: walk pools)

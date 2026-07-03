@@ -42,6 +42,10 @@ use sc_items_ship_weapons::ShipWeapons;
 use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
+
+// Re-export the canonical accessor trait (get / iter / len / values) so consumers
+// can bring it into scope alongside the collection.
+pub use sc_extract::RecordCollection;
 use tracing::warn;
 
 // ─────────────────────────────────────────────────────────────────────
@@ -84,38 +88,36 @@ impl Blueprints {
         bp
     }
 
-    /// Iterate every blueprint. Order is unspecified.
-    pub fn iter(&self) -> impl Iterator<Item = &Blueprint> + '_ {
-        self.entries.iter()
-    }
-
-    /// Look up a blueprint by its `CraftingBlueprintRecord` GUID.
-    pub fn get(&self, record_guid: Guid) -> Option<&Blueprint> {
-        let idx = *self.by_record_guid.get(&record_guid)?;
-        self.entries.get(idx)
-    }
-
     /// All blueprints belonging to a category (looked up by category GUID).
-    pub fn in_category(&self, category: Guid) -> impl Iterator<Item = &Blueprint> + '_ {
+    pub fn in_category(&self, category: &Guid) -> impl Iterator<Item = &Blueprint> + '_ {
         self.by_category
-            .get(&category)
+            .get(category)
             .into_iter()
             .flatten()
             .filter_map(|&i| self.entries.get(i))
     }
 
     /// Look up the blueprint that crafts a given entity (by EntityClassDefinition GUID).
-    pub fn for_crafted_entity(&self, entity_guid: Guid) -> Option<&Blueprint> {
-        let idx = *self.by_crafted_entity.get(&entity_guid)?;
+    pub fn for_crafted_entity(&self, entity_guid: &Guid) -> Option<&Blueprint> {
+        let idx = *self.by_crafted_entity.get(entity_guid)?;
+        self.entries.get(idx)
+    }
+}
+
+impl sc_extract::RecordCollection for Blueprints {
+    type Item = Blueprint;
+
+    fn get(&self, guid: &Guid) -> Option<&Blueprint> {
+        let idx = *self.by_record_guid.get(guid)?;
         self.entries.get(idx)
     }
 
-    pub fn len(&self) -> usize {
+    fn len(&self) -> usize {
         self.entries.len()
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.entries.is_empty()
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &Blueprint)> + '_ {
+        self.entries.iter().map(|b| (&b.blueprint_record_guid, b))
     }
 }
 
@@ -1643,7 +1645,7 @@ impl Blueprints {
         bases: &S,
         quality: i32,
     ) -> Vec<ProductStat> {
-        let Some(bp) = self.for_crafted_entity(entity_guid) else {
+        let Some(bp) = self.for_crafted_entity(&entity_guid) else {
             return Vec::new();
         };
         // Group every modifier in the recipe by gameplay property.

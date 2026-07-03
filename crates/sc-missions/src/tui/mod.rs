@@ -10,6 +10,7 @@
 //! browsing (title key / description key) using the precomputed
 //! [`crate::MissionPools`] + divergence helpers on [`Missions`].
 
+use sc_extract::RecordCollection;
 use sc_extract::{Datacore, LocaleMap};
 use sc_items::Items;
 use sc_tags::Tags;
@@ -303,7 +304,7 @@ fn render_detail(
                 if sib_id == c.id {
                     continue;
                 }
-                if let Some(sib) = index.get(sib_id) {
+                if let Some(sib) = index.get(&sib_id) {
                     let bp = if !sib.rewards.blueprints.is_empty() {
                         "[BP] "
                     } else {

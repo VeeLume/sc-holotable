@@ -1,0 +1,19 @@
+[package]
+name = "sc-cargo-viewer"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "3D viewer for ship cargo grids + interior wall boxes — visual validation of the cargo-grid geometry pipeline"
+
+[[bin]]
+name = "sc-cargo-viewer"
+path = "src/main.rs"
+
+[dependencies]
+sc-discovery = { workspace = true }
+sc-extract = { workspace = true }
+svarog-datacore = { workspace = true }
+svarog-common = { workspace = true }
+
+# GUI. Pinned to a cached, known-good API generation.
+eframe = "0.31"

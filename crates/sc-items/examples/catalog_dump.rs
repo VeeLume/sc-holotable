@@ -18,7 +18,7 @@ use std::collections::BTreeMap;
 
 use sc_extract::generated::{EntityClassDefinition, RecordLookup};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Guid, LocaleMap, RecordPaths, RecordStore};
-use sc_items::{Item, ItemCatalog, Items};
+use sc_items::{Item, ItemCatalog, Items, RecordCollection};
 use sc_tags::Tags;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

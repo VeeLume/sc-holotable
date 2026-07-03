@@ -21,6 +21,7 @@ members = [
     "tools/sc-generator",
     "tools/sc-bench",
     "tools/sc-explorer",
+    "tools/sc-cargo-viewer",
 ]
 
 [workspace.package]

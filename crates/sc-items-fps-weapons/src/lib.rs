@@ -40,6 +40,10 @@ use sc_extract::{DataCoreDatabase, DataPools, Datacore, Guid, LocaleKey};
 use sc_items::Items;
 use serde::{Deserialize, Serialize};
 
+/// Re-export the canonical accessor trait so consumers can bring the
+/// `get` / `iter` / `len` / `values` surface into scope alongside the collection.
+pub use sc_extract::RecordCollection;
+
 // Re-export so a single-crate consumer can name the cache type without a
 // direct sc-items dep (type identity is preserved — same sc-extract rev).
 pub use sc_items::{Item, Items as ItemEnvelope};
@@ -170,21 +174,21 @@ impl FpsWeapons {
         }
         Self { by_guid }
     }
+}
 
-    pub fn get(&self, guid: &Guid) -> Option<&FpsWeaponStats> {
+impl sc_extract::RecordCollection for FpsWeapons {
+    type Item = FpsWeaponStats;
+
+    fn get(&self, guid: &Guid) -> Option<&FpsWeaponStats> {
         self.by_guid.get(guid)
     }
 
-    pub fn iter(&self) -> impl Iterator<Item = (&Guid, &FpsWeaponStats)> + '_ {
-        self.by_guid.iter()
-    }
-
-    pub fn len(&self) -> usize {
+    fn len(&self) -> usize {
         self.by_guid.len()
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.by_guid.is_empty()
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &FpsWeaponStats)> + '_ {
+        self.by_guid.iter()
     }
 }
 

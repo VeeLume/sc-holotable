@@ -28,8 +28,12 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::{RecordLookup, SCItemManufacturer};
-use sc_extract::{DataPools, Guid, RecordStore};
+use sc_extract::{DataPools, Guid, LocaleKey, RecordStore};
 use serde::{Deserialize, Serialize};
+
+// Re-export the canonical accessor trait (get / iter / len / values) so consumers
+// can bring it into scope alongside the collection.
+pub use sc_extract::RecordCollection;
 
 /// A single manufacturer entry.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -40,9 +44,9 @@ pub struct Manufacturer {
     pub code: String,
     /// Localization key for the full name, e.g. `"@manufacturer_NameGATS"`.
     /// Resolve via [`sc_extract::LocaleMap::resolve`].
-    pub name_key: Option<String>,
+    pub name_key: Option<LocaleKey>,
     /// Localization key for the description.
-    pub description_key: Option<String>,
+    pub description_key: Option<LocaleKey>,
 }
 
 /// Flat lookup over every `SCItemManufacturer` record in the DCB.
@@ -84,28 +88,26 @@ impl Manufacturers {
         self.by_guid.insert(manufacturer.guid, manufacturer);
     }
 
-    /// Look up a manufacturer by GUID.
-    pub fn get(&self, guid: &Guid) -> Option<&Manufacturer> {
-        self.by_guid.get(guid)
-    }
-
     /// Look up a manufacturer by its short code (case-sensitive).
     pub fn by_code(&self, code: &str) -> Option<&Manufacturer> {
         let guid = self.by_code.get(code)?;
         self.by_guid.get(guid)
     }
+}
 
-    /// Iterate over every manufacturer. Order is unspecified.
-    pub fn all(&self) -> impl Iterator<Item = &Manufacturer> + '_ {
-        self.by_guid.values()
+impl sc_extract::RecordCollection for Manufacturers {
+    type Item = Manufacturer;
+
+    fn get(&self, guid: &Guid) -> Option<&Manufacturer> {
+        self.by_guid.get(guid)
     }
 
-    pub fn len(&self) -> usize {
+    fn len(&self) -> usize {
         self.by_guid.len()
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.by_guid.is_empty()
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &Manufacturer)> + '_ {
+        self.by_guid.iter()
     }
 }
 
@@ -113,10 +115,7 @@ impl Manufacturers {
 /// [`Manufacturers::build`] and [`ManufacturersBuilder`].
 fn manufacturer_for(guid: Guid, m: &SCItemManufacturer, pools: &DataPools) -> Manufacturer {
     let (name_key, description_key) = match m.localization.and_then(|h| h.get(pools)) {
-        Some(loc) => (
-            non_empty(loc.name.as_str()),
-            non_empty(loc.description.as_str()),
-        ),
+        Some(loc) => (non_empty(&loc.name), non_empty(&loc.description)),
         None => (None, None),
     };
     Manufacturer {
@@ -127,9 +126,9 @@ fn manufacturer_for(guid: Guid, m: &SCItemManufacturer, pools: &DataPools) -> Ma
     }
 }
 
-/// `Some(owned)` only when the string isn't empty.
-fn non_empty(s: &str) -> Option<String> {
-    (!s.is_empty()).then(|| s.to_string())
+/// `Some(owned)` only when the key isn't the empty string.
+fn non_empty(key: &LocaleKey) -> Option<LocaleKey> {
+    (!key.as_str().is_empty()).then(|| key.clone())
 }
 
 /// [`sc_extract::RecordVisitor`] that builds a [`Manufacturers`] in a
@@ -176,8 +175,8 @@ mod tests {
         Manufacturer {
             guid,
             code: code.to_string(),
-            name_key: Some(format!("@manufacturer_Name{code}")),
-            description_key: Some(format!("@manufacturer_Desc{code}")),
+            name_key: Some(LocaleKey::new(format!("@manufacturer_Name{code}"))),
+            description_key: Some(LocaleKey::new(format!("@manufacturer_Desc{code}"))),
         }
     }
 
@@ -196,7 +195,7 @@ mod tests {
         assert_eq!(reg.get(&g(1)).map(|m| m.code.as_str()), Some("GATS"));
         assert_eq!(reg.by_code("AEGS").map(|m| m.guid), Some(g(2)));
         assert!(reg.by_code("MISSING").is_none());
-        assert_eq!(reg.all().count(), 2);
+        assert_eq!(reg.values().count(), 2);
     }
 
     #[test]

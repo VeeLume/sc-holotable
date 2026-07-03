@@ -1,10 +1,11 @@
 //! Location join — `StarMapObject` ↔ provider.
 //!
 //! Composed from two halves:
-//! - `sc_locations::LocationContainers` — place ↔ socpak (the system-OC bridge).
+//! - `sc_locations::ObjectContainers` — place ↔ socpak (the placement graph's
+//!   realized-socpak index).
 //! - each body/field socpak's `HarvestableProviderComponent.preset` — socpak ↔ provider.
 //!
-//! The result keys the provider-GUID-keyed [`crate::Gathering`] by actual place:
+//! The result keys the provider-GUID-keyed [`crate::Providers`] by actual place:
 //! `StarMapObject → provider → resources`, and the inverse
 //! `provider → StarMapObjects` (the 1:many asteroid-base reuse falls out, since
 //! many places share one socpak/provider).
@@ -18,7 +19,7 @@ use std::collections::HashMap;
 
 use sc_extract::object_container::{Socpak, decode};
 use sc_extract::{AssetSource, Guid, Result};
-use sc_locations::LocationContainers;
+use sc_locations::{ObjectContainers, normalize_socpak_path};
 use serde::{Deserialize, Serialize};
 
 /// `StarMapObject` ↔ `HarvestableProviderPreset` GUID, both directions.
@@ -34,14 +35,14 @@ impl ProviderLocations {
     /// Bump when the cooked layout changes (for `ProcessedSnapshot` gating).
     pub const COOK_SCHEMA_VERSION: u32 = 1;
 
-    /// Cook from a live p4k + a [`LocationContainers`]: open each distinct body
-    /// socpak once, read its provider preset, and join to the places that socpak
-    /// realizes. Empty for a snapshot-backed source (socpaks aren't there).
-    pub fn cook(assets: &AssetSource, containers: &LocationContainers) -> Result<Self> {
+    /// Cook from a live p4k + an [`ObjectContainers`] graph: open each distinct
+    /// body socpak once, read its provider preset, and join to the places that
+    /// socpak realizes. Empty for a snapshot-backed source (socpaks aren't there).
+    pub fn cook(assets: &AssetSource, containers: &ObjectContainers) -> Result<Self> {
         let mut socpak_provider: HashMap<String, Guid> = HashMap::new();
-        for socpak in containers.containers() {
+        for socpak in containers.realized_socpaks() {
             let Some((_, bytes)) =
-                assets.find_and_read(|name| normalize_oc_path(name) == socpak)?
+                assets.find_and_read(|name| normalize_socpak_path(name) == socpak)?
             else {
                 continue;
             };
@@ -53,12 +54,9 @@ impl ProviderLocations {
     }
 
     /// Pure join: `socpak → provider` ⊕ `place ↔ socpak` ⇒ `place ↔ provider`.
-    pub fn compose(
-        containers: &LocationContainers,
-        socpak_provider: &HashMap<String, Guid>,
-    ) -> Self {
+    pub fn compose(containers: &ObjectContainers, socpak_provider: &HashMap<String, Guid>) -> Self {
         let mut pl = Self::default();
-        for socpak in containers.containers() {
+        for socpak in containers.realized_socpaks() {
             let Some(&provider) = socpak_provider.get(socpak) else {
                 continue;
             };
@@ -121,13 +119,6 @@ fn provider_in_socpak(bytes: Vec<u8>) -> Result<Option<Guid>> {
         }
     }
     Ok(None)
-}
-
-/// Normalize a socpak path to match [`LocationContainers`] keys (lowercase,
-/// backslash→`/`, strip a leading `data/`).
-fn normalize_oc_path(raw: &str) -> String {
-    let s = raw.replace('\\', "/").to_ascii_lowercase();
-    s.strip_prefix("data/").unwrap_or(&s).to_string()
 }
 
 #[cfg(test)]

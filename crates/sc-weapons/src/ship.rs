@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use sc_extract::generated::*;
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap};
-use sc_items::Items;
+use sc_items::{Items, RecordCollection};
 
 use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};

@@ -139,12 +139,13 @@ pub mod prelude {
     #[cfg(feature = "extract")]
     pub use sc_extract::{
         AssetConfig, AssetData, AssetSource, CrcIndex, Datacore, ExtractSnapshot, Guid, LocaleKey,
-        LocaleMap, ProcessedSnapshot, RecordPath, RecordPaths, SnapshotMeta, class_crc,
+        LocaleMap, ProcessedSnapshot, RecordCollection, RecordPath, RecordPaths, SnapshotMeta,
+        class_crc,
     };
     #[cfg(feature = "gathering")]
     pub use sc_gathering::{
-        Cluster, Deposit, GatherableElement, Gathering, GatheringMode, Provider, ProviderGroup,
-        ProviderLocations,
+        Cluster, Deposit, GatherableElement, GatheringMode, Provider, ProviderGroup,
+        ProviderLocations, Providers,
     };
     #[cfg(feature = "items")]
     pub use sc_items::{Item, Items};
@@ -157,7 +158,10 @@ pub mod prelude {
     #[cfg(feature = "ship-weapons")]
     pub use sc_items_ship_weapons::{ShipWeaponKind, ShipWeaponStats, ShipWeapons};
     #[cfg(feature = "locations")]
-    pub use sc_locations::{Location, LocationKind, Locations};
+    pub use sc_locations::{
+        Location, LocationKind, Locations, ObjectContainers, Place, Placement, PlacementId,
+        Universe,
+    };
     #[cfg(feature = "manufacturers")]
     pub use sc_manufacturers::{Manufacturer, Manufacturers};
     #[cfg(feature = "missions")]

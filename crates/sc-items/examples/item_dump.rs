@@ -7,7 +7,7 @@
 //! ```
 
 use sc_extract::{AssetConfig, AssetData, AssetSource};
-use sc_items::Items;
+use sc_items::{Items, RecordCollection};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_discovery::discover_primary()?;

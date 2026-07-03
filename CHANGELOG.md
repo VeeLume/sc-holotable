@@ -14,6 +14,93 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract::RecordCollection`** — the uniform read contract over every
+  GUID-keyed cooked collection: `get(&Guid)` / `len` / `iter() -> (&Guid, &Item)`
+  plus provided `is_empty` / `contains` / `values` / `guids`. Implemented by
+  `Items`, `Tags`, `Manufacturers`, `Resources`, `Providers`, `Locations`,
+  `Blueprints`, `Missions`, and the four `sc-items-*` stat sheets. Every
+  collection crate re-exports the trait next to its collection;
+  `sc_holotable::prelude` includes it. Normative spec: `docs/CONVENTIONS.md`
+  (new — the API-conventions contract, checked in alongside the sweep).
+- **`sc-missions`: hauling cargo manifests.** `Mission::cargo: Vec<HaulingLeg>` —
+  one leg per `HaulingOrderContent_Resource` (commodity `ResourceType` GUID +
+  min/max SCU + max box size), read from `MissionPropertyValue_HaulingOrders`
+  across the template `contractProperties` and handler / contract / sub override
+  layers, with an objective-tree fallback (`ObjectiveHandler_Hauling`) for
+  procedural broker contracts. `HaulingLeg::commodity` / `commodity_name` join
+  the leg to the `sc-resources` catalog (new dep). Split-delivery contracts
+  (`SingleToMultiN` / `MultiNToSingle`) intentionally carry one leg per
+  endpoint; validated on live data that leg counts match endpoint counts (no
+  cross-layer duplication — see `examples/hauling_dup_check.rs`).
+- **`sc-missions`: `Mission` is serde-capable.** The full facet tree
+  (`MissionOrigin`, `MissionRewards`, encounters, prereqs, vars, `HaulingLeg`, …)
+  derives `Serialize`/`Deserialize`; generated enums round-trip as DCB strings.
+- **`tools/sc-cargo-viewer`** — new workspace member: 3D viewer for ship cargo
+  grids + interior wall boxes (internal validation tool for the cargo-grid
+  geometry pipeline).
+- **`sc-locations::object_containers`** — one tolerant socpak placement-graph walk
+  (`ObjectContainers::cook`) that the location-domain socpak products project from,
+  replacing the parallel scanners. `ObjectContainers` is a navigable graph:
+  `get` / `iter` / `placements_of(guid)` / `by_mission_crc` / `chain_of` /
+  `parent_of` / `global_position` / `realized_socpaks` / `locations_in`, over a
+  public `Placement` (`starmap_guid` / `position` / `orbit` / `socpak` /
+  `entity_name` / `is_mission_leaf`) keyed by `PlacementId`. It is
+  `Serialize`/`Deserialize` (persists `placements`; rebuilds indices on load), so a
+  cooked graph re-`join`s into a `Universe` without re-walking the socpaks.
+  `normalize_socpak_path` is public — the canonical key form for any consumer
+  joining on socpak paths (`sc-gathering` uses it).
+- **`sc-locations::Universe`** — the join of the DCB StarMap (`Locations`) and the
+  socpak placement graph (`ObjectContainers`). `Universe::join`, lookups
+  `by_guid` / `by_class_crc` / `by_mission_crc` / `by_name`, and the logical graph
+  (`roots` / `parent` / `children` / `ancestors`) as `Place`s. `Place` exposes both
+  facets: **direct** accessors (`name_key`, `position`, `kind`, `socpak`,
+  `entity_name`) and opt-in derived helpers (`name` / `display_name` for
+  nearest-named-ancestor resolution, `global_position` for a system-global
+  coordinate composed up the containment chain, `anchor_position` for the
+  parent-body fallback).
+
+### Changed (breaking)
+
+- **API-consistency sweep to the `RecordCollection` contract.** Canonical
+  accessors are now trait-only — the inherent `get` / `iter` / `len` /
+  `is_empty` copies were removed from every collection (bring the trait into
+  scope: `use sc_extract::RecordCollection;` or the crate-local re-export).
+  `iter()` yields `(&Guid, &Item)` pairs everywhere; value iteration is
+  `values()` (replacing `Manufacturers::all()`, `Gathering::providers()`, …);
+  `get` borrows its key everywhere (`Missions::get(Guid)` → `get(&Guid)`).
+- **`sc-gathering`: `Gathering` → `Providers`** (per the one-noun rule;
+  `provider()` → trait `get`). `Foundations` / `HolotableSnapshot` carry the
+  new type; the serialized shape is unchanged.
+- **`sc-gathering`: `ProviderLocations::cook` / `compose` take
+  `&ObjectContainers`** (were `&LocationContainers`), following the
+  `sc-locations` replacement below.
+- **`sc-manufacturers`: `Manufacturer::{name_key, description_key}` are
+  `Option<LocaleKey>`** (were `Option<String>`), per the typed-locale rule.
+
+### Fixed
+
+- **Place ↔ socpak binding on SC 4.8** — the pre-4.8 `SNavPointObjectMetadataParams`
+  scan returned 0 bindings after the component was renamed `SObjectMetadataParams`.
+  The tolerant placement graph fixes this and extends coverage to nested body OCs
+  (`sc-gathering` now resolves providers again).
+- **Mission-CRC stragglers** — locations whose `starmapRecord` sits on a
+  non-`SObjectMetadataParams` node (e.g. MIC-L1 Shallow Frontier Station on `<Elem>`)
+  now resolve, via the graph's `first_attr`-style search across all descendants.
+
+### Removed
+
+- **`MissionCrcCatalog` / `MissionLocation`** — superseded by
+  `Universe::by_mission_crc` (a `Place` with both name and position). The consumer
+  (sc-cargo-planner) is migrated; the `crc_catalog` example is dropped.
+- **`LocationContainers`** — superseded by `ObjectContainers` (`realized_socpaks` /
+  `locations_in` / `placements_of`) and `Universe` (`Place::socpak`). The
+  in-workspace consumer `sc-gathering` is migrated; the throwaway `containers_dump`
+  example is dropped.
+- **`sc-weapons::WeaponError`** — dead error enum (defined, never returned)
+  deleted, per the error policy in `docs/CONVENTIONS.md` §6.
+
 ## [v0.14.0] - 2026-06-08
 
 ### Added
