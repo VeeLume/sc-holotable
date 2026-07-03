@@ -207,7 +207,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                     ents.push(P {
                         cry: ch.attr("EntityCryGUID").and_then(cry_key),
-                        parent: ch.attr("parentGUID").and_then(std_key).or(cry.map(|k| k)),
+                        parent: ch.attr("parentGUID").and_then(std_key).or(cry),
                         socpak: sp_norm.clone(),
                         nests: None,
                         is_place: true,

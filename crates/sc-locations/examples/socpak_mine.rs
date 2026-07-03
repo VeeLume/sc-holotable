@@ -108,13 +108,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     *attr_inv.entry(format!("{}@{}", node.tag, k)).or_default() += 1;
                     if let Some(g) = as_guid(v) {
                         guids.insert(g);
-                    } else if let Ok(num) = v.parse::<u64>() {
-                        if num <= u32::MAX as u64 {
-                            numbers.insert(num as u32);
-                            *num_attr_inv
-                                .entry(format!("{}@{}", node.tag, k))
-                                .or_default() += 1;
-                        }
+                    } else if let Ok(num) = v.parse::<u64>()
+                        && num <= u32::MAX as u64
+                    {
+                        numbers.insert(num as u32);
+                        *num_attr_inv
+                            .entry(format!("{}@{}", node.tag, k))
+                            .or_default() += 1;
                     }
                     if idkeys.contains(k.as_str()) && v.len() < 200 {
                         idstrings.insert(v.clone());

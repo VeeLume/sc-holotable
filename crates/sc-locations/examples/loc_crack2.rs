@@ -60,7 +60,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let locs = Locations::build(store);
 
     let mut hits: Vec<String> = Vec::new();
-    let mut test_str = |s: &str, ctx: &str, hits: &mut Vec<String>| {
+    let test_str = |s: &str, ctx: &str, hits: &mut Vec<String>| {
         if s.is_empty() {
             return;
         }

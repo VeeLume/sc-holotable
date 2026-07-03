@@ -102,7 +102,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut npaths = 0;
     for e in assets.find(|n| n.to_ascii_lowercase().ends_with(".socpak")) {
         npaths += 1;
-        let h = crc(norm(&e.name).as_bytes(), &c_tbl);
+        let h = crc(norm(e.name).as_bytes(), &c_tbl);
         socpak_by_fph.entry(h).or_insert_with(|| e.name.to_string());
     }
     eprintln!(

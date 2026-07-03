@@ -80,13 +80,12 @@ fn dump_ho(pools: &DataPools, ho: &HaulingOrderBasePtr) {
                     if let Some(hov) = hh.get(pools) {
                         for c in &hov.hauling_order_content {
                             if let HaulingOrderContentBasePtr::HaulingOrderContent_Resource(rh) = c
+                                && let Some(rr) = rh.get(pools)
                             {
-                                if let Some(rr) = rh.get(pools) {
-                                    println!(
-                                        "    Property  res={:?} scu {}-{} box {}  pickup='{pu}' dropoff='{dp}'",
-                                        rr.resource, rr.min_scu, rr.max_scu, rr.max_container_size
-                                    );
-                                }
+                                println!(
+                                    "    Property  res={:?} scu {}-{} box {}  pickup='{pu}' dropoff='{dp}'",
+                                    rr.resource, rr.min_scu, rr.max_scu, rr.max_container_size
+                                );
                             }
                         }
                     }
@@ -102,15 +101,15 @@ fn dump_ho(pools: &DataPools, ho: &HaulingOrderBasePtr) {
 }
 
 fn dump_handler(pools: &DataPools, oh: &Option<ObjectiveHandlerBasePtr>) {
-    if let Some(ObjectiveHandlerBasePtr::ObjectiveHandler_Hauling(h)) = oh {
-        if let Some(handler) = h.get(pools) {
-            println!(
-                "  ObjectiveHandler_Hauling: {} order(s)",
-                handler.hauling_orders.len()
-            );
-            for ho in &handler.hauling_orders {
-                dump_ho(pools, ho);
-            }
+    if let Some(ObjectiveHandlerBasePtr::ObjectiveHandler_Hauling(h)) = oh
+        && let Some(handler) = h.get(pools)
+    {
+        println!(
+            "  ObjectiveHandler_Hauling: {} order(s)",
+            handler.hauling_orders.len()
+        );
+        for ho in &handler.hauling_orders {
+            dump_ho(pools, ho);
         }
     }
 }
@@ -160,27 +159,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             c.mission_broker_entry.is_some()
         );
         let mut tokens: Vec<Handle<ObjectiveToken>> = Vec::new();
-        if let Some(t) = c.template {
-            if let Some(tmpl) = store
+        if let Some(t) = c.template
+            && let Some(tmpl) = store
                 .records
                 .multi_feature
                 .contract_template
                 .get(&t)
                 .and_then(|h| h.get(pools))
-            {
-                tokens.extend(tmpl.objective_tokens.iter().copied());
-            }
+        {
+            tokens.extend(tmpl.objective_tokens.iter().copied());
         }
-        if let Some(b) = c.mission_broker_entry {
-            if let Some(be) = store
+        if let Some(b) = c.mission_broker_entry
+            && let Some(be) = store
                 .records
                 .multi_feature
                 .mission_broker_entry
                 .get(&b)
                 .and_then(|h| h.get(pools))
-            {
-                tokens.extend(be.objective_tokens.iter().copied());
-            }
+        {
+            tokens.extend(be.objective_tokens.iter().copied());
         }
         println!("objective_tokens: {}", tokens.len());
         let mut seen = HashSet::new();

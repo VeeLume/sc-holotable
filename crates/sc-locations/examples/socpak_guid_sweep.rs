@@ -40,7 +40,7 @@ fn scan_guids(bytes: &[u8], out: &mut HashSet<[u8; 16]>) {
     if bytes.len() < 36 {
         return;
     }
-    let mut hexval = |c: u8| -> Option<u8> {
+    let hexval = |c: u8| -> Option<u8> {
         match c {
             b'0'..=b'9' => Some(c - b'0'),
             b'a'..=b'f' => Some(c - b'a' + 10),

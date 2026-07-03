@@ -66,19 +66,19 @@ fn legs_from_props(
         };
         let Some(ho) = h.get(pools) else { continue };
         for c in &ho.hauling_order_content {
-            if let HaulingOrderContentBasePtr::HaulingOrderContent_Resource(rh) = c {
-                if let Some(r) = rh.get(pools) {
-                    let commodity = r
-                        .resource
-                        .map(|g| resource_name(store, locale, &g))
-                        .unwrap_or("<none>".into());
-                    out.push(Leg {
-                        commodity,
-                        min_scu: r.min_scu,
-                        max_scu: r.max_scu,
-                        max_box: r.max_container_size,
-                    });
-                }
+            if let HaulingOrderContentBasePtr::HaulingOrderContent_Resource(rh) = c
+                && let Some(r) = rh.get(pools)
+            {
+                let commodity = r
+                    .resource
+                    .map(|g| resource_name(store, locale, &g))
+                    .unwrap_or("<none>".into());
+                out.push(Leg {
+                    commodity,
+                    min_scu: r.min_scu,
+                    max_scu: r.max_scu,
+                    max_box: r.max_container_size,
+                });
             }
         }
     }
@@ -94,16 +94,15 @@ fn collect(
     let pools = &store.pools;
     let mut out = Vec::new();
     // Template layer (where procedural-haul manifests live).
-    if let Some(t) = template {
-        if let Some(tmpl) = store
+    if let Some(t) = template
+        && let Some(tmpl) = store
             .records
             .multi_feature
             .contract_template
             .get(&t)
             .and_then(|h| h.get(pools))
-        {
-            legs_from_props(store, locale, &tmpl.contract_properties, &mut out);
-        }
+    {
+        legs_from_props(store, locale, &tmpl.contract_properties, &mut out);
     }
     // Contract + sub override layers.
     if let Some(po) = po.and_then(|h| h.get(pools)) {

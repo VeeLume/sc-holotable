@@ -61,10 +61,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let Ok(Some(root)) = decode(&b) else { continue };
             for n in root.descendants() {
                 let push = |set: &mut BTreeSet<String>, v: Option<&str>| {
-                    if let Some(v) = v {
-                        if v != ZERO && !v.is_empty() {
-                            set.insert(v.to_string());
-                        }
+                    if let Some(v) = v
+                        && v != ZERO
+                        && !v.is_empty()
+                    {
+                        set.insert(v.to_string());
                     }
                 };
                 match n.tag.as_str() {

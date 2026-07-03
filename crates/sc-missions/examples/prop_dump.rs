@@ -54,13 +54,13 @@ fn dump(pools: &DataPools, props: &[Handle<MissionProperty>], d: usize) {
             Some(V::MissionPropertyValue_HaulingOrders(h)) => {
                 if let Some(ho) = h.get(pools) {
                     for c in &ho.hauling_order_content {
-                        if let HaulingOrderContentBasePtr::HaulingOrderContent_Resource(rh) = c {
-                            if let Some(r) = rh.get(pools) {
-                                println!(
-                                    "{pad}    leg resource={:?} scu {}-{} box {}",
-                                    r.resource, r.min_scu, r.max_scu, r.max_container_size
-                                );
-                            }
+                        if let HaulingOrderContentBasePtr::HaulingOrderContent_Resource(rh) = c
+                            && let Some(r) = rh.get(pools)
+                        {
+                            println!(
+                                "{pad}    leg resource={:?} scu {}-{} box {}",
+                                r.resource, r.min_scu, r.max_scu, r.max_container_size
+                            );
                         }
                     }
                 }

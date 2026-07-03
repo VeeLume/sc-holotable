@@ -143,10 +143,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let nm = pak.name(i).unwrap_or_default();
             let Ok(b) = pak.read(i) else { continue };
             eprintln!("   [{i}] {nm} ({} bytes)", b.len());
-            scan_guids(&b, &mut {
-                let mut s = HashSet::new();
-                s
-            }); // warm; real below
+            scan_guids(&b, &mut { HashSet::new() }); // warm; real below
             let mut local = HashSet::new();
             scan_guids(&b, &mut local);
             for g in local {

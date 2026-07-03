@@ -8,7 +8,6 @@
 //! ```
 use std::collections::HashMap;
 
-use sc_extract::generated::StarMapObject;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Guid, LocaleMap, class_crc};
 
 fn table(poly: u32) -> [u32; 256] {
@@ -56,12 +55,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // name -> (guid, field19=class_crc) for every StarMapObject.
     let mut by_name: HashMap<String, (Guid, u32)> = HashMap::new();
     for (&guid, &handle) in store.records.multi_feature.star_map_object.iter() {
-        if let Some(obj) = handle.get(pools) {
-            if let Some(name) = locale.resolve(&obj.name) {
-                if !name.is_empty() {
-                    by_name.insert(name.to_string(), (guid, class_crc(&guid)));
-                }
-            }
+        if let Some(obj) = handle.get(pools)
+            && let Some(name) = locale.resolve(&obj.name)
+            && !name.is_empty()
+        {
+            by_name.insert(name.to_string(), (guid, class_crc(&guid)));
         }
     }
     eprintln!("StarMapObjects with names: {}", by_name.len());

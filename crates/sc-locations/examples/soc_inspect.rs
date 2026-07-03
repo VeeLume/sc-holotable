@@ -22,7 +22,7 @@ fn walk(node: &XmlNode, parent_cry: Option<&str>, depth: usize, out: &mut Vec<St
             .unwrap_or("")
             .to_ascii_lowercase();
         let class = node.attr("EntityClass").unwrap_or("");
-        let name = node.attr("Name").unwrap_or("");
+        let _name = node.attr("Name").unwrap_or("");
         // objectContainer + any parent-ish attr anywhere in this entity's subtree
         let oc = node.descendants().find_map(|n| n.attr("objectContainer"));
         let parentish: Vec<String> = node

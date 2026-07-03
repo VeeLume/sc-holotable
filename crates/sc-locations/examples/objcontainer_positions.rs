@@ -382,10 +382,10 @@ fn diagnose(assets: &AssetSource, socpaks: &[String]) -> Result<(), Box<dyn std:
             continue;
         };
         for node in root.descendants() {
-            if node.tag == "Entity" {
-                if let Some(cls) = node.attr("EntityClass") {
-                    *classes.entry(cls.to_string()).or_default() += 1;
-                }
+            if node.tag == "Entity"
+                && let Some(cls) = node.attr("EntityClass")
+            {
+                *classes.entry(cls.to_string()).or_default() += 1;
             }
             for (k, v) in &node.attrs {
                 let kl = k.to_ascii_lowercase();
@@ -477,7 +477,7 @@ fn find_f64(node: &XmlNode, key_lc: &str) -> Option<f64> {
 fn find_vec3(node: &XmlNode, key_lc: &str) -> Option<[f64; 3]> {
     let raw = find_attr(node, key_lc)?;
     let parts: Vec<f64> = raw
-        .split(|c| c == ',' || c == ' ')
+        .split([',', ' '])
         .filter(|s| !s.is_empty())
         .filter_map(|s| s.trim().parse().ok())
         .collect();

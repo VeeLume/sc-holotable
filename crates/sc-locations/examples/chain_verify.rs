@@ -82,10 +82,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .trim()
             .to_string();
         let keys: Option<Vec<Key>> = chain.split('.').map(cry_key).collect();
-        if let Some(keys) = keys {
-            if keys.len() >= 3 {
-                oracle.entry(name).or_insert(keys);
-            }
+        if let Some(keys) = keys
+            && keys.len() >= 3
+        {
+            oracle.entry(name).or_insert(keys);
         }
     }
     eprintln!("oracle: {} distinct named chains", oracle.len());
@@ -152,12 +152,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     let edge = |gi: &Key, gj: &Key| -> bool {
-        if parents.get(gj).map_or(false, |ps| ps.contains(gi)) {
+        if parents.get(gj).is_some_and(|ps| ps.contains(gi)) {
             return true;
         }
         if let Some(socpaks) = nests.get(gi) {
             for s in socpaks {
-                if socpak_crys.get(s).map_or(false, |c| c.contains(gj)) {
+                if socpak_crys.get(s).is_some_and(|c| c.contains(gj)) {
                     return true;
                 }
             }
@@ -167,7 +167,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let (mut full_ok, mut leaf_present, mut total) = (0, 0, 0);
     let mut break_at: HashMap<usize, usize> = HashMap::new();
-    for (_name, chain) in &oracle {
+    for chain in oracle.values() {
         total += 1;
         let tail = &chain[2..];
         if all.contains(tail.last().unwrap()) {
