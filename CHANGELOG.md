@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.16.0] - 2026-07-03
+
 ### Added
 
 - **`sc-holotable`: `missions-payout` umbrella feature** — passes through
