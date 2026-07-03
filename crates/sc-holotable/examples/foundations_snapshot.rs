@@ -7,7 +7,8 @@
 //! ```
 
 use sc_holotable::asset::{
-    AssetConfig, AssetData, AssetSource, Datacore, RecordPaths, snapshot_meta_from_install,
+    AssetConfig, AssetData, AssetSource, Datacore, RecordCollection, RecordPaths,
+    snapshot_meta_from_install,
 };
 use sc_holotable::items::Items;
 use sc_holotable::locations::Locations;
