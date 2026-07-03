@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.15.0] - 2026-07-03
+
 ### Added
 
 - **`sc-extract::RecordCollection`** — the uniform read contract over every

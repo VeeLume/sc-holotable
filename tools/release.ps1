@@ -8,7 +8,7 @@
 #      missing or empty (forces the author to have written release notes).
 #   4. Rewrite CHANGELOG: rename '## [Unreleased]' to '## [vX.Y.Z] - YYYY-MM-DD'
 #      and insert a fresh empty '## [Unreleased]' above it.
-#   5. Commit the CHANGELOG rewrite as "Release sc-holotable/vX.Y.Z".
+#   5. Commit the CHANGELOG rewrite as "chore(release): sc-holotable/vX.Y.Z".
 #   6. Create annotated tag 'sc-holotable/vX.Y.Z' whose message is the
 #      released section's body.
 #   7. With -Publish: push branch + tag. Otherwise leave both local for review.
@@ -181,7 +181,8 @@ Step "Stage + commit"
 git add CHANGELOG.md
 if ($LASTEXITCODE -ne 0) { Die "git add CHANGELOG.md failed" }
 
-$commitMsg = "Release sc-holotable/$normalizedVersion"
+# Conventional-Commits form (a commit-msg hook enforces it).
+$commitMsg = "chore(release): sc-holotable/$normalizedVersion"
 git commit -m $commitMsg
 if ($LASTEXITCODE -ne 0) { Die "git commit failed" }
 Write-Host "Committed: $commitMsg"
