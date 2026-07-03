@@ -14,6 +14,15 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-holotable`: `missions-payout` umbrella feature** — passes through
+  sc-missions' `payout` feature (`UecCurve` / `Mission::estimate_uec`, backed
+  by the `gamemode` sc-extract pools) which previously had no umbrella
+  passthrough, forcing consumers to hardcode the uecCurve constants. Kept
+  separate from `missions` so contract-only consumers don't pay the gamemode
+  extract cost; included in `full`.
+
 ## [v0.15.0] - 2026-07-03
 
 ### Added

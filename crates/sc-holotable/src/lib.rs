@@ -119,6 +119,11 @@ pub mod gathering {
 #[cfg(feature = "missions")]
 pub mod missions {
     //! Missions / contracts ([`sc_missions`]).
+    //!
+    //! The `missions-payout` umbrella feature additionally enables
+    //! sc-missions' `payout` feature — `UecCurve` + `Mission::estimate_uec`,
+    //! backed by the `gamemode` sc-extract pools (GameMode.SC_Default's
+    //! uecCurve) instead of hardcoded curve constants.
     pub use sc_missions::*;
 }
 

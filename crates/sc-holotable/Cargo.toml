@@ -58,6 +58,11 @@ crafting = ["dep:sc-crafting", "extract", "items", "resources", "fps-weapons", "
 # entities-mineable); the umbrella pulls the crate + the location surface it joins.
 gathering = ["dep:sc-gathering", "extract", "locations"]
 missions = ["dep:sc-missions", "extract", "items", "tags"]
+# Payout estimation on top of `missions`: passes through sc-missions' `payout`
+# feature (UecCurve / Mission::estimate_uec), which pulls the `gamemode`
+# sc-extract pools to read GameMode.SC_Default's uecCurve. Kept separate from
+# `missions` so contract-only consumers don't pay the gamemode extract cost.
+missions-payout = ["missions", "sc-missions/payout"]
 
 # ── Cross-cutting ────────────────────────────────────────────────────────────
 # The coordination build-context + HolotableSnapshot need every foundational
@@ -66,7 +71,7 @@ foundations = ["extract", "items", "tags", "manufacturers", "resources", "locati
 
 # ── Aggregators ──────────────────────────────────────────────────────────────
 all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "crafting", "gathering", "foundations"]
-full = ["all-t1", "missions"]
+full = ["all-t1", "missions-payout"]
 
 [dev-dependencies]
 tempfile = "3"
