@@ -93,6 +93,7 @@ struct Ent {
     disp: String,
     socpak: String,
     parent: Option<Key>,
+    #[allow(dead_code)] // kept for debugging dumps
     oc: Option<String>,
 }
 

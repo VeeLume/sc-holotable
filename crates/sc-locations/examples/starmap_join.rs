@@ -54,6 +54,7 @@ fn vec3(raw: &str) -> Option<[f64; 3]> {
 }
 
 struct Ent {
+    #[allow(dead_code)] // kept for debugging dumps
     name: String,
     pos: Option<[f64; 3]>,
     socpak: String,

@@ -2,10 +2,11 @@
 //!
 //! The DCB stores every primitive/reference value as flat deduplicated pools
 //! (svarog `raw_pool_data`) + the string tables. We test each pool:
-//!   - uint32 / int32 / uint64 → LITERAL membership (a stored location id)
-//!   - GUID pool → class_crc + crc32c/IEEE over bytes (incl. reversed)
-//!   - both string tables → crc32c + crc32-IEEE over each string (±case)
-//! against the 209 mission location CRCs.
+//! - uint32 / int32 / uint64 → LITERAL membership (a stored location id)
+//! - GUID pool → class_crc + crc32c/IEEE over bytes (incl. reversed)
+//! - both string tables → crc32c + crc32-IEEE over each string (±case)
+//!
+//! All are tested against the 209 mission location CRCs.
 //!
 //! ```bash
 //! cargo run -p sc-locations --release --example dcb_value_sweep -- <loc_targets.txt> [loc_resolved.tsv]

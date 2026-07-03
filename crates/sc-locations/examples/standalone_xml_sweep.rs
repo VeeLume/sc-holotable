@@ -2,8 +2,9 @@
 //! preimage. These were NEVER scanned: socpak_guid_sweep only opens .socpak
 //! files; Game2.dcb scans only covered the DataForge. This scans the RAW bytes
 //! of each standalone XML (CryXmlB string table lives in there as ASCII) for:
-//!   - ASCII guid strings (dash form, with or without braces) -> class_crc + crc32c/ieee (bytes+rev)
-//!   - literal u32 windows (LE+BE) == target
+//! - ASCII guid strings (dash form, with or without braces) -> class_crc + crc32c/ieee (bytes+rev)
+//! - literal u32 windows (LE+BE) == target
+//!
 //! Also DECODES the CryXml and crc's every attribute VALUE + tag string under
 //! crc32c + crc32-ieee (+/- lowercase) to catch a name/key preimage.
 //!

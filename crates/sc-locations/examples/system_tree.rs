@@ -141,6 +141,7 @@ fn report_missing(
         slot.0.push((name, parent));
     }
 
+    #[allow(clippy::type_complexity)]
     let mut kinds: Vec<(&String, &(Vec<(String, String)>, u32))> = by_kind.iter().collect();
     // Worst-covered kinds first (by missing count).
     kinds.sort_by_key(|(_, (m, _))| std::cmp::Reverse(m.len()));
