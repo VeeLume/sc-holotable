@@ -7,7 +7,8 @@
 #   3. cargo fmt --all
 #   4. cargo clippy --fix on sc-extract-generated (the crate that holds the
 #      generator output). Skipped with -SkipClippy.
-#   5. Stage everything, commit with "Regenerate DataCore bindings (SC <version>)".
+#   5. Stage everything, commit with
+#      "chore(datacore): regenerate bindings (SC <version>)".
 #   6. With -Publish: push current branch and create an annotated tag
 #      "datacore/<sc_version>" pointing at the new commit, then push the tag.
 #
@@ -211,7 +212,8 @@ if (-not $diffCached) {
     exit 0
 }
 
-$commitMsg = "Regenerate DataCore bindings (SC $launcherVersion)"
+# Conventional Commits format - the repo's commit-msg hook rejects anything else.
+$commitMsg = "chore(datacore): regenerate bindings (SC $launcherVersion)"
 git commit -m $commitMsg
 if ($LASTEXITCODE -ne 0) { Die "git commit failed" }
 Write-Host "Committed: $commitMsg"
