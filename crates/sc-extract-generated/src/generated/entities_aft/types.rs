@@ -40,7 +40,10 @@ impl<'a> Extract<'a> for EntityEventCallbackComponentParams {
 
 /// DCB type: `AreaEventCallbackComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct AreaEventCallbackComponentParams {}
+pub struct AreaEventCallbackComponentParams {
+    /// `trackStreamingGroupRoots` (Boolean)
+    pub track_streaming_group_roots: bool,
+}
 
 impl Pooled for AreaEventCallbackComponentParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -53,7 +56,11 @@ impl Pooled for AreaEventCallbackComponentParams {
 
 impl<'a> Extract<'a> for AreaEventCallbackComponentParams {
     const TYPE_NAME: &'static str = "AreaEventCallbackComponentParams";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            track_streaming_group_roots: inst
+                .get_bool("trackStreamingGroupRoots")
+                .unwrap_or_default(),
+        }
     }
 }

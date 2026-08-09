@@ -234,6 +234,14 @@ pub enum AbilityType {
     Carry2H,
     /// DCB value: `Equip`
     Equip,
+    /// DCB value: `EquipPistol`
+    EquipPistol,
+    /// DCB value: `EquipStocked`
+    EquipStocked,
+    /// DCB value: `EquipShouldered`
+    EquipShouldered,
+    /// DCB value: `EquipHeavyHip`
+    EquipHeavyHip,
     /// DCB value: `SocialEmote`
     SocialEmote,
     /// DCB value: `Fall`
@@ -348,6 +356,10 @@ pub enum AbilityType {
     SelfTarget,
     /// DCB value: `ForceReactions`
     ForceReactions,
+    /// DCB value: `ForceReactionStagger`
+    ForceReactionStagger,
+    /// DCB value: `ForceReactionKnockdown`
+    ForceReactionKnockdown,
     /// DCB value: `SoftLockWeapons`
     SoftLockWeapons,
     /// DCB value: `AnyPlayerAnimatedInteraction`
@@ -453,6 +465,10 @@ impl AbilityType {
             "Carry" => Self::Carry,
             "Carry2H" => Self::Carry2H,
             "Equip" => Self::Equip,
+            "EquipPistol" => Self::EquipPistol,
+            "EquipStocked" => Self::EquipStocked,
+            "EquipShouldered" => Self::EquipShouldered,
+            "EquipHeavyHip" => Self::EquipHeavyHip,
             "SocialEmote" => Self::SocialEmote,
             "Fall" => Self::Fall,
             "Inspect" => Self::Inspect,
@@ -510,6 +526,8 @@ impl AbilityType {
             "DrunkStumble" => Self::DrunkStumble,
             "SelfTarget" => Self::SelfTarget,
             "ForceReactions" => Self::ForceReactions,
+            "ForceReactionStagger" => Self::ForceReactionStagger,
+            "ForceReactionKnockdown" => Self::ForceReactionKnockdown,
             "SoftLockWeapons" => Self::SoftLockWeapons,
             "AnyPlayerAnimatedInteraction" => Self::AnyPlayerAnimatedInteraction,
             "LeftHandPlayerAnimatedInteraction" => Self::LeftHandPlayerAnimatedInteraction,
@@ -589,6 +607,10 @@ impl AbilityType {
             Self::Carry => "Carry",
             Self::Carry2H => "Carry2H",
             Self::Equip => "Equip",
+            Self::EquipPistol => "EquipPistol",
+            Self::EquipStocked => "EquipStocked",
+            Self::EquipShouldered => "EquipShouldered",
+            Self::EquipHeavyHip => "EquipHeavyHip",
             Self::SocialEmote => "SocialEmote",
             Self::Fall => "Fall",
             Self::Inspect => "Inspect",
@@ -646,6 +668,8 @@ impl AbilityType {
             Self::DrunkStumble => "DrunkStumble",
             Self::SelfTarget => "SelfTarget",
             Self::ForceReactions => "ForceReactions",
+            Self::ForceReactionStagger => "ForceReactionStagger",
+            Self::ForceReactionKnockdown => "ForceReactionKnockdown",
             Self::SoftLockWeapons => "SoftLockWeapons",
             Self::AnyPlayerAnimatedInteraction => "AnyPlayerAnimatedInteraction",
             Self::LeftHandPlayerAnimatedInteraction => "LeftHandPlayerAnimatedInteraction",
@@ -1381,6 +1405,58 @@ impl ActorStateFilterByCharacterType {
     }
 }
 
+/// DCB enum: `ActorStateFilterByEquippedArmorClass`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum ActorStateFilterByEquippedArmorClass {
+    /// DCB value: `Any`
+    Any,
+    /// DCB value: `SuperHeavy`
+    SuperHeavy,
+    /// DCB value: `Heavy`
+    Heavy,
+    /// DCB value: `Medium`
+    Medium,
+    /// DCB value: `Light`
+    Light,
+    /// DCB value: `None`
+    None,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl ActorStateFilterByEquippedArmorClass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "SuperHeavy" => Self::SuperHeavy,
+            "Heavy" => Self::Heavy,
+            "Medium" => Self::Medium,
+            "Light" => Self::Light,
+            "None" => Self::None,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::SuperHeavy => "SuperHeavy",
+            Self::Heavy => "Heavy",
+            Self::Medium => "Medium",
+            Self::Light => "Light",
+            Self::None => "None",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
 /// DCB enum: `ActorStateFilterByHeldItemType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByHeldItemType {
@@ -1392,6 +1468,8 @@ pub enum ActorStateFilterByHeldItemType {
     Stocked,
     /// DCB value: `Shouldered`
     Shouldered,
+    /// DCB value: `HeavyHip`
+    HeavyHip,
     /// DCB value: `MeleeMode`
     MeleeMode,
     /// DCB value: `mobiGlas`
@@ -1430,6 +1508,7 @@ impl ActorStateFilterByHeldItemType {
             "Pistol" => Self::Pistol,
             "Stocked" => Self::Stocked,
             "Shouldered" => Self::Shouldered,
+            "HeavyHip" => Self::HeavyHip,
             "MeleeMode" => Self::MeleeMode,
             "mobiGlas" => Self::mobiGlas,
             "CombatThrowable" => Self::CombatThrowable,
@@ -1453,6 +1532,7 @@ impl ActorStateFilterByHeldItemType {
             Self::Pistol => "Pistol",
             Self::Stocked => "Stocked",
             Self::Shouldered => "Shouldered",
+            Self::HeavyHip => "HeavyHip",
             Self::MeleeMode => "MeleeMode",
             Self::mobiGlas => "mobiGlas",
             Self::CombatThrowable => "CombatThrowable",
@@ -3240,6 +3320,38 @@ impl BB_BindingsArithmeticType {
             Self::Max => "Max",
             Self::Mod => "Mod",
             Self::Pow => "Pow",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `BB_BindingsBuiltInVariableTypeBoolean`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum BB_BindingsBuiltInVariableTypeBoolean {
+    /// DCB value: `VR`
+    VR,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl BB_BindingsBuiltInVariableTypeBoolean {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "VR" => Self::VR,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::VR => "VR",
             Self::Unrecognized(s) => s,
         }
     }
@@ -8096,10 +8208,10 @@ pub enum BB_WidgetType {
     Light,
     /// DCB value: `Line`
     Line,
-    /// DCB value: `List`
-    List,
     /// DCB value: `LineList`
     LineList,
+    /// DCB value: `List`
+    List,
     /// DCB value: `Movie`
     Movie,
     /// DCB value: `ParticleEffect`
@@ -8126,6 +8238,12 @@ pub enum BB_WidgetType {
     VehicleEntity,
     /// DCB value: `Window`
     Window,
+    /// DCB value: `SharedWindow`
+    SharedWindow,
+    /// DCB value: `SharedWindowAtlasRegionBounds`
+    SharedWindowAtlasRegionBounds,
+    /// DCB value: `DustVolume`
+    DustVolume,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
 }
@@ -8154,8 +8272,8 @@ impl BB_WidgetType {
             "Image" => Self::Image,
             "Light" => Self::Light,
             "Line" => Self::Line,
-            "List" => Self::List,
             "LineList" => Self::LineList,
+            "List" => Self::List,
             "Movie" => Self::Movie,
             "ParticleEffect" => Self::ParticleEffect,
             "Polygon" => Self::Polygon,
@@ -8169,6 +8287,9 @@ impl BB_WidgetType {
             "TickBox" => Self::TickBox,
             "VehicleEntity" => Self::VehicleEntity,
             "Window" => Self::Window,
+            "SharedWindow" => Self::SharedWindow,
+            "SharedWindowAtlasRegionBounds" => Self::SharedWindowAtlasRegionBounds,
+            "DustVolume" => Self::DustVolume,
             _ => Self::Unrecognized(s.to_string()),
         }
     }
@@ -8193,8 +8314,8 @@ impl BB_WidgetType {
             Self::Image => "Image",
             Self::Light => "Light",
             Self::Line => "Line",
-            Self::List => "List",
             Self::LineList => "LineList",
+            Self::List => "List",
             Self::Movie => "Movie",
             Self::ParticleEffect => "ParticleEffect",
             Self::Polygon => "Polygon",
@@ -8208,6 +8329,9 @@ impl BB_WidgetType {
             Self::TickBox => "TickBox",
             Self::VehicleEntity => "VehicleEntity",
             Self::Window => "Window",
+            Self::SharedWindow => "SharedWindow",
+            Self::SharedWindowAtlasRegionBounds => "SharedWindowAtlasRegionBounds",
+            Self::DustVolume => "DustVolume",
             Self::Unrecognized(s) => s,
         }
     }
@@ -11748,6 +11872,46 @@ impl DisplayCategory {
             Self::Warning => "Warning",
             Self::MinorWarning => "MinorWarning",
             Self::Normal => "Normal",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `DissolveRange`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum DissolveRange {
+    /// DCB value: `OnlySelf`
+    OnlySelf,
+    /// DCB value: `AlsoChildren`
+    AlsoChildren,
+    /// DCB value: `AlsoChildrenRecursive`
+    AlsoChildrenRecursive,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl DissolveRange {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "OnlySelf" => Self::OnlySelf,
+            "AlsoChildren" => Self::AlsoChildren,
+            "AlsoChildrenRecursive" => Self::AlsoChildrenRecursive,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::OnlySelf => "OnlySelf",
+            Self::AlsoChildren => "AlsoChildren",
+            Self::AlsoChildrenRecursive => "AlsoChildrenRecursive",
             Self::Unrecognized(s) => s,
         }
     }
@@ -22325,6 +22489,130 @@ impl EInputPromptPriority {
     }
 }
 
+/// DCB enum: `EInstanceBarrierType`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum EInstanceBarrierType {
+    /// DCB value: `EntryBarrier`
+    EntryBarrier,
+    /// DCB value: `LoadingBarrier`
+    LoadingBarrier,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl EInstanceBarrierType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EntryBarrier" => Self::EntryBarrier,
+            "LoadingBarrier" => Self::LoadingBarrier,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EntryBarrier => "EntryBarrier",
+            Self::LoadingBarrier => "LoadingBarrier",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `EInstanceCleanupStrategy`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum EInstanceCleanupStrategy {
+    /// DCB value: `Unspecified`
+    Unspecified,
+    /// DCB value: `Bury`
+    Bury,
+    /// DCB value: `Stow`
+    Stow,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl EInstanceCleanupStrategy {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Unspecified" => Self::Unspecified,
+            "Bury" => Self::Bury,
+            "Stow" => Self::Stow,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Unspecified => "Unspecified",
+            Self::Bury => "Bury",
+            Self::Stow => "Stow",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `EInstanceLocationType`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum EInstanceLocationType {
+    /// DCB value: `Unspecified`
+    Unspecified,
+    /// DCB value: `PlayerHangar`
+    PlayerHangar,
+    /// DCB value: `StagingHangar`
+    StagingHangar,
+    /// DCB value: `DungeonOpen`
+    DungeonOpen,
+    /// DCB value: `DungeonClosed`
+    DungeonClosed,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl EInstanceLocationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Unspecified" => Self::Unspecified,
+            "PlayerHangar" => Self::PlayerHangar,
+            "StagingHangar" => Self::StagingHangar,
+            "DungeonOpen" => Self::DungeonOpen,
+            "DungeonClosed" => Self::DungeonClosed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Unspecified => "Unspecified",
+            Self::PlayerHangar => "PlayerHangar",
+            Self::StagingHangar => "StagingHangar",
+            Self::DungeonOpen => "DungeonOpen",
+            Self::DungeonClosed => "DungeonClosed",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
 /// DCB enum: `EInstanceType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EInstanceType {
@@ -25473,6 +25761,38 @@ impl ELocationTypeLevel {
     }
 }
 
+/// DCB enum: `ELogoutActionType`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum ELogoutActionType {
+    /// DCB value: `Drop`
+    Drop,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl ELogoutActionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Drop" => Self::Drop,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Drop => "Drop",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
 /// DCB enum: `ELootFullnessMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELootFullnessMode {
@@ -26194,6 +26514,18 @@ pub enum EMeshChunks {
     theta_r_leg_zone,
     /// DCB value: `theta_body_chest_zone`
     theta_body_chest_zone,
+    /// DCB value: `theta_pouch01_zone`
+    theta_pouch01_zone,
+    /// DCB value: `theta_pouch02_zone`
+    theta_pouch02_zone,
+    /// DCB value: `theta_pouch03_zone`
+    theta_pouch03_zone,
+    /// DCB value: `theta_pouch04_zone`
+    theta_pouch04_zone,
+    /// DCB value: `theta_pouch05_zone`
+    theta_pouch05_zone,
+    /// DCB value: `theta_pouch06_zone`
+    theta_pouch06_zone,
     /// DCB value: `pcg_eyebrows`
     pcg_eyebrows,
     /// DCB value: `pcg_r_ear`
@@ -26271,6 +26603,12 @@ impl EMeshChunks {
             "theta_l_leg_zone" => Self::theta_l_leg_zone,
             "theta_r_leg_zone" => Self::theta_r_leg_zone,
             "theta_body_chest_zone" => Self::theta_body_chest_zone,
+            "theta_pouch01_zone" => Self::theta_pouch01_zone,
+            "theta_pouch02_zone" => Self::theta_pouch02_zone,
+            "theta_pouch03_zone" => Self::theta_pouch03_zone,
+            "theta_pouch04_zone" => Self::theta_pouch04_zone,
+            "theta_pouch05_zone" => Self::theta_pouch05_zone,
+            "theta_pouch06_zone" => Self::theta_pouch06_zone,
             "pcg_eyebrows" => Self::pcg_eyebrows,
             "pcg_r_ear" => Self::pcg_r_ear,
             "pcg_l_ear" => Self::pcg_l_ear,
@@ -26338,6 +26676,12 @@ impl EMeshChunks {
             Self::theta_l_leg_zone => "theta_l_leg_zone",
             Self::theta_r_leg_zone => "theta_r_leg_zone",
             Self::theta_body_chest_zone => "theta_body_chest_zone",
+            Self::theta_pouch01_zone => "theta_pouch01_zone",
+            Self::theta_pouch02_zone => "theta_pouch02_zone",
+            Self::theta_pouch03_zone => "theta_pouch03_zone",
+            Self::theta_pouch04_zone => "theta_pouch04_zone",
+            Self::theta_pouch05_zone => "theta_pouch05_zone",
+            Self::theta_pouch06_zone => "theta_pouch06_zone",
             Self::pcg_eyebrows => "pcg_eyebrows",
             Self::pcg_r_ear => "pcg_r_ear",
             Self::pcg_l_ear => "pcg_l_ear",
@@ -31286,6 +31630,8 @@ pub enum EScanInformation {
     OtherTrauma3,
     /// DCB value: `OtherTrauma4`
     OtherTrauma4,
+    /// DCB value: `OwnershipStatus`
+    OwnershipStatus,
     /// DCB value: `PassengerCount`
     PassengerCount,
     /// DCB value: `PowerAvailability`
@@ -31395,6 +31741,7 @@ impl EScanInformation {
             "OtherTrauma2" => Self::OtherTrauma2,
             "OtherTrauma3" => Self::OtherTrauma3,
             "OtherTrauma4" => Self::OtherTrauma4,
+            "OwnershipStatus" => Self::OwnershipStatus,
             "PassengerCount" => Self::PassengerCount,
             "PowerAvailability" => Self::PowerAvailability,
             "PowerSwitch" => Self::PowerSwitch,
@@ -31475,6 +31822,7 @@ impl EScanInformation {
             Self::OtherTrauma2 => "OtherTrauma2",
             Self::OtherTrauma3 => "OtherTrauma3",
             Self::OtherTrauma4 => "OtherTrauma4",
+            Self::OwnershipStatus => "OwnershipStatus",
             Self::PassengerCount => "PassengerCount",
             Self::PowerAvailability => "PowerAvailability",
             Self::PowerSwitch => "PowerSwitch",
@@ -31570,6 +31918,8 @@ pub enum EScanProcedure {
     VehicleMasterMode,
     /// DCB value: `VehicleModel`
     VehicleModel,
+    /// DCB value: `VehicleOwnershipStatus`
+    VehicleOwnershipStatus,
     /// DCB value: `VehicleRole`
     VehicleRole,
     /// DCB value: `VehicleSelfDestruct`
@@ -31619,6 +31969,7 @@ impl EScanProcedure {
             "SubItems" => Self::SubItems,
             "VehicleMasterMode" => Self::VehicleMasterMode,
             "VehicleModel" => Self::VehicleModel,
+            "VehicleOwnershipStatus" => Self::VehicleOwnershipStatus,
             "VehicleRole" => Self::VehicleRole,
             "VehicleSelfDestruct" => Self::VehicleSelfDestruct,
             "WantedLevel" => Self::WantedLevel,
@@ -31661,6 +32012,7 @@ impl EScanProcedure {
             Self::SubItems => "SubItems",
             Self::VehicleMasterMode => "VehicleMasterMode",
             Self::VehicleModel => "VehicleModel",
+            Self::VehicleOwnershipStatus => "VehicleOwnershipStatus",
             Self::VehicleRole => "VehicleRole",
             Self::VehicleSelfDestruct => "VehicleSelfDestruct",
             Self::WantedLevel => "WantedLevel",
@@ -33565,6 +33917,42 @@ impl ESunShadowMode {
     }
 }
 
+/// DCB enum: `ETakedownFailArmorClass`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum ETakedownFailArmorClass {
+    /// DCB value: `Heavy`
+    Heavy,
+    /// DCB value: `SuperHeavy`
+    SuperHeavy,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl ETakedownFailArmorClass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Heavy" => Self::Heavy,
+            "SuperHeavy" => Self::SuperHeavy,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Heavy => "Heavy",
+            Self::SuperHeavy => "SuperHeavy",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
 /// DCB enum: `ETakedownTechniqueImprovementType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ETakedownTechniqueImprovementType {
@@ -35104,6 +35492,54 @@ impl EWeaponDisplayStat {
             Self::FireRate => "FireRate",
             Self::AmmoCapacity => "AmmoCapacity",
             Self::Modes => "Modes",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `EWeaponEquipCategory`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum EWeaponEquipCategory {
+    /// DCB value: `None`
+    None,
+    /// DCB value: `Pistol`
+    Pistol,
+    /// DCB value: `Stocked`
+    Stocked,
+    /// DCB value: `Shouldered`
+    Shouldered,
+    /// DCB value: `HeavyHip`
+    HeavyHip,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl EWeaponEquipCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Pistol" => Self::Pistol,
+            "Stocked" => Self::Stocked,
+            "Shouldered" => Self::Shouldered,
+            "HeavyHip" => Self::HeavyHip,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Pistol => "Pistol",
+            Self::Stocked => "Stocked",
+            Self::Shouldered => "Shouldered",
+            Self::HeavyHip => "HeavyHip",
             Self::Unrecognized(s) => s,
         }
     }

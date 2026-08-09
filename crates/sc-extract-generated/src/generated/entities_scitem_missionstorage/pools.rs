@@ -18,4 +18,7 @@ pub struct EntitiesScitemMissionstoragePools {
     pub interaction_condition_delivery_mission_item:
         Vec<Option<InteractionConditionDeliveryMissionItem>>,
     pub delivery_item_port_component_params: Vec<Option<DeliveryItemPortComponentParams>>,
+    pub gameplay_trigger_condition_check_state_other:
+        Vec<Option<GameplayTriggerConditionCheckStateOther>>,
+    pub user_variable_check_bool_equal: Vec<Option<UserVariableCheckBoolEqual>>,
 }

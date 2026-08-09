@@ -19,8 +19,6 @@ pub struct EntitiesScitemGameplayinteractablesPools {
     pub sreward_generator_component_params: Vec<Option<SRewardGeneratorComponentParams>>,
     pub sspawner_analytics_event_gameplay_trigger:
         Vec<Option<SSpawnerAnalyticsEventGameplayTrigger>>,
-    pub sdissolve_self_gameplay_trigger: Vec<Option<SDissolveSelfGameplayTrigger>>,
-    pub gameplay_trigger_target_type_random: Vec<Option<GameplayTrigger_TargetType_Random>>,
     pub self_interaction_trigger: Vec<Option<SelfInteractionTrigger>>,
     pub gameplay_trigger_physics_set_parameter_proxy_state:
         Vec<Option<GameplayTrigger_Physics_SetParameter_ProxyState>>,

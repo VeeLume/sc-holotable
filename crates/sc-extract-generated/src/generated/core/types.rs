@@ -1100,25 +1100,6 @@ impl<'a> Extract<'a> for SCharacterValidationParams {
     }
 }
 
-/// DCB type: `TemperatureDamageControl`
-pub struct TemperatureDamageControl {}
-
-impl Pooled for TemperatureDamageControl {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.core.temperature_damage_control
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.core.temperature_damage_control
-    }
-}
-
-impl<'a> Extract<'a> for TemperatureDamageControl {
-    const TYPE_NAME: &'static str = "TemperatureDamageControl";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
-    }
-}
-
 /// DCB type: `LegacyCraftingCost_Base`
 pub struct LegacyCraftingCost_Base {}
 
@@ -4106,6 +4087,44 @@ impl<'a> Extract<'a> for ControlHintAlwaysDisplayCondition {
     }
 }
 
+/// DCB type: `SDCLogoutRuleDescription_Base`
+pub struct SDCLogoutRuleDescription_Base {}
+
+impl Pooled for SDCLogoutRuleDescription_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.sdclogout_rule_description_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.sdclogout_rule_description_base
+    }
+}
+
+impl<'a> Extract<'a> for SDCLogoutRuleDescription_Base {
+    const TYPE_NAME: &'static str = "SDCLogoutRuleDescription_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `SDCLogoutEntitySelector_Base`
+pub struct SDCLogoutEntitySelector_Base {}
+
+impl Pooled for SDCLogoutEntitySelector_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.sdclogout_entity_selector_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.sdclogout_entity_selector_base
+    }
+}
+
+impl<'a> Extract<'a> for SDCLogoutEntitySelector_Base {
+    const TYPE_NAME: &'static str = "SDCLogoutEntitySelector_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `LongTermPersistenceSubTypeListOption`
 pub struct LongTermPersistenceSubTypeListOption {}
 
@@ -5714,6 +5733,25 @@ impl Pooled for SUserVariableOperationType {
 
 impl<'a> Extract<'a> for SUserVariableOperationType {
     const TYPE_NAME: &'static str = "SUserVariableOperationType";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `GameplayTrigger_SpawnRequestType_Base`
+pub struct GameplayTrigger_SpawnRequestType_Base {}
+
+impl Pooled for GameplayTrigger_SpawnRequestType_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.gameplay_trigger_spawn_request_type_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.gameplay_trigger_spawn_request_type_base
+    }
+}
+
+impl<'a> Extract<'a> for GameplayTrigger_SpawnRequestType_Base {
+    const TYPE_NAME: &'static str = "GameplayTrigger_SpawnRequestType_Base";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }

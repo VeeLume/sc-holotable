@@ -308,6 +308,8 @@ pub struct MotionTurnSetupFiltered {
     pub filter_by_lean_state: ActorStateFilterByLeanState,
     /// `filterByHeldItemType` (EnumChoice)
     pub filter_by_held_item_type: ActorStateFilterByHeldItemType,
+    /// `filterByEquippedArmorClass` (EnumChoice)
+    pub filter_by_equipped_armor_class: ActorStateFilterByEquippedArmorClass,
     /// `filterBySkeleton` (EnumChoice)
     pub filter_by_skeleton: ActorStateFilterBySkeleton,
     /// `filterByCharacterType` (EnumChoice)
@@ -361,6 +363,9 @@ impl<'a> Extract<'a> for MotionTurnSetupFiltered {
             ),
             filter_by_held_item_type: ActorStateFilterByHeldItemType::from_dcb_str(
                 inst.get_str("filterByHeldItemType").unwrap_or(""),
+            ),
+            filter_by_equipped_armor_class: ActorStateFilterByEquippedArmorClass::from_dcb_str(
+                inst.get_str("filterByEquippedArmorClass").unwrap_or(""),
             ),
             filter_by_skeleton: ActorStateFilterBySkeleton::from_dcb_str(
                 inst.get_str("filterBySkeleton").unwrap_or(""),

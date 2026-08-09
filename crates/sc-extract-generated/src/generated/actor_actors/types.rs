@@ -250,6 +250,8 @@ pub struct SDummyPlayerComponentParams {
     pub ladder_config_v2: Option<CigGuid>,
     /// `proceduralAnimationRecord` (Reference)
     pub procedural_animation_record: Option<CigGuid>,
+    /// `headOverlayOffset` (Reference)
+    pub head_overlay_offset: Option<CigGuid>,
     /// `movementModifiersRecord` (Reference)
     pub movement_modifiers_record: Option<CigGuid>,
     /// `movementSetsRecord` (Reference)
@@ -398,6 +400,10 @@ impl<'a> Extract<'a> for SDummyPlayerComponentParams {
                 .map(|r| r.guid),
             procedural_animation_record: inst
                 .get("proceduralAnimationRecord")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            head_overlay_offset: inst
+                .get("headOverlayOffset")
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
             movement_modifiers_record: inst

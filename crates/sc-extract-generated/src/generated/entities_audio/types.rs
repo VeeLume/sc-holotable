@@ -594,6 +594,8 @@ pub struct MusicAreaComponentParams {
     pub use_area_component: bool,
     /// `suppressLocationUpdates` (Boolean)
     pub suppress_location_updates: bool,
+    /// `ignoreLeavingLargerAreas` (Boolean)
+    pub ignore_leaving_larger_areas: bool,
 }
 
 impl Pooled for MusicAreaComponentParams {
@@ -666,6 +668,9 @@ impl<'a> Extract<'a> for MusicAreaComponentParams {
             },
             use_area_component: inst.get_bool("useAreaComponent").unwrap_or_default(),
             suppress_location_updates: inst.get_bool("suppressLocationUpdates").unwrap_or_default(),
+            ignore_leaving_larger_areas: inst
+                .get_bool("ignoreLeavingLargerAreas")
+                .unwrap_or_default(),
         }
     }
 }

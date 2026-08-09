@@ -115,6 +115,35 @@ impl<'a> Extract<'a> for STargetSelectorColorHighlighting {
     }
 }
 
+/// DCB type: `STargetSelectorHitMarkerParams`
+pub struct STargetSelectorHitMarkerParams {
+    /// `elementLifetime` (Single)
+    pub element_lifetime: f32,
+    /// `destructionElementLifetime` (Single)
+    pub destruction_element_lifetime: f32,
+}
+
+impl Pooled for STargetSelectorHitMarkerParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.hudparams.starget_selector_hit_marker_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.hudparams.starget_selector_hit_marker_params
+    }
+}
+
+impl<'a> Extract<'a> for STargetSelectorHitMarkerParams {
+    const TYPE_NAME: &'static str = "STargetSelectorHitMarkerParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            element_lifetime: inst.get_f32("elementLifetime").unwrap_or_default(),
+            destruction_element_lifetime: inst
+                .get_f32("destructionElementLifetime")
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `STargetSelectorHudParams`
 pub struct STargetSelectorHudParams {
     /// `calculateLockedTargetBracket` (Boolean)
@@ -143,6 +172,8 @@ pub struct STargetSelectorHudParams {
     pub outline_subtargets_objective: Option<Handle<STargetSelectorColorHighlighting>>,
     /// `outlineSubtargetsObjectiveLocked` (Class)
     pub outline_subtargets_objective_locked: Option<Handle<STargetSelectorColorHighlighting>>,
+    /// `hitMarkerParams` (Class)
+    pub hit_marker_params: Option<Handle<STargetSelectorHitMarkerParams>>,
 }
 
 impl Pooled for STargetSelectorHudParams {
@@ -218,6 +249,15 @@ impl<'a> Extract<'a> for STargetSelectorHudParams {
             {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<STargetSelectorColorHighlighting>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+            hit_marker_params: match inst.get("hitMarkerParams") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<STargetSelectorHitMarkerParams>(
                         Instance::from_inline_data(b.db, struct_index, data),
                         false,
                     ))

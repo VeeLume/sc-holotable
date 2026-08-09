@@ -48,3 +48,38 @@ impl<'a> Extract<'a> for TagEntityFilter {
         }
     }
 }
+
+/// DCB type: `UserVariableCheckIntGreater`
+/// Inherits from: `UserVariableCheck`
+pub struct UserVariableCheckIntGreater {
+    /// `variableName` (String)
+    pub variable_name: String,
+    /// `valueToCheck` (Int32)
+    pub value_to_check: i32,
+}
+
+impl Pooled for UserVariableCheckIntGreater {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_mastercontrollerentities
+            .user_variable_check_int_greater
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_mastercontrollerentities
+            .user_variable_check_int_greater
+    }
+}
+
+impl<'a> Extract<'a> for UserVariableCheckIntGreater {
+    const TYPE_NAME: &'static str = "UserVariableCheckIntGreater";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            variable_name: inst
+                .get_str("variableName")
+                .map(String::from)
+                .unwrap_or_default(),
+            value_to_check: inst.get_i32("valueToCheck").unwrap_or_default(),
+        }
+    }
+}

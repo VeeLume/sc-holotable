@@ -17,7 +17,6 @@ use svarog_common::CigGuid;
 /// Record index for the `missiondata` feature.
 #[derive(Default)]
 pub struct MissiondataIndex {
-    pub mission_location_template: HashMap<CigGuid, Handle<MissionLocationTemplate>>,
     pub entity_cluster_id: HashMap<CigGuid, Handle<EntityClusterId>>,
     pub entity_cluster_member: HashMap<CigGuid, Handle<EntityClusterMember>>,
     pub location_resource_slot: HashMap<CigGuid, Handle<LocationResourceSlot>>,
@@ -28,7 +27,6 @@ impl MissiondataIndex {
     #[allow(unused_mut)]
     pub fn len(&self) -> usize {
         let mut total = 0usize;
-        total += self.mission_location_template.len();
         total += self.entity_cluster_id.len();
         total += self.entity_cluster_member.len();
         total += self.location_resource_slot.len();

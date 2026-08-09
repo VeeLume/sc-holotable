@@ -1117,6 +1117,138 @@ impl<'a> Extract<'a> for CameraTrackviewConfig {
     }
 }
 
+/// DCB type: `BuildModeConfig`
+pub struct BuildModeConfig {
+    /// `panSpeed` (Single)
+    pub pan_speed: f32,
+    /// `zoomSpeed` (Single)
+    pub zoom_speed: f32,
+    /// `initialDistance` (Single)
+    pub initial_distance: f32,
+    /// `minDistance` (Single)
+    pub min_distance: f32,
+    /// `maxDistance` (Single)
+    pub max_distance: f32,
+    /// `yawInputDeadzone` (Single)
+    pub yaw_input_deadzone: f32,
+    /// `yawInputSpeedModifier` (Single)
+    pub yaw_input_speed_modifier: f32,
+    /// `initialYaw` (Single)
+    pub initial_yaw: f32,
+    /// `pitchInputDeadzone` (Single)
+    pub pitch_input_deadzone: f32,
+    /// `pitchInputSpeedModifier` (Single)
+    pub pitch_input_speed_modifier: f32,
+    /// `initialPitch` (Single)
+    pub initial_pitch: f32,
+    /// `minPitch` (Single)
+    pub min_pitch: f32,
+    /// `maxPitch` (Single)
+    pub max_pitch: f32,
+    /// `maxRange` (Single)
+    pub max_range: f32,
+    /// `autoPilotFlyToTime` (Single)
+    pub auto_pilot_fly_to_time: f32,
+}
+
+impl Pooled for BuildModeConfig {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.cameras.build_mode_config
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.cameras.build_mode_config
+    }
+}
+
+impl<'a> Extract<'a> for BuildModeConfig {
+    const TYPE_NAME: &'static str = "BuildModeConfig";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            pan_speed: inst.get_f32("panSpeed").unwrap_or_default(),
+            zoom_speed: inst.get_f32("zoomSpeed").unwrap_or_default(),
+            initial_distance: inst.get_f32("initialDistance").unwrap_or_default(),
+            min_distance: inst.get_f32("minDistance").unwrap_or_default(),
+            max_distance: inst.get_f32("maxDistance").unwrap_or_default(),
+            yaw_input_deadzone: inst.get_f32("yawInputDeadzone").unwrap_or_default(),
+            yaw_input_speed_modifier: inst.get_f32("yawInputSpeedModifier").unwrap_or_default(),
+            initial_yaw: inst.get_f32("initialYaw").unwrap_or_default(),
+            pitch_input_deadzone: inst.get_f32("pitchInputDeadzone").unwrap_or_default(),
+            pitch_input_speed_modifier: inst.get_f32("pitchInputSpeedModifier").unwrap_or_default(),
+            initial_pitch: inst.get_f32("initialPitch").unwrap_or_default(),
+            min_pitch: inst.get_f32("minPitch").unwrap_or_default(),
+            max_pitch: inst.get_f32("maxPitch").unwrap_or_default(),
+            max_range: inst.get_f32("maxRange").unwrap_or_default(),
+            auto_pilot_fly_to_time: inst.get_f32("autoPilotFlyToTime").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `CameraBuildModeConfig`
+/// Inherits from: `CameraBaseConfig`
+pub struct CameraBuildModeConfig {
+    /// `baseSettings` (Class)
+    pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
+    /// `blendConfig` (Class)
+    pub blend_config: Option<Handle<CameraBlendConfig>>,
+    /// `FOVConfig` (Class)
+    pub fovconfig: Option<Handle<CameraFOVConfig>>,
+    /// `buildModeConfig` (Class)
+    pub build_mode_config: Option<Handle<BuildModeConfig>>,
+}
+
+impl Pooled for CameraBuildModeConfig {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.cameras.camera_build_mode_config
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.cameras.camera_build_mode_config
+    }
+}
+
+impl<'a> Extract<'a> for CameraBuildModeConfig {
+    const TYPE_NAME: &'static str = "CameraBuildModeConfig";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            base_settings: match inst.get("baseSettings") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<CameraBaseSettingsConfig>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+            blend_config: match inst.get("blendConfig") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<CameraBlendConfig>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+            fovconfig: match inst.get("FOVConfig") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<CameraFOVConfig>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+            build_mode_config: match inst.get("buildModeConfig") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<BuildModeConfig>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `CinematicCameraControllerSetup`
 pub struct CinematicCameraControllerSetup {
     /// `actionHoldTime` (Single)

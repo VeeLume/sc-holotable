@@ -20,7 +20,5 @@ pub struct EntitiesScitemHumanPools {
     pub sdespawn_rule_on_fall_below: Vec<Option<SDespawnRule_OnFallBelow>>,
     pub delivery_locker_component_params: Vec<Option<DeliveryLockerComponentParams>>,
     pub class_entity_filter: Vec<Option<ClassEntityFilter>>,
-    pub gameplay_trigger_condition_not: Vec<Option<GameplayTriggerConditionNOT>>,
     pub user_variable_check_int_less: Vec<Option<UserVariableCheckIntLess>>,
-    pub user_variable_subtract_int_value: Vec<Option<UserVariableSubtractIntValue>>,
 }

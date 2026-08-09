@@ -22,6 +22,7 @@ pub struct EntitiesScitemShipsPools {
     pub sifcsmodifiers_legacy: Vec<Option<SIFCSModifiersLegacy>>,
     pub self_destruct_state_modifier: Vec<Option<SelfDestructStateModifier>>,
     pub scitem_empparams: Vec<Option<SCItemEMPParams>>,
+    pub scitem_landing_gear_params: Vec<Option<SCItemLandingGearParams>>,
     pub scitem_space_mine_params: Vec<Option<SCItemSpaceMineParams>>,
     pub smfdparams_diagnostics: Vec<Option<SMFDParamsDiagnostics>>,
     pub sdummy_launcher: Vec<Option<SDummyLauncher>>,

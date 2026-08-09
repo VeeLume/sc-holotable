@@ -20,6 +20,7 @@ pub struct EntitiesObjectcontainersPools {
     pub sentity_component_procedural_ocmodifier_params:
         Vec<Option<SEntityComponentProceduralOCModifierParams>>,
     pub sorbit_component_params: Vec<Option<SOrbitComponentParams>>,
+    pub brokered_instance_params: Vec<Option<BrokeredInstanceParams>>,
     pub sentity_component_physics_grid_params: Vec<Option<SEntityComponentPhysicsGridParams>>,
     pub sentity_base_physics_grid_params: Vec<Option<SEntityBasePhysicsGridParams>>,
 }

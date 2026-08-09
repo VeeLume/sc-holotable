@@ -59,8 +59,6 @@ pub struct DataPools {
     pub chatmanager: super::chatmanager::ChatmanagerPools,
     #[cfg(feature = "commodityconfiguration")]
     pub commodityconfiguration: super::commodityconfiguration::CommodityconfigurationPools,
-    #[cfg(feature = "commoditytypedatabase")]
-    pub commoditytypedatabase: super::commoditytypedatabase::CommoditytypedatabasePools,
     #[cfg(feature = "communicationatlconfig")]
     pub communicationatlconfig: super::communicationatlconfig::CommunicationatlconfigPools,
     #[cfg(feature = "communicationsystem")]
@@ -119,6 +117,8 @@ pub struct DataPools {
     pub entities_corpsemarker: super::entities_corpsemarker::EntitiesCorpsemarkerPools,
     #[cfg(feature = "entities-cuttableshape")]
     pub entities_cuttableshape: super::entities_cuttableshape::EntitiesCuttableshapePools,
+    #[cfg(feature = "entities-defendarea_inareaassignment")]
+    pub entities_defendarea_inareaassignment: super::entities_defendarea_inareaassignment::EntitiesDefendarea_inareaassignmentPools,
     #[cfg(feature = "entities-destruction")]
     pub entities_destruction: super::entities_destruction::EntitiesDestructionPools,
     #[cfg(feature = "entities-displayscreens")]
@@ -131,6 +131,8 @@ pub struct DataPools {
     pub entities_entityspawners: super::entities_entityspawners::EntitiesEntityspawnersPools,
     #[cfg(feature = "entities-environment")]
     pub entities_environment: super::entities_environment::EntitiesEnvironmentPools,
+    #[cfg(feature = "entities-explosion_triggerable_mortar_soo")]
+    pub entities_explosion_triggerable_mortar_soo: super::entities_explosion_triggerable_mortar_soo::EntitiesExplosion_triggerable_mortar_sooPools,
     #[cfg(feature = "entities-gamerulessingleton")]
     pub entities_gamerulessingleton: super::entities_gamerulessingleton::EntitiesGamerulessingletonPools,
     #[cfg(feature = "entities-gascloud")]
@@ -141,6 +143,8 @@ pub struct DataPools {
     pub entities_groundvehicles: super::entities_groundvehicles::EntitiesGroundvehiclesPools,
     #[cfg(feature = "entities-holofield")]
     pub entities_holofield: super::entities_holofield::EntitiesHolofieldPools,
+    #[cfg(feature = "entities-instancebarrier")]
+    pub entities_instancebarrier: super::entities_instancebarrier::EntitiesInstancebarrierPools,
     #[cfg(feature = "entities-instancedinteriormanager")]
     pub entities_instancedinteriormanager: super::entities_instancedinteriormanager::EntitiesInstancedinteriormanagerPools,
     #[cfg(feature = "entities-jumppoints")]
@@ -327,6 +331,8 @@ pub struct DataPools {
     pub globalcuttableshapeparams: super::globalcuttableshapeparams::GlobalcuttableshapeparamsPools,
     #[cfg(feature = "globalinteractionparams")]
     pub globalinteractionparams: super::globalinteractionparams::GlobalinteractionparamsPools,
+    #[cfg(feature = "globallogoutparams")]
+    pub globallogoutparams: super::globallogoutparams::GloballogoutparamsPools,
     #[cfg(feature = "globalshopparams")]
     pub globalshopparams: super::globalshopparams::GlobalshopparamsPools,
     #[cfg(feature = "globaltutorialparams")]
@@ -341,8 +347,12 @@ pub struct DataPools {
     pub hudparams: super::hudparams::HudparamsPools,
     #[cfg(feature = "ifcs")]
     pub ifcs: super::ifcs::IfcsPools,
+    #[cfg(feature = "instancebroker")]
+    pub instancebroker: super::instancebroker::InstancebrokerPools,
     #[cfg(feature = "instancedinterior")]
     pub instancedinterior: super::instancedinterior::InstancedinteriorPools,
+    #[cfg(feature = "instancestreaminghelper")]
+    pub instancestreaminghelper: super::instancestreaminghelper::InstancestreaminghelperPools,
     #[cfg(feature = "interactionconditions")]
     pub interactionconditions: super::interactionconditions::InteractionconditionsPools,
     #[cfg(feature = "inventorycontainers")]

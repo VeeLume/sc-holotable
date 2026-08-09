@@ -897,6 +897,42 @@ impl<'a> Extract<'a> for SContractPlugin_SScenarioProgress {
     }
 }
 
+/// DCB type: `SContractPlugin_SMissionProvider`
+/// Inherits from: `SContractPlugin_Base`
+pub struct SContractPlugin_SMissionProvider {
+    /// `tag` (Reference)
+    pub tag: Option<CigGuid>,
+    /// `storylineMission` (Boolean)
+    pub storyline_mission: bool,
+    /// `availableToAcceptFromContractManager` (Boolean)
+    pub available_to_accept_from_contract_manager: bool,
+}
+
+impl Pooled for SContractPlugin_SMissionProvider {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.scontract_plugin_smission_provider
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.scontract_plugin_smission_provider
+    }
+}
+
+impl<'a> Extract<'a> for SContractPlugin_SMissionProvider {
+    const TYPE_NAME: &'static str = "SContractPlugin_SMissionProvider";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            tag: inst
+                .get("tag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            storyline_mission: inst.get_bool("storylineMission").unwrap_or_default(),
+            available_to_accept_from_contract_manager: inst
+                .get_bool("availableToAcceptFromContractManager")
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `ContractPrerequisite_Locality`
 /// Inherits from: `ContractPrerequisiteBase`
 pub struct ContractPrerequisite_Locality {
@@ -1914,127 +1950,6 @@ impl<'a> Extract<'a> for BlueprintRewards {
     }
 }
 
-/// DCB type: `ContractAutoFinishSettings`
-pub struct ContractAutoFinishSettings {
-    /// `contractDeadline` (Class)
-    pub contract_deadline: Option<Handle<MissionDeadline>>,
-    /// `failIfSentToPrison` (Boolean)
-    pub fail_if_sent_to_prison: bool,
-    /// `failIfBecameCriminal` (Boolean)
-    pub fail_if_became_criminal: bool,
-    /// `failIfLeavePrison` (Boolean)
-    pub fail_if_leave_prison: bool,
-}
-
-impl Pooled for ContractAutoFinishSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_auto_finish_settings
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_auto_finish_settings
-    }
-}
-
-impl<'a> Extract<'a> for ContractAutoFinishSettings {
-    const TYPE_NAME: &'static str = "ContractAutoFinishSettings";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            contract_deadline: match inst.get("contractDeadline") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionDeadline>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            fail_if_sent_to_prison: inst.get_bool("failIfSentToPrison").unwrap_or_default(),
-            fail_if_became_criminal: inst.get_bool("failIfBecameCriminal").unwrap_or_default(),
-            fail_if_leave_prison: inst.get_bool("failIfLeavePrison").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `ActiveContractSettings`
-pub struct ActiveContractSettings {
-    /// `hasCompleteButton` (Boolean)
-    pub has_complete_button: bool,
-    /// `handlesAbandonRequest` (Boolean)
-    pub handles_abandon_request: bool,
-    /// `canBeShared` (Boolean)
-    pub can_be_shared: bool,
-    /// `displayAlliedMarkers` (Boolean)
-    pub display_allied_markers: bool,
-    /// `onlyOwnerCanComplete` (Boolean)
-    pub only_owner_can_complete: bool,
-}
-
-impl Pooled for ActiveContractSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.active_contract_settings
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.active_contract_settings
-    }
-}
-
-impl<'a> Extract<'a> for ActiveContractSettings {
-    const TYPE_NAME: &'static str = "ActiveContractSettings";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            has_complete_button: inst.get_bool("hasCompleteButton").unwrap_or_default(),
-            handles_abandon_request: inst.get_bool("handlesAbandonRequest").unwrap_or_default(),
-            can_be_shared: inst.get_bool("canBeShared").unwrap_or_default(),
-            display_allied_markers: inst.get_bool("displayAlliedMarkers").unwrap_or_default(),
-            only_owner_can_complete: inst.get_bool("onlyOwnerCanComplete").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `ContractClass_Contract`
-/// Inherits from: `ContractClassBase`
-pub struct ContractClass_Contract {
-    /// `additionalParams` (Class)
-    pub additional_params: Option<Handle<ActiveContractSettings>>,
-    /// `autoFinishSettings` (Class)
-    pub auto_finish_settings: Option<Handle<ContractAutoFinishSettings>>,
-}
-
-impl Pooled for ContractClass_Contract {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_class_contract
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_class_contract
-    }
-}
-
-impl<'a> Extract<'a> for ContractClass_Contract {
-    const TYPE_NAME: &'static str = "ContractClass_Contract";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            additional_params: match inst.get("additionalParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ActiveContractSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            auto_finish_settings: match inst.get("autoFinishSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractAutoFinishSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-        }
-    }
-}
-
 /// DCB type: `ContractClass_PVPBounty`
 /// Inherits from: `ContractClassBase`
 pub struct ContractClass_PVPBounty {}
@@ -2594,6 +2509,85 @@ impl<'a> Extract<'a> for HaulingOrder_MissionItem {
     }
 }
 
+/// DCB type: `HaulingOrder_MissionItemDropOff`
+/// Inherits from: `HaulingOrderBase`
+pub struct HaulingOrder_MissionItemDropOff {
+    /// `pickUpLocation` (WeakPointer)
+    pub pick_up_location: Option<ObjectivePropertyBasePtr>,
+    /// `dropOffLocation` (WeakPointer)
+    pub drop_off_location: Option<ObjectivePropertyBasePtr>,
+    /// `pickUpTargetTypes` (Reference (array))
+    pub pick_up_target_types: Vec<CigGuid>,
+    /// `dropOffTargetTypes` (Reference (array))
+    pub drop_off_target_types: Vec<CigGuid>,
+    /// `deliveryOrderInput` (WeakPointer)
+    pub delivery_order_input: Option<Handle<ObjectiveProperty_Input>>,
+}
+
+impl Pooled for HaulingOrder_MissionItemDropOff {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.hauling_order_mission_item_drop_off
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.hauling_order_mission_item_drop_off
+    }
+}
+
+impl<'a> Extract<'a> for HaulingOrder_MissionItemDropOff {
+    const TYPE_NAME: &'static str = "HaulingOrder_MissionItemDropOff";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            pick_up_location: match inst.get("pickUpLocation") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            drop_off_location: match inst.get("dropOffLocation") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            pick_up_target_types: inst
+                .get_array("pickUpTargetTypes")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            drop_off_target_types: inst
+                .get_array("dropOffTargetTypes")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            delivery_order_input: match inst.get("deliveryOrderInput") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ObjectiveProperty_Input>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `HaulingOrder_OrOption_And`
 /// Inherits from: `HaulingOrder_OrOption_Base`
 pub struct HaulingOrder_OrOption_And {
@@ -2956,104 +2950,6 @@ impl<'a> Extract<'a> for MissionPropertyValue_HaulingOrders {
     }
 }
 
-/// DCB type: `ObjectiveHandler_Local`
-/// Inherits from: `ObjectiveHandler_WithModule`
-pub struct ObjectiveHandler_Local {
-    /// `moduleDeclaration` (Reference)
-    pub module_declaration: Option<CigGuid>,
-    /// `module` (String)
-    pub module: String,
-    /// `moduleHierarchy` (Reference)
-    pub module_hierarchy: Option<CigGuid>,
-    /// `disableTravelObjectives` (Boolean)
-    pub disable_travel_objectives: bool,
-    /// `disableReturnObjectives` (Boolean)
-    pub disable_return_objectives: bool,
-    /// `travelRadiusKM` (Single)
-    pub travel_radius_km: f32,
-    /// `allPlayersLeftGracePeriod` (Single)
-    pub all_players_left_grace_period: f32,
-    /// `travelObjectiveInfo` (Class)
-    pub travel_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
-    /// `returnObjectiveInfo` (Class)
-    pub return_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
-    /// `navPointSpawnInfo` (StrongPointer)
-    pub nav_point_spawn_info: Option<Handle<NavPointSpawnInformation>>,
-    /// `location` (WeakPointer)
-    pub location: Option<ObjectivePropertyBasePtr>,
-    /// `securityManifestToOverride` (Reference)
-    pub security_manifest_to_override: Option<CigGuid>,
-}
-
-impl Pooled for ObjectiveHandler_Local {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.objective_handler_local
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.objective_handler_local
-    }
-}
-
-impl<'a> Extract<'a> for ObjectiveHandler_Local {
-    const TYPE_NAME: &'static str = "ObjectiveHandler_Local";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            module_declaration: inst
-                .get("moduleDeclaration")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            module: inst.get_str("module").map(String::from).unwrap_or_default(),
-            module_hierarchy: inst
-                .get("moduleHierarchy")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            disable_travel_objectives: inst.get_bool("disableTravelObjectives").unwrap_or_default(),
-            disable_return_objectives: inst.get_bool("disableReturnObjectives").unwrap_or_default(),
-            travel_radius_km: inst.get_f32("travelRadiusKM").unwrap_or_default(),
-            all_players_left_grace_period: inst
-                .get_f32("allPlayersLeftGracePeriod")
-                .unwrap_or_default(),
-            travel_objective_info: match inst.get("travelObjectiveInfo") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ObjectiveDisplayInfo>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            return_objective_info: match inst.get("returnObjectiveInfo") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ObjectiveDisplayInfo>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            nav_point_spawn_info: match inst.get("navPointSpawnInfo") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<NavPointSpawnInformation>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
-                _ => None,
-            },
-            location: match inst.get("location") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
-                _ => None,
-            },
-            security_manifest_to_override: inst
-                .get("securityManifestToOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-        }
-    }
-}
-
 /// DCB type: `ObjectiveHandler_NearLocation`
 /// Inherits from: `ObjectiveHandler_WithModule`
 pub struct ObjectiveHandler_NearLocation {
@@ -3148,6 +3044,71 @@ impl<'a> Extract<'a> for ObjectiveHandler_NearLocation {
             },
             max_distance: inst.get_f32("maxDistance").unwrap_or_default(),
             min_distance: inst.get_f32("minDistance").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ObjectiveHandler_MeetAndTalk`
+/// Inherits from: `ObjectiveHandlerBase`
+pub struct ObjectiveHandler_MeetAndTalk {
+    /// `location` (WeakPointer)
+    pub location: Option<ObjectivePropertyBasePtr>,
+    /// `ocTagsToSearch` (Reference (array))
+    pub oc_tags_to_search: Vec<CigGuid>,
+    /// `travelRadiusKM` (Single)
+    pub travel_radius_km: f32,
+    /// `travelObjectiveInfo` (Class)
+    pub travel_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
+    /// `meetAndTalkObjectiveMarkerLabel` (Locale)
+    pub meet_and_talk_objective_marker_label: LocaleKey,
+}
+
+impl Pooled for ObjectiveHandler_MeetAndTalk {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.objective_handler_meet_and_talk
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.objective_handler_meet_and_talk
+    }
+}
+
+impl<'a> Extract<'a> for ObjectiveHandler_MeetAndTalk {
+    const TYPE_NAME: &'static str = "ObjectiveHandler_MeetAndTalk";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            location: match inst.get("location") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            oc_tags_to_search: inst
+                .get_array("ocTagsToSearch")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            travel_radius_km: inst.get_f32("travelRadiusKM").unwrap_or_default(),
+            travel_objective_info: match inst.get("travelObjectiveInfo") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ObjectiveDisplayInfo>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+            meet_and_talk_objective_marker_label: inst
+                .get_str("meetAndTalkObjectiveMarkerLabel")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -3282,6 +3243,8 @@ impl<'a> Extract<'a> for SPVPBountyContractGenerators {
 pub struct OneTimeComms {
     /// `locationAvailable` (Reference)
     pub location_available: Option<CigGuid>,
+    /// `prerequisitesTags` (Reference (array))
+    pub prerequisites_tags: Vec<CigGuid>,
     /// `tag` (Reference)
     pub tag: Option<CigGuid>,
     /// `comms` (Reference (array))
@@ -3305,6 +3268,19 @@ impl<'a> Extract<'a> for OneTimeComms {
                 .get("locationAvailable")
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
+            prerequisites_tags: inst
+                .get_array("prerequisitesTags")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             tag: inst
                 .get("tag")
                 .and_then(|v| v.as_record_ref())

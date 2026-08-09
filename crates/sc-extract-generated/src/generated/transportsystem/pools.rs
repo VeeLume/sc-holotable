@@ -15,6 +15,9 @@ use super::super::*;
 #[derive(Default)]
 pub struct TransportsystemPools {
     pub transport_event_item_spawner_params: Vec<Option<TransportEventItemSpawnerParams>>,
+    pub transport_event_interaction_link: Vec<Option<TransportEventInteractionLink>>,
+    pub transport_event_interaction_trigger_params:
+        Vec<Option<TransportEventInteractionTriggerParams>>,
     pub transport_destination_category: Vec<Option<TransportDestinationCategory>>,
     pub transport_destination_categories: Vec<Option<TransportDestinationCategories>>,
     pub transport_icon_type: Vec<Option<TransportIconType>>,

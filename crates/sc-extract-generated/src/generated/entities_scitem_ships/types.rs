@@ -487,6 +487,54 @@ impl<'a> Extract<'a> for SCItemEMPParams {
     }
 }
 
+/// DCB type: `SCItemLandingGearParams`
+/// Inherits from: `DataForgeComponentParams`
+pub struct SCItemLandingGearParams {
+    /// `scopeContext` (String)
+    pub scope_context: String,
+    /// `vehicleScopeContext` (String)
+    pub vehicle_scope_context: String,
+    /// `alwaysVisible` (Boolean)
+    pub always_visible: bool,
+    /// `spring` (StrongPointer)
+    pub spring: Option<Handle<VehicleLandingGearSpring>>,
+}
+
+impl Pooled for SCItemLandingGearParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_ships.scitem_landing_gear_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_ships.scitem_landing_gear_params
+    }
+}
+
+impl<'a> Extract<'a> for SCItemLandingGearParams {
+    const TYPE_NAME: &'static str = "SCItemLandingGearParams";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            scope_context: inst
+                .get_str("scopeContext")
+                .map(String::from)
+                .unwrap_or_default(),
+            vehicle_scope_context: inst
+                .get_str("vehicleScopeContext")
+                .map(String::from)
+                .unwrap_or_default(),
+            always_visible: inst.get_bool("alwaysVisible").unwrap_or_default(),
+            spring: match inst.get("spring") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<VehicleLandingGearSpring>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `SCItemSpaceMineParams`
 /// Inherits from: `SExplosiveOrdnanceParams`
 pub struct SCItemSpaceMineParams {

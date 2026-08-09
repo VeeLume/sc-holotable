@@ -15,4 +15,5 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesMastercontrollerentitiesPools {
     pub tag_entity_filter: Vec<Option<TagEntityFilter>>,
+    pub user_variable_check_int_greater: Vec<Option<UserVariableCheckIntGreater>>,
 }

@@ -52,6 +52,99 @@ impl<'a> Extract<'a> for TransportEventItemSpawnerParams {
     }
 }
 
+/// DCB type: `TransportEventInteractionLink`
+pub struct TransportEventInteractionLink {
+    /// `interactionLinkEvent` (String)
+    pub interaction_link_event: String,
+    /// `interactions` (WeakPointer (array))
+    pub interactions: Vec<Handle<SSharedInteractionParams>>,
+}
+
+impl Pooled for TransportEventInteractionLink {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.transportsystem.transport_event_interaction_link
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.transportsystem.transport_event_interaction_link
+    }
+}
+
+impl<'a> Extract<'a> for TransportEventInteractionLink {
+    const TYPE_NAME: &'static str = "TransportEventInteractionLink";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            interaction_link_event: inst
+                .get_str("interactionLinkEvent")
+                .map(String::from)
+                .unwrap_or_default(),
+            interactions: inst
+                .get_array("interactions")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(b.alloc_nested::<SSharedInteractionParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `TransportEventInteractionTriggerParams`
+/// Inherits from: `DataForgeComponentParams`
+pub struct TransportEventInteractionTriggerParams {
+    /// `interactionLinks` (Class (array))
+    pub interaction_links: Vec<Handle<TransportEventInteractionLink>>,
+}
+
+impl Pooled for TransportEventInteractionTriggerParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .transportsystem
+            .transport_event_interaction_trigger_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .transportsystem
+            .transport_event_interaction_trigger_params
+    }
+}
+
+impl<'a> Extract<'a> for TransportEventInteractionTriggerParams {
+    const TYPE_NAME: &'static str = "TransportEventInteractionTriggerParams";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            interaction_links: inst
+                .get_array("interactionLinks")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<TransportEventInteractionLink>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<TransportEventInteractionLink>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `TransportDestinationCategory`
 pub struct TransportDestinationCategory {
     /// `categoryName` (String)
@@ -396,6 +489,8 @@ impl<'a> Extract<'a> for TransportCarriageAnnouncements {
 pub struct TransportManagerParams {
     /// `automated` (Boolean)
     pub automated: bool,
+    /// `liveForever` (Boolean)
+    pub live_forever: bool,
     /// `carriageClass` (Reference)
     pub carriage_class: Option<CigGuid>,
     /// `permissionsSource` (StrongPointer)
@@ -444,6 +539,7 @@ impl<'a> Extract<'a> for TransportManagerParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             automated: inst.get_bool("automated").unwrap_or_default(),
+            live_forever: inst.get_bool("liveForever").unwrap_or_default(),
             carriage_class: inst
                 .get("carriageClass")
                 .and_then(|v| v.as_record_ref())
@@ -510,6 +606,8 @@ pub struct TransportDestinationParams {
     pub use_door_tags: bool,
     /// `isDefaultDestination` (Boolean)
     pub is_default_destination: bool,
+    /// `canSpawnCarriageHere` (Boolean)
+    pub can_spawn_carriage_here: bool,
     /// `tagFilter` (Class)
     pub tag_filter: Option<Handle<TagsDNFTerm>>,
 }
@@ -547,6 +645,7 @@ impl<'a> Extract<'a> for TransportDestinationParams {
             priority: inst.get_i32("priority").unwrap_or_default(),
             use_door_tags: inst.get_bool("useDoorTags").unwrap_or_default(),
             is_default_destination: inst.get_bool("isDefaultDestination").unwrap_or_default(),
+            can_spawn_carriage_here: inst.get_bool("canSpawnCarriageHere").unwrap_or_default(),
             tag_filter: match inst.get("tagFilter") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNFTerm>(
                     Instance::from_inline_data(b.db, struct_index, data),
@@ -563,6 +662,8 @@ impl<'a> Extract<'a> for TransportDestinationParams {
 pub struct TransportGatewayParams {
     /// `tagFilter` (Class)
     pub tag_filter: Option<Handle<TagsDNFTerm>>,
+    /// `usesDelay` (Boolean)
+    pub uses_delay: bool,
 }
 
 impl Pooled for TransportGatewayParams {
@@ -585,6 +686,7 @@ impl<'a> Extract<'a> for TransportGatewayParams {
                 )),
                 _ => None,
             },
+            uses_delay: inst.get_bool("usesDelay").unwrap_or_default(),
         }
     }
 }

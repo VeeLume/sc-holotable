@@ -18,6 +18,34 @@ use svarog_datacore::{Instance, Value};
 
 use super::super::*;
 
+/// DCB type: `SecurityClearanceTokenData_Instance`
+/// Inherits from: `SecurityClearanceTokenData`
+pub struct SecurityClearanceTokenData_Instance {
+    /// `conditionFailedTag` (Reference)
+    pub condition_failed_tag: Option<CigGuid>,
+}
+
+impl Pooled for SecurityClearanceTokenData_Instance {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.lawsystem.security_clearance_token_data_instance
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.lawsystem.security_clearance_token_data_instance
+    }
+}
+
+impl<'a> Extract<'a> for SecurityClearanceTokenData_Instance {
+    const TYPE_NAME: &'static str = "SecurityClearanceTokenData_Instance";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            condition_failed_tag: inst
+                .get("conditionFailedTag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
 /// DCB type: `SecurityNetworkRoomSettings`
 pub struct SecurityNetworkRoomSettings {
     /// `defaultProtocol` (Class)

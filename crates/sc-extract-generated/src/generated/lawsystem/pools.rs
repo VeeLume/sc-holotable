@@ -14,5 +14,6 @@ use super::super::*;
 /// Pool storage for the `lawsystem` feature.
 #[derive(Default)]
 pub struct LawsystemPools {
+    pub security_clearance_token_data_instance: Vec<Option<SecurityClearanceTokenData_Instance>>,
     pub security_network_room_settings: Vec<Option<SecurityNetworkRoomSettings>>,
 }

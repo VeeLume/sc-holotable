@@ -18,38 +18,6 @@ use svarog_datacore::{Instance, Value};
 
 use super::super::*;
 
-/// DCB type: `MissionLocationTemplate`
-pub struct MissionLocationTemplate {
-    /// `locationData` (Class)
-    pub location_data: Option<Handle<MissionLocationData>>,
-}
-
-impl Pooled for MissionLocationTemplate {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.missiondata.mission_location_template
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.missiondata.mission_location_template
-    }
-}
-
-impl<'a> Extract<'a> for MissionLocationTemplate {
-    const TYPE_NAME: &'static str = "MissionLocationTemplate";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            location_data: match inst.get("locationData") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionLocationData>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-        }
-    }
-}
-
 /// DCB type: `EntityClusterId`
 pub struct EntityClusterId {}
 

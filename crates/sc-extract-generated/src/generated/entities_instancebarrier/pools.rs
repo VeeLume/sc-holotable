@@ -11,8 +11,8 @@
 
 use super::super::*;
 
-/// Pool storage for the `commoditytypedatabase` feature.
+/// Pool storage for the `entities-instancebarrier` feature.
 #[derive(Default)]
-pub struct CommoditytypedatabasePools {
-    pub commodity_type_database: Vec<Option<CommodityTypeDatabase>>,
+pub struct EntitiesInstancebarrierPools {
+    pub instance_barrier_params: Vec<Option<InstanceBarrierParams>>,
 }

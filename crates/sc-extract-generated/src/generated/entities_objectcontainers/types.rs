@@ -199,6 +199,26 @@ impl<'a> Extract<'a> for SOrbitComponentParams {
     }
 }
 
+/// DCB type: `BrokeredInstanceParams`
+/// Inherits from: `DataForgeComponentParams`
+pub struct BrokeredInstanceParams {}
+
+impl Pooled for BrokeredInstanceParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_objectcontainers.brokered_instance_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_objectcontainers.brokered_instance_params
+    }
+}
+
+impl<'a> Extract<'a> for BrokeredInstanceParams {
+    const TYPE_NAME: &'static str = "BrokeredInstanceParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `SEntityComponentPhysicsGridParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct SEntityComponentPhysicsGridParams {

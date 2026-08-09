@@ -521,37 +521,6 @@ impl<'a> Extract<'a> for TransitDestinationParams {
     }
 }
 
-/// DCB type: `TransitDynamicDestinationParams`
-/// Inherits from: `DataForgeComponentParams`
-pub struct TransitDynamicDestinationParams {
-    /// `Name` (Locale)
-    pub name: LocaleKey,
-    /// `radius` (Single)
-    pub radius: f32,
-}
-
-impl Pooled for TransitDynamicDestinationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.transitsystem.transit_dynamic_destination_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.transitsystem.transit_dynamic_destination_params
-    }
-}
-
-impl<'a> Extract<'a> for TransitDynamicDestinationParams {
-    const TYPE_NAME: &'static str = "TransitDynamicDestinationParams";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            name: inst
-                .get_str("Name")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            radius: inst.get_f32("radius").unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `TransitManagerParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct TransitManagerParams {

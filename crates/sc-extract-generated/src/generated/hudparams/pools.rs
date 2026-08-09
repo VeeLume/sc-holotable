@@ -16,6 +16,7 @@ use super::super::*;
 pub struct HudparamsPools {
     pub starget_selector_color_highlighting_data: Vec<Option<STargetSelectorColorHighlightingData>>,
     pub starget_selector_color_highlighting: Vec<Option<STargetSelectorColorHighlighting>>,
+    pub starget_selector_hit_marker_params: Vec<Option<STargetSelectorHitMarkerParams>>,
     pub starget_selector_hud_params: Vec<Option<STargetSelectorHudParams>>,
     pub sprojected_pitch_ladder_params: Vec<Option<SProjectedPitchLadderParams>>,
     pub sprojected_yaw_line_params: Vec<Option<SProjectedYawLineParams>>,

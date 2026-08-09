@@ -50,8 +50,6 @@ pub struct RecordIndex {
     pub chatmanager: super::chatmanager::ChatmanagerIndex,
     #[cfg(feature = "commodityconfiguration")]
     pub commodityconfiguration: super::commodityconfiguration::CommodityconfigurationIndex,
-    #[cfg(feature = "commoditytypedatabase")]
-    pub commoditytypedatabase: super::commoditytypedatabase::CommoditytypedatabaseIndex,
     #[cfg(feature = "communicationatlconfig")]
     pub communicationatlconfig: super::communicationatlconfig::CommunicationatlconfigIndex,
     #[cfg(feature = "communicationsystem")]
@@ -112,6 +110,8 @@ pub struct RecordIndex {
     pub globalcuttableshapeparams: super::globalcuttableshapeparams::GlobalcuttableshapeparamsIndex,
     #[cfg(feature = "globalinteractionparams")]
     pub globalinteractionparams: super::globalinteractionparams::GlobalinteractionparamsIndex,
+    #[cfg(feature = "globallogoutparams")]
+    pub globallogoutparams: super::globallogoutparams::GloballogoutparamsIndex,
     #[cfg(feature = "globalshopparams")]
     pub globalshopparams: super::globalshopparams::GlobalshopparamsIndex,
     #[cfg(feature = "globaltutorialparams")]
@@ -351,10 +351,6 @@ impl RecordIndex {
         {
             n += self.commodityconfiguration.len();
         }
-        #[cfg(feature = "commoditytypedatabase")]
-        {
-            n += self.commoditytypedatabase.len();
-        }
         #[cfg(feature = "communicationatlconfig")]
         {
             n += self.communicationatlconfig.len();
@@ -474,6 +470,10 @@ impl RecordIndex {
         #[cfg(feature = "globalinteractionparams")]
         {
             n += self.globalinteractionparams.len();
+        }
+        #[cfg(feature = "globallogoutparams")]
+        {
+            n += self.globallogoutparams.len();
         }
         #[cfg(feature = "globalshopparams")]
         {

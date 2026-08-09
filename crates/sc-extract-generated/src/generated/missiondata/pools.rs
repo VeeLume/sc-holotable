@@ -14,7 +14,6 @@ use super::super::*;
 /// Pool storage for the `missiondata` feature.
 #[derive(Default)]
 pub struct MissiondataPools {
-    pub mission_location_template: Vec<Option<MissionLocationTemplate>>,
     pub entity_cluster_id: Vec<Option<EntityClusterId>>,
     pub entity_cluster_member: Vec<Option<EntityClusterMember>>,
     pub mission_variable_boolean: Vec<Option<MissionVariableBoolean>>,

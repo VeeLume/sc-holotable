@@ -338,36 +338,6 @@ impl<'a> Extract<'a> for ClassEntityFilter {
     }
 }
 
-/// DCB type: `GameplayTriggerConditionNOT`
-/// Inherits from: `GameplayTriggerCondition`
-pub struct GameplayTriggerConditionNOT {
-    /// `input` (StrongPointer)
-    pub input: Option<GameplayTriggerConditionPtr>,
-}
-
-impl Pooled for GameplayTriggerConditionNOT {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_human.gameplay_trigger_condition_not
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_human.gameplay_trigger_condition_not
-    }
-}
-
-impl<'a> Extract<'a> for GameplayTriggerConditionNOT {
-    const TYPE_NAME: &'static str = "GameplayTriggerConditionNOT";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            input: match inst.get("input") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(GameplayTriggerConditionPtr::from_ref(b, r))
-                }
-                _ => None,
-            },
-        }
-    }
-}
-
 /// DCB type: `UserVariableCheckIntLess`
 /// Inherits from: `UserVariableCheck`
 pub struct UserVariableCheckIntLess {
@@ -395,37 +365,6 @@ impl<'a> Extract<'a> for UserVariableCheckIntLess {
                 .map(String::from)
                 .unwrap_or_default(),
             value_to_check: inst.get_i32("valueToCheck").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `UserVariableSubtractIntValue`
-/// Inherits from: `UserVariableComputeValueBase`
-pub struct UserVariableSubtractIntValue {
-    /// `variableName` (String)
-    pub variable_name: String,
-    /// `valueToSubtract` (Int32)
-    pub value_to_subtract: i32,
-}
-
-impl Pooled for UserVariableSubtractIntValue {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_human.user_variable_subtract_int_value
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_human.user_variable_subtract_int_value
-    }
-}
-
-impl<'a> Extract<'a> for UserVariableSubtractIntValue {
-    const TYPE_NAME: &'static str = "UserVariableSubtractIntValue";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            variable_name: inst
-                .get_str("variableName")
-                .map(String::from)
-                .unwrap_or_default(),
-            value_to_subtract: inst.get_i32("valueToSubtract").unwrap_or_default(),
         }
     }
 }

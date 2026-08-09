@@ -76,7 +76,6 @@ pub struct CorePools {
     pub scharacter_customizer_randomization_params:
         Vec<Option<SCharacterCustomizerRandomizationParams>>,
     pub scharacter_validation_params: Vec<Option<SCharacterValidationParams>>,
-    pub temperature_damage_control: Vec<Option<TemperatureDamageControl>>,
     pub legacy_crafting_cost_base: Vec<Option<LegacyCraftingCost_Base>>,
     pub legacy_crafting_output_base: Vec<Option<LegacyCraftingOutput_Base>>,
     pub legacy_crafting_recipe_base: Vec<Option<LegacyCraftingRecipe_Base>>,
@@ -242,6 +241,8 @@ pub struct CorePools {
     pub ilight_aiextender: Vec<Option<ILightAIExtender>>,
     pub control_hint_condition: Vec<Option<ControlHintCondition>>,
     pub control_hint_always_display_condition: Vec<Option<ControlHintAlwaysDisplayCondition>>,
+    pub sdclogout_rule_description_base: Vec<Option<SDCLogoutRuleDescription_Base>>,
+    pub sdclogout_entity_selector_base: Vec<Option<SDCLogoutEntitySelector_Base>>,
     pub long_term_persistence_sub_type_list_option:
         Vec<Option<LongTermPersistenceSubTypeListOption>>,
     pub entry_optional_data_base: Vec<Option<EntryOptionalData_Base>>,
@@ -333,6 +334,8 @@ pub struct CorePools {
     pub gameplay_trigger_physics_set_parameter_base:
         Vec<Option<GameplayTrigger_Physics_SetParameter_Base>>,
     pub suser_variable_operation_type: Vec<Option<SUserVariableOperationType>>,
+    pub gameplay_trigger_spawn_request_type_base:
+        Vec<Option<GameplayTrigger_SpawnRequestType_Base>>,
     pub gameplay_trigger_interpolation_type: Vec<Option<GameplayTrigger_InterpolationType>>,
     pub clothing_type: Vec<Option<ClothingType>>,
     pub purchasable_display_base: Vec<Option<PurchasableDisplayBase>>,

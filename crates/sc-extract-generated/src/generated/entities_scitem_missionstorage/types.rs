@@ -107,3 +107,76 @@ impl<'a> Extract<'a> for DeliveryItemPortComponentParams {
         Self {}
     }
 }
+
+/// DCB type: `GameplayTriggerConditionCheckStateOther`
+/// Inherits from: `GameplayTriggerCondition`
+pub struct GameplayTriggerConditionCheckStateOther {
+    /// `stateTypeName` (String)
+    pub state_type_name: String,
+    /// `stateName` (String)
+    pub state_name: String,
+}
+
+impl Pooled for GameplayTriggerConditionCheckStateOther {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_missionstorage
+            .gameplay_trigger_condition_check_state_other
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_missionstorage
+            .gameplay_trigger_condition_check_state_other
+    }
+}
+
+impl<'a> Extract<'a> for GameplayTriggerConditionCheckStateOther {
+    const TYPE_NAME: &'static str = "GameplayTriggerConditionCheckStateOther";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            state_type_name: inst
+                .get_str("stateTypeName")
+                .map(String::from)
+                .unwrap_or_default(),
+            state_name: inst
+                .get_str("stateName")
+                .map(String::from)
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `UserVariableCheckBoolEqual`
+/// Inherits from: `UserVariableCheck`
+pub struct UserVariableCheckBoolEqual {
+    /// `variableName` (String)
+    pub variable_name: String,
+    /// `valueToCheck` (Boolean)
+    pub value_to_check: bool,
+}
+
+impl Pooled for UserVariableCheckBoolEqual {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_missionstorage
+            .user_variable_check_bool_equal
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_missionstorage
+            .user_variable_check_bool_equal
+    }
+}
+
+impl<'a> Extract<'a> for UserVariableCheckBoolEqual {
+    const TYPE_NAME: &'static str = "UserVariableCheckBoolEqual";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            variable_name: inst
+                .get_str("variableName")
+                .map(String::from)
+                .unwrap_or_default(),
+            value_to_check: inst.get_bool("valueToCheck").unwrap_or_default(),
+        }
+    }
+}

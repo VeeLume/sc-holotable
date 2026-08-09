@@ -350,10 +350,14 @@ pub struct ItemRecoveryNotificationParams {
     pub item_bricked_title: LocaleKey,
     /// `itemBricked_Body` (Locale)
     pub item_bricked_body: LocaleKey,
+    /// `vehicleBrickedWithItems_Body` (Locale)
+    pub vehicle_bricked_with_items_body: LocaleKey,
     /// `itemBricking_Title` (Locale)
     pub item_bricking_title: LocaleKey,
     /// `itemBricking_Body` (Locale)
     pub item_bricking_body: LocaleKey,
+    /// `vehicleBrickingWithItems_Body` (Locale)
+    pub vehicle_bricking_with_items_body: LocaleKey,
     /// `onBrickedItemUseNotificationBuffer` (Single)
     pub on_bricked_item_use_notification_buffer: f32,
     /// `onBrickedItemUsed_Title` (Locale)
@@ -387,12 +391,20 @@ impl<'a> Extract<'a> for ItemRecoveryNotificationParams {
                 .get_str("itemBricked_Body")
                 .map(LocaleKey::from)
                 .unwrap_or_default(),
+            vehicle_bricked_with_items_body: inst
+                .get_str("vehicleBrickedWithItems_Body")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             item_bricking_title: inst
                 .get_str("itemBricking_Title")
                 .map(LocaleKey::from)
                 .unwrap_or_default(),
             item_bricking_body: inst
                 .get_str("itemBricking_Body")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            vehicle_bricking_with_items_body: inst
+                .get_str("vehicleBrickingWithItems_Body")
                 .map(LocaleKey::from)
                 .unwrap_or_default(),
             on_bricked_item_use_notification_buffer: inst
@@ -424,16 +436,28 @@ pub struct ItemRecoveryEconomyParams {
     pub global_brick_timer: f32,
     /// `baseReclaimTime` (Single)
     pub base_reclaim_time: f32,
+    /// `baseDeliveryTime` (Single)
+    pub base_delivery_time: f32,
     /// `scalingPriceFloor` (Single)
     pub scaling_price_floor: f32,
     /// `aUECperSecond` (Single)
     pub a_uecper_second: f32,
     /// `defaultLoadoutCooldownMultiplier` (Single)
     pub default_loadout_cooldown_multiplier: f32,
+    /// `defaultLoadoutDeliveryTimeMultiplier` (Single)
+    pub default_loadout_delivery_time_multiplier: f32,
     /// `claimCostMultiplier` (Single)
     pub claim_cost_multiplier: f32,
+    /// `vehicleChassisRepairCostMultiplier` (Single)
+    pub vehicle_chassis_repair_cost_multiplier: f32,
+    /// `vehicleComponentRepairCostMultiplier` (Single)
+    pub vehicle_component_repair_cost_multiplier: f32,
+    /// `vehicleRepairMissingItemCostMultiplier` (Single)
+    pub vehicle_repair_missing_item_cost_multiplier: f32,
     /// `cooldownOverrides` (Class (array))
     pub cooldown_overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
+    /// `deliveryTimeOverrides` (Class (array))
+    pub delivery_time_overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
     /// `costOverrides` (Class (array))
     pub cost_overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
 }
@@ -453,14 +477,46 @@ impl<'a> Extract<'a> for ItemRecoveryEconomyParams {
         Self {
             global_brick_timer: inst.get_f32("globalBrickTimer").unwrap_or_default(),
             base_reclaim_time: inst.get_f32("baseReclaimTime").unwrap_or_default(),
+            base_delivery_time: inst.get_f32("baseDeliveryTime").unwrap_or_default(),
             scaling_price_floor: inst.get_f32("scalingPriceFloor").unwrap_or_default(),
             a_uecper_second: inst.get_f32("aUECperSecond").unwrap_or_default(),
             default_loadout_cooldown_multiplier: inst
                 .get_f32("defaultLoadoutCooldownMultiplier")
                 .unwrap_or_default(),
+            default_loadout_delivery_time_multiplier: inst
+                .get_f32("defaultLoadoutDeliveryTimeMultiplier")
+                .unwrap_or_default(),
             claim_cost_multiplier: inst.get_f32("claimCostMultiplier").unwrap_or_default(),
+            vehicle_chassis_repair_cost_multiplier: inst
+                .get_f32("vehicleChassisRepairCostMultiplier")
+                .unwrap_or_default(),
+            vehicle_component_repair_cost_multiplier: inst
+                .get_f32("vehicleComponentRepairCostMultiplier")
+                .unwrap_or_default(),
+            vehicle_repair_missing_item_cost_multiplier: inst
+                .get_f32("vehicleRepairMissingItemCostMultiplier")
+                .unwrap_or_default(),
             cooldown_overrides: inst
                 .get_array("cooldownOverrides")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            delivery_time_overrides: inst
+                .get_array("deliveryTimeOverrides")
                 .map(|arr| {
                     arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => {

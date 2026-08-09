@@ -25,6 +25,5 @@ pub struct TransitsystemPools {
     pub transit_gateway_params: Vec<Option<TransitGatewayParams>>,
     pub transit_interaction_panel_params: Vec<Option<TransitInteractionPanelParams>>,
     pub transit_destination_params: Vec<Option<TransitDestinationParams>>,
-    pub transit_dynamic_destination_params: Vec<Option<TransitDynamicDestinationParams>>,
     pub transit_manager_params: Vec<Option<TransitManagerParams>>,
 }

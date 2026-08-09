@@ -14,17 +14,17 @@ use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
 
-/// Record index for the `commoditytypedatabase` feature.
+/// Record index for the `globallogoutparams` feature.
 #[derive(Default)]
-pub struct CommoditytypedatabaseIndex {
-    pub commodity_type_database: HashMap<CigGuid, Handle<CommodityTypeDatabase>>,
+pub struct GloballogoutparamsIndex {
+    pub sdclogout_behaviour_def: HashMap<CigGuid, Handle<SDCLogoutBehaviourDef>>,
 }
 
-impl CommoditytypedatabaseIndex {
+impl GloballogoutparamsIndex {
     #[allow(unused_mut)]
     pub fn len(&self) -> usize {
         let mut total = 0usize;
-        total += self.commodity_type_database.len();
+        total += self.sdclogout_behaviour_def.len();
         total
     }
 

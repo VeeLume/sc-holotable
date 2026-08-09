@@ -25,6 +25,8 @@ pub struct CamerasPools {
     pub camera_static_config: Vec<Option<CameraStaticConfig>>,
     pub camera_view2_ships_frame_params: Vec<Option<CameraView2ShipsFrameParams>>,
     pub camera_trackview_config: Vec<Option<CameraTrackviewConfig>>,
+    pub build_mode_config: Vec<Option<BuildModeConfig>>,
+    pub camera_build_mode_config: Vec<Option<CameraBuildModeConfig>>,
     pub cinematic_camera_controller_setup: Vec<Option<CinematicCameraControllerSetup>>,
     pub camera_fovchange_data: Vec<Option<CameraFOVChangeData>>,
 }

@@ -92,6 +92,8 @@ pub struct SCItemAirlockParams {
     pub min_time_to_wait_after_doors_closed: f32,
     /// `CycleTime` (Single)
     pub cycle_time: f32,
+    /// `InitializationUpdateTimerLength` (Single)
+    pub initialization_update_timer_length: f32,
     /// `GreenzoneParams` (StrongPointer)
     pub greenzone_params: Option<Handle<AirlockGreenzoneParams>>,
     /// `AreaOverride` (StrongPointer)
@@ -116,6 +118,9 @@ impl<'a> Extract<'a> for SCItemAirlockParams {
                 .get_f32("MinTimeToWaitAfterDoorsClosed")
                 .unwrap_or_default(),
             cycle_time: inst.get_f32("CycleTime").unwrap_or_default(),
+            initialization_update_timer_length: inst
+                .get_f32("InitializationUpdateTimerLength")
+                .unwrap_or_default(),
             greenzone_params: match inst.get("GreenzoneParams") {
                 Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
                     Some(b.alloc_nested::<AirlockGreenzoneParams>(

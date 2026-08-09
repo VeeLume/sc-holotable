@@ -18,31 +18,6 @@ use svarog_datacore::{Instance, Value};
 
 use super::super::*;
 
-/// DCB type: `SSpawnOnlyOnRequest`
-/// Inherits from: `SSpawnRules`
-pub struct SSpawnOnlyOnRequest {
-    /// `maxEntities` (Int32)
-    pub max_entities: i32,
-}
-
-impl Pooled for SSpawnOnlyOnRequest {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_entityspawners.sspawn_only_on_request
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_entityspawners.sspawn_only_on_request
-    }
-}
-
-impl<'a> Extract<'a> for SSpawnOnlyOnRequest {
-    const TYPE_NAME: &'static str = "SSpawnOnlyOnRequest";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            max_entities: inst.get_i32("maxEntities").unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `SSequencerSpawnInUseableSpawnerTaskParams`
 /// Inherits from: `SSequencerSpawnerTaskParams`
 pub struct SSequencerSpawnInUseableSpawnerTaskParams {

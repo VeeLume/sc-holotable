@@ -18,35 +18,6 @@ use svarog_datacore::{Instance, Value};
 
 use super::super::*;
 
-/// DCB type: `SSequencerChangeStanceCarryableTaskParams`
-/// Inherits from: `SSequencerCarryableTaskParams`
-pub struct SSequencerChangeStanceCarryableTaskParams {
-    /// `stance` (EnumChoice)
-    pub stance: AgentStance,
-}
-
-impl Pooled for SSequencerChangeStanceCarryableTaskParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_carryables
-            .ssequencer_change_stance_carryable_task_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_carryables
-            .ssequencer_change_stance_carryable_task_params
-    }
-}
-
-impl<'a> Extract<'a> for SSequencerChangeStanceCarryableTaskParams {
-    const TYPE_NAME: &'static str = "SSequencerChangeStanceCarryableTaskParams";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            stance: AgentStance::from_dcb_str(inst.get_str("stance").unwrap_or("")),
-        }
-    }
-}
-
 /// DCB type: `SSimulationParamsSpringEllipsoid`
 /// Inherits from: `SSimulationParamsBase`
 pub struct SSimulationParamsSpringEllipsoid {
