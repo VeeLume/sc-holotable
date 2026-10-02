@@ -7,7 +7,7 @@
 //! axes (title key, description key). Build once from a
 //! [`sc_extract::Datacore`]; carry it around freely; look up by GUID
 //! or iterate. Localized text is resolved on demand at the call site
-//! (see `docs/localization.md`).
+//! (the workspace localization rule — see [`sc_extract::LocaleMap`]).
 //!
 //! ```no_run
 //! use sc_missions::Missions;
@@ -234,7 +234,7 @@ impl Missions {
 
     /// Every mission awarding a pool that contains this blueprint record,
     /// dedup'd. Combines
-    /// [`sc_crafting::BlueprintPools::pools_containing_item`] with
+    /// [`BlueprintPools::pools_containing_item`] with
     /// [`Self::missions_for_pool`].
     pub fn missions_for_item(&self, blueprint_record_guid: &Guid) -> Vec<Guid> {
         let mut seen = std::collections::HashSet::new();

@@ -28,8 +28,8 @@ svarog-cryxml = { workspace = true }
 quick-xml = "0.37"
 zip = { version = "2", default-features = false, features = ["deflate"] }
 
-# Snapshot persistence: msgpack + zstd. msgpack matches `docs/sc-extract.md`;
-# zstd keeps the on-disk footprint in the 5–30 MB target range.
+# Snapshot persistence: msgpack envelope + zstd (format documented in
+# src/snapshot.rs); zstd keeps the on-disk footprint small.
 rmp-serde = "1"
 zstd = "0.13"
 chrono = "0.4.44"

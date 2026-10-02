@@ -20,7 +20,8 @@
 //! problem entirely: the type graph of `ExtractSnapshot` becomes
 //! `{u32, String, Vec<u8>, BTreeMap}`, a handful of primitive monomorphizations,
 //! and nothing in the workspace instantiates serde for generated types.
-//! See `docs/benchmarks.md` for the compile-time numbers.
+//! Measured at the switch (2026-04-15): a full cold build went from 3h 26m and
+//! a 25.7 GB RAM peak to 7m 10s and 13.6 GB.
 //!
 //! It also happens to be the right fit for bulkhead's historical-snapshot
 //! comparison feature: the DCB is a stable game format, so an archived

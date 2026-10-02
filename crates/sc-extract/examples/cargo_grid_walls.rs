@@ -690,12 +690,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if soup.is_empty() {
         println!("\nNOTE: box mode (no decodable triangles) — per-node AABBs; door holes");
-        println!("invisible, diagonal geometry over-covers. See docs/ship-cargo-grids.md.");
+        println!("invisible, diagonal geometry over-covers.");
     } else {
         println!("\nNOTE: triangle mode — real mesh raycasts (render geometry incl. hull skin).");
         println!("Door/ramp apertures read open; door ITEMS' own meshes are not in the soup,");
         println!("so a closed door still reads open through its frame. Conservative per-cell");
-        println!("minimum over a 5-ray bundle. See docs/ship-cargo-grids.md §Tier C.");
+        println!("minimum over a 5-ray bundle.");
     }
 
     Ok(())

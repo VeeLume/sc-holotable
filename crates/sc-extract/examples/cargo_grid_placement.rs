@@ -14,7 +14,7 @@
 //! cargo run -p sc-extract --release --example cargo_grid_placement -- MISC_Freelancer_MAX
 //! ```
 //!
-//! See `docs/ship-cargo-grids.md` (§Geometry read — Tier B).
+//! Format notes: the module docs of `tools/sc-cargo-viewer/src/pipeline.rs`.
 
 use std::collections::BTreeMap;
 
@@ -241,9 +241,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("  {n:<34} ({:+.2}, {:+.2}, {:+.2})", p[0], p[1], p[2]);
         }
         println!("  (grid box for these is DCB-resolvable via the InventoryContainer census; the");
-        println!(
-            "   loadout link is the frontier — see docs/ship-cargo-grids.md §Tier B coverage)"
-        );
+        println!("   loadout link is the frontier)");
     }
 
     Ok(())

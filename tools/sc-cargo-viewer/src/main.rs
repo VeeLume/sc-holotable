@@ -11,8 +11,8 @@
 //! ```
 //!
 //! Controls: drag = orbit · right-drag = pan · scroll = zoom · presets top-left.
-//! Data pipeline: see `docs/ship-cargo-grids.md` (§Tier C) — this is the same
-//! validated chain as `cargo_grid_walls.rs`.
+//! Data pipeline: see `pipeline.rs` — the same validated chain as
+//! `cargo_grid_walls.rs`, with the format notes it encodes.
 
 mod pipeline;
 
@@ -79,7 +79,7 @@ impl Cam {
 
 const NEAR: f32 = 0.05;
 
-/// world point → (camera-space [x,y,z]) with the given basis.
+/// world point → (camera-space `[x,y,z]`) with the given basis.
 fn to_cam(p: [f32; 3], eye: [f32; 3], right: [f32; 3], up: [f32; 3], fwd: [f32; 3]) -> [f32; 3] {
     let rel = [p[0] - eye[0], p[1] - eye[1], p[2] - eye[2]];
     let dot = |a: [f32; 3], b: [f32; 3]| a[0] * b[0] + a[1] * b[1] + a[2] * b[2];

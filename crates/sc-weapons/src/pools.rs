@@ -8,7 +8,7 @@
 //! INI key without re-walking the iterators.
 //!
 //! Mirrors the shape of [`sc_missions::MissionPools`] and follows
-//! the workspace localization rule (`docs/localization.md`):
+//! the workspace localization rule (see [`sc_extract::LocaleMap`]):
 //! collisions live next to the iterator that produces them, keys
 //! stay raw with the leading `@` preserved, and resolution against
 //! a [`sc_extract::LocaleMap`] is the call site's job.

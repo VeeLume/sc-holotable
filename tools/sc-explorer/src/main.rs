@@ -5,7 +5,7 @@
 //! 1. **Pools** — record-pool census, surfaces missing-feature gaps.
 //!    A `0` next to a `required` row means the consumer's feature set isn't
 //!    pulling that pool's leaf feature in (the "data just wasn't there" mode).
-//! 2. **Contracts** — filter + drill-down into [`sc_missions::Contract`]s,
+//! 2. **Contracts** — filter + drill-down into [`sc_missions::Mission`]s,
 //!    with the locale-key sibling cluster surfaced inline.
 //! 3. **Weapons** — filter + drill-down into [`sc_weapons::ShipWeapon`]s.
 //!

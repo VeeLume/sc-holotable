@@ -235,7 +235,7 @@ fn exercise_filters(
         let class_name = record.name().unwrap_or("");
 
         // Resolve display name for this entity through the keys-only
-        // cache + locale (see docs/localization.md).
+        // cache + locale (the workspace localization rule).
         let display_name = items
             .name_key(&record.id())
             .and_then(|k| asset_data.locale.resolve(k).map(|s| s.to_string()));

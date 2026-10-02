@@ -25,7 +25,52 @@
 //!
 //! So compile cost ≈ total_fields × constant. A struct with 50 fields
 //! costs ~10x a struct with 5 fields. The split threshold operates on
-//! total fields to produce roughly equal-cost features.
+//! total fields to produce roughly equal-cost features. (The serde / `Debug`
+//! / `Clone` terms are historical — generated structs derive nothing now —
+//! but field count still tracks `Extract` and LLVM cost.)
+//!
+//! # Closures are data-driven
+//!
+//! A feature's closure is the set of struct types *observed* while walking
+//! the actual record instance graph from that feature's seed records:
+//! inline `Class` → the declared type; `StrongPointer` / `WeakPointer` → the
+//! **runtime** `struct_index` stored at that site; `Reference` → resolved to
+//! the target record and walked on. Asking "which subclasses are there"
+//! instead of "which could be there" is the whole point:
+//! `DataForgeComponentParams` alone has 899 subclasses, and a schema-static
+//! closure drags all of them into every feature that touches an entity.
+//! Nothing typed is lost — a never-observed subclass would surface as the
+//! poly enum's `Unknown` anyway.
+//!
+//! **A closure owns everything it reaches, Reference targets included.** A
+//! weapon feature whose records reference `AmmoParams` has `AmmoParams` in its
+//! closure, because it needs the type at runtime to resolve that link. So each
+//! type, its pool field, its extractor, its `seed_database` entry and its
+//! sub-index field are all gated on the **union** of the features whose closure
+//! contains it. Cargo feature forwarding (`ships-weapons = ["ammoparams"]`) was
+//! rejected: it cannot say "needs only part of ammoparams".
+//!
+//! # The four buckets
+//!
+//! - **Core** — polymorphic bases with zero own fields, emitted
+//!   unconditionally. They only anchor a hierarchy, carry no transitive
+//!   references, and promoting them decouples base visibility from the
+//!   referring type's features.
+//! - **Multi** — in two or more closures. Gated by an explicit inline
+//!   `#[cfg(any(feature = "A", feature = "B", …))]`. Per-type or
+//!   cluster-grouping Cargo features were measured and rejected: they shrink
+//!   cfg text (~15 MB → ~200 KB) but turn `Cargo.toml` into ~70k lines of
+//!   forwarding that every regen diff would have to be read through.
+//! - **Single** — in exactly one closure; lives in that feature's directory.
+//! - **Dormant** — schema-reachable, never observed. Always *written*, but
+//!   every emission site carries `#[cfg(feature = "dormant")]`, so by default
+//!   rustc strips them before type checking. `dormant = ["full"]` so their
+//!   cross-references are in scope when they do compile. A type leaves this
+//!   bucket by itself on the first regen after CIG populates it.
+//!
+//! Alarm conditions after a regen: `core/` well past ~400 types, cfg unions
+//! with hundreds of entries, or `dormant/` collapsing toward zero all mean the
+//! walk drifted back toward schema-static.
 
 use std::collections::{BTreeMap, HashMap, HashSet, VecDeque};
 
@@ -86,8 +131,7 @@ pub enum FeatureAssignment {
     Core,
     /// Schema-reachable but not observed in any record instance graph.
     /// Lives in the `core` module file but only compiled when the
-    /// `dormant` Cargo feature is enabled. See `docs/feature-gating-v2.md`
-    /// Decision 5 for the rationale.
+    /// `dormant` Cargo feature is enabled (see the module docs).
     Dormant,
     /// Belongs to exactly one feature.
     Single(String),
@@ -107,8 +151,8 @@ pub enum FeatureAssignment {
 ///
 /// `promoted` is the set of struct indices that should be emitted
 /// unconditionally in `core` regardless of closure membership — typically
-/// the empty polymorphic bases computed in Phase 4 of v2 (see
-/// `docs/feature-gating-v2.md` Decision 4). An empty set disables the
+/// the empty polymorphic bases (the Core bucket, see the module docs). An
+/// empty set disables the
 /// promotion pathway.
 pub fn classify_features(
     db: &DataCoreDatabase,
@@ -169,8 +213,7 @@ pub fn classify_features(
     // walking the record instance graph from this feature's seed records
     // through Class / StrongPointer / WeakPointer / Reference edges. This
     // reflects what the DCB actually stores, not what the schema declares
-    // as theoretically-possible subclasses — see `docs/feature-gating-v2.md`
-    // Decision 1 for the rationale.
+    // as theoretically-possible subclasses (see the module docs).
     let mut feature_closures: BTreeMap<String, HashSet<usize>> = BTreeMap::new();
     for (feature_name, prefixes) in &leaf_groups {
         let observed_u32 = walk_closure(db, prefixes, guid_lookup, cache, dangling);

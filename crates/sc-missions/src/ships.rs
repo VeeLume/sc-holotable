@@ -15,9 +15,9 @@
 //!    in the pools. Collect every `Tag` GUID referenced in positive or
 //!    negative spawn-query slots.
 //! 2. Walk every `EntityClassDefinition`. Keep any whose `tags` set
-//!    intersects the spawn-referenced tags from step 1. Resolve its
-//!    display name via the `DisplayNameCache` the snapshot already holds,
-//!    and its size via its `SAttachableComponentParams.AttachDef.Size`.
+//!    intersects the spawn-referenced tags from step 1, with its size from
+//!    `SAttachableComponentParams.AttachDef.Size`. Display names are not
+//!    stored — [`Ships::display_name`] resolves them at the call site.
 //!
 //! The resulting pool is exactly the set of entities contracts can
 //! possibly spawn, and nothing they cannot. sc-langpatch's existing
@@ -201,7 +201,7 @@ impl Ships {
         // — UIs that want an alphabetical order resolve display names
         // post-hoc and re-sort. Pre-resolving here would lock the order
         // to the parse-time LocaleMap, which goes stale under
-        // language-pack overlays (see docs/localization.md).
+        // language-pack overlays (the workspace localization rule).
         entities.sort_by(|a, b| {
             a.size
                 .cmp(&b.size)

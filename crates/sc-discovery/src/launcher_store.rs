@@ -42,6 +42,37 @@
 //! If extraction fails for any reason — launcher not installed, asar shape
 //! changed, key rotated to an unrecognised pattern — we return an error
 //! and the caller falls back to log parsing.
+//!
+//! ## Store layout (RSI Launcher 2.13.3)
+//!
+//! Ten top-level keys. What this module reads:
+//!
+//! | Path | Used for |
+//! |---|---|
+//! | `library.installed[].channels[].id` | channel (`LIVE`, `PTU`, `TECH-PREVIEW`, …) |
+//! | `…channels[].libraryFolder` + `installDir` | install root = `libraryFolder + installDir + id` |
+//! | `…channels[].status` | keep `"installed"` only |
+//! | `…channels[].versionLabel` | launcher-style label, e.g. `4.7.2-live.11715810` |
+//! | `…channels[].version` | monotonic Perforce changelist |
+//! | `…channels[].platformId` | `prod` / `ptu` |
+//! | `library.defaults[].channelId` | what the big "Launch" button starts ([`StoreSnapshot`]) |
+//! | `identity.nickname` | the RSI handle — the *only* identity field exposed |
+//!
+//! Present and unused, should a feature want them: `…channels[].servicesEndpoint`
+//! (per-channel CIG services URL), `library.available[]` (same shape, channels
+//! the launcher knows but are not on disk — no `libraryFolder`),
+//! `library.settings[]` (configured-but-not-downloaded channels),
+//! `application.connection.lastTimeOnline` (Unix ms; a stale-store sentinel),
+//! `application.version`, `storage.defaultLibraryFolder`,
+//! `language.languageCollection[]` (the launcher's language picker).
+//!
+//! **Never expose or log:** `device.value` and `session.value` (the
+//! `X-RSI-Device` / `X-Rsi-Token` auth cookies), `identity.username` (the login
+//! email), `identity.heapAccountId`, `identity.trackingMetricsId`.
+//!
+//! Canaries: the key regex breaks if the launcher renames `encryptionKey`;
+//! `__internal__.migrations.version` moves when electron-store changes its
+//! on-disk format.
 
 use std::fs::File;
 use std::io::{BufReader, Read};

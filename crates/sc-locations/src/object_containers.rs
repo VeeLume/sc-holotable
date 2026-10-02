@@ -12,8 +12,10 @@
 //! - `StarMapObject` → 3D position for route planning ([`crate::Place::position`] /
 //!   [`crate::Place::global_position`]).
 //!
-//! Previously each was a separate scan of the same files. This module is the
-//! single tolerant walk; see `docs/object-containers.md` for the design.
+//! Previously each was a separate scan of the same files. Parsing the ~9.5k
+//! socpaks is the entire cost (minutes; indexing and the CRC walk are
+//! milliseconds), so this module is the single tolerant walk, and its output is
+//! serde-capable so consumers persist it instead of re-walking.
 //!
 //! ## The tolerant-harvest contract (correctness — do not regress)
 //!
@@ -179,7 +181,7 @@ impl Placement {
 /// The cooked placement graph. The [`crate::Universe`] and the place↔socpak /
 /// position indices are projected from it.
 /// Only `placements` is serialized; the indices are rebuilt on load (via a
-/// [`ObjectContainersRepr`] shadow), so a persisted graph re-`join`s into a
+/// private `ObjectContainersRepr` shadow), so a persisted graph re-`join`s into a
 /// [`crate::Universe`] cheaply without re-walking the socpaks.
 #[derive(Serialize, Deserialize)]
 #[serde(from = "ObjectContainersRepr")]

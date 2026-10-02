@@ -135,8 +135,7 @@ pub fn compute_descendants(db: &DataCoreDatabase) -> DescendantMap {
 /// declared target — those are the concrete types that may actually be
 /// stored at runtime via polymorphic dispatch. For inline `Class` fields
 /// only the declared target is reached (inline class data is monomorphic
-/// by wire-format construction: see `docs/datacore.md` and
-/// `tools/sc-generator/src/polymorphism.rs`).
+/// by wire-format construction: see `polymorphism.rs`).
 pub fn compute_reachable_struct_indices(
     db: &DataCoreDatabase,
     descendants: &DescendantMap,

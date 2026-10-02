@@ -2,13 +2,28 @@
 //!
 //! It joins, it does not duplicate: rarity/cluster come from the
 //! `HarvestableProviderPreset` spine here; resource identity resolves to
-//! `sc-resources`' catalog; quality to `sc-crafting`; and *where* a provider
-//! applies resolves through `sc-locations`' `ObjectContainers` (the
-//! `StarMapObject ↔ realized-socpak` bridge). See `docs/resource-gathering.md`.
+//! `sc-resources`' catalog, which also carries the per-resource quality model;
+//! and *where* a provider applies resolves through `sc-locations`'
+//! `ObjectContainers` (the `StarMapObject ↔ realized-socpak` bridge).
 //!
-//! **Status: Tier 1** — the provider spine (groups → elements with normalized
-//! rarity + clusters). Resource identity + gathering mode (Tier 2), quality
-//! (Tier 3), and the location join land next.
+//! The "harvestable provider" system is the game's *generic* world resource
+//! spawner, despite the name: one `HarvestableProviderPreset` per celestial
+//! body covers ship, ground-vehicle (ROC) and FPS mineables, plants, and
+//! salvage / debris.
+//!
+//! - **Rarity** is two normalizations: a group's share is `groupProbability`
+//!   over the sum of the provider's groups; a resource's share is
+//!   `relativeProbability` over the sum within its group.
+//! - **Gathering mode** ([`GatheringMode`]) is which `MiningGlobalParams` record
+//!   the rock's `MineableParams` references — typed data, no name matching.
+//! - **Scan signal** is the rock entity's `signatures[4]` (the `Resource`
+//!   channel); tools display it ÷ 1000. A cluster's in-game reading (`N × base`)
+//!   is engine behaviour, not data.
+//! - **Location** ([`ProviderLocations`]) needs the live p4k, so it is layered on
+//!   top of the offline, DCB-only [`Providers::build`].
+//!
+//! Only normalized shares are data. Absolute spawn density, per-cell terrain
+//! placement and cluster signal summation are runtime.
 
 mod location;
 mod mineable;

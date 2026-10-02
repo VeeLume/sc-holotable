@@ -14,7 +14,7 @@
 //! cargo run -p sc-extract --release --example cargo_grid_collision -- MISC_Freelancer
 //! ```
 //!
-//! See `docs/ship-cargo-grids.md` (§Geometry read — Tier C).
+//! Format notes: the module docs of `tools/sc-cargo-viewer/src/pipeline.rs`.
 
 use sc_extract::{AssetConfig, AssetData, AssetSource};
 use svarog_datacore::{DataCoreDatabase, Instance, Value};
@@ -124,7 +124,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  4. Interior bulkheads/doors live in the interior socpak meshes, not the");
     println!("     hull .cga — a full answer unions hull + interior-socpak collision.");
     println!("\n  Verdict: tractable but weeks of mesh-decode work; the AABB proxy above");
-    println!("  is the ceiling of what's cheaply readable. See docs/ship-cargo-grids.md.");
+    println!("  is the ceiling of what's cheaply readable.");
 
     Ok(())
 }

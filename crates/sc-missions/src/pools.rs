@@ -22,7 +22,8 @@ use crate::expand::Mission;
 /// Precomputed groupings keyed off the most common consumer axes.
 ///
 /// Each value is a `Vec<Guid>` of [`Mission`] ids — look up the
-/// actual row via [`crate::Missions::get`].
+/// actual row via [`crate::Missions`]' `get` (from
+/// [`sc_extract::RecordCollection`]) or [`crate::Missions::iter_pool`].
 ///
 /// More axes are non-breaking additions: a future `by_locality` field
 /// can land alongside without changing existing fields.

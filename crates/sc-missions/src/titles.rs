@@ -14,9 +14,8 @@
 //! `paramOverrides` see empty strings.
 //!
 //! This module owns the inheritance walk, returning **keys only**. Per
-//! the workspace localization rule
-//! ([`docs/localization.md`](../../../docs/localization.md)) text
-//! resolution against a [`LocaleMap`] happens at the call site through
+//! the workspace localization rule (see [`sc_extract::LocaleMap`]) text
+//! resolution against a `LocaleMap` happens at the call site through
 //! [`crate::Mission::title`] / [`crate::Mission::description`].
 //!
 //! # Runtime substitution markers
@@ -54,9 +53,8 @@ pub struct ResolvedKeys {
 }
 
 /// Generic origin identifier for a contract — used to walk the right
-/// `paramOverrides` handle. Exposed so the expansion pass (step 3 in
-/// `docs/sc-missions.md`) can build inheritance chains without
-/// duplicating match logic.
+/// `paramOverrides` handle. Exposed so the expansion pass can build
+/// inheritance chains without duplicating match logic.
 #[derive(Clone, Copy)]
 pub enum ContractAnchor<'p> {
     /// A `Contract` record with its own `paramOverrides` and an

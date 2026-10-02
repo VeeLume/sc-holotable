@@ -1,7 +1,8 @@
 # tools/bench
 
-Benchmark script for sc-extract compile and runtime costs. Results feed
-into [`docs/benchmarks.md`](../../docs/benchmarks.md).
+Benchmark script for sc-extract compile and runtime costs. Results land
+under `target/` (gitignored -- the numbers are machine-specific); what a
+run *means* for the release profiles belongs in the project records.
 
 ## Quick start
 
@@ -94,7 +95,8 @@ Results are **never overwritten**. The script:
 
 1. Writes `target/bench-results.json` (always, overwritten with latest).
 2. Copies to `target/bench-history/YYYY-MM-DDTHH-mm-ss.json` (timestamped, append-only).
-3. Before updating `docs/benchmarks.md`, auto-archives the previous
+3. Before updating `target/bench-report.md` (created on first run),
+   auto-archives the previous
    run's "Latest results" tables into the History section.
 
 No manual "copy before re-running" step needed. Pass `-NoAutoArchive` to
@@ -150,7 +152,7 @@ Alternative: pause RA from inside VSCode:
 
 - **`target/bench-results.json`** -- structured results for the latest run.
 - **`target/bench-history/`** -- timestamped JSON files, one per run.
-- **`docs/benchmarks.md`** -- auto-updated "Latest results" section.
+- **`target/bench-report.md`** -- auto-updated "Latest results" section.
   Previous runs are auto-archived into the History section.
 - **Summary table on stdout**.
 

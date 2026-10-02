@@ -42,7 +42,7 @@ impl Datacore {
     /// Cooked domain indices (items, tags, manufacturers, reference graph)
     /// are no longer built here — each is an explicit `build(&datacore)` in
     /// its owning crate (`sc-items`, `sc-tags`, `sc-manufacturers`, or
-    /// [`ReferenceGraph::from_database`]). `asset_data` is retained for API
+    /// [`crate::ReferenceGraph::from_database`]). `asset_data` is retained for API
     /// symmetry; DCB-derived data is locale-independent.
     pub fn parse(assets: &AssetSource, asset_data: &AssetData) -> Result<Self> {
         let _ = asset_data; // reserved for future asset-derived indices

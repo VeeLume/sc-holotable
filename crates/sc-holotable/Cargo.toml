@@ -7,12 +7,8 @@ rust-version.workspace = true
 # Umbrella prelude crate — the recommended public dependency. Re-exports the
 # typed surfaces of every workspace crate behind feature flags so downstream
 # consumers pin one tag, name no svarog rev, and pick capabilities with
-# features instead of remembering sc-extract leaf flags. See
-# `docs/workspace-structure.md` -> "Umbrella crate".
-#
-# NOTE: only the crates that exist today are wired up. The full feature map in
-# the design doc (sc-vehicles, sc-loadouts, sc-economy, ...) lands as those
-# crates do.
+# features instead of remembering sc-extract leaf flags. The feature table and
+# the rationale are the crate docs in src/lib.rs.
 
 [dependencies]
 sc-discovery = { workspace = true, optional = true }

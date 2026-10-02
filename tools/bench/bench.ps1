@@ -7,8 +7,8 @@
     benchmarks against a configurable set of Cargo feature configurations
     and release profiles. Writes results to target/bench-results.json,
     saves timestamped history to target/bench-history/, and updates
-    docs/benchmarks.md (auto-archiving the previous run into the
-    History section).
+    target/bench-report.md (auto-archiving the previous run into its
+    History section; the file is created on first run).
 
     RUST-ANALYZER CONTAMINATION
     ---------------------------
@@ -76,8 +76,10 @@
     under the workspace root.
 
 .PARAMETER BenchDoc
-    Path to the benchmarks markdown document to update. Defaults to
-    docs/benchmarks.md under the workspace root. The script replaces
+    Path to the benchmarks markdown report to update. Defaults to
+    target/bench-report.md under the workspace root (gitignored: the
+    numbers are machine-specific; conclusions belong in the project
+    records, not in the repo). The script replaces
     the region between the <!-- BENCH:RESULTS-START --> and
     <!-- BENCH:RESULTS-END --> markers with the tables from this run;
     everything outside those markers (methodology, history,
@@ -203,7 +205,7 @@ if (-not $OutJson) {
     $OutJson = Join-Path $WorkspaceRoot 'target\bench-results.json'
 }
 if (-not $BenchDoc) {
-    $BenchDoc = Join-Path $WorkspaceRoot 'docs\benchmarks.md'
+    $BenchDoc = Join-Path $WorkspaceRoot 'target\bench-report.md'
 }
 if (-not $HistoryDir) {
     $HistoryDir = Join-Path $WorkspaceRoot 'target\bench-history'
@@ -899,10 +901,14 @@ function Update-BenchmarkDoc {
     param([PSCustomObject]$R, [string]$Path)
 
     if (-not (Test-Path $Path)) {
-        Write-Host ""
-        Write-Host "WARNING: benchmark document not found: $Path" -ForegroundColor Yellow
-        Write-Host "         create it with the BENCH:RESULTS-START/END markers to enable auto-update." -ForegroundColor Yellow
-        return
+        # First run on this checkout: seed the report with the markers and
+        # the History heading the archive step looks for.
+        $dir = Split-Path -Parent $Path
+        if ($dir -and -not (Test-Path $dir)) {
+            New-Item -ItemType Directory -Force -Path $dir | Out-Null
+        }
+        $skeleton = "# sc-holotable -- benchmark report`n`n<!-- BENCH:RESULTS-START -->`n<!-- BENCH:RESULTS-END -->`n`n## History`n"
+        Set-Content -Path $Path -Value $skeleton -Encoding utf8 -NoNewline
     }
 
     # Auto-archive previous results before overwriting (once per run).

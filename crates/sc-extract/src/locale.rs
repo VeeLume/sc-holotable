@@ -9,6 +9,9 @@
 //! This module provides [`LocaleMap`] for parsing, lookup, mutation, and
 //! round-trip serialization, plus a [`LocaleKey`] newtype for type-safe
 //! localization references.
+//!
+//! The workspace-wide rule for how keys and strings are handled lives on
+//! [`LocaleMap`]'s type docs (this module is private; the type is the public face).
 
 use std::collections::HashMap;
 use std::path::Path;
@@ -29,6 +32,46 @@ pub use sc_extract_generated::LocaleKey;
 /// values via [`LocaleMap::get`] (raw key) or [`LocaleMap::resolve`]
 /// (handles `@` prefix), mutate via [`LocaleMap::set`] /
 /// [`LocaleMap::remove`], and serialise via [`LocaleMap::serialize`].
+///
+/// # The workspace localization rule
+///
+/// **Stored data carries [`LocaleKey`]s. Strings are resolved at the call
+/// site, through whichever [`LocaleMap`] is current.** No crate in the
+/// workspace stores a resolved display string — not in a struct field, a
+/// `HashMap` key, a collision pool, or a snapshot.
+///
+/// Why: pre-resolved strings break under locale overlays. A consumer like
+/// `sc-langpatch` parses against base-English `global.ini`, then overlays a
+/// community language pack and builds a *new* `LocaleMap`. Anything resolved at
+/// parse time stays English and silently disagrees with what the player sees.
+/// Re-resolving caches only moves the problem; never resolving early removes
+/// it, and makes a live language switch free.
+///
+/// What follows from it, for any type that surfaces in-game text:
+///
+/// - **Field:** `pub name_key: Option<LocaleKey>`, raw — the leading `@` the
+///   DCB carries is kept. Only the rare site that writes `global.ini` back
+///   strips it, with `LocaleKey::stripped()`, right there.
+/// - **Resolution:** a method taking `&LocaleMap` —
+///   `fn display_name<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str>`,
+///   built on [`LocaleMap::resolve`] (handles the `@`, no allocation).
+///   Composite text (`"Stanton / microTech"`) is formatted at call time too.
+/// - **Collision pools** are `HashMap<LocaleKey, Vec<Guid>>` — keyed by key,
+///   never by resolved text. Collision *policy* (first entity per key, or
+///   every variant) is the consumer's call, so no policy enum lives in the lib.
+/// - **Sort order:** build-time ordering uses a locale-independent key (record
+///   name, size + GUID). A UI that wants alphabetical order re-sorts after
+///   resolving, where the locale is known.
+/// - **Source of keys:** entity text (`Name` / `ShortName` / `Description` on
+///   `SAttachableComponentParams.AttachDef.Localization`) comes from the one
+///   walk in `sc_items::Items`. Text reached through a domain-specific
+///   inheritance chain (contract titles: four levels) gets its own resolver in
+///   its own crate; the two share a result shape, not machinery.
+///
+/// Normalization happens once, at construction: [`LocaleMap::parse`],
+/// [`LocaleMap::parse_utf8_bom`] and [`LocaleMap::set`] all pass keys through
+/// [`strip_locale_metadata`], because CIG ships a `,P` suffix on thousands of
+/// keys (`item_Name…_tint01,P=…`) while DCB references use the bare key.
 ///
 /// # Serialisation format
 ///

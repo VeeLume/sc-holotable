@@ -1,9 +1,42 @@
 //! Data pipeline: ship → cargo grids + interior wall boxes + per-face-cell
 //! distance-to-wall. Silent port of the validated
-//! `crates/sc-extract/examples/cargo_grid_walls.rs` (see
-//! `docs/ship-cargo-grids.md` §Tier C for the format discoveries this encodes:
-//! NMC hierarchy composition, bottom-anchored grid boxes, `IncludedObjects` +
-//! entity placements, fixed-offset model AABBs).
+//! `crates/sc-extract/examples/cargo_grid_walls.rs`.
+//!
+//! # Format and modelling notes this code encodes
+//!
+//! Each of these was a shortcut that broke on some ship:
+//!
+//! - **A cargo grid is an `InventoryContainer` record** (via the grid item's
+//!   `SCItemInventoryContainerComponentParams.containerParams`);
+//!   `interiorDimensions` / 1.25 m per axis = SCU cells. Detected by the open
+//!   container type, never by name. `SCItemCargoGridParams` has zero instances.
+//! - **Grids mount four ways:** inline loadout entries, port `defaultItem`s, the
+//!   mounted item's *own* loadout (doors / lifts, behind a `Reference`), and
+//!   loose XML loadout files that the DCB never references by GUID.
+//! - **Port transform:** explicit `SItemPortDef` attachment helper (an anchor
+//!   node and a `QuatT` offset) where present, else the scene-graph node named
+//!   after the port, else the item origin. `QuatT` fields are `Position` /
+//!   `Rotation`, capitalised — lowercase silently reads zeros.
+//! - **Scene graph** (`NodeMeshCombos`): `bone_to_world` is *local to the
+//!   parent*; compose up `parent_index`. Node bounding boxes are node-local.
+//! - **The grid box is bottom-anchored** at the port node (centred X/Y, up in Z).
+//! - **Model AABB** sits at a fixed offset in `MeshIvo320`; heuristic float
+//!   scans scramble axes.
+//! - **Walls** come from `.soc` `IncludedObjects` placements plus CryXmlB
+//!   `Entity` placements, decomposed into per-node boxes. Light-glow nodes
+//!   (`LG_*`, `LIGHT_*`, `*glow*`, `*blinker*`) must be excluded: emissive
+//!   volumes reach into the room and read as walls. Art naming is the only
+//!   discriminator the data offers.
+//! - **Triangles** live in the companion file (`.cgf` → `.cgfm`, `.cga` →
+//!   `.cgam`), chunk `IvoSkin2`: SNorm-16 positions scaled over the *scaling*
+//!   bbox, `u16` indices plus a per-submesh page base. The soup must include the
+//!   ship's own hull skin — bay ceilings are hull mesh, in no socpak.
+//! - **Distance rules:** a box ahead of a face gives the near-side distance; a
+//!   box the face is embedded in gives its *far* side as an upper bound (else
+//!   shell-built interiors read falsely open); the bottom face is 0.
+//! - `StatObjPhysics` (the real collision chunk) is undecoded; the render mesh
+//!   is the collision proxy. Door item meshes are not in the soup, so a closed
+//!   door reads open — the right semantics for a load planner.
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 
@@ -1173,7 +1206,7 @@ fn parse_included_objects(data: &[u8]) -> Vec<Placement> {
 // ── CGF model AABB ───────────────────────────────────────────────────────────
 
 /// A decoded triangle mesh in model space (IVO `IvoSkin2` streams from the
-/// `.cgfm`/`.cgam` companion — see `docs/ship-cargo-grids.md` §Tier C).
+/// `.cgfm`/`.cgam` companion — see the module docs).
 struct TriMesh {
     positions: Vec<[f32; 3]>,
     indices: Vec<u32>,

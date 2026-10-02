@@ -2,15 +2,54 @@
 //! one [`Mission`] per concrete (handler, contract,
 //! optional sub_contract) node in the graph.
 //!
-//! This is stage 3 of the pipeline in `docs/sc-missions.md`. Stage 4
-//! (merge into final [`crate::Contract`]s) groups these expansions by
-//! `(title, description, reward_signature)`.
+//! There is no merge step after this: every expansion row *is* a
+//! [`Mission`]. Grouping is the consumer's call, via [`crate::MissionPools`].
 //!
-//! The v1 expander materialises the fields sc-langpatch's existing
-//! `mission_enhancer` needs to migrate off its svarog-instance walker:
-//! resolved title + description, shareable / once-only / illegal flags,
-//! and the blueprint reward (if any). Ship-encounter resolution and
-//! the full reward model land in subsequent iterations.
+//! # The generator graph
+//!
+//! ```text
+//! ContractGenerator                              (DCB root record)
+//! └─ generators[] : ContractGeneratorHandlerBase (polymorphic)
+//!    ├─ _Legacy        → legacyContracts[] : ContractLegacy
+//!    ├─ _Career        → contracts[] : CareerContract (+ introContracts[] : Contract)
+//!    ├─ _List / _LinearSeries / _Tutorial… → contracts[] : Contract
+//!    └─ _PVPBountyDef / _ServiceBeacon → kind-specific fields
+//! ```
+//!
+//! `Contract`, `ContractLegacy` and `CareerContract` all derive from
+//! `ContractBase` but live in separate pools with different field shapes, and
+//! the handler kinds name their contract arrays differently. The walk branches
+//! per typed handler kind; a generic "read `contracts`" accessor silently drops
+//! the Legacy handler (one handler, hundreds of contracts).
+//!
+//! Each concrete contract carries `paramOverrides` plus `subContracts[]`; a
+//! `SubContract` is a further set of overrides with its own prerequisites (a
+//! tier of a career progression). One row is emitted per
+//! `(handler, contract, Option<sub_contract>)`.
+//!
+//! # Inheritance, per field
+//!
+//! - **Title / description keys** — four levels, first hit wins:
+//!   sub-contract → contract `paramOverrides` → handler `contractParams` →
+//!   template. See [`crate::resolve_contract_keys`].
+//! - **Availability** — base from the handler's `ContractAvailability`;
+//!   bool / int param overrides are then overlaid handler → contract →
+//!   sub-contract, so the most specific level wins.
+//! - **Shareable** — base from the template
+//!   (`contractClass → additionalParams → canBeShared`, resolved on the typed
+//!   surface via `Datacore::resolve::<ContractTemplate>`), then overridable.
+//! - **Prerequisites** — *concatenated*, not overridden: the handler's
+//!   availability, the contract's and the sub-contract's all apply at once.
+//! - **Encounters / properties** — per variable name, first non-empty of
+//!   sub-contract → contract overrides → handler → template.
+//!
+//! # Engine-computed values
+//!
+//! `ContractResult_CalculatedReward` and `ContractResult_CalculatedReputation`
+//! carry no amount — the engine derives it at runtime from the difficulty
+//! profile, time-to-complete and buy-in. That is roughly a third of all reward
+//! records, so it surfaces as [`RewardAmount::Calculated`] rather than `0`
+//! (the `payout` feature estimates it from `GameMode.SC_Default`'s `uecCurve`).
 
 use std::collections::{BTreeMap, HashSet};
 
@@ -73,8 +112,8 @@ pub struct Mission {
     pub origin: MissionOrigin,
 
     /// INI key the title was resolved from. Raw — leading `@`
-    /// preserved, matching the workspace localization rule
-    /// (`docs/localization.md`). `Some` whenever a key was found in the
+    /// preserved, matching the workspace localization rule (see
+    /// [`LocaleMap`]). `Some` whenever a key was found in the
     /// inheritance chain, even if the active [`LocaleMap`] doesn't
     /// carry a translation. Resolve via [`Mission::title`].
     pub title_key: Option<LocaleKey>,
@@ -454,9 +493,9 @@ pub struct MissionRewards {
     /// Scrip rewards — `ContractResult_Item` entries whose entity_class
     /// is in [`crate::RewardCurrencies`].
     pub scrip: Vec<ScripReward>,
-    /// Reputation rewards. Amount is [`None`] for
+    /// Reputation rewards. Amount is `None` for
     /// `ContractResult_CalculatedReputation` (engine-computed) and
-    /// [`Some(i32)`] for `_LegacyReputation` with a resolved amount.
+    /// `Some(i32)` for `_LegacyReputation` with a resolved amount.
     pub reputation: Vec<RepReward>,
     /// Item rewards — `ContractResult_Item` entries whose entity_class
     /// is **not** a currency (ship unlocks, collector items, …).
@@ -772,8 +811,8 @@ pub struct EncounterPhase<S> {
 /// `SpawnDescription_NPCGroup` shape doesn't have this nested
 /// alternatives layer, so NPC `SlotGroup`s always have exactly one
 /// option. For ships, ~14% of groups have more than one option in
-/// the LIVE DCB (see `docs/feature-request-encounter-alternatives.md`
-/// for the full census).
+/// the LIVE DCB (census on SC 4.7; flattening them was the v0.4.0
+/// "6× Scythe instead of 1–3" over-count).
 ///
 /// When `options.len() == 1`, the group is a "pure concurrent slot"
 /// and the option's `concurrent` / `amount` is exactly what fires.

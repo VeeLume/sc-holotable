@@ -8,20 +8,20 @@ instead of each reimplementing their own.
 
 ## Status
 
-Actively developed: **17 library crates** implemented, released on two
-independent tag axes — `sc-holotable/v*` for the library API and `datacore/*`
-for game-patch binding snapshots. The workspace is grown deliberately slowly —
-incorrect assumptions about Star Citizen's data formats are easy to make and
-expensive to remove once consumers depend on them — so each domain is verified
-against live DCB data before it is modelled.
+Released on two independent tag axes — `sc-holotable/v*` for the library API
+and `datacore/*` for game-patch binding snapshots. The workspace is grown
+deliberately slowly — incorrect assumptions about Star Citizen's data formats
+are easy to make and expensive to remove once consumers depend on them — so each
+domain is verified against live DCB data before it is modelled.
 
-`status.md` holds the always-current per-crate status. `docs/CONVENTIONS.md` is
-the API contract every crate follows; `docs/workspace-structure.md` covers the
-crate architecture.
+API documentation is rustdoc (`cargo doc --open -p sc-holotable --features full`);
+[`CHANGELOG.md`](CHANGELOG.md) tracks the public surface per release. There is
+deliberately no `docs/` directory.
 
 ## Crates
 
-Every crate has one of three roles (see `docs/CONVENTIONS.md` for the taxonomy).
+Every crate has one of three roles, which fixes its construction signature and
+error policy.
 
 **I/O-boundary** — read the filesystem / `Data.p4k`; fallible:
 
@@ -57,9 +57,11 @@ them for fast load. `sc-extract-generated` is workspace-internal codegen output
 
 ## Consumer apps
 
-- **bulkhead** — SC combat / damage calculator. Drives `sc-weapons` and the stat sheets.
-- **sc-langpatch** — `global.ini` localization patcher. Drives `sc-extract` + `sc-missions`.
-- **streamdeck-starcitizen** — Stream Deck keybind plugin. Consumes only `sc-discovery`.
+- **starlume**, **hearth** — crafting, missions and payout surfaces.
+- **sc-cargo-planner** — hauling legs, mission locations, cargo grids.
+- **sc-fleetsync** — install discovery + items.
+- **sc-langpatch** — `global.ini` localization patcher. Drives the localization rules and `sc-missions`.
+- **bulkhead** — SC combat / damage calculator. Drives the weapon maths.
 
 ## Layering
 
@@ -75,7 +77,7 @@ them for fast load. `sc-extract-generated` is workspace-internal codegen output
 
 Rules the layering enforces:
 
-- **`sc-discovery` is completely standalone.** Consumers that only need install discovery don't pay for svarog. `streamdeck-starcitizen` relies on this.
+- **`sc-discovery` is completely standalone.** Consumers that only need install discovery don't pay for svarog.
 - **Domain and foundational crates go through `sc-extract`, never directly through svarog.** Cross-reference resolution is centralized.
 - **svarog is re-exported from `sc-extract` as an escape hatch, not the preferred interface.** Prefer `sc-extract`'s own helpers; reach for raw svarog only when the abstraction doesn't cover a case yet. Reaching for it repeatedly for the same thing is a signal to lift a helper into `sc-extract`.
 - **`sc-extract` deals in bytes and types, not filesystem side effects.** It reads `Data.p4k` and parses/serializes localization, but does not write patched files — that is the consumer's call (sc-langpatch, using a path helper from `sc-discovery`). This keeps `sc-extract` free of any `sc-discovery` dependency and preserves the acyclic layering.
@@ -86,7 +88,7 @@ Rules the layering enforces:
 2. **Real utility lib.** Don't contort the API to a specific consumer's current needs. Consumers adapt to the lib, not the other way round. Awkwardness during integration is a signal about the consumer, not the lib.
 3. **One canonical model per domain.** When two consumers need overlapping data, they share a single type — the most-demanding consumer drives correctness, others read a subset.
 
-The full set (including "layering is on data source, not format" and "no string matching where typed alternatives exist") lives in `CLAUDE.md`; the per-crate API contract is `docs/CONVENTIONS.md`.
+The full set (including "layering is on data source, not format" and "no string matching where typed alternatives exist") and the per-crate API contract live in `CLAUDE.md`.
 
 ## Conventions
 
@@ -96,11 +98,15 @@ The full set (including "layering is on data source, not format" and "no string 
 
 ## Integration
 
-Git-dep only. Not published to crates.io.
+Git-dep only. Not published to crates.io. Depend on the umbrella crate and pick
+capabilities with features — one pin, no svarog rev to match, no `sc-extract`
+leaf flags to remember:
 
 ```toml
 [dependencies]
-sc-discovery = { git = "https://github.com/<user>/sc-holotable.git", tag = "sc-holotable/vX.Y.Z" }
+sc-holotable = { git = "https://github.com/VeeLume/sc-holotable.git", tag = "sc-holotable/vX.Y.Z", features = ["installs", "missions"] }
 ```
 
-During heavy iteration, consumers may use a `[patch]` section to point at a local checkout of this workspace.
+The feature table is in the `sc-holotable` crate docs. During heavy iteration,
+consumers may use a `[patch]` section to point at a local checkout of this
+workspace — not a path dependency, which breaks on every other machine.

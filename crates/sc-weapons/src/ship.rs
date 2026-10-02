@@ -63,7 +63,7 @@ pub struct ShipWeapon {
     /// `Localization.Name` INI key — the player-facing item name in
     /// `global.ini` (e.g. `"@item_NameGATS_BallisticGatling_S1"`). Raw
     /// — leading `@` preserved per the workspace localization rule
-    /// (`docs/localization.md`). `None` when no
+    /// (see the [`LocaleMap`] type docs). `None` when no
     /// `SAttachableComponentParams.AttachDef.Localization` chain
     /// resolves. Resolve through a [`LocaleMap`] via
     /// [`Self::display_name`].
@@ -313,7 +313,7 @@ impl ShipWeapon {
     // =========================================================
 
     /// Seconds of continuous primary-mode fire before overheat from a cold
-    /// start. Alias for heat-specific branch of [`burst_seconds`].
+    /// start. Alias for heat-specific branch of [`Self::burst_seconds`].
     pub fn time_to_overheat(&self) -> Option<f32> {
         match &self.sustain {
             SustainKind::Heat(h) => h.time_to_overheat_cold(),
@@ -322,7 +322,7 @@ impl ShipWeapon {
     }
 
     /// Seconds of forced lockout after an overheat event (heat weapons
-    /// only). Alias for the heat-specific branch of [`recovery_seconds`].
+    /// only). Alias for the heat-specific branch of [`Self::recovery_seconds`].
     pub fn overheat_lockout_time(&self) -> Option<f32> {
         match &self.sustain {
             SustainKind::Heat(h) => Some(h.overheat_fix_time),
@@ -370,7 +370,7 @@ impl ShipWeapon {
 
     /// Total damage delivered during a `window_seconds`-long engagement
     /// starting from full/cold state, accounting for the weapon's sustain
-    /// cycles. Core primitive powering [`dps_retention_pct`].
+    /// cycles. Core primitive powering [`Self::dps_retention_pct`].
     pub fn damage_in_window(&self, window_seconds: f32) -> Option<f32> {
         if window_seconds <= 0.0 {
             return Some(0.0);

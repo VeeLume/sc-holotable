@@ -5,23 +5,53 @@
 //! time. No `&DataPools` needed after construction — every accessor is a
 //! plain field read.
 //!
+//! # Status: legacy
+//!
+//! For *base stats* (what crafting reshapes) use the focused `sc-items-*`
+//! sheets. This crate remains the only home of **combat maths** — burst and
+//! sustained DPS, heat / capacitor cycles — and of missiles.
+//!
 //! # Quick start
 //!
-//! ```rust,ignore
-//! use sc_weapons::{iter_ship_weapons, Items};
+//! ```no_run
+//! use sc_weapons::{Items, LoadoutContext, Weapons};
 //!
-//! let datacore: sc_extract::Datacore = /* ... */;
-//! let items = Items::build(datacore.records());   // build once, share by reference
-//! for weapon in iter_ship_weapons(&datacore, &items) {
-//!     println!("{}: S{} {:?}", weapon.record_name, weapon.size, weapon.primary_fire_action);
+//! # fn demo(datacore: &sc_extract::Datacore) {
+//! let items = Items::build(datacore.records()); // build once, share by reference
+//! let weapons = Weapons::build(datacore, &items);
+//!
+//! // Neither the engagement window nor the power share has a default — the
+//! // scenario decides, not this crate.
+//! let ctx = LoadoutContext { window_seconds: 30.0, power_per_slot: None };
+//! for w in &weapons.ships {
+//!     println!(
+//!         "{} S{}: burst {:?} dps, {:?} effective over 30 s",
+//!         w.record_name, w.size, w.burst_dps(), w.effective_dps(&ctx),
+//!     );
 //! }
+//! # }
 //! ```
 //!
-//! # Scope
+//! # What the numbers mean
 //!
-//! v1 is **data accessors only**. Sustained DPS calculations, fire-mode
-//! switching, and FPS sustain models are deferred to v2 — see
-//! `docs/sc-weapons.md` for the full deferred list.
+//! Three tiers, in increasing dependence on assumptions:
+//!
+//! 1. **Per shot** — plain fields (`damage`, `pellet_count`, `ammo_speed`, …).
+//!    Comparable across any two weapons.
+//! 2. **Burst** — `burst_rpm` / `burst_dps` / `burst_seconds` /
+//!    `volley_damage` / `recovery_seconds` / `cycle_seconds`. Rate-coupled.
+//! 3. **Normalised** — `dps_retention_pct(window)` / `firing_time_pct` /
+//!    `long_run_dps_pct` / `thermal_efficiency` / `power_efficiency`, and the
+//!    single sortable [`ShipWeapon::effective_dps`].
+//!
+//! Every derived accessor returns `Option`: `None` means *not modelled*, never
+//! zero. Known gaps — burst-fire weapons have no cycle model (`burst_dps` is
+//! `None`), charged auto-fire weapons read high because an engine-side
+//! per-shot interval is not in the fire-action data, beam capacitor depletion
+//! is not modelled, and FPS weapons have no sustain model at all.
+//!
+//! The reference values the heat and energy models were fitted against are
+//! pinned as unit tests in `sustain.rs`.
 
 mod classify;
 mod damage;

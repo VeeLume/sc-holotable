@@ -6,7 +6,19 @@
 //! typed [`LocationKind`] category, and hierarchy parent. [`Locations`] indexes
 //! every location by GUID **and by class-CRC**, so an EntityGraph gRPC
 //! `subject_id` (a [`sc_extract::class_crc`] of the record GUID) resolves
-//! straight to a typed location. See `docs/sc-locations.md` for the design spec.
+//! straight to a typed location.
+//!
+//! Two more layers build on it. [`ObjectContainers`] is the *physical* side: one
+//! tolerant walk over every `.socpak`, yielding the placement graph (positions,
+//! containment, mission CRCs, which socpak realizes which `StarMapObject`).
+//! [`Universe`] joins the two into [`Place`]s that expose both facets, either of
+//! which may be absent.
+//!
+//! The category is the `StarMapObjectType` the record references, **not** its
+//! nav icon — Levski is `Manmade`, not `LandingZone`. There is no dedicated
+//! Lagrange or asteroid-cluster kind: those are `Asteroid` / `AsteroidValidQt`,
+//! jump points are `Anomaly`, stations are `Manmade`. The hierarchy is rooted at
+//! the `Star`; the `SolarSystem` record is a parentless, childless sibling.
 //!
 //! # Why this is its own crate
 //!

@@ -12,17 +12,28 @@
 //!
 //! The canonical iteration follows `std` map semantics:
 //! [`iter`](RecordCollection::iter) yields `(&Guid, &Item)` pairs;
-//! [`values`](RecordCollection::values) yields `&Item`. See `docs/CONVENTIONS.md`
-//! §5 for the full rules (notably: the surface is trait-only — implementors do
-//! *not* mirror these methods as inherent copies, so bring the trait into scope
-//! to call them, as with `std::io::Write`).
+//! [`values`](RecordCollection::values) yields `&Item`.
+//!
+//! The surface is **trait-only**: implementors do *not* mirror these methods as
+//! inherent copies (that duplication is exactly the drift this trait removes), so
+//! bring the trait into scope to call them, as with `std::io::Write`. Every
+//! collection crate re-exports the trait next to its collection, and
+//! `sc_holotable::prelude` includes it.
+//!
+//! What stays inherent on a collection: its constructors (`new` == `Default`,
+//! and `build` — always that verb), secondary-key lookups (`by_<key>` returning
+//! `Option<&Item>` for a single hit or `&[Guid]` for many), and `by_crc` /
+//! `guid_by_crc` where class-CRC resolution is meaningful. A collection never
+//! exposes its backing map as a public field.
 
 use crate::Guid;
 
 /// A read-only, GUID-keyed collection of curated record wrappers.
 ///
 /// This is a *read* contract only — construction stays in each crate's inherent
-/// `build` (the input type is role-specific; see `docs/CONVENTIONS.md` §3).
+/// `build`, because the input type is role-specific: foundational record-index
+/// crates take `&RecordStore`, Datacore-consuming domain crates take `&Datacore`
+/// plus the indices they need by reference, never both.
 /// Secondary-key and class-CRC lookups also stay inherent; the trait covers the
 /// universal GUID surface every collection shares.
 pub trait RecordCollection {

@@ -9,7 +9,7 @@
 //!
 //! Built by [`AssetData::extract`] from a live [`AssetSource`]. Not
 //! serialized — snapshot persistence archives the raw bytes and re-parses
-//! at [`crate::ExtractSnapshot::hydrate`] time, see `docs/sc-extract.md`.
+//! at [`crate::ExtractSnapshot::hydrate`] time.
 
 use crate::assets::AssetSource;
 use crate::error::Result;

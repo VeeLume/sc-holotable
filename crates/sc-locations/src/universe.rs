@@ -240,6 +240,25 @@ impl<'u> Place<'u> {
     /// chain; ignores per-level rotation). The coordinate to use for ordering
     /// stops by distance. `None` for a logical-only place — use
     /// [`Self::anchor_position`] to fall back to a positioned ancestor.
+    ///
+    /// # What is exact and what is not
+    ///
+    /// The true transform is `body_global + R_body(t) · local`. A body's spin
+    /// `R_body(t)` is **not in the game files** (celestial bodies carry `Pos`,
+    /// `Radius` and orbit parameters, no rotation), so this uses `R = identity`.
+    /// A rotation is an isometry: it cancels in anything comparing two points in
+    /// the *same* body frame, and only matters for absolute placement.
+    ///
+    /// | Query | Exactness |
+    /// |---|---|
+    /// | position of a body, moon, station (placed at system level) | exact — `Pos` is authored system-global |
+    /// | chord / great-circle distance, bearing, distance to OMs, body-fixed lat/long — two points on the **same body** | exact — computed from the local vectors |
+    /// | distance between surface points on **different** bodies | exact for ordering (± a body radius against ~10⁹ m) |
+    /// | absolute position of one **surface** point | ± up to a body radius, and time-dependent |
+    /// | anything sun-relative (time of day, "where is noon") | not recoverable — that *is* the missing rotation phase |
+    ///
+    /// Harvested `Pos` values were cross-checked against starmap.space (which
+    /// keys by socpak `EntityCryGUID`, not DCB GUID): identical to the metre.
     pub fn global_position(&self) -> Option<[f64; 3]> {
         self.placement
             .and_then(|id| self.universe.containers.global_position(id))

@@ -149,8 +149,7 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
     // transitive references to other types, which is what makes
     // unconditional compilation safe (no cascade). In practice most of
     // the 336 empty-own bases also have empty-full, so the resulting set
-    // should be within ~5% of 336. See `docs/feature-gating-v2.md`
-    // Decision 4.
+    // should be within ~5% of the Core bucket's size.
     let promoted: std::collections::HashSet<u32> = poly_bases
         .iter()
         .copied()
@@ -522,8 +521,7 @@ fn update_cargo_features(
     out.push_str("]\n");
 
     // `dormant` forwards to `full` so every observed cross-reference
-    // is in scope when dormant types compile. See
-    // `docs/feature-gating-v2.md` Decision 5 for rationale.
+    // is in scope when dormant types compile.
     out.push_str("dormant = [\"full\"]\n");
 
     // Parent features (aliases). Skip any that collide with a leaf name

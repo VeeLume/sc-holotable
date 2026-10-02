@@ -15,10 +15,83 @@
 //! cost is `Select(Select(Resource))`, results are universally empty
 //! (Creation's `entity_class` IS the output), 0 optional costs, and
 //! `Research` slots are present-but-empty on 57% of tiers. We model the
-//! full schema shape anyway — CIG plans to populate this. The
-//! polymorphic enums fall back to `Other { type_name, struct_index }`
-//! for dormant variants until the next regen-after-population promotes
-//! them.
+//! full schema shape anyway — CIG plans to populate this (more tiers and a
+//! refining rework are announced), and modelling only the populated corner
+//! would force a breaking change every time content ships. `Vec` stays `Vec`,
+//! `Option` stays `Option`.
+//!
+//! Several crafting types (`CraftingProcess_{Refining,Repair,Upgrade,Dismantle}`,
+//! `CraftingResult_*`, the `*_Ref` / `*_RecordRef` recipe indirections) have zero
+//! live records, so the generator files them under `dormant`. This crate does
+//! **not** enable `dormant`: every polymorphic enum instead falls back to
+//! `Other { type_name, struct_index }`, and the first regen after CIG populates
+//! a type promotes it into the typed surface with no flag flip.
+//!
+//! # What this crate owns
+//!
+//! The whole `libs/foundry/records/crafting/` subsystem — [`Blueprints`],
+//! [`Categories`] (marker records: the category *is* the record name),
+//! [`GlobalParams`], [`GameplayProperties`] — **except**:
+//!
+//! - `blueprintrewards/` (mission reward pools) → `sc-missions`.
+//! - the quality model (distributions, location overrides, quantization) →
+//!   `sc-resources`, next to the resources it describes.
+//! - `legacy/` (the old multitool salvage / repair recipes) → not modelled; a
+//!   distinct gameplay loop with a distinct schema.
+//!
+//! # Per-material effects and product stats
+//!
+//! A recipe's mandatory cost tree is where the crafting *calculator* data lives:
+//! every [`Cost::Select`] carries its slot label ([`SlotName`] — "Frame",
+//! "Cabling", …) and every cost node carries [`CostContext`], whose
+//! [`GameplayPropertyModifier`]s say how a material's quality reshapes a
+//! gameplay property. [`Blueprints::product_stats`] rolls those up and applies
+//! them to the item's base value:
+//!
+//! ```no_run
+//! use sc_crafting::{Blueprints, GameplayProperties};
+//! use sc_extract::{Datacore, Guid};
+//! use sc_items::Items;
+//! use sc_items_fps_weapons::FpsWeapons;
+//!
+//! # fn demo(datacore: &Datacore, rifle: Guid) {
+//! let items = Items::build(datacore.records());
+//! let blueprints = Blueprints::build(datacore, &items);
+//! let properties = GameplayProperties::build(datacore);
+//! // One base-stat sheet per item domain: FpsWeapons / Armor /
+//! // ShipComponents / ShipWeapons all implement `ProductStatSource`.
+//! let bases = FpsWeapons::build(datacore, &items);
+//!
+//! for stat in blueprints.product_stats(rifle, &properties, &bases, 750) {
+//!     match (stat.base, stat.modified) {
+//!         (Some(base), Some(modified)) => println!("{:?}: {base} → {modified}", stat.stat),
+//!         // No absolute base in the data (tractor / hull-scraping stats): the
+//!         // percent change is still meaningful.
+//!         _ => println!("{:?}: {:+.0}%", stat.stat, stat.pct_change()),
+//!     }
+//! }
+//! # }
+//! ```
+//!
+//! Two rules a calculator must get right:
+//!
+//! - **Aggregation across slots is additive-delta**, not multiplicative:
+//!   `factor = 1 + Σ(factorᵢ − 1)`. Two −10% slots are −20%, not −19%.
+//! - **The quality curve crosses 1.0 at the base quality** (500 —
+//!   [`GlobalParams`]' default composition quality). Below it every crafted
+//!   stat is *worse* than stock, by design.
+//!
+//! Which item field a gameplay property means is **not in the game data** — see
+//! [`GameplayStat`] for why that mapping is a record-name-anchored table, and
+//! [`ProductStatSource`] for how a new item domain plugs in (a pure-data
+//! `sc-items-*` sheet, then `GameplayStat` variants + a `KNOWN` row + the trait
+//! impl here, then the umbrella feature).
+//!
+//! # Reproducing the reference numbers
+//!
+//! `examples/product_stats.rs` reproduces scmdb's crafter values end to end
+//! across all four domains; `examples/craft_landscape.rs` lists every craftable
+//! item type with its gameplay properties and base-stat components.
 //!
 
 use sc_extract::generated::{
@@ -208,7 +281,8 @@ pub struct Tier {
 /// A craftable recipe — inputs (costs), outputs (results), time.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Recipe {
-    /// How long crafting takes. Always [`Duration::Partitioned`] today.
+    /// How long crafting takes. Projected from `TimeValue_Partitioned`, the
+    /// only populated `TimeValue_*` variant in the live data.
     pub craft_time: Option<Duration>,
     pub costs: Option<RecipeCosts>,
     /// Schema is Vec; today always empty (Creation's `entity_class`

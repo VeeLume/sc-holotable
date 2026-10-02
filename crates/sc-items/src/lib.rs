@@ -156,7 +156,7 @@ pub use sc_extract::class_crc;
 /// Carries a reverse [`class_crc`] → GUID index ([`Items::guid_by_crc`] /
 /// [`Items::by_crc`]) so an EntityGraph wire CRC resolves back to a GUID/item.
 /// The index is derived from `by_record`, so it is not serialized — it's
-/// rebuilt on deserialize via the [`ItemsRepr`] shadow.
+/// rebuilt on deserialize via the private `ItemsRepr` shadow.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(from = "ItemsRepr", into = "ItemsRepr")]
 pub struct Items {

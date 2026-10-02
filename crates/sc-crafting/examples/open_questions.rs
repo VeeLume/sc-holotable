@@ -1,5 +1,6 @@
 //! Open-question probes for the sc-crafting future-proofing pass.
-//! Resolves the design questions captured in `docs/sc-crafting.md`:
+//! Re-runnable answers to the shape questions the v0.9.0 design hinged on
+//! (all resolved on SC 4.8; re-run after a patch to see what CIG populated):
 //!
 //! 1. `TimeValue` polymorphic variants — what shapes craft_time in?
 //! 2. `SBaseCargoUnit` — empty marker in generated, but only variant in

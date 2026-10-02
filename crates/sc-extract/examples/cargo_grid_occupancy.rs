@@ -20,7 +20,7 @@
 //! cargo run -p sc-extract --release --example cargo_grid_occupancy -- DRAK_Cutlass_Black
 //! ```
 //!
-//! See `docs/ship-cargo-grids.md` (§Geometry read — Tier C).
+//! Format notes: the module docs of `tools/sc-cargo-viewer/src/pipeline.rs`.
 
 use std::collections::BTreeMap;
 

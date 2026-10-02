@@ -1,11 +1,8 @@
 //! Shared game-data access for the sc-holotable workspace.
 //!
-//! `sc-extract` sits between raw [svarog] and the domain crates. It owns
+//! `sc-extract` sits between raw svarog and the domain crates. It owns
 //! the machinery that *every* domain needs, so each domain doesn't have
 //! to re-derive it.
-//!
-//! See `docs/sc-extract.md` for the full design spec and
-//! `implementing/sc-extract-*.md` for phase-by-phase notes.
 //!
 //! # API shape
 //!
@@ -94,13 +91,13 @@ pub use snapshot::{ExtractSnapshot, SnapshotCaptureConfig, SnapshotMeta};
 
 // ── svarog re-exports ──────────────────────────────────────────────────────
 
-/// Access to the full [`svarog-common`] namespace (escape hatch).
+/// Access to the full `svarog-common` namespace (escape hatch).
 pub use svarog_common;
 
-/// Access to the full [`svarog-datacore`] namespace (escape hatch).
+/// Access to the full `svarog-datacore` namespace (escape hatch).
 pub use svarog_datacore;
 
-/// Access to the full [`svarog-p4k`] namespace (escape hatch). Most consumers
+/// Access to the full `svarog-p4k` namespace (escape hatch). Most consumers
 /// should go through [`AssetSource`] instead.
 pub use svarog_p4k;
 

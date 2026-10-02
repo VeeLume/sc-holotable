@@ -13,10 +13,11 @@
 //! - `sc-crafting`: every `CraftingCost_Resource` and `CraftingResult_Resource`
 //!   carries a resource GUID and a [`CargoQuantity`]. The crafting recipe
 //!   ingredient model bottoms out here.
-//! - `sc-crafting` quality subsystem: per-resource [`Resource::crafting_data`]
-//!   is the inline wiring; sc-crafting reads `ResourceType.properties` for
-//!   the standalone `CraftingQualityDistribution`/`LocationOverride`/
-//!   `Quantization` references — that machinery lives in sc-crafting.
+//! - The quality model lives **here**, next to the resource it describes:
+//!   [`Resource::quality`] is the per-resource bridge read from
+//!   `ResourceType.properties[ResourceTypeCraftingData]` (distribution,
+//!   per-location overrides, quantization bands). `sc-gathering` joins it to
+//!   providers; `sc-crafting` evaluates recipe modifiers against it.
 //! - `sc-crafting` global params: `dismantleBlacklistResources` references
 //!   resource GUIDs.
 //!

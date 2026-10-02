@@ -411,8 +411,9 @@ mod tests {
 
     // ------------------------------------------------------------------
     // Energy model — validated against spviewer reference values for
-    // 4.7 LIVE. See docs/sc-weapons.md §Planned v2 phase 3 for the full
-    // model derivation.
+    // 4.7 LIVE. `max_ammo_load` is SHOT capacity and `max_regen_per_sec` is
+    // SHOTS per second; `regeneration_cost_per_bullet` is the ship-level
+    // pool cost and not part of the weapon cycle.
     // ------------------------------------------------------------------
 
     /// HRST Attrition-3 S3 (LaserRepeater). Live DCB values.

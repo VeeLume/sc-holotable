@@ -37,9 +37,58 @@
 //! `launcher_version` falls back to the plain `version` string.
 //!
 //! Analysis/diagnostic subcommands previously available (`--dump-paths`,
-//! `--dump-features`, `--check-polymorphism`, etc.) have been removed.
+//! `--dump-features`, `--check-polymorphism`, etc.) have been removed;
+//! reintroduce them on a throwaway branch to re-measure.
 //!
-//! See `docs/codegen.md` for the full design.
+//! # Ground rules
+//!
+//! - **Never invoked from `build.rs`.** Output is committed, so the workspace
+//!   builds without a `Data.p4k`, and a regen is an ordinary reviewable diff.
+//! - **No config file selecting types.** Features are discovered from DCB
+//!   record paths; a hand-kept target list would break on every patch.
+//! - **No hand-written code under `generated/`.** Everything there is
+//!   overwritten. Hand-written glue lives elsewhere in `sc-extract-generated`.
+//!
+//! # What it emits
+//!
+//! Struct definitions (no derives), value enums (`Debug + Clone + PartialEq +
+//! Eq + Hash`, `from_dcb_str` / `as_dcb_str`, `Unrecognized(String)` fallback),
+//! `{Base}Ptr` poly enums (one variant per *observed* subclass plus
+//! `Unknown { struct_index, instance_index }`), `Extract` + `Pooled` impls,
+//! `DataPools`, `RecordIndex` with one `RecordLookup` impl per seeded record
+//! type, `metadata.rs`, and the `[features]` section of both
+//! `sc-extract-generated/Cargo.toml` and `sc-extract/Cargo.toml`.
+//!
+//! # Mapping rules
+//!
+//! | DCB | Generated Rust |
+//! |---|---|
+//! | `Class` field / array element | `Option<Handle<T>>` / `Vec<Handle<T>>` into a per-type pool |
+//! | `StrongPointer` / `WeakPointer` | `Option<Handle<T>>`, or the base's `…Ptr` poly enum when polymorphic; deduped on `(struct_index, instance_index)` |
+//! | `Reference` | `Option<CigGuid>` — cross-record, not followed; re-enter via `Datacore::resolve::<T>` |
+//! | `Locale` | `LocaleKey` |
+//! | `EnumChoice` | the generated enum (`prop.struct_index` doubles as the enum index) |
+//!
+//! Inheritance is **flattened**: a struct lists inherited fields then its own,
+//! with the parent chain kept in the doc comment. svarog's
+//! `get_struct_properties` already walks parents — do not wrap it in a second
+//! walk (that once collected every ancestor's fields twice). DCB abstract bases
+//! are almost always empty metadata containers, so nothing is lost.
+//!
+//! Identifiers: most keywords become raw identifiers (`r#type`); `Self`,
+//! `self`, `super`, `extern`, `crate` cannot be raw in type position and get a
+//! trailing underscore. Field names that collide after snake-casing get a
+//! numeric suffix rather than a panic — `TorusFieldGeom` really has both `R`
+//! and `r`. The catch-all enum variant is `Unrecognized`, not `Unknown`,
+//! because DCB enums contain values literally named `Unknown`.
+//!
+//! Reachability: a transitive BFS from every record type prunes structs no
+//! record can reach; a self-check panics if an emitted field targets a pruned
+//! type. Feature classification is described in `features.rs`.
+//!
+//! Version constants: bump `SCHEMA_VERSION` when a generated field is removed,
+//! renamed or retyped, or the pool layout changes; bump `GENERATOR_VERSION`
+//! when output changes without a DCB change.
 
 use std::path::PathBuf;
 use std::process::ExitCode;

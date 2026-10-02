@@ -8,8 +8,8 @@
 //! [`XmlNode`] tree). All the chunk-peeling and CryXmlB decoding lives in the
 //! library; here we just `decode()` and walk the tree.
 //!
-//! It settles the resource-gathering "where" join (see
-//! `docs/resource-gathering.md`): the link sits in a plain/CryXmlB `pivot.entxml`
+//! It settles the resource-gathering "where" join: the link sits in a
+//! plain/CryXmlB `pivot.entxml`
 //! (planet/moon bodies) or inside the binary `.soc` CrCh chunk container
 //! (asteroid fields, gas clouds, lagrange childclouds) — both handled uniformly.
 //!

@@ -74,7 +74,10 @@ svarog-cryxml = { git = "https://github.com/19h/Svarog.git", rev = "7f06225" }
 # ── Profiles ────────────────────────────────────────────────────────────────
 #
 # Tuned via per-dimension sweeps on 2026-04-16 using tools/bench/bench.ps1.
-# See docs/benchmarks.md for the full sweep data.
+# sc-extract-generated builds at opt-level 1: LTO does the real optimization
+# at link time, so its per-crate level doesn't move runtime while opt 1 saves
+# ~9% compile. sc-extract itself must stay fully optimized (opt 1 there cost
+# ~50% runtime: graph BFS, tag tree and locale parse need the full pipeline).
 #
 # release       Good compile/runtime compromise. Thin LTO saves ~40%
 #               compile time vs fat for only ~6% runtime regression.

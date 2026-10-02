@@ -6,7 +6,7 @@
 //! `Mission` grows a field, the rendering updates next to it.
 //!
 //! The crate-level [`render`]/[`ExplorerState`] below is the contracts
-//! list-detail view; the [`clusters`] sub-module renders pool-keyed
+//! list-detail view; the `clusters` sub-module renders pool-keyed
 //! browsing (title key / description key) using the precomputed
 //! [`crate::MissionPools`] + divergence helpers on [`Missions`].
 

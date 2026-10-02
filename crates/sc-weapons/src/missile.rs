@@ -59,7 +59,7 @@ pub struct Missile {
     pub size: i32,
     /// Item subtype (`Missile` or `Torpedo`).
     pub item_sub_type: EItemSubType,
-    /// Manufacturer GUID — look up via [`sc_extract::Manufacturers`].
+    /// Manufacturer GUID — look up via `sc_manufacturers::Manufacturers`.
     pub manufacturer_guid: Option<Guid>,
     /// Per-shot explosion damage across all 6 types. `None` when the
     /// `SCItemMissileParams.explosion_params → DamageInfo` chain

@@ -6,21 +6,55 @@
 //! remembering individual sc-extract leaf flags.
 //!
 //! ```toml
-//! sc-holotable = { git = "...", tag = "v0.8.0", features = ["missions", "weapons"] }
+//! sc-holotable = { git = "https://github.com/VeeLume/sc-holotable.git", tag = "sc-holotable/vX.Y.Z", features = ["missions", "fps-weapons"] }
 //! ```
+//!
+//! Pin a `sc-holotable/v*` tag to follow the library API, or a `datacore/<sc
+//! version>` tag to follow the generated bindings for a game build. Both are
+//! immutable; they advance independently.
+//!
+//! # Why one crate
+//!
+//! Depending on the individual crates fails in four recurring ways: several
+//! tag pins drift apart on a bump; the `sc-extract` leaf features a crate needs
+//! have to be remembered, and forgetting one yields **silently empty**
+//! collections, not an error; the svarog rev must match this workspace's pin or
+//! type identity across re-exports breaks; and the release-profile override for
+//! `sc-extract-generated` has to be mirrored by hand. The umbrella fixes the
+//! first three. Profiles are not inherited from dependencies, so a consumer
+//! that wants the tuned build still copies the `[profile.*.package]` override.
+//!
+//! # Features
+//!
+//! `default = []`. A feature names a capability; each leaf crate enables the
+//! `sc-extract` closure it needs by itself.
+//!
+//! | Feature | Module | Brings |
+//! |---|---|---|
+//! | `installs` | `install` | install discovery (no svarog, no p4k) |
+//! | `extract` | `asset` | `Datacore`, `AssetSource`, `LocaleMap`, snapshots |
+//! | `items` / `tags` / `manufacturers` / `resources` / `locations` | same names | the foundational record indices |
+//! | `gathering` | `gathering` | resource providers (pulls `locations`) |
+//! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
+//! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
+//! | `missions` | `missions` | missions, encounters, pools (pulls `items`, `tags`) |
+//! | `missions-payout` | — | `missions` + aUEC payout estimation; separate because it compiles the deeply nested `gamemode` pools |
+//! | `weapons` | `weapons` | legacy combat maths (DPS, heat / capacitor cycles) |
+//! | `foundations` | crate root | `Foundations`, `build_foundations`, `HolotableSnapshot` — needs every foundational index |
+//! | `all-t1`, `full` | — | aggregators |
+//!
+//! Adding a feature is non-breaking; removing one is breaking.
 //!
 //! # Layout
 //!
-//! - Per-crate modules ([`asset`], [`items`], [`tags`], [`manufacturers`],
-//!   [`weapons`], [`crafting`], [`missions`], [`install`]) — each a glob
-//!   re-export of one workspace crate, gated behind its feature.
-//! - [`prelude`] — the common types in one `use`.
-//! - With the `foundations` feature: [`Foundations`] + [`build_foundations`]
-//!   (build every cooked index in one bundled pass) and [`HolotableSnapshot`]
-//!   (a batteries-included processed-snapshot bundle).
-//!
-//! Only the crates that exist today are wired up; the full design-doc feature
-//! map (sc-vehicles, sc-loadouts, …) lands as those crates do.
+//! - Per-crate modules, each a glob re-export of one workspace crate behind
+//!   its feature.
+//! - [`prelude`] — the common types in one `use`, including the
+//!   `RecordCollection` trait every collection's `get` / `iter` / `len` lives on.
+//! - With `foundations`: `build_foundations` fuses every foundational builder
+//!   into a single pass over all records, and `HolotableSnapshot` is a
+//!   serializable bundle of the cooked indices with a cook-version guard — a
+//!   stale snapshot falls back to a rebuild instead of mis-deserializing.
 
 #[cfg(feature = "installs")]
 pub mod install {
