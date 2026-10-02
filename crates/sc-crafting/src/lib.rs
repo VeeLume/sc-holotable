@@ -106,7 +106,7 @@ use sc_extract::generated::{
     DefaultBlueprintSelection_BasePtr, ECraftingCostResultCompositionOption, EItemSubType,
     EItemType, RecordIndex, RecordLookup, SBaseCargoUnitPtr, TimeValue_BasePtr,
 };
-use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap, RecordPaths};
+use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap, RecordPaths, is_placeholder};
 use sc_items::Items;
 use sc_items_armor::Armor;
 use sc_items_fps_weapons::FpsWeapons;
@@ -1112,10 +1112,6 @@ fn build_research(ptr: &CraftingResearch_BasePtr, pools: &DataPools) -> Research
     Research { unlock, costs }
 }
 
-fn is_placeholder(text: &str) -> bool {
-    text.contains("PLACEHOLDER") || text == "<= PLACEHOLDER =>"
-}
-
 // ─────────────────────────────────────────────────────────────────────
 // `RecordVisitor` for bundled walks
 // ─────────────────────────────────────────────────────────────────────
@@ -1963,13 +1959,6 @@ mod tests {
             seconds: 4.5,
         };
         assert_eq!(d.to_seconds(), 86_400.0 + 2.0 * 3600.0 + 3.0 * 60.0 + 4.5);
-    }
-
-    #[test]
-    fn is_placeholder_detects_cig_sentinels() {
-        assert!(is_placeholder("<= PLACEHOLDER =>"));
-        assert!(is_placeholder("xx PLACEHOLDER xx"));
-        assert!(!is_placeholder("Arclight Pistol"));
     }
 
     #[test]

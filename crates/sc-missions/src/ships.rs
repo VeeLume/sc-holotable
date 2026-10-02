@@ -391,15 +391,16 @@ impl Ships {
 
     /// Resolve the localized display name for a ship entity through the
     /// supplied [`LocaleMap`]. Returns `None` when the entity has no
-    /// `Localization.Name` key in `cache` or the key is absent from
-    /// `locale`.
+    /// `Localization.Name` key in `cache`, or the key is absent from
+    /// `locale` or holds CIG's `<= PLACEHOLDER =>` (see
+    /// [`LocaleMap::resolve_name`]).
     pub fn display_name<'a>(
         &self,
         guid: &Guid,
         cache: &Items,
         locale: &'a LocaleMap,
     ) -> Option<&'a str> {
-        cache.name_key(guid).and_then(|k| locale.resolve(k))
+        cache.name_key(guid).and_then(|k| locale.resolve_name(k))
     }
 
     /// The set of ship-selective tag GUIDs — every descendant of the

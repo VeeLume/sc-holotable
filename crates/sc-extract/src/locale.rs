@@ -207,6 +207,14 @@ impl LocaleMap {
         self.get(s.strip_prefix('@').unwrap_or(s))
     }
 
+    /// [`resolve`](Self::resolve) for display names: empty text and CIG's
+    /// unlocalized sentinel (`<= PLACEHOLDER =>`, see [`is_placeholder`])
+    /// count as unresolved, so callers fall back instead of showing them.
+    pub fn resolve_name(&self, loc_key: impl AsRef<str>) -> Option<&str> {
+        self.resolve(loc_key)
+            .filter(|text| !text.is_empty() && !is_placeholder(text))
+    }
+
     /// True if this map contains the given key (raw, no `@` handling).
     pub fn contains_key(&self, key: impl AsRef<str>) -> bool {
         self.entries.contains_key(key.as_ref())
@@ -306,9 +314,31 @@ pub fn strip_locale_metadata(key: &str) -> &str {
     }
 }
 
+/// Is this localized text CIG's "not localized yet" sentinel? `global.ini`
+/// carries `<= PLACEHOLDER =>` for keys that exist but have no text yet
+/// (most blueprint names, some ship and item names); variants of the
+/// marker also occur, so any text containing `PLACEHOLDER` counts.
+pub fn is_placeholder(text: &str) -> bool {
+    text.contains("PLACEHOLDER")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn placeholder_text_is_unresolved_for_names() {
+        assert!(is_placeholder("<= PLACEHOLDER =>"));
+        assert!(!is_placeholder("Arclight Pistol"));
+        let mut map = LocaleMap::new();
+        map.set("ship_a", "<= PLACEHOLDER =>");
+        map.set("ship_b", "Cutlass");
+        map.set("ship_c", "");
+        assert_eq!(map.resolve("@ship_a"), Some("<= PLACEHOLDER =>"));
+        assert_eq!(map.resolve_name("@ship_a"), None);
+        assert_eq!(map.resolve_name("@ship_b"), Some("Cutlass"));
+        assert_eq!(map.resolve_name("ship_c"), None);
+    }
 
     /// Build a UTF-16 LE byte buffer with BOM from a string, suitable for
     /// passing to `LocaleMap::parse`. Used by the test suite to avoid

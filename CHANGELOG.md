@@ -34,8 +34,14 @@ separate commits and advance independently.
   `AI ▸ Archetype ▸ *` (`PU_Soldier`, `PU_CQC`, …) and `AI ▸ NpcClass ▸ *`
   (`Light` … `Boss`) classifiers for character tags.
 
+- **`sc-extract`: `LocaleMap::resolve_name` and `is_placeholder`** — name
+  resolution that treats empty text and CIG's `<= PLACEHOLDER =>` sentinel
+  as unresolved (previously private to sc-crafting).
+
 ### Changed
 
+- **`sc-missions`: `Ships::display_name`** returns `None` for placeholder
+  names instead of `<= PLACEHOLDER =>` (it showed up in rendered ship pools).
 - **`sc-missions`: NPC `SlotGroup::concurrent_range`** is now the slot's
   `max_concurrent` instead of a constant `(1, 1)` (still `(1, 1)` when no
   spawn settings are attached).
