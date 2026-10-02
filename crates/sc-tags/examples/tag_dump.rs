@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             (path.len(), path.join(" > "))
         })
         .collect();
-    by_depth.sort_by(|a, b| b.0.cmp(&a.0));
+    by_depth.sort_by_key(|e| std::cmp::Reverse(e.0));
     println!("deepest paths:");
     for (_d, p) in by_depth.iter().take(8) {
         println!("  {p}");

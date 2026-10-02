@@ -41,7 +41,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     println!("\n-- by kind --");
     let mut rows: Vec<_> = hist.into_iter().collect();
-    rows.sort_by(|a, b| b.1.cmp(&a.1));
+    rows.sort_by_key(|e| std::cmp::Reverse(e.1));
     for (kind, n) in rows {
         println!("  {kind:<28} {n}");
     }

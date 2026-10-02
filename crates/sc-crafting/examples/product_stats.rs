@@ -78,7 +78,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     // Armor (Armor source) @ Q750 — MacFlex Arms.
-    for target in ["rsi_deckcrew_armor_light_arms_01_01_01"] {
+    {
+        let target = "rsi_deckcrew_armor_light_arms_01_01_01";
         if let Some(guid) = find(target) {
             show(
                 &format!("{target} @ Q{Q}"),

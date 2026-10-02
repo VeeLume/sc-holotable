@@ -136,11 +136,11 @@ impl ReferenceGraph {
                         }
                         Value::ClassRef(r)
                         | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => {
-                            if visited.insert((r.struct_index, r.instance_index)) {
-                                let nested = db.instance(r.struct_index, r.instance_index);
-                                worklist.push((nested, source));
-                            }
+                        | Value::WeakPointer(Some(r))
+                            if visited.insert((r.struct_index, r.instance_index)) =>
+                        {
+                            let nested = db.instance(r.struct_index, r.instance_index);
+                            worklist.push((nested, source));
                         }
                         Value::Array(_) => {
                             if let Some(arr) = inst.get_array(prop.name) {
@@ -156,12 +156,13 @@ impl ReferenceGraph {
                                         }
                                         Value::ClassRef(r)
                                         | Value::StrongPointer(Some(r))
-                                        | Value::WeakPointer(Some(r)) => {
-                                            if visited.insert((r.struct_index, r.instance_index)) {
-                                                let nested =
-                                                    db.instance(r.struct_index, r.instance_index);
-                                                worklist.push((nested, source));
-                                            }
+                                        | Value::WeakPointer(Some(r))
+                                            if visited
+                                                .insert((r.struct_index, r.instance_index)) =>
+                                        {
+                                            let nested =
+                                                db.instance(r.struct_index, r.instance_index);
+                                            worklist.push((nested, source));
                                         }
                                         _ => {}
                                     }

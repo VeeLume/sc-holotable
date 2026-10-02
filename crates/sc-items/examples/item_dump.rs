@@ -31,7 +31,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         *by_type.entry(format!("{:?}", it.item_type)).or_default() += 1;
     }
     let mut v: Vec<_> = by_type.into_iter().collect();
-    v.sort_by(|a, b| b.1.cmp(&a.1));
+    v.sort_by_key(|e| std::cmp::Reverse(e.1));
     println!("-- typed Type distribution (top 30) --");
     for (t, n) in v.iter().take(30) {
         println!("  {n:>6}  {t}");

@@ -47,7 +47,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("\nHaulingOrderContent_Resource records: {total}");
     println!("distinct commodities: {}", commodity_hist.len());
     let mut v: Vec<_> = commodity_hist.into_iter().collect();
-    v.sort_by(|a, b| b.1.cmp(&a.1));
+    v.sort_by_key(|e| std::cmp::Reverse(e.1));
     for (k, n) in v.iter().take(40) {
         println!("  {n:>4}  {k}");
     }

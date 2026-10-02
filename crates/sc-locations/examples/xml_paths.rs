@@ -35,7 +35,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     let mut v: Vec<_> = prefixes.into_iter().collect();
-    v.sort_by(|a, b| b.1.0.cmp(&a.1.0));
+    v.sort_by_key(|e| std::cmp::Reverse(e.1.0));
     for (prefix, (c, samples)) in v {
         println!("{c:>7}  {prefix}/");
         for s in samples {

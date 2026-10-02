@@ -472,7 +472,7 @@ impl eframe::App for App {
 
             if self.show_cells {
                 let cell_stroke =
-                    egui::Stroke::new(0.5, egui::Color32::from_rgba_unmultiplied(0, 0, 0, 60));
+                    egui::Stroke::new(0.5_f32, egui::Color32::from_rgba_unmultiplied(0, 0, 0, 60));
                 for g in &scene.grids {
                     for cell in &g.cells {
                         // inside view: draw only faces whose outside points AWAY
@@ -505,7 +505,7 @@ impl eframe::App for App {
             if self.wall_mode == WallMode::Solid {
                 let fill = egui::Color32::from_rgba_unmultiplied(150, 160, 178, 40);
                 let stroke = egui::Stroke::new(
-                    0.6,
+                    0.6_f32,
                     egui::Color32::from_rgba_unmultiplied(170, 180, 195, 90),
                 );
                 for (i, w) in scene.walls.iter().enumerate() {
@@ -529,7 +529,7 @@ impl eframe::App for App {
             // 2. wire walls (when selected)
             if self.wall_mode == WallMode::Wire {
                 let stroke = egui::Stroke::new(
-                    1.0,
+                    1.0_f32,
                     egui::Color32::from_rgba_unmultiplied(150, 160, 175, 120),
                 );
                 for (i, w) in scene.walls.iter().enumerate() {
@@ -543,7 +543,7 @@ impl eframe::App for App {
             // 3. ship outline: faint wire of ALL large wall boxes (range-independent)
             if self.show_outline {
                 let stroke = egui::Stroke::new(
-                    0.7,
+                    0.7_f32,
                     egui::Color32::from_rgba_unmultiplied(120, 130, 150, 34),
                 );
                 for w in &scene.walls {
@@ -556,7 +556,7 @@ impl eframe::App for App {
 
             // 4. grid wireframes on top
             if self.show_grids {
-                let stroke = egui::Stroke::new(2.0, egui::Color32::from_rgb(90, 200, 255));
+                let stroke = egui::Stroke::new(2.0_f32, egui::Color32::from_rgb(90, 200, 255));
                 for g in &scene.grids {
                     draw_box_edges(&painter, rect, scale, &proj, g.min, g.max, stroke);
                 }
@@ -570,7 +570,7 @@ impl eframe::App for App {
                 let base = [cx, mx[1] + 1.0, zm];
                 let tip = [cx, mx[1] + 1.0 + len, zm];
                 let col = egui::Color32::from_rgb(255, 210, 80);
-                let stroke = egui::Stroke::new(2.5, col);
+                let stroke = egui::Stroke::new(2.5_f32, col);
                 draw_line3(&painter, rect, scale, &proj, base, tip, stroke);
                 let head = len * 0.25;
                 for side in [-1.0f32, 1.0] {
@@ -608,7 +608,7 @@ impl eframe::App for App {
                     &proj,
                     t,
                     e,
-                    egui::Stroke::new(1.5, color),
+                    egui::Stroke::new(1.5_f32, color),
                 );
             }
         });

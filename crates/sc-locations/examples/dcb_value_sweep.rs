@@ -97,7 +97,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 2) GUID pool
     let gd = db.raw_pool_data(PoolType::Guid);
     let mut nguid = 0;
-    for ch in gd.chunks_exact(16) {
+    for ch in gd.as_chunks::<16>().0 {
         nguid += 1;
         let mut b = [0u8; 16];
         b.copy_from_slice(ch);

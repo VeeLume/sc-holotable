@@ -441,7 +441,7 @@ fn section_5_faction_var_crosstab(rows: &[Row<'_>]) {
             .filter(|((v, _), _)| v == *var)
             .map(|((_, f), c)| (*f, *c))
             .collect();
-        row.sort_by(|a, b| b.1.cmp(&a.1));
+        row.sort_by_key(|e| std::cmp::Reverse(e.1));
         let formatted: Vec<String> = row
             .iter()
             .take(3)
@@ -504,7 +504,7 @@ fn top_strings<'a, I: Iterator<Item = &'a str>>(it: I, n: usize) -> String {
         *counts.entry(s).or_default() += 1;
     }
     let mut entries: Vec<_> = counts.into_iter().collect();
-    entries.sort_by(|a, b| b.1.cmp(&a.1));
+    entries.sort_by_key(|e| std::cmp::Reverse(e.1));
     entries
         .into_iter()
         .take(n)

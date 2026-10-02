@@ -342,7 +342,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .or_insert_with(|| cgf_triangles(&assets, &pl.cgf).map(std::rc::Rc::new))
                     .clone()
             {
-                for t in tm.indices.chunks_exact(3) {
+                for t in tm.indices.as_chunks::<3>().0 {
                     let a = mat_apply(&world_m, tm.positions[t[0] as usize]);
                     let b = mat_apply(&world_m, tm.positions[t[1] as usize]);
                     let c = mat_apply(&world_m, tm.positions[t[2] as usize]);
@@ -376,7 +376,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // transform; keep only near-grid triangles.
     if let Some(tm) = cgf_triangles(&assets, &hull) {
         let mut kept = 0usize;
-        for t in tm.indices.chunks_exact(3) {
+        for t in tm.indices.as_chunks::<3>().0 {
             let a = tm.positions[t[0] as usize];
             let b = tm.positions[t[1] as usize];
             let c = tm.positions[t[2] as usize];
@@ -408,7 +408,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let n_no_aabb: usize = no_aabb_tally.values().sum();
     if n_no_aabb > 0 {
         let mut v: Vec<_> = no_aabb_tally.into_iter().collect();
-        v.sort_by(|a, b| b.1.cmp(&a.1));
+        v.sort_by_key(|e| std::cmp::Reverse(e.1));
         println!("placements without a readable model AABB: {n_no_aabb} — top offenders:");
         for (p, n) in v.iter().take(10) {
             println!("    {n:>4} × {p}");

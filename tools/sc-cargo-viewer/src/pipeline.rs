@@ -330,7 +330,7 @@ impl Holo {
                         })
                         .clone()
                 {
-                    for t in tm.indices.chunks_exact(3) {
+                    for t in tm.indices.as_chunks::<3>().0 {
                         soup.push([
                             mat_apply(&world_m, tm.positions[t[0] as usize]),
                             mat_apply(&world_m, tm.positions[t[1] as usize]),
@@ -342,7 +342,7 @@ impl Holo {
         }
         // hull skin (bay ceilings/outer boundary), near-grid triangles only
         if let Some(tm) = cgf_triangles(&self.assets, &hull) {
-            for t in tm.indices.chunks_exact(3) {
+            for t in tm.indices.as_chunks::<3>().0 {
                 let a = tm.positions[t[0] as usize];
                 let b = tm.positions[t[1] as usize];
                 let c = tm.positions[t[2] as usize];

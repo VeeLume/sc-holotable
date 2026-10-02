@@ -145,7 +145,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
-    hits.sort_by(|a, b| b.1.cmp(&a.1));
+    hits.sort_by_key(|e| std::cmp::Reverse(e.1));
     for (name, count) in hits.iter().take(40) {
         println!("  {name:<48} {count} carriers");
     }
@@ -174,7 +174,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut families: Vec<(&String, &Vec<&Contract>)> =
         family_groups.iter().filter(|(_, v)| v.len() >= 3).collect();
-    families.sort_by(|a, b| b.1.len().cmp(&a.1.len()));
+    families.sort_by_key(|e| std::cmp::Reverse(e.1.len()));
 
     for (prefix, members) in families.iter().take(5) {
         println!(

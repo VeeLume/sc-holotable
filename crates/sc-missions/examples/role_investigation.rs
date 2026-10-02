@@ -339,7 +339,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     let mut dmg_entries: Vec<_> = by_name.iter().collect();
-    dmg_entries.sort_by(|a, b| b.1.1.cmp(&a.1.1));
+    dmg_entries.sort_by_key(|e| std::cmp::Reverse(e.1.1));
     let total_with_damage: usize = samples.iter().filter(|s| s.has_initial_damage).count();
     println!(
         "  ship spawns with initial_damage_settings set: {total_with_damage}/{total_samples} ({:.1}%)",

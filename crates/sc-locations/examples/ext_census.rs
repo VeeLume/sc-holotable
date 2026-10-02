@@ -27,7 +27,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         slot.1 += e.uncompressed_size;
     }
     let mut v: Vec<_> = counts.into_iter().collect();
-    v.sort_by(|a, b| b.1.0.cmp(&a.1.0));
+    v.sort_by_key(|e| std::cmp::Reverse(e.1.0));
     println!("total entries: {total}");
     for (ext, (c, b)) in v {
         println!("{c:>8}  {b:>15}  .{ext}");

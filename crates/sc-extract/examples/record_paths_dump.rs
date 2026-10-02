@@ -52,7 +52,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             by_cat.insert(cat.to_string(), paths.under(&sub).count());
         }
         let mut v: Vec<_> = by_cat.into_iter().collect();
-        v.sort_by(|a, b| b.1.cmp(&a.1));
+        v.sort_by_key(|e| std::cmp::Reverse(e.1));
         for (cat, n) in v.iter().take(25) {
             println!("  {n:>6}  {cat}");
         }

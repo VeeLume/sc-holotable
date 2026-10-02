@@ -55,11 +55,10 @@ fn walk<'a>(db: &'a DataCoreDatabase, root: Instance<'a>, out: &mut Vec<(Guid, S
                                 }
                                 Value::ClassRef(r)
                                 | Value::StrongPointer(Some(r))
-                                | Value::WeakPointer(Some(r)) => {
-                                    if visited.insert((r.struct_index, r.instance_index)) {
-                                        worklist
-                                            .push(db.instance(r.struct_index, r.instance_index));
-                                    }
+                                | Value::WeakPointer(Some(r))
+                                    if visited.insert((r.struct_index, r.instance_index)) =>
+                                {
+                                    worklist.push(db.instance(r.struct_index, r.instance_index));
                                 }
                                 _ => {}
                             }
