@@ -23,6 +23,13 @@ separate commits and advance independently.
   carried no count at all; consumers parsed `x N` out of designer phase
   names, which disagree with the data on ~6% of named slots. Proven by
   `examples/npc_spawns.rs` (every NPC slot on 4.10 LIVE carries counts).
+- **`sc-missions`: `Mission::integer_properties`** — every integer-valued
+  mission property by variable name, resolved across template → handler →
+  contract → sub-contract (most-specific wins), not gated on a text token.
+  Carries the engine flags a mission never prints, notably the crimestat
+  signal `DontHarmAllies` / `DontHarmCivs`: 172 contracts on 4.10 LIVE
+  override a template's flag to 0, which a template-only read gets wrong.
+  Proven by `examples/dont_harm.rs`.
 - **`sc-missions`: `TagBag::archetypes` and `TagBag::npc_classes`** —
   `AI ▸ Archetype ▸ *` (`PU_Soldier`, `PU_CQC`, …) and `AI ▸ NpcClass ▸ *`
   (`Light` … `Boss`) classifiers for character tags.

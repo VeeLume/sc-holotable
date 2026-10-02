@@ -216,6 +216,14 @@ pub struct Mission {
     /// marker substitutor ([`crate::Missions::title_text`]).
     pub variables: BTreeMap<String, MissionVar>,
 
+    /// Integer-valued `MissionProperty` values (`MissionPropertyValue_Integer`)
+    /// keyed by `missionVariableName`, across the template → handler →
+    /// contract → sub-contract layers (most-specific wins). Each value is the
+    /// option set the engine draws from. Unlike [`Self::variables`] this is
+    /// not gated on a text token: it carries the engine flags a mission sets
+    /// but never prints (`DontHarmAllies_BP = 1`).
+    pub integer_properties: BTreeMap<String, Vec<i64>>,
+
     /// The cargo manifest for a hauling contract — one [`HaulingLeg`] per
     /// `HaulingOrderContent_Resource` (commodity + min/max SCU + max box size),
     /// from `MissionPropertyValue_HaulingOrders`. Unlike [`Self::variables`] this
@@ -1621,6 +1629,15 @@ fn build_expansion(
         ctx.contract_params,
     );
 
+    let integer_properties = resolve_integer_properties(
+        &datacore.records().records,
+        pools,
+        template_guid,
+        sub_contract,
+        contract_param_overrides,
+        ctx.contract_params,
+    );
+
     let mission_span = collect_mission_span(&prerequisites, localities);
 
     let category = resolve_category(template_guid, datacore);
@@ -1655,6 +1672,7 @@ fn build_expansion(
         mission_span,
         grants_completion_tags,
         variables,
+        integer_properties,
         cargo,
     }
 }
@@ -2428,6 +2446,63 @@ fn resolve_variables(
         collect_property_vars(pools, tree, &sub.property_overrides, &mut out);
     }
     out
+}
+
+/// Resolve [`Mission::integer_properties`]: every `MissionPropertyValue_Integer`
+/// across the template's `contractProperties` and the handler → contract →
+/// sub-contract override layers, keyed by variable name; later layers
+/// overwrite earlier ones.
+fn resolve_integer_properties(
+    records: &RecordIndex,
+    pools: &DataPools,
+    template: Option<Guid>,
+    sub: Option<&SubContract>,
+    contract_params: Option<&Handle<ContractParamOverrides>>,
+    handler_params: Option<&Handle<ContractParamOverrides>>,
+) -> BTreeMap<String, Vec<i64>> {
+    let mut out = BTreeMap::new();
+    if let Some(t) = template
+        && let Some(tmpl) = records
+            .multi_feature
+            .contract_template
+            .get(&t)
+            .and_then(|h| h.get(pools))
+    {
+        integer_props(pools, &tmpl.contract_properties, &mut out);
+    }
+    for params in [handler_params, contract_params] {
+        if let Some(po) = params.and_then(|h| h.get(pools)) {
+            integer_props(pools, &po.property_overrides, &mut out);
+        }
+    }
+    if let Some(sub) = sub {
+        integer_props(pools, &sub.property_overrides, &mut out);
+    }
+    out
+}
+
+fn integer_props(
+    pools: &DataPools,
+    props: &[Handle<MissionProperty>],
+    out: &mut BTreeMap<String, Vec<i64>>,
+) {
+    for prop in props.iter().filter_map(|h| h.get(pools)) {
+        let Some(BaseMissionPropertyValuePtr::MissionPropertyValue_Integer(h)) =
+            prop.value.as_ref()
+        else {
+            continue;
+        };
+        let Some(v) = h.get(pools) else { continue };
+        let values: Vec<i64> = v
+            .options
+            .iter()
+            .filter_map(|o| o.get(pools))
+            .map(|o| o.value as i64)
+            .collect();
+        if !values.is_empty() {
+            out.insert(prop.mission_variable_name.clone(), values);
+        }
+    }
 }
 
 /// Resolve the hauling cargo manifest — every `HaulingOrderContent_Resource`
