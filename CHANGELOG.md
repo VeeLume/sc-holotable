@@ -14,6 +14,25 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-missions`: NPC spawn counts.** `NpcSlot::spawn_counts:
+  Option<NpcSpawnCounts>` (`group_size`, `max_concurrent`, `max_spawns`
+  from `AutoSpawnSettings`) and `NpcSlot::character_tags: TagBag`
+  (`positiveCharacterTags`: archetype + faction). Previously an NPC slot
+  carried no count at all; consumers parsed `x N` out of designer phase
+  names, which disagree with the data on ~6% of named slots. Proven by
+  `examples/npc_spawns.rs` (every NPC slot on 4.10 LIVE carries counts).
+- **`sc-missions`: `TagBag::archetypes` and `TagBag::npc_classes`** —
+  `AI ▸ Archetype ▸ *` (`PU_Soldier`, `PU_CQC`, …) and `AI ▸ NpcClass ▸ *`
+  (`Light` … `Boss`) classifiers for character tags.
+
+### Changed
+
+- **`sc-missions`: NPC `SlotGroup::concurrent_range`** is now the slot's
+  `max_concurrent` instead of a constant `(1, 1)` (still `(1, 1)` when no
+  spawn settings are attached).
+
 ## [v0.16.0] - 2026-07-03
 
 ### Added

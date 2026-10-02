@@ -15,6 +15,8 @@
 //! match arms move with it.
 //!
 //! - `AI ▸ Faction ▸ *` — [`TagBag::factions`] (`Criminal`, `UEE`, …)
+//! - `AI ▸ Archetype ▸ *` — [`TagBag::archetypes`] (`PU_Soldier`, `PU_CQC`, …)
+//! - `AI ▸ NpcClass ▸ *` — [`TagBag::npc_classes`] (`Light`, `Heavy`, `Boss`)
 //! - `AI ▸ CargoManifest ▸ *` — [`TagBag::cargo`] (`Full Cargo`, `Salvage`, `Bounty`, value tiers)
 //! - `AI ▸ Spawning ▸ *` — [`TagBag::spawn_identifiers`] (`Target`, `Defenders`)
 //! - `AI ▸ *` (other) — [`TagBag::ai_traits`] (`PoweredOff`, `EngineOff`, `EnableInteractions`, …)
@@ -117,6 +119,23 @@ impl TagBag {
     /// Tags under `AI ▸ Faction ▸ *` (e.g. `Criminal`, `UEE`, `Ninetails`).
     pub fn factions<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str> + 'a {
         self.subtree_iter(tree, "AI", Some("Faction"))
+    }
+
+    /// Tags under `AI ▸ Archetype ▸ *` — what kind of NPC an NPC slot's
+    /// [`character_tags`](crate::NpcSlot::character_tags) spawns
+    /// (`PU_Soldier`, `PU_CQC`, `PU_Techie`, `PU_sniper`, `PU_Juggernaut`,
+    /// elite variants like `PU_Soldier_Elite`). The `PU_enemy` grouping
+    /// node itself is never a slot tag; the leaves are.
+    pub fn archetypes<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str> + 'a {
+        self.subtree_iter(tree, "AI", Some("Archetype"))
+    }
+
+    /// Tags under `AI ▸ NpcClass ▸ *` (`Light`, `Medium`, `Heavy`,
+    /// `Boss`) — the NPC tier. Some factions' slots (Ninetails,
+    /// PrivateSecurity) carry a class but no
+    /// [`archetype`](Self::archetypes).
+    pub fn npc_classes<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str> + 'a {
+        self.subtree_iter(tree, "AI", Some("NpcClass"))
     }
 
     /// Tags under `AI ▸ CargoManifest ▸ *` (volume tags like `Full Cargo`,

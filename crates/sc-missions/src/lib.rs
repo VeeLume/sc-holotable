@@ -207,8 +207,9 @@ pub use currency::{CurrencyInfo, RewardCurrencies};
 pub use expand::{
     Availability, BlueprintReward, Cooldowns, Difficulty, DurationRange, Encounter, EncounterPhase,
     EntityEncounter, EntitySlot, HandlerKind, HaulingLeg, ItemReward, Mission, MissionOrigin,
-    MissionRewards, MissionVar, NpcEncounter, NpcSlot, OtherReward, PrereqView, RepReward,
-    RewardAmount, ScripReward, ShipEncounter, ShipSlot, SlotGroup, VarOption, expand_all,
+    MissionRewards, MissionVar, NpcEncounter, NpcSlot, NpcSpawnCounts, OtherReward, PrereqView,
+    RepReward, RewardAmount, ScripReward, ShipEncounter, ShipSlot, SlotGroup, VarOption,
+    expand_all,
 };
 pub use index::Missions;
 // Re-export the canonical accessor trait (get / iter / len / values) so consumers

@@ -834,8 +834,10 @@ pub struct SlotGroup<S> {
     /// The weighted alternatives. Engine picks one per spawn.
     pub options: Vec<S>,
     /// `(min, max)` of the count field across `options`. For ship
-    /// groups this is `concurrent`; for entity groups it's `amount`.
-    /// NPC groups always have one option so min == max.
+    /// groups this is `concurrent`; for entity groups it's `amount`;
+    /// for NPC groups it's [`NpcSpawnCounts::max_concurrent`] (`(1, 1)`
+    /// when the slot carries no spawn settings). NPC groups always have
+    /// one option so min == max.
     pub concurrent_range: (i32, i32),
     /// True when every option's `weight` is the same (within 1e-4).
     /// Renderers showing percentages can skip them when this is true.
@@ -960,9 +962,32 @@ pub struct NpcSlot {
     /// NPC's faction at spawn time. None when no override or no
     /// `auto_spawn_settings`.
     pub faction_override: Option<Guid>,
-    /// `SpawnDescription_NPCOption.identifierTags` — typed tag bag
-    /// that classifies the NPC archetype (`Civilian`, `Marine`, etc.).
+    /// `SpawnDescription_NPCOption.identifierTags` — the slot's mission
+    /// role markers (`Target`, `Defenders`, defend-area letters like
+    /// `DA_A`).
     pub identifier_tags: TagBag,
+    /// How many NPCs the slot spawns, from `AutoSpawnSettings`. `None`
+    /// when no settings are attached.
+    pub spawn_counts: Option<NpcSpawnCounts>,
+    /// `AutoSpawnSettings.positiveCharacterTags` — what the NPCs are:
+    /// archetype plus faction (`PU_Soldier` + `Pirates`). Empty when no
+    /// settings are attached.
+    pub character_tags: TagBag,
+}
+
+/// The spawn counts of one NPC slot (`AutoSpawnSettings`).
+///
+/// The designer-written phase names agree with these where they carry a
+/// count (`Sniper x 2` → 2 concurrent, 2 total), and these also cover
+/// phases named without one (`Level 3`: 4 at a time, 8 total).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct NpcSpawnCounts {
+    /// `minGroupSize` / `maxGroupSize` — NPCs per spawned group.
+    pub group_size: (i32, i32),
+    /// `maxConcurrentSpawns` — the most alive at once.
+    pub max_concurrent: i32,
+    /// `maxSpawns` — the total over the slot's lifetime.
+    pub max_spawns: i32,
 }
 
 /// A single generic-entity slot inside an encounter phase.
@@ -2830,13 +2855,25 @@ fn build_npc_encounter(
                 continue;
             };
             // Pull the high-level fields from AutoSpawnSettings if attached.
-            let (mission_allied_marker, is_critical, faction_override) = option
+            let settings = option
                 .auto_spawn_settings
                 .as_ref()
-                .and_then(|h| h.get(pools))
+                .and_then(|h| h.get(pools));
+            let (mission_allied_marker, is_critical, faction_override) = settings
                 .map(|s| (s.mission_allied_marker, s.is_critical, s.faction_override))
                 .unwrap_or((false, false, None));
+            let spawn_counts = settings.map(|s| NpcSpawnCounts {
+                group_size: (s.min_group_size, s.max_group_size),
+                max_concurrent: s.max_concurrent_spawns,
+                max_spawns: s.max_spawns,
+            });
+            let character_tags = TagBag::from_handle(
+                pools,
+                tree,
+                settings.and_then(|s| s.positive_character_tags.as_ref()),
+            );
             let identifier_tags = TagBag::from_handle(pools, tree, option.identifier_tags.as_ref());
+            let concurrent = spawn_counts.map_or(1, |c| c.max_concurrent);
             let slot = NpcSlot {
                 priority: option.priority,
                 weight: option.weight,
@@ -2845,12 +2882,14 @@ fn build_npc_encounter(
                 is_critical,
                 faction_override,
                 identifier_tags,
+                spawn_counts,
+                character_tags,
             };
             let per_option_tags: Vec<Vec<Guid>> = vec![slot.identifier_tags.guids.clone()];
             let (axes, shared_tags) = AxisDiff::compute(&per_option_tags, tree);
             phase.groups.push(SlotGroup {
                 options: vec![slot],
-                concurrent_range: (1, 1),
+                concurrent_range: (concurrent, concurrent),
                 weight_uniform: true,
                 axes,
                 shared_tags,
