@@ -24,6 +24,14 @@ separate commits and advance independently.
   list is non-empty. Previously release builds dropped those records without
   a trace; debug builds still panic.
 
+### Fixed
+
+- **`sc-discovery`: no launcher label for a build it doesn't describe.** The
+  launcher store labels channel slots, so a LIVE folder renamed to PTU (to
+  seed a PTU patch) took the PTU label while still holding the LIVE build.
+  `Installation::launcher_version_label` is now `None` when the label's
+  changelist differs from the manifest on disk.
+
 ## [v0.17.0] - 2026-10-11
 
 ### Added
