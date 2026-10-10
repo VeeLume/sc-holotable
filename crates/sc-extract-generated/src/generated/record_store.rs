@@ -48067,7 +48067,6 @@ impl<'a> Builder<'a> {
             dispatch[i] = Some(extract_record_mobi_glas_app_data);
         }
 
-        #[cfg(debug_assertions)]
         const KNOWN_RECORD_TYPE_NAMES: &[&str] = &[
             "AIAvailableSpecialRangedAttacksConfig",
             "AIFireDisciplineSettings",
@@ -48682,9 +48681,7 @@ impl<'a> Builder<'a> {
              and deduplicated for binary_search to be correct — regenerate bindings.",
         );
 
-        #[cfg(debug_assertions)]
-        let mut unknown_record_types: std::collections::HashSet<u32> =
-            std::collections::HashSet::new();
+        let mut undispatched: HashMap<u32, usize> = HashMap::new();
 
         let records: Vec<(CigGuid, u32, Instance<'a>)> = self
             .db
@@ -48696,23 +48693,28 @@ impl<'a> Builder<'a> {
             if let Some(Some(f)) = dispatch.get(i) {
                 f(self, guid, inst);
             } else {
-                #[cfg(debug_assertions)]
-                {
-                    let name = self.db.struct_name(i).unwrap_or("<unnamed>");
-                    if KNOWN_RECORD_TYPE_NAMES.binary_search(&name).is_err() {
-                        unknown_record_types.insert(struct_idx);
-                    }
-                }
+                *undispatched.entry(struct_idx).or_default() += 1;
             }
         }
 
+        let mut unknown: Vec<crate::UnknownRecordType> = undispatched
+            .into_iter()
+            .filter_map(|(idx, records)| {
+                let name = self.db.struct_name(idx as usize).unwrap_or("<unnamed>");
+                KNOWN_RECORD_TYPE_NAMES
+                    .binary_search(&name)
+                    .is_err()
+                    .then(|| crate::UnknownRecordType {
+                        name: name.to_string(),
+                        records,
+                    })
+            })
+            .collect();
+        unknown.sort_unstable_by(|a, b| a.name.cmp(&b.name));
+
         #[cfg(debug_assertions)]
-        if !unknown_record_types.is_empty() {
-            let mut names: Vec<&str> = unknown_record_types
-                .iter()
-                .map(|&i| self.db.struct_name(i as usize).unwrap_or("<unnamed>"))
-                .collect();
-            names.sort_unstable();
+        if !unknown.is_empty() {
+            let names: Vec<&str> = unknown.iter().map(|t| t.name.as_str()).collect();
             panic!(
                 "sc-extract-generated: runtime DCB contains {} record type(s) \
                  with no generated binding in any feature — generated bindings \
@@ -48725,5 +48727,6 @@ impl<'a> Builder<'a> {
                 names,
             );
         }
+        self.unknown_record_types = unknown;
     }
 }

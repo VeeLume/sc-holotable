@@ -14,6 +14,16 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract`: stale bindings are visible in release builds.**
+  `Datacore::unknown_record_types() -> &[UnknownRecordType]` lists the DCB
+  record types the generated bindings have never seen, with how many records
+  of each were skipped. `Datacore::parse` logs the game build the bindings
+  came from on every parse, and a `warn!` naming the unknown types when the
+  list is non-empty. Previously release builds dropped those records without
+  a trace; debug builds still panic.
+
 ## [v0.17.0] - 2026-10-11
 
 ### Added

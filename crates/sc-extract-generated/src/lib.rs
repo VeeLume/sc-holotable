@@ -40,7 +40,7 @@ pub mod generated;
 mod handle;
 mod locale_key;
 
-pub use builder::Builder;
+pub use builder::{Builder, UnknownRecordType};
 pub use extract::Extract;
 pub use handle::{Handle, Pooled, RecordLookup};
 pub use locale_key::LocaleKey;
