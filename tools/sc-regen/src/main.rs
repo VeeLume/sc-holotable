@@ -23,6 +23,7 @@
 //! sc-regen --repo <path>             # what the task runs
 //! sc-regen --repo <path> --now       # also when a tag or PR already covers the build
 //! sc-regen --repo <path> --dry-run   # report the decision, change nothing
+//! sc-regen --repo <path> --now --no-publish   # full local run, stop before push and PR
 //! ```
 //!
 //! The full output of the last run is in `%LOCALAPPDATA%\sc-regen\last-run.log`,
@@ -50,6 +51,7 @@ struct Options {
     repo: PathBuf,
     now: bool,
     dry_run: bool,
+    no_publish: bool,
     schedule: bool,
 }
 
@@ -80,7 +82,9 @@ fn main() -> ExitCode {
         Ok(o) => o,
         Err(e) => {
             eprintln!("sc-regen: {e}");
-            eprintln!("usage: sc-regen [schedule] [--repo <path>] [--now] [--dry-run]");
+            eprintln!(
+                "usage: sc-regen [schedule] [--repo <path>] [--now] [--dry-run] [--no-publish]"
+            );
             return ExitCode::from(2);
         }
     };
@@ -147,6 +151,7 @@ fn parse_args() -> Result<Options, String> {
         repo: std::env::current_dir().map_err(|e| e.to_string())?,
         now: false,
         dry_run: false,
+        no_publish: false,
         schedule: false,
     };
     let mut args = std::env::args().skip(1);
@@ -156,6 +161,7 @@ fn parse_args() -> Result<Options, String> {
             "--repo" => options.repo = args.next().ok_or("--repo requires a path")?.into(),
             "--now" => options.now = true,
             "--dry-run" => options.dry_run = true,
+            "--no-publish" => options.no_publish = true,
             other => return Err(format!("unknown argument: {other}")),
         }
     }
@@ -302,6 +308,15 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
     let body = report::pr_body(&info, &before, &after, &checks);
     let body_file = state.join("pr-body.md");
     std::fs::write(&body_file, &body).map_err(|e| format!("writing the PR body: {e}"))?;
+
+    if options.no_publish {
+        return Ok(format!(
+            "regenerated {} locally (checks {}); PR body in {}",
+            build.label,
+            if all_passed { "passed" } else { "FAILED" },
+            body_file.display()
+        ));
+    }
 
     let branch = build.branch();
     let mut push = vec!["push", "--quiet", "-u", "origin", branch.as_str()];
