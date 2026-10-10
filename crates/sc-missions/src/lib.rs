@@ -154,6 +154,7 @@
 //! | [`ScripReward::currency_guid`] | [`Missions::currency`] |
 //! | [`Mission::faction`], rep rewards / prereqs | [`Missions::factions`], [`Missions::rep_standings`] |
 //! | [`Mission::category`] | [`Missions::mission_types`] |
+//! | [`EventPoints::event`] | [`Missions::events`] → [`Event`] (ladders + tiers) |
 //! | [`HaulingLeg::resource`] | [`HaulingLeg::commodity`] over `sc_resources::Resources` |
 //! | `CompletedContractTags` prereqs | [`Missions::prerequisite_missions`] (the mission-chain graph) |
 //!
@@ -183,6 +184,7 @@ mod blueprint_pools;
 mod categories;
 mod classify;
 mod currency;
+mod events;
 mod expand;
 mod index;
 mod locality;
@@ -204,12 +206,13 @@ pub use blueprint_pools::{BlueprintPool, BlueprintPoolEntry, BlueprintPools};
 pub use categories::{MissionTypeInfo, MissionTypes};
 pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencies};
+pub use events::{Event, Events, Ladder, LadderKind, LadderTier};
 pub use expand::{
     Availability, BlueprintReward, Cooldowns, Difficulty, DurationRange, Encounter, EncounterPhase,
-    EntityEncounter, EntitySlot, HandlerKind, HaulingLeg, ItemReward, Mission, MissionOrigin,
-    MissionRewards, MissionVar, NpcEncounter, NpcSlot, NpcSpawnCounts, OtherReward, PrereqView,
-    RepReward, RewardAmount, ScripReward, ShipEncounter, ShipSlot, SlotGroup, VarOption,
-    expand_all,
+    EntityEncounter, EntitySlot, EventPoints, HandlerKind, HaulingLeg, ItemReward, LadderPoints,
+    Mission, MissionOrigin, MissionRewards, MissionVar, NpcEncounter, NpcSlot, NpcSpawnCounts,
+    OtherReward, PrereqView, RepReward, RewardAmount, ScripReward, ShipEncounter, ShipSlot,
+    SlotGroup, VarOption, expand_all,
 };
 pub use index::Missions;
 // Re-export the canonical accessor trait (get / iter / len / values) so consumers

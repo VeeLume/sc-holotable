@@ -517,10 +517,14 @@ pub struct MissionRewards {
     /// when the contract has multiple `BlueprintRewards` blocks in its
     /// `contractResults` (multi-pool missions).
     pub blueprints: Vec<BlueprintReward>,
-    /// Other reward kinds (BadgeAward, ScenarioProgress, JournalEntry,
-    /// CompletionTag(s), CompletionBounty, RefundBuyIn, ItemsWeighting,
-    /// Reward). Detailed field modelling deferred until a consumer
-    /// needs them.
+    /// Event points (`ContractResult_ScenarioProgress`) — what a contract
+    /// of a limited-time event (RSI Discovery Month, Clean Air, …) adds
+    /// to the event's progress. Empty outside events.
+    #[serde(default)]
+    pub event_points: Vec<EventPoints>,
+    /// Other reward kinds (BadgeAward, JournalEntry, CompletionTag(s),
+    /// CompletionBounty, RefundBuyIn, ItemsWeighting, Reward). Detailed
+    /// field modelling deferred until a consumer needs them.
     pub other: Vec<OtherReward>,
 }
 
@@ -532,8 +536,44 @@ impl MissionRewards {
             && self.reputation.is_empty()
             && self.items.is_empty()
             && self.blueprints.is_empty()
+            && self.event_points.is_empty()
             && self.other.is_empty()
     }
+}
+
+/// Points a contract awards toward an event's ladders
+/// ([`crate::Events`]): the overall ladder from
+/// `ContractResult_ScenarioProgress`, the category ladders from the
+/// contract's `ContractResult_CompletionTags` counts for the event's
+/// ladder tags.
+///
+/// On 4.10 LIVE every event contract feeds exactly one category ladder,
+/// with the same count as its overall points.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct EventPoints {
+    /// The event — its `ScenarioProgress` record, the [`crate::Events`] key.
+    pub event: Option<Guid>,
+    /// Overall-ladder points (`PointsToAward`).
+    pub points: i32,
+    /// `splitPointsForParty` — the overall-ladder points are divided among
+    /// the party members sharing the contract instead of each earning them
+    /// in full. Category ladders have no such flag and are never split.
+    pub split_for_party: bool,
+    /// Category-ladder points, one per ladder the contract feeds.
+    #[serde(default)]
+    pub ladders: Vec<LadderPoints>,
+    /// The `MissionScenario` the points count toward.
+    pub scenario: Option<Guid>,
+    /// The event's faction (`faction_iasi` for Discovery Month).
+    pub faction: Option<Guid>,
+}
+
+/// Points toward one category ladder ([`crate::LadderKind::Category`]).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LadderPoints {
+    /// The ladder's completion tag.
+    pub tag: Guid,
+    pub points: i32,
 }
 
 /// The contract's difficulty profile — four authored skill axes plus the
@@ -618,13 +658,15 @@ pub struct ItemReward {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum OtherReward {
     BadgeAward,
-    ScenarioProgress,
     JournalEntry,
     CompletionTags,
     CompletionBounty,
     ItemsWeighting,
     /// Raw `ContractResult_Reward` — wraps an inline `MissionReward`.
     Reward,
+    /// `ContractResult_VehicleRental` — a ship rental granted on completion
+    /// (new in 4.10: Discovery Month's Constellation rental offer).
+    VehicleRental,
     /// `ContractResult_RefundBuyIn.refundMultiplier`.
     RefundBuyIn(f32),
     /// Polymorphic-enum fallback (feature-gated subclass or new kind).
@@ -1583,16 +1625,9 @@ fn build_expansion(
         ctx.handler_availability,
     );
 
-    let blueprints = resolve_blueprint_rewards(pools, contract_results);
-    let (uec, scrip, reputation, items, other) =
-        resolve_rewards(pools, datacore, currency, contract_results);
     let rewards = MissionRewards {
-        uec,
-        scrip,
-        reputation,
-        items,
-        blueprints,
-        other,
+        blueprints: resolve_blueprint_rewards(pools, contract_results),
+        ..resolve_rewards(pools, datacore, currency, contract_results)
     };
 
     let prerequisites = resolve_prerequisites(
@@ -2046,30 +2081,26 @@ fn apply_int_overrides(
 }
 
 /// Classify every `ContractResultBasePtr` in the contract's results
-/// into UEC / scrip / rep / items / other buckets.
+/// into UEC / scrip / rep / items / event-points / other buckets.
+/// Blueprints are left empty — [`resolve_blueprint_rewards`] fills them.
 fn resolve_rewards(
     pools: &DataPools,
     datacore: &Datacore,
     currency: &RewardCurrencies,
     results: Option<&Handle<ContractResults>>,
-) -> (
-    RewardAmount,
-    Vec<ScripReward>,
-    Vec<RepReward>,
-    Vec<ItemReward>,
-    Vec<OtherReward>,
-) {
+) -> MissionRewards {
     let mut uec = RewardAmount::None;
     let mut scrip = Vec::new();
     let mut rep = Vec::new();
     let mut items = Vec::new();
+    let mut event_points: Vec<EventPoints> = Vec::new();
+    // (tag, count) of every granted completion tag — the event's category
+    // ladders pick theirs out after the walk.
+    let mut completion_counts: Vec<(Guid, i32)> = Vec::new();
     let mut other = Vec::new();
 
-    let Some(results_handle) = results else {
-        return (uec, scrip, rep, items, other);
-    };
-    let Some(results) = results_handle.get(pools) else {
-        return (uec, scrip, rep, items, other);
+    let Some(results) = results.and_then(|h| h.get(pools)) else {
+        return MissionRewards::default();
     };
     let records = &datacore.records().records;
     let db = datacore.db();
@@ -2143,12 +2174,40 @@ fn resolve_rewards(
                 // Handled separately by resolve_blueprint_reward.
             }
             R::ContractResult_BadgeAward(_) => other.push(OtherReward::BadgeAward),
-            R::ContractResult_ScenarioProgress(_) => other.push(OtherReward::ScenarioProgress),
+            R::ContractResult_ScenarioProgress(sh) => {
+                let Some(sp) = sh.get(pools) else { continue };
+                // The result carries its own copy of the scenario plugin;
+                // the contract-level `contractPlugins` copy disagrees on
+                // the split flag for 3 ORS contracts (4.10 LIVE). The
+                // result is what awards the points, so it wins.
+                let plugin = sp
+                    .scenario_progress_plugin
+                    .as_ref()
+                    .and_then(|h| h.get(pools));
+                event_points.push(EventPoints {
+                    event: plugin.and_then(|p| p.scenario_progress_record),
+                    points: sp.points_to_award,
+                    split_for_party: plugin.is_some_and(|p| p.split_points_for_party),
+                    ladders: Vec::new(),
+                    scenario: plugin.and_then(|p| p.mission_scenario),
+                    faction: plugin.and_then(|p| p.faction),
+                });
+            }
             R::ContractResult_JournalEntry(_) => other.push(OtherReward::JournalEntry),
-            R::ContractResult_CompletionTags(_) => other.push(OtherReward::CompletionTags),
+            R::ContractResult_CompletionTags(ch) => {
+                if let Some(ct) = ch.get(pools) {
+                    for t in ct.completion_tags.iter().filter_map(|h| h.get(pools)) {
+                        if let Some(tag) = t.tag {
+                            completion_counts.push((tag, t.count));
+                        }
+                    }
+                }
+                other.push(OtherReward::CompletionTags);
+            }
             R::ContractResult_CompletionBounty(_) => other.push(OtherReward::CompletionBounty),
             R::ContractResult_ItemsWeighting(_) => other.push(OtherReward::ItemsWeighting),
             R::ContractResult_Reward(_) => other.push(OtherReward::Reward),
+            R::ContractResult_VehicleRental(_) => other.push(OtherReward::VehicleRental),
             R::ContractResult_RefundBuyIn(rh) => {
                 if let Some(refund) = rh.get(pools) {
                     other.push(OtherReward::RefundBuyIn(refund.refund_multiplier));
@@ -2170,7 +2229,31 @@ fn resolve_rewards(
         }
     }
 
-    (uec, scrip, rep, items, other)
+    for ep in &mut event_points {
+        let Some(progress) = ep
+            .event
+            .and_then(|g| records.multi_feature.scenario_progress.get(&g))
+            .and_then(|h| h.get(pools))
+        else {
+            continue;
+        };
+        let ladder_tags = crate::events::category_tags(progress, pools);
+        ep.ladders = completion_counts
+            .iter()
+            .filter(|(tag, _)| ladder_tags.contains(tag))
+            .map(|&(tag, points)| LadderPoints { tag, points })
+            .collect();
+    }
+
+    MissionRewards {
+        uec,
+        scrip,
+        reputation: rep,
+        items,
+        blueprints: Vec::new(),
+        event_points,
+        other,
+    }
 }
 
 /// Flatten every `ContractPrerequisiteBasePtr` reachable from this

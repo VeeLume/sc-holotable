@@ -33,7 +33,23 @@ separate commits and advance independently.
 - **`sc-missions`: `TagBag::archetypes` and `TagBag::npc_classes`** —
   `AI ▸ Archetype ▸ *` (`PU_Soldier`, `PU_CQC`, …) and `AI ▸ NpcClass ▸ *`
   (`Light` … `Boss`) classifiers for character tags.
+- **`sc-missions`: event ladders and points.** `Missions::events: Events`
+  — each limited-time event (`ScenarioProgress` record) with its ladders:
+  the overall one and the category ones (Transport / Collection / Defense),
+  each with its reward tiers (`min_points`, badge).
+  `MissionRewards::event_points: Vec<EventPoints>` — what a contract adds:
+  overall `points` (`ContractResult_ScenarioProgress.PointsToAward`),
+  `split_for_party` (`splitPointsForParty`, overall ladder only), and
+  per-category `ladders` (the contract's completion-tag counts for the
+  event's ladder tags; never split). On 4.10 LIVE, RSI Discovery Month has
+  31 point contracts, each feeding the overall ladder and one category
+  ladder; 3 split the overall points. Proven by `examples/event_points.rs`.
 
+- **`sc-missions`: `OtherReward::VehicleRental`** — `ContractResult_VehicleRental`,
+  new in the 4.10 bindings (Discovery Month's Constellation rental offer).
+
+- **`sc-extract`: `examples/dcb_xml_export.rs`** — dumps every DCB record to
+  XML for grepping data the bindings don't model yet.
 - **`sc-extract`: `LocaleMap::resolve_name` and `is_placeholder`** — name
   resolution that treats empty text and CIG's `<= PLACEHOLDER =>` sentinel
   as unresolved (previously private to sc-crafting).
@@ -45,6 +61,8 @@ separate commits and advance independently.
 - **`sc-missions`: NPC `SlotGroup::concurrent_range`** is now the slot's
   `max_concurrent` instead of a constant `(1, 1)` (still `(1, 1)` when no
   spawn settings are attached).
+- **`sc-missions`: `OtherReward::ScenarioProgress` removed** — those
+  rewards are now typed in `MissionRewards::event_points`.
 
 ## [v0.16.0] - 2026-07-03
 
