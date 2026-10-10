@@ -1,16 +1,14 @@
 # Changelog
 
-Versioning is tracked in two orthogonal axes, both monotonic and immutable:
+Consumers pin **`sc-holotable/vX.Y.Z`** tags, tracked in this file. Pre-1.0
+convention: `0.X.0` bumps for any public-surface change (additive *or*
+breaking); `0.x.Y` bumps for bugfixes and internal-only changes. A bindings
+regen for a new game build ships as a release too: `0.x.Y` when it only adds
+generated types, `0.X.0` when it removes any.
 
-- **`sc-holotable/vX.Y.Z`** — library API releases, tracked in this file.
-  Pre-1.0 convention: `0.X.0` bumps for any public-surface change (additive
-  *or* breaking); `0.x.Y` bumps for bugfixes and internal-only changes.
-- **`datacore/<sc_version>`** — DataCore regeneration snapshots, cut by
-  `tools/regenerate.ps1 -Publish` after a Star Citizen patch. Not tracked
-  here.
-
-Consumers pin against whichever axis they care about; tags point at
-separate commits and advance independently.
+**`datacore/<label>`** tags mark the commit whose generated bindings came from
+a game build. They are cut automatically when a regen PR merges and are not
+pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
@@ -23,6 +21,21 @@ separate commits and advance independently.
   came from on every parse, and a `warn!` naming the unknown types when the
   list is non-empty. Previously release builds dropped those records without
   a trace; debug builds still panic.
+- **`tools/sc-regen`: bindings regen without anyone running it.** A
+  scheduled task notices a new installed game build, regenerates in its own
+  worktree off `origin/main`, runs the tests and smoke examples, and opens a
+  PR with a change report (record types added/removed, bucket sizes).
+  Merging it tags `datacore/<label>` (`.github/workflows/datacore-tag.yml`).
+
+### Changed
+
+- **Consumers pin `sc-holotable/v*` only.** `datacore/*` tags now just mark
+  which commit's bindings came from a game build; a regen ships as a library
+  release.
+
+### Removed
+
+- **`tools/regenerate.ps1`** — replaced by `sc-regen`.
 
 ### Fixed
 

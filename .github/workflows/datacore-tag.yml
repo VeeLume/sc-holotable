@@ -1,0 +1,65 @@
+# Tags a merged bindings regen as datacore/<label>.
+#
+# sc-regen opens the regen PR; its commit subject is
+# "chore(datacore): regenerate bindings (SC <label>)". This job finds such
+# commits in each push to main (squash, merge or rebase alike) and tags them.
+# Only LIVE and hotfix builds are tagged: a PTU regen never becomes a tag.
+# A label whose changelist is lower than the newest datacore tag fails the
+# job instead, because tags only ever move forward. Existing tags are never
+# moved.
+name: Datacore tag
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tag regen commits
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          range="$BEFORE..$AFTER"
+          if ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            range="$AFTER"
+          fi
+
+          newest=$(git tag --list 'datacore/*' | sed -E 's/.*\.([0-9]+)$/\1/' | sort -n | tail -1)
+          newest=${newest:-0}
+
+          git log --reverse --format='%H %s' "$range" | while read -r sha subject; do
+            label=$(sed -nE 's/^chore\(datacore\): regenerate bindings \(SC ([^ )]+)\).*/\1/p' <<< "$subject")
+            [ -n "$label" ] || continue
+            if ! grep -qE -- '-(live|hotfix)\.[0-9]+$' <<< "$label"; then
+              echo "skip $label: not a LIVE or hotfix build"
+              continue
+            fi
+            tag="datacore/$label"
+            if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+              echo "skip $tag: exists"
+              continue
+            fi
+            changelist=${label##*.}
+            if [ "$changelist" -lt "$newest" ]; then
+              echo "::error::$tag would go backwards: changelist $changelist < $newest"
+              exit 1
+            fi
+            git tag -a "$tag" -m "DataCore bindings regenerated from SC $label" "$sha"
+            git push origin "refs/tags/$tag"
+            newest=$changelist
+            echo "tagged $tag at $sha"
+          done

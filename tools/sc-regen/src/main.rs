@@ -1,0 +1,578 @@
+//! `sc-regen` — keeps the generated DataCore bindings in step with the game.
+//!
+//! A Windows scheduled task runs it every few hours. Each run:
+//!
+//! 1. Finds the newest Star Citizen build installed, by the changelist in
+//!    its `build_manifest.id`. Only installs whose launcher label matches
+//!    that changelist count: a folder renamed between channels (LIVE moved
+//!    to PTU to seed a patch) is skipped until the launcher has patched it.
+//! 2. Stops if that build is no newer than the newest `datacore/*` tag, if
+//!    a PR for it already exists (open, merged or closed), or if the game is
+//!    running.
+//! 3. Regenerates in its own worktree (`%LOCALAPPDATA%\sc-regen\worktree`,
+//!    reset to `origin/main`), never in a development checkout: generator,
+//!    fmt, clippy `--fix` on the generated crate, one commit on
+//!    `regen/<label>`.
+//! 4. Runs `cargo test --workspace` and the smoke examples, pushes the
+//!    branch and opens a PR whose body reports what changed. The PR is a
+//!    draft when a check failed or the build is not LIVE.
+//!
+//! ```text
+//! cargo install --path tools/sc-regen
+//! sc-regen schedule --repo E:\vscode\rust\sc-holotable   # register the task once
+//! sc-regen --repo <path>             # what the task runs
+//! sc-regen --repo <path> --now       # also when a tag or PR already covers the build
+//! sc-regen --repo <path> --dry-run   # report the decision, change nothing
+//! ```
+//!
+//! The full output of the last run is in `%LOCALAPPDATA%\sc-regen\last-run.log`,
+//! one line per run in `history.log`.
+
+mod report;
+mod windows;
+
+use std::fs::File;
+use std::io::Write as _;
+use std::path::{Path, PathBuf};
+use std::process::{Command, ExitCode, Stdio};
+use std::sync::Mutex;
+use std::time::{SystemTime, UNIX_EPOCH};
+
+use sc_discovery::Channel;
+use tracing::{info, warn};
+use tracing_subscriber::fmt::writer::MakeWriterExt as _;
+
+use report::{Bindings, BuildInfo, Check};
+
+const GENERATED: &str = "crates/sc-extract-generated/src/generated";
+
+struct Options {
+    repo: PathBuf,
+    now: bool,
+    dry_run: bool,
+    schedule: bool,
+}
+
+/// The newest installed build, as the regen will name it.
+struct Build {
+    label: String,
+    changelist: u64,
+    channel: Channel,
+    p4k: PathBuf,
+}
+
+impl Build {
+    fn is_live(&self) -> bool {
+        matches!(self.channel, Channel::Live | Channel::Hotfix)
+    }
+
+    fn branch(&self) -> String {
+        format!("regen/{}", self.label)
+    }
+
+    fn commit_message(&self) -> String {
+        format!("chore(datacore): regenerate bindings (SC {})", self.label)
+    }
+}
+
+fn main() -> ExitCode {
+    let options = match parse_args() {
+        Ok(o) => o,
+        Err(e) => {
+            eprintln!("sc-regen: {e}");
+            eprintln!("usage: sc-regen [schedule] [--repo <path>] [--now] [--dry-run]");
+            return ExitCode::from(2);
+        }
+    };
+    let state = state_dir();
+    if let Err(e) = std::fs::create_dir_all(&state) {
+        eprintln!("sc-regen: creating {}: {e}", state.display());
+        return ExitCode::FAILURE;
+    }
+    let log = match File::create(state.join("last-run.log")) {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("sc-regen: creating the run log: {e}");
+            return ExitCode::FAILURE;
+        }
+    };
+    let Ok(log_for_tracing) = log.try_clone() else {
+        eprintln!("sc-regen: cloning the run log handle");
+        return ExitCode::FAILURE;
+    };
+    tracing_subscriber::fmt()
+        .with_ansi(false)
+        .with_writer(std::io::stderr.and(Mutex::new(log_for_tracing)))
+        .with_env_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env()
+                .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("info")),
+        )
+        .init();
+
+    if options.schedule {
+        return match schedule(&options.repo) {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(e) => {
+                tracing::error!("{e}");
+                ExitCode::FAILURE
+            }
+        };
+    }
+
+    let Some(_lock) = Lock::acquire(&state.join("lock")) else {
+        info!("another run holds the lock; exiting");
+        return ExitCode::SUCCESS;
+    };
+    let outcome = run(&options, &state, &log);
+    let line = match &outcome {
+        Ok(msg) => msg.clone(),
+        Err(e) => format!("FAILED: {e}"),
+    };
+    match &outcome {
+        Ok(msg) => info!("{msg}"),
+        Err(e) => tracing::error!("{e}"),
+    }
+    append_history(&state, &line);
+    match outcome {
+        Ok(_) => ExitCode::SUCCESS,
+        Err(e) => {
+            windows::notify("sc-regen failed", &e);
+            ExitCode::FAILURE
+        }
+    }
+}
+
+fn parse_args() -> Result<Options, String> {
+    let mut options = Options {
+        repo: std::env::current_dir().map_err(|e| e.to_string())?,
+        now: false,
+        dry_run: false,
+        schedule: false,
+    };
+    let mut args = std::env::args().skip(1);
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "schedule" => options.schedule = true,
+            "--repo" => options.repo = args.next().ok_or("--repo requires a path")?.into(),
+            "--now" => options.now = true,
+            "--dry-run" => options.dry_run = true,
+            other => return Err(format!("unknown argument: {other}")),
+        }
+    }
+    options.repo = std::fs::canonicalize(&options.repo)
+        .map_err(|e| format!("--repo {}: {e}", options.repo.display()))?;
+    Ok(options)
+}
+
+/// Returns a one-line summary of what happened, for `history.log`.
+fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
+    if !options.now && !options.dry_run && windows::game_running() {
+        return Ok("game running; skipped until the next run".into());
+    }
+    let build = newest_build()?;
+    info!(
+        label = %build.label,
+        channel = %build.channel,
+        changelist = build.changelist,
+        p4k = %build.p4k.display(),
+        "newest installed build"
+    );
+
+    let repo = &options.repo;
+    git(
+        repo,
+        &["fetch", "--quiet", "--prune", "--tags", "origin"],
+        log,
+    )?;
+    let previous_tag = newest_datacore_tag(repo)?;
+    if !options.now {
+        if let Some((tag, changelist)) = &previous_tag
+            && build.changelist <= *changelist
+        {
+            return Ok(format!(
+                "{} is covered by {tag}; nothing to do",
+                build.label
+            ));
+        }
+        if let Some(pr) = existing_pr(repo, &build.branch())? {
+            return Ok(format!("{} already has {pr}; nothing to do", build.label));
+        }
+    }
+    if options.dry_run {
+        return Ok(format!(
+            "dry run: would regenerate {} (previous tag {})",
+            build.label,
+            previous_tag.as_ref().map_or("none", |(t, _)| t.as_str())
+        ));
+    }
+
+    let worktree = state.join("worktree");
+    prepare_worktree(repo, &worktree, &build.branch(), log)?;
+    let generated = worktree.join(GENERATED);
+    let before = Bindings::read(&generated)?;
+
+    info!("running sc-generator");
+    let p4k = build.p4k.to_string_lossy().into_owned();
+    cargo(
+        &worktree,
+        &[
+            "run",
+            "-p",
+            "sc-generator",
+            "--release",
+            "--",
+            "--p4k",
+            &p4k,
+        ],
+        log,
+    )?;
+    cargo(&worktree, &["fmt", "--all"], log)?;
+    info!("clippy --fix on the generated crate");
+    cargo(
+        &worktree,
+        &[
+            "clippy",
+            "-p",
+            "sc-extract-generated",
+            "--all-targets",
+            "--all-features",
+            "--fix",
+            "--allow-dirty",
+            "--allow-staged",
+            "--",
+            "-D",
+            "warnings",
+        ],
+        log,
+    )
+    .map_err(|e| format!("{e}: the generator emitter likely needs an update"))?;
+    cargo(&worktree, &["fmt", "--all"], log)?;
+    let after = Bindings::read(&generated)?;
+
+    git(&worktree, &["add", "-u"], log)?;
+    git(&worktree, &["add", "crates/sc-extract-generated"], log)?;
+    git(
+        &worktree,
+        &["commit", "--quiet", "-m", &build.commit_message()],
+        log,
+    )?;
+
+    let checks = [
+        check(
+            &worktree,
+            "cargo test --workspace",
+            &["test", "--workspace"],
+            log,
+        ),
+        check(
+            &worktree,
+            "encounter_analytics",
+            &[
+                "run",
+                "-p",
+                "sc-missions",
+                "--release",
+                "--example",
+                "encounter_analytics",
+            ],
+            log,
+        ),
+        check(
+            &worktree,
+            "product_stats",
+            &[
+                "run",
+                "-p",
+                "sc-crafting",
+                "--release",
+                "--example",
+                "product_stats",
+            ],
+            log,
+        ),
+    ];
+    let all_passed = checks.iter().all(|c| c.passed);
+
+    let info = BuildInfo {
+        label: &build.label,
+        channel: &build.channel.to_string(),
+        changelist: build.changelist,
+        previous_tag: previous_tag.as_ref().map(|(t, _)| t.as_str()),
+    };
+    let body = report::pr_body(&info, &before, &after, &checks);
+    let body_file = state.join("pr-body.md");
+    std::fs::write(&body_file, &body).map_err(|e| format!("writing the PR body: {e}"))?;
+
+    let branch = build.branch();
+    let mut push = vec!["push", "--quiet", "-u", "origin", branch.as_str()];
+    if options.now {
+        push.push("--force");
+    }
+    git(&worktree, &push, log)?;
+    let title = build.commit_message();
+    let body_path = body_file.to_string_lossy().into_owned();
+    let mut pr = vec![
+        "pr",
+        "create",
+        "--base",
+        "main",
+        "--head",
+        &branch,
+        "--title",
+        &title,
+        "--body-file",
+        &body_path,
+    ];
+    let draft = !all_passed || !build.is_live();
+    if draft {
+        pr.push("--draft");
+    }
+    let url = capture(Command::new("gh").args(&pr).current_dir(&worktree))?;
+    let url = url.trim().to_string();
+
+    let summary = if all_passed {
+        format!("regen PR for {} opened: {url}", build.label)
+    } else {
+        format!(
+            "regen PR for {} opened as draft, checks failed: {url}",
+            build.label
+        )
+    };
+    windows::notify(&format!("Bindings for {}", build.label), &summary);
+    Ok(summary)
+}
+
+fn schedule(repo: &Path) -> Result<(), String> {
+    let exe = std::env::current_exe().map_err(|e| format!("locating sc-regen.exe: {e}"))?;
+    windows::register_task(&exe, repo)?;
+    info!(
+        task = windows::TASK_NAME,
+        exe = %exe.display(),
+        repo = %repo.display(),
+        "scheduled task registered"
+    );
+    Ok(())
+}
+
+/// The newest installed build that carries a launcher label for the build
+/// actually on disk.
+fn newest_build() -> Result<Build, String> {
+    let installs = sc_discovery::discover().map_err(|e| format!("discovering installs: {e}"))?;
+    let mut builds = Vec::new();
+    for install in installs {
+        let changelist = install
+            .manifest
+            .changelist
+            .as_deref()
+            .and_then(|c| c.parse::<u64>().ok());
+        let (Some(changelist), Some(label)) = (changelist, install.launcher_version_label.clone())
+        else {
+            warn!(
+                channel = %install.channel,
+                root = %install.root.display(),
+                "skipping install: no changelist, or no launcher label for the build on disk \
+                 (the launcher has not finished patching it?)"
+            );
+            continue;
+        };
+        builds.push(Build {
+            label,
+            changelist,
+            channel: install.channel,
+            p4k: install.data_p4k(),
+        });
+    }
+    builds
+        .into_iter()
+        .max_by_key(|b| b.changelist)
+        .ok_or_else(|| "no install with a launcher label for the build on disk".into())
+}
+
+/// The `datacore/*` tag with the highest changelist (its trailing number).
+fn newest_datacore_tag(repo: &Path) -> Result<Option<(String, u64)>, String> {
+    let tags = capture(
+        Command::new("git")
+            .args(["tag", "--list", "datacore/*"])
+            .current_dir(repo),
+    )?;
+    Ok(tags
+        .lines()
+        .filter_map(|t| {
+            let changelist = t.rsplit_once('.')?.1.parse::<u64>().ok()?;
+            Some((t.to_string(), changelist))
+        })
+        .max_by_key(|(_, cl)| *cl))
+}
+
+/// Any PR, in any state, whose head is `branch`. A closed one counts too:
+/// rejecting a regen PR must not bring it back every three hours.
+fn existing_pr(repo: &Path, branch: &str) -> Result<Option<String>, String> {
+    let out = capture(
+        Command::new("gh")
+            .args(["pr", "list", "--state", "all", "--head", branch])
+            .args(["--json", "url", "--jq", ".[0].url"])
+            .current_dir(repo),
+    )?;
+    let url = out.trim();
+    Ok((!url.is_empty()).then(|| url.to_string()))
+}
+
+/// Create the worktree on first use, then reset it to `origin/main` on a
+/// fresh `branch`. Ignored files (the `target/` dir) survive, so later runs
+/// build incrementally.
+fn prepare_worktree(repo: &Path, worktree: &Path, branch: &str, log: &File) -> Result<(), String> {
+    let path = worktree.to_string_lossy().into_owned();
+    if !worktree.join(".git").exists() {
+        git(repo, &["worktree", "prune"], log)?;
+        git(
+            repo,
+            &[
+                "worktree",
+                "add",
+                "--quiet",
+                "--detach",
+                &path,
+                "origin/main",
+            ],
+            log,
+        )?;
+    }
+    git(
+        worktree,
+        &[
+            "checkout",
+            "--quiet",
+            "--force",
+            "-B",
+            branch,
+            "origin/main",
+        ],
+        log,
+    )?;
+    git(worktree, &["clean", "--quiet", "-fd"], log)?;
+    Ok(())
+}
+
+fn git(dir: &Path, args: &[&str], log: &File) -> Result<(), String> {
+    logged(Command::new("git").args(args).current_dir(dir), log)
+}
+
+fn cargo(dir: &Path, args: &[&str], log: &File) -> Result<(), String> {
+    logged(Command::new("cargo").args(args).current_dir(dir), log)
+}
+
+/// Run with stdout and stderr going to the run log.
+fn logged(cmd: &mut Command, log: &File) -> Result<(), String> {
+    let name = describe(cmd);
+    let out = log.try_clone().map_err(|e| e.to_string())?;
+    let err = log.try_clone().map_err(|e| e.to_string())?;
+    let status = cmd
+        .stdout(Stdio::from(out))
+        .stderr(Stdio::from(err))
+        .status()
+        .map_err(|e| format!("starting `{name}`: {e}"))?;
+    status
+        .success()
+        .then_some(())
+        .ok_or_else(|| format!("`{name}` failed ({status}); see last-run.log"))
+}
+
+/// Run and return stdout; stderr goes into the error on failure.
+fn capture(cmd: &mut Command) -> Result<String, String> {
+    let name = describe(cmd);
+    let out = cmd
+        .output()
+        .map_err(|e| format!("starting `{name}`: {e}"))?;
+    if !out.status.success() {
+        return Err(format!(
+            "`{name}` failed: {}",
+            String::from_utf8_lossy(&out.stderr).trim()
+        ));
+    }
+    Ok(String::from_utf8_lossy(&out.stdout).into_owned())
+}
+
+/// Run a cargo check; a failure is a result to report, not an error.
+fn check(dir: &Path, name: &str, args: &[&str], log: &File) -> Check {
+    info!(check = name, "running");
+    let result = Command::new("cargo").args(args).current_dir(dir).output();
+    let (passed, text) = match result {
+        Ok(o) => {
+            let mut text = String::from_utf8_lossy(&o.stdout).into_owned();
+            text.push_str(&String::from_utf8_lossy(&o.stderr));
+            (o.status.success(), text)
+        }
+        Err(e) => (false, format!("starting cargo: {e}")),
+    };
+    let mut log = log;
+    let _ = writeln!(log, "---- {name} ----\n{text}");
+    if !passed {
+        warn!(check = name, "failed");
+    }
+    let lines: Vec<&str> = text.lines().collect();
+    let tail = lines[lines.len().saturating_sub(40)..].join("\n");
+    Check {
+        name: name.to_string(),
+        passed,
+        tail,
+    }
+}
+
+fn describe(cmd: &Command) -> String {
+    let mut s = cmd.get_program().to_string_lossy().into_owned();
+    for arg in cmd.get_args() {
+        s.push(' ');
+        s.push_str(&arg.to_string_lossy());
+    }
+    s
+}
+
+fn state_dir() -> PathBuf {
+    std::env::var_os("LOCALAPPDATA")
+        .map(PathBuf::from)
+        .unwrap_or_else(std::env::temp_dir)
+        .join("sc-regen")
+}
+
+fn append_history(state: &Path, line: &str) {
+    let secs = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0);
+    if let Ok(mut f) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(state.join("history.log"))
+    {
+        let _ = writeln!(f, "unix:{secs} {line}");
+    }
+}
+
+/// A lock file held for the run. One left behind by a crashed run is
+/// taken over once it is older than the task's four-hour time limit.
+struct Lock(PathBuf);
+
+impl Lock {
+    fn acquire(path: &Path) -> Option<Lock> {
+        let stale = std::fs::metadata(path)
+            .and_then(|m| m.modified())
+            .ok()
+            .and_then(|t| t.elapsed().ok())
+            .is_some_and(|age| age.as_secs() > 4 * 3600);
+        if stale {
+            let _ = std::fs::remove_file(path);
+        }
+        std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(path)
+            .ok()
+            .map(|_| Lock(path.to_path_buf()))
+    }
+}
+
+impl Drop for Lock {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_file(&self.0);
+    }
+}

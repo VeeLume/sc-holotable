@@ -8,8 +8,8 @@ instead of each reimplementing their own.
 
 ## Status
 
-Released on two independent tag axes — `sc-holotable/v*` for the library API
-and `datacore/*` for game-patch binding snapshots. The workspace is grown
+Released as `sc-holotable/v*` tags; `datacore/*` tags mark which commit's
+generated bindings came from which game build. The workspace is grown
 deliberately slowly — incorrect assumptions about Star Citizen's data formats
 are easy to make and expensive to remove once consumers depend on them — so each
 domain is verified against live DCB data before it is modelled.
