@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.17.0] - 2026-10-11
+
 ### Added
 
 - **`sc-missions`: NPC spawn counts.** `NpcSlot::spawn_counts:
