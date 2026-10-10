@@ -1492,101 +1492,6 @@ impl<'a> Extract<'a> for BindingsOperations_DialogueEvent {
     }
 }
 
-/// DCB type: `BuildingBlocks_BooleanIntegerPair`
-pub struct BuildingBlocks_BooleanIntegerPair {
-    /// `first` (Boolean)
-    pub first: bool,
-    /// `firstOverride` (WeakPointer)
-    pub first_override: Option<BuildingBlocks_BindingsBooleanBasePtr>,
-    /// `second` (Int64)
-    pub second: i64,
-}
-
-impl Pooled for BuildingBlocks_BooleanIntegerPair {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.building_blocks_boolean_integer_pair
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.building_blocks_boolean_integer_pair
-    }
-}
-
-impl<'a> Extract<'a> for BuildingBlocks_BooleanIntegerPair {
-    const TYPE_NAME: &'static str = "BuildingBlocks_BooleanIntegerPair";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            first: inst.get_bool("first").unwrap_or_default(),
-            first_override: match inst.get("firstOverride") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_BindingsBooleanBasePtr::from_ref(b, r))
-                }
-                _ => None,
-            },
-            second: inst.get_i64("second").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `BuildingBlocks_IntegerFromBooleanConditionDef`
-/// Inherits from: `BuildingBlocks_BindingsIntegerBase`
-pub struct BuildingBlocks_IntegerFromBooleanConditionDef {
-    /// `inputPairs` (Class (array))
-    pub input_pairs: Vec<Handle<BuildingBlocks_BooleanIntegerPair>>,
-    /// `defaultValue` (Int64)
-    pub default_value: i64,
-    /// `defaultOverride` (WeakPointer)
-    pub default_override: Option<BuildingBlocks_BindingsIntegerBasePtr>,
-}
-
-impl Pooled for BuildingBlocks_IntegerFromBooleanConditionDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .dormant
-            .building_blocks_integer_from_boolean_condition_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .dormant
-            .building_blocks_integer_from_boolean_condition_def
-    }
-}
-
-impl<'a> Extract<'a> for BuildingBlocks_IntegerFromBooleanConditionDef {
-    const TYPE_NAME: &'static str = "BuildingBlocks_IntegerFromBooleanConditionDef";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            input_pairs: inst
-                .get_array("inputPairs")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_BooleanIntegerPair>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<BuildingBlocks_BooleanIntegerPair>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
-                        _ => None,
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
-            default_value: inst.get_i64("defaultValue").unwrap_or_default(),
-            default_override: match inst.get("defaultOverride") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_BindingsIntegerBasePtr::from_ref(b, r))
-                }
-                _ => None,
-            },
-        }
-    }
-}
-
 /// DCB type: `BuildingBlocks_IntegerFromBooleanConditionSumDef`
 /// Inherits from: `BuildingBlocks_BindingsIntegerBase`
 pub struct BuildingBlocks_IntegerFromBooleanConditionSumDef {
@@ -8383,6 +8288,39 @@ impl<'a> Extract<'a> for SArchetypeAssetEntityDef {
     }
 }
 
+/// DCB type: `SArchetypeAssetItemPortNamePair`
+pub struct SArchetypeAssetItemPortNamePair {
+    /// `itemportName` (String)
+    pub itemport_name: String,
+    /// `parentItemportName` (String)
+    pub parent_itemport_name: String,
+}
+
+impl Pooled for SArchetypeAssetItemPortNamePair {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.sarchetype_asset_item_port_name_pair
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.sarchetype_asset_item_port_name_pair
+    }
+}
+
+impl<'a> Extract<'a> for SArchetypeAssetItemPortNamePair {
+    const TYPE_NAME: &'static str = "SArchetypeAssetItemPortNamePair";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            itemport_name: inst
+                .get_str("itemportName")
+                .map(String::from)
+                .unwrap_or_default(),
+            parent_itemport_name: inst
+                .get_str("parentItemportName")
+                .map(String::from)
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `SArchetypeAssetTagDef`
 /// Inherits from: `SArchetypeEntityAssetDefBase`
 pub struct SArchetypeAssetTagDef {
@@ -8396,6 +8334,8 @@ pub struct SArchetypeAssetTagDef {
     pub required_tags: Option<Handle<TagList>>,
     /// `forbiddenTags` (Class)
     pub forbidden_tags: Option<Handle<TagList>>,
+    /// `additionalItemPorts` (Class (array))
+    pub additional_item_ports: Vec<Handle<SArchetypeAssetItemPortNamePair>>,
 }
 
 impl Pooled for SArchetypeAssetTagDef {
@@ -8437,6 +8377,27 @@ impl<'a> Extract<'a> for SArchetypeAssetTagDef {
                 )),
                 _ => None,
             },
+            additional_item_ports: inst
+                .get_array("additionalItemPorts")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SArchetypeAssetItemPortNamePair>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SArchetypeAssetItemPortNamePair>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }
@@ -14256,46 +14217,6 @@ impl<'a> Extract<'a> for RadarQuantumOverrideParams {
     }
 }
 
-/// DCB type: `SAttachmentImplementationBone`
-/// Inherits from: `SAttachmentImplementationBase`
-pub struct SAttachmentImplementationBone {
-    /// `offset` (Class)
-    pub offset: Option<Handle<QuatT>>,
-    /// `scale` (Single)
-    pub scale: f32,
-    /// `jointName` (String)
-    pub joint_name: String,
-}
-
-impl Pooled for SAttachmentImplementationBone {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.sattachment_implementation_bone
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.sattachment_implementation_bone
-    }
-}
-
-impl<'a> Extract<'a> for SAttachmentImplementationBone {
-    const TYPE_NAME: &'static str = "SAttachmentImplementationBone";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            offset: match inst.get("offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<QuatT>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            scale: inst.get_f32("scale").unwrap_or_default(),
-            joint_name: inst
-                .get_str("jointName")
-                .map(String::from)
-                .unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `QuantumGridComponentParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct QuantumGridComponentParams {}
@@ -18076,27 +17997,29 @@ impl<'a> Extract<'a> for EntityComponentEffects_Test_ColorLink {
     }
 }
 
-/// DCB type: `SendLandingGearObstructedEvent`
+/// DCB type: `SendLandingGearRequestStateEvent`
 /// Inherits from: `EventDispatcher`
-pub struct SendLandingGearObstructedEvent {
-    /// `obstructed` (Boolean)
-    pub obstructed: bool,
+pub struct SendLandingGearRequestStateEvent {
+    /// `requestState` (EnumChoice)
+    pub request_state: LandingGearControl,
 }
 
-impl Pooled for SendLandingGearObstructedEvent {
+impl Pooled for SendLandingGearRequestStateEvent {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.send_landing_gear_obstructed_event
+        &pools.dormant.send_landing_gear_request_state_event
     }
     fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.send_landing_gear_obstructed_event
+        &mut pools.dormant.send_landing_gear_request_state_event
     }
 }
 
-impl<'a> Extract<'a> for SendLandingGearObstructedEvent {
-    const TYPE_NAME: &'static str = "SendLandingGearObstructedEvent";
+impl<'a> Extract<'a> for SendLandingGearRequestStateEvent {
+    const TYPE_NAME: &'static str = "SendLandingGearRequestStateEvent";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            obstructed: inst.get_bool("obstructed").unwrap_or_default(),
+            request_state: LandingGearControl::from_dcb_str(
+                inst.get_str("requestState").unwrap_or(""),
+            ),
         }
     }
 }
@@ -32178,31 +32101,6 @@ impl<'a> Extract<'a> for SSubstractHealthValue {
     }
 }
 
-/// DCB type: `SAddHealthRatio`
-/// Inherits from: `SModHealth`
-pub struct SAddHealthRatio {
-    /// `healthRatio` (Single)
-    pub health_ratio: f32,
-}
-
-impl Pooled for SAddHealthRatio {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.sadd_health_ratio
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.sadd_health_ratio
-    }
-}
-
-impl<'a> Extract<'a> for SAddHealthRatio {
-    const TYPE_NAME: &'static str = "SAddHealthRatio";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            health_ratio: inst.get_f32("healthRatio").unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `InvulnerabilityState`
 /// Inherits from: `VulnerabilityState`
 pub struct InvulnerabilityState {
@@ -32306,36 +32204,6 @@ impl<'a> Extract<'a> for SActivateItemExpirationGameplayTrigger {
     const TYPE_NAME: &'static str = "SActivateItemExpirationGameplayTrigger";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
-    }
-}
-
-/// DCB type: `TeleportGameplayTrigger`
-/// Inherits from: `SBaseInteractionGameplayTrigger`
-pub struct TeleportGameplayTrigger {
-    /// `targetOption` (StrongPointer)
-    pub target_option: Option<GameplayTrigger_TargetType_BasePtr>,
-}
-
-impl Pooled for TeleportGameplayTrigger {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.teleport_gameplay_trigger
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.teleport_gameplay_trigger
-    }
-}
-
-impl<'a> Extract<'a> for TeleportGameplayTrigger {
-    const TYPE_NAME: &'static str = "TeleportGameplayTrigger";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            target_option: match inst.get("targetOption") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(GameplayTrigger_TargetType_BasePtr::from_ref(b, r))
-                }
-                _ => None,
-            },
-        }
     }
 }
 
@@ -34192,6 +34060,102 @@ impl<'a> Extract<'a> for WeaponAIAimingMethodPreferredHeightArc {
             min_angle_degrees: inst.get_f32("minAngleDegrees").unwrap_or_default(),
             max_angle_degrees: inst.get_f32("maxAngleDegrees").unwrap_or_default(),
             search_depth: inst.get_i32("searchDepth").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `SWeaponAISingleParams`
+/// Inherits from: `SWeaponActionAIParams`
+pub struct SWeaponAISingleParams {
+    /// `name` (String)
+    pub name: String,
+    /// `aiShootingMode` (EnumChoice)
+    pub ai_shooting_mode: EAIWeaponShootingMode,
+    /// `triggerPullDuration` (Class)
+    pub trigger_pull_duration: Option<Handle<Range>>,
+    /// `timeBetweenTriggerPulls` (Class)
+    pub time_between_trigger_pulls: Option<Handle<Range>>,
+}
+
+impl Pooled for SWeaponAISingleParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.sweapon_aisingle_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.sweapon_aisingle_params
+    }
+}
+
+impl<'a> Extract<'a> for SWeaponAISingleParams {
+    const TYPE_NAME: &'static str = "SWeaponAISingleParams";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            name: inst.get_str("name").map(String::from).unwrap_or_default(),
+            ai_shooting_mode: EAIWeaponShootingMode::from_dcb_str(
+                inst.get_str("aiShootingMode").unwrap_or(""),
+            ),
+            trigger_pull_duration: match inst.get("triggerPullDuration") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+            time_between_trigger_pulls: match inst.get("timeBetweenTriggerPulls") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `SWeaponAIBurstParams`
+/// Inherits from: `SWeaponActionAIParams`
+pub struct SWeaponAIBurstParams {
+    /// `name` (String)
+    pub name: String,
+    /// `aiShootingMode` (EnumChoice)
+    pub ai_shooting_mode: EAIWeaponShootingMode,
+    /// `triggerPullDuration` (Class)
+    pub trigger_pull_duration: Option<Handle<Range>>,
+    /// `timeBetweenTriggerPulls` (Class)
+    pub time_between_trigger_pulls: Option<Handle<Range>>,
+}
+
+impl Pooled for SWeaponAIBurstParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.sweapon_aiburst_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.sweapon_aiburst_params
+    }
+}
+
+impl<'a> Extract<'a> for SWeaponAIBurstParams {
+    const TYPE_NAME: &'static str = "SWeaponAIBurstParams";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            name: inst.get_str("name").map(String::from).unwrap_or_default(),
+            ai_shooting_mode: EAIWeaponShootingMode::from_dcb_str(
+                inst.get_str("aiShootingMode").unwrap_or(""),
+            ),
+            trigger_pull_duration: match inst.get("triggerPullDuration") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+            time_between_trigger_pulls: match inst.get("timeBetweenTriggerPulls") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
         }
     }
 }

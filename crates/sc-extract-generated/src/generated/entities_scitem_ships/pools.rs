@@ -14,7 +14,6 @@ use super::super::*;
 /// Pool storage for the `entities-scitem-ships` feature.
 #[derive(Default)]
 pub struct EntitiesScitemShipsPools {
-    pub item_modifier_timed_life: Vec<Option<ItemModifierTimedLife>>,
     pub item_mining_booster_params: Vec<Option<ItemMiningBoosterParams>>,
     pub smisfire_functionality_condition: Vec<Option<SMisfireFunctionalityCondition>>,
     pub sifcsmodifier_number: Vec<Option<SIFCSModifierNumber>>,

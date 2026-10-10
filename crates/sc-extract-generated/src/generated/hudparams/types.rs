@@ -117,6 +117,8 @@ impl<'a> Extract<'a> for STargetSelectorColorHighlighting {
 
 /// DCB type: `STargetSelectorHitMarkerParams`
 pub struct STargetSelectorHitMarkerParams {
+    /// `operatorModeWhiteList` (EnumChoice (array))
+    pub operator_mode_white_list: Vec<EOperatorMode>,
     /// `elementLifetime` (Single)
     pub element_lifetime: f32,
     /// `destructionElementLifetime` (Single)
@@ -136,6 +138,13 @@ impl<'a> Extract<'a> for STargetSelectorHitMarkerParams {
     const TYPE_NAME: &'static str = "STargetSelectorHitMarkerParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
+            operator_mode_white_list: inst
+                .get_array("operatorModeWhiteList")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(EOperatorMode::from_dcb_str))
+                        .collect()
+                })
+                .unwrap_or_default(),
             element_lifetime: inst.get_f32("elementLifetime").unwrap_or_default(),
             destruction_element_lifetime: inst
                 .get_f32("destructionElementLifetime")

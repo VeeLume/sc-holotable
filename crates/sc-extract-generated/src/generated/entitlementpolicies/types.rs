@@ -454,12 +454,20 @@ pub struct ItemRecoveryEconomyParams {
     pub vehicle_component_repair_cost_multiplier: f32,
     /// `vehicleRepairMissingItemCostMultiplier` (Single)
     pub vehicle_repair_missing_item_cost_multiplier: f32,
-    /// `cooldownOverrides` (Class (array))
-    pub cooldown_overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
-    /// `deliveryTimeOverrides` (Class (array))
-    pub delivery_time_overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
-    /// `costOverrides` (Class (array))
-    pub cost_overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
+    /// `deliverySecondsPerAUEC` (Single)
+    pub delivery_seconds_per_auec: f32,
+    /// `expeditedDeliverySecondsPerAUEC` (Single)
+    pub expedited_delivery_seconds_per_auec: f32,
+    /// `defaultLoadoutExpeditedDeliveryTimeMultiplier` (Single)
+    pub default_loadout_expedited_delivery_time_multiplier: f32,
+    /// `flatMinimumDeliveryTimerSeconds` (Single)
+    pub flat_minimum_delivery_timer_seconds: f32,
+    /// `maxExpeditedClaimCostMultiplier` (Single)
+    pub max_expedited_claim_cost_multiplier: f32,
+    /// `escalatingClaimsParams` (Class)
+    pub escalating_claims_params: Option<Handle<ItemRecoveryEscalatingClaimsParams>>,
+    /// `overrides` (Class (array))
+    pub overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
 }
 
 impl Pooled for ItemRecoveryEconomyParams {
@@ -496,46 +504,30 @@ impl<'a> Extract<'a> for ItemRecoveryEconomyParams {
             vehicle_repair_missing_item_cost_multiplier: inst
                 .get_f32("vehicleRepairMissingItemCostMultiplier")
                 .unwrap_or_default(),
-            cooldown_overrides: inst
-                .get_array("cooldownOverrides")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
-                        _ => None,
-                    })
-                    .collect()
-                })
+            delivery_seconds_per_auec: inst.get_f32("deliverySecondsPerAUEC").unwrap_or_default(),
+            expedited_delivery_seconds_per_auec: inst
+                .get_f32("expeditedDeliverySecondsPerAUEC")
                 .unwrap_or_default(),
-            delivery_time_overrides: inst
-                .get_array("deliveryTimeOverrides")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
-                        _ => None,
-                    })
-                    .collect()
-                })
+            default_loadout_expedited_delivery_time_multiplier: inst
+                .get_f32("defaultLoadoutExpeditedDeliveryTimeMultiplier")
                 .unwrap_or_default(),
-            cost_overrides: inst
-                .get_array("costOverrides")
+            flat_minimum_delivery_timer_seconds: inst
+                .get_f32("flatMinimumDeliveryTimerSeconds")
+                .unwrap_or_default(),
+            max_expedited_claim_cost_multiplier: inst
+                .get_f32("maxExpeditedClaimCostMultiplier")
+                .unwrap_or_default(),
+            escalating_claims_params: match inst.get("escalatingClaimsParams") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ItemRecoveryEscalatingClaimsParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+            overrides: inst
+                .get_array("overrides")
                 .map(|arr| {
                     arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => {
@@ -559,8 +551,24 @@ impl<'a> Extract<'a> for ItemRecoveryEconomyParams {
 
 /// DCB type: `ItemRecoveryOverrideGroupDef`
 pub struct ItemRecoveryOverrideGroupDef {
-    /// `multiplier` (Single)
-    pub multiplier: f32,
+    /// `claimCooldownMultiplier` (Single)
+    pub claim_cooldown_multiplier: f32,
+    /// `claimCostMultiplier` (Single)
+    pub claim_cost_multiplier: f32,
+    /// `deliveryTimeMultiplier` (Single)
+    pub delivery_time_multiplier: f32,
+    /// `maxExpediteCostMultiplier` (Single)
+    pub max_expedite_cost_multiplier: f32,
+    /// `expeditedDeliveryTimeMultiplier` (Single)
+    pub expedited_delivery_time_multiplier: f32,
+    /// `flatMinimumDeliveryTimerSecondsMultiplier` (Single)
+    pub flat_minimum_delivery_timer_seconds_multiplier: f32,
+    /// `escalationTimerMultiplier` (Single)
+    pub escalation_timer_multiplier: f32,
+    /// `escalatingClaimCostMultiplier` (Single)
+    pub escalating_claim_cost_multiplier: f32,
+    /// `escalatingDeliveryTimerMultiplier` (Single)
+    pub escalating_delivery_timer_multiplier: f32,
     /// `classes` (Reference (array))
     pub classes: Vec<CigGuid>,
 }
@@ -578,7 +586,27 @@ impl<'a> Extract<'a> for ItemRecoveryOverrideGroupDef {
     const TYPE_NAME: &'static str = "ItemRecoveryOverrideGroupDef";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            multiplier: inst.get_f32("multiplier").unwrap_or_default(),
+            claim_cooldown_multiplier: inst.get_f32("claimCooldownMultiplier").unwrap_or_default(),
+            claim_cost_multiplier: inst.get_f32("claimCostMultiplier").unwrap_or_default(),
+            delivery_time_multiplier: inst.get_f32("deliveryTimeMultiplier").unwrap_or_default(),
+            max_expedite_cost_multiplier: inst
+                .get_f32("maxExpediteCostMultiplier")
+                .unwrap_or_default(),
+            expedited_delivery_time_multiplier: inst
+                .get_f32("expeditedDeliveryTimeMultiplier")
+                .unwrap_or_default(),
+            flat_minimum_delivery_timer_seconds_multiplier: inst
+                .get_f32("flatMinimumDeliveryTimerSecondsMultiplier")
+                .unwrap_or_default(),
+            escalation_timer_multiplier: inst
+                .get_f32("escalationTimerMultiplier")
+                .unwrap_or_default(),
+            escalating_claim_cost_multiplier: inst
+                .get_f32("escalatingClaimCostMultiplier")
+                .unwrap_or_default(),
+            escalating_delivery_timer_multiplier: inst
+                .get_f32("escalatingDeliveryTimerMultiplier")
+                .unwrap_or_default(),
             classes: inst
                 .get_array("classes")
                 .map(|arr| {
@@ -591,6 +619,51 @@ impl<'a> Extract<'a> for ItemRecoveryOverrideGroupDef {
                     })
                     .collect()
                 })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ItemRecoveryEscalatingClaimsParams`
+pub struct ItemRecoveryEscalatingClaimsParams {
+    /// `escalatingClaimChainLimit` (Int32)
+    pub escalating_claim_chain_limit: i32,
+    /// `escalationTimerMultiplier` (Single)
+    pub escalation_timer_multiplier: f32,
+    /// `escalatingClaimCostMultiplier` (Single)
+    pub escalating_claim_cost_multiplier: f32,
+    /// `escalatingDeliveryTimerMultiplier` (Single)
+    pub escalating_delivery_timer_multiplier: f32,
+}
+
+impl Pooled for ItemRecoveryEscalatingClaimsParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entitlementpolicies
+            .item_recovery_escalating_claims_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entitlementpolicies
+            .item_recovery_escalating_claims_params
+    }
+}
+
+impl<'a> Extract<'a> for ItemRecoveryEscalatingClaimsParams {
+    const TYPE_NAME: &'static str = "ItemRecoveryEscalatingClaimsParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            escalating_claim_chain_limit: inst
+                .get_i32("escalatingClaimChainLimit")
+                .unwrap_or_default(),
+            escalation_timer_multiplier: inst
+                .get_f32("escalationTimerMultiplier")
+                .unwrap_or_default(),
+            escalating_claim_cost_multiplier: inst
+                .get_f32("escalatingClaimCostMultiplier")
+                .unwrap_or_default(),
+            escalating_delivery_timer_multiplier: inst
+                .get_f32("escalatingDeliveryTimerMultiplier")
                 .unwrap_or_default(),
         }
     }

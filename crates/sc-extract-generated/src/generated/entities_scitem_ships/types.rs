@@ -18,31 +18,6 @@ use svarog_datacore::{Instance, Value};
 
 use super::super::*;
 
-/// DCB type: `ItemModifierTimedLife`
-/// Inherits from: `ItemModifierLifetime`
-pub struct ItemModifierTimedLife {
-    /// `lifetime` (Single)
-    pub lifetime: f32,
-}
-
-impl Pooled for ItemModifierTimedLife {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.item_modifier_timed_life
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.item_modifier_timed_life
-    }
-}
-
-impl<'a> Extract<'a> for ItemModifierTimedLife {
-    const TYPE_NAME: &'static str = "ItemModifierTimedLife";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            lifetime: inst.get_f32("lifetime").unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `ItemMiningBoosterParams`
 /// Inherits from: `LifetimeControlledItemModifierParams`
 pub struct ItemMiningBoosterParams {

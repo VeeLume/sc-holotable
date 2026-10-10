@@ -33,8 +33,10 @@ pub struct InstanceBrokerParams {
     pub travelling_to_instance_without_eligibility_title_loc_string: LocaleKey,
     /// `travellingToInstanceWithoutEligibilityBodyLocString` (Locale)
     pub travelling_to_instance_without_eligibility_body_loc_string: LocaleKey,
-    /// `playerEjectTimerLength` (Single)
-    pub player_eject_timer_length: f32,
+    /// `failedToEnsureInstanceTitleLocString` (Locale)
+    pub failed_to_ensure_instance_title_loc_string: LocaleKey,
+    /// `failedToEnsureInstanceBodyLocString` (Locale)
+    pub failed_to_ensure_instance_body_loc_string: LocaleKey,
 }
 
 impl Pooled for InstanceBrokerParams {
@@ -74,7 +76,14 @@ impl<'a> Extract<'a> for InstanceBrokerParams {
                 .get_str("travellingToInstanceWithoutEligibilityBodyLocString")
                 .map(LocaleKey::from)
                 .unwrap_or_default(),
-            player_eject_timer_length: inst.get_f32("playerEjectTimerLength").unwrap_or_default(),
+            failed_to_ensure_instance_title_loc_string: inst
+                .get_str("failedToEnsureInstanceTitleLocString")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            failed_to_ensure_instance_body_loc_string: inst
+                .get_str("failedToEnsureInstanceBodyLocString")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }

@@ -20,6 +20,7 @@ pub struct ActorActorsPools {
     pub sactor_death_pose_variant: Vec<Option<SActorDeathPoseVariant>>,
     pub sactor_static_collider_death_behaviour: Vec<Option<SActorStaticColliderDeathBehaviour>>,
     pub sdummy_player_component_params: Vec<Option<SDummyPlayerComponentParams>>,
+    pub sadd_health_ratio: Vec<Option<SAddHealthRatio>>,
     pub terrain_trash_cleanup_gameplay_trigger: Vec<Option<TerrainTrashCleanupGameplayTrigger>>,
     pub underground_creature_helpers_component: Vec<Option<UndergroundCreatureHelpersComponent>>,
 }

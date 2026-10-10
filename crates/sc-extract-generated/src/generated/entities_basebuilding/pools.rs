@@ -22,6 +22,5 @@ pub struct EntitiesBasebuildingPools {
     pub crafter_component_params: Vec<Option<CrafterComponentParams>>,
     pub crafter_paged_uilist_params: Vec<Option<CrafterPagedUIListParams>>,
     pub crafter_uiprovider_component_params: Vec<Option<CrafterUIProviderComponentParams>>,
-    pub entity_component_heat_connection: Vec<Option<EntityComponentHeatConnection>>,
     pub crafter_state_modifier: Vec<Option<CrafterStateModifier>>,
 }

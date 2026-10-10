@@ -1950,6 +1950,43 @@ impl<'a> Extract<'a> for BlueprintRewards {
     }
 }
 
+/// DCB type: `ContractResult_VehicleRental`
+/// Inherits from: `ContractResultBase`
+pub struct ContractResult_VehicleRental {
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
+    /// `vehicleEntityClass` (Reference)
+    pub vehicle_entity_class: Option<CigGuid>,
+    /// `durationMinutes` (Int32)
+    pub duration_minutes: i32,
+}
+
+impl Pooled for ContractResult_VehicleRental {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.contract_result_vehicle_rental
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.contract_result_vehicle_rental
+    }
+}
+
+impl<'a> Extract<'a> for ContractResult_VehicleRental {
+    const TYPE_NAME: &'static str = "ContractResult_VehicleRental";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
+            vehicle_entity_class: inst
+                .get("vehicleEntityClass")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            duration_minutes: inst.get_i32("durationMinutes").unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `ContractClass_PVPBounty`
 /// Inherits from: `ContractClassBase`
 pub struct ContractClass_PVPBounty {}
@@ -3048,32 +3085,38 @@ impl<'a> Extract<'a> for ObjectiveHandler_NearLocation {
     }
 }
 
-/// DCB type: `ObjectiveHandler_MeetAndTalk`
+/// DCB type: `ObjectiveHandler_TransitToInstance`
 /// Inherits from: `ObjectiveHandlerBase`
-pub struct ObjectiveHandler_MeetAndTalk {
+pub struct ObjectiveHandler_TransitToInstance {
     /// `location` (WeakPointer)
     pub location: Option<ObjectivePropertyBasePtr>,
-    /// `ocTagsToSearch` (Reference (array))
-    pub oc_tags_to_search: Vec<CigGuid>,
-    /// `travelRadiusKM` (Single)
-    pub travel_radius_km: f32,
+    /// `ocTagsToSearchInstanceEnter` (Reference (array))
+    pub oc_tags_to_search_instance_enter: Vec<CigGuid>,
+    /// `completePhaseOnPlayerEnterInstance` (Boolean)
+    pub complete_phase_on_player_enter_instance: bool,
+    /// `instanceTagIdentifier` (Reference)
+    pub instance_tag_identifier: Option<CigGuid>,
+    /// `instanceEnterTravelRadiusKM` (Single)
+    pub instance_enter_travel_radius_km: f32,
+    /// `transitToInstanceObjectiveMarker` (Locale)
+    pub transit_to_instance_objective_marker: LocaleKey,
+    /// `instanceHUDObjectiveText` (Locale)
+    pub instance_hudobjective_text: LocaleKey,
     /// `travelObjectiveInfo` (Class)
     pub travel_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
-    /// `meetAndTalkObjectiveMarkerLabel` (Locale)
-    pub meet_and_talk_objective_marker_label: LocaleKey,
 }
 
-impl Pooled for ObjectiveHandler_MeetAndTalk {
+impl Pooled for ObjectiveHandler_TransitToInstance {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.objective_handler_meet_and_talk
+        &pools.contracts.objective_handler_transit_to_instance
     }
     fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.objective_handler_meet_and_talk
+        &mut pools.contracts.objective_handler_transit_to_instance
     }
 }
 
-impl<'a> Extract<'a> for ObjectiveHandler_MeetAndTalk {
-    const TYPE_NAME: &'static str = "ObjectiveHandler_MeetAndTalk";
+impl<'a> Extract<'a> for ObjectiveHandler_TransitToInstance {
+    const TYPE_NAME: &'static str = "ObjectiveHandler_TransitToInstance";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             location: match inst.get("location") {
@@ -3082,8 +3125,8 @@ impl<'a> Extract<'a> for ObjectiveHandler_MeetAndTalk {
                 }
                 _ => None,
             },
-            oc_tags_to_search: inst
-                .get_array("ocTagsToSearch")
+            oc_tags_to_search_instance_enter: inst
+                .get_array("ocTagsToSearchInstanceEnter")
                 .map(|arr| {
                     arr.filter_map(|v| {
                         if let Value::Reference(Some(r)) = v {
@@ -3095,7 +3138,24 @@ impl<'a> Extract<'a> for ObjectiveHandler_MeetAndTalk {
                     .collect()
                 })
                 .unwrap_or_default(),
-            travel_radius_km: inst.get_f32("travelRadiusKM").unwrap_or_default(),
+            complete_phase_on_player_enter_instance: inst
+                .get_bool("completePhaseOnPlayerEnterInstance")
+                .unwrap_or_default(),
+            instance_tag_identifier: inst
+                .get("instanceTagIdentifier")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            instance_enter_travel_radius_km: inst
+                .get_f32("instanceEnterTravelRadiusKM")
+                .unwrap_or_default(),
+            transit_to_instance_objective_marker: inst
+                .get_str("transitToInstanceObjectiveMarker")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            instance_hudobjective_text: inst
+                .get_str("instanceHUDObjectiveText")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             travel_objective_info: match inst.get("travelObjectiveInfo") {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<ObjectiveDisplayInfo>(
@@ -3105,10 +3165,6 @@ impl<'a> Extract<'a> for ObjectiveHandler_MeetAndTalk {
                 }
                 _ => None,
             },
-            meet_and_talk_objective_marker_label: inst
-                .get_str("meetAndTalkObjectiveMarkerLabel")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
         }
     }
 }
@@ -3206,6 +3262,43 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_PVPBountyDef {
     }
 }
 
+/// DCB type: `MissionModifier_TemporaryBlueprint`
+/// Inherits from: `BaseMissionModifier`
+pub struct MissionModifier_TemporaryBlueprint {
+    /// `modifierName` (String)
+    pub modifier_name: String,
+    /// `enabled` (Boolean)
+    pub enabled: bool,
+    /// `blueprintPool` (Reference)
+    pub blueprint_pool: Option<CigGuid>,
+}
+
+impl Pooled for MissionModifier_TemporaryBlueprint {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.mission_modifier_temporary_blueprint
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.mission_modifier_temporary_blueprint
+    }
+}
+
+impl<'a> Extract<'a> for MissionModifier_TemporaryBlueprint {
+    const TYPE_NAME: &'static str = "MissionModifier_TemporaryBlueprint";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            modifier_name: inst
+                .get_str("modifierName")
+                .map(String::from)
+                .unwrap_or_default(),
+            enabled: inst.get_bool("enabled").unwrap_or_default(),
+            blueprint_pool: inst
+                .get("blueprintPool")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
 /// DCB type: `SPVPBountyContractGenerators`
 pub struct SPVPBountyContractGenerators {
     /// `locationAvailable` (Reference)
@@ -3243,10 +3336,14 @@ impl<'a> Extract<'a> for SPVPBountyContractGenerators {
 pub struct OneTimeComms {
     /// `locationAvailable` (Reference)
     pub location_available: Option<CigGuid>,
+    /// `locationExcluded` (Reference (array))
+    pub location_excluded: Vec<CigGuid>,
     /// `prerequisitesTags` (Reference (array))
     pub prerequisites_tags: Vec<CigGuid>,
     /// `tag` (Reference)
     pub tag: Option<CigGuid>,
+    /// `delayBeforePlaying` (Single)
+    pub delay_before_playing: f32,
     /// `comms` (Reference (array))
     pub comms: Vec<CigGuid>,
 }
@@ -3268,6 +3365,19 @@ impl<'a> Extract<'a> for OneTimeComms {
                 .get("locationAvailable")
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
+            location_excluded: inst
+                .get_array("locationExcluded")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             prerequisites_tags: inst
                 .get_array("prerequisitesTags")
                 .map(|arr| {
@@ -3285,6 +3395,7 @@ impl<'a> Extract<'a> for OneTimeComms {
                 .get("tag")
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
+            delay_before_playing: inst.get_f32("delayBeforePlaying").unwrap_or_default(),
             comms: inst
                 .get_array("comms")
                 .map(|arr| {
@@ -3312,6 +3423,8 @@ pub struct GlobalMissionSettings {
     pub pvpbounty_contract_generators: Vec<Handle<SPVPBountyContractGenerators>>,
     /// `oneTimeComms` (Class (array))
     pub one_time_comms: Vec<Handle<OneTimeComms>>,
+    /// `brokeredInstanceTagIdentifier` (Reference)
+    pub brokered_instance_tag_identifier: Option<CigGuid>,
 }
 
 impl Pooled for GlobalMissionSettings {
@@ -3381,6 +3494,10 @@ impl<'a> Extract<'a> for GlobalMissionSettings {
                     .collect()
                 })
                 .unwrap_or_default(),
+            brokered_instance_tag_identifier: inst
+                .get("brokeredInstanceTagIdentifier")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }

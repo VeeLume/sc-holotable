@@ -201,7 +201,10 @@ impl<'a> Extract<'a> for SOrbitComponentParams {
 
 /// DCB type: `BrokeredInstanceParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct BrokeredInstanceParams {}
+pub struct BrokeredInstanceParams {
+    /// `playerEjectTimerLength` (Single)
+    pub player_eject_timer_length: f32,
+}
 
 impl Pooled for BrokeredInstanceParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -214,8 +217,10 @@ impl Pooled for BrokeredInstanceParams {
 
 impl<'a> Extract<'a> for BrokeredInstanceParams {
     const TYPE_NAME: &'static str = "BrokeredInstanceParams";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            player_eject_timer_length: inst.get_f32("playerEjectTimerLength").unwrap_or_default(),
+        }
     }
 }
 

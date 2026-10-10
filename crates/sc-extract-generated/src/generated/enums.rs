@@ -15174,6 +15174,50 @@ pub enum EAwardId {
     R_PU_CA_COLLECTION_3,
     /// DCB value: `R_PU_CA_COLLECTION_4`
     R_PU_CA_COLLECTION_4,
+    /// DCB value: `ORS_Light_Armor`
+    ORS_Light_Armor,
+    /// DCB value: `ORS_Medium_Armor`
+    ORS_Medium_Armor,
+    /// DCB value: `ORS_Heavy_Armor`
+    ORS_Heavy_Armor,
+    /// DCB value: `ORS_Pistol`
+    ORS_Pistol,
+    /// DCB value: `ORS_SMG`
+    ORS_SMG,
+    /// DCB value: `ORS_Rifle`
+    ORS_Rifle,
+    /// DCB value: `R_PU_IASI_OP_1`
+    R_PU_IASI_OP_1,
+    /// DCB value: `R_PU_IASI_TRANSPORT_1`
+    R_PU_IASI_TRANSPORT_1,
+    /// DCB value: `R_PU_IASI_DEFENSE_1`
+    R_PU_IASI_DEFENSE_1,
+    /// DCB value: `R_PU_IASI_COLLECTION_1`
+    R_PU_IASI_COLLECTION_1,
+    /// DCB value: `R_PU_IASI_OP_2`
+    R_PU_IASI_OP_2,
+    /// DCB value: `R_PU_IASI_TRANSPORT_2`
+    R_PU_IASI_TRANSPORT_2,
+    /// DCB value: `R_PU_IASI_DEFENSE_2`
+    R_PU_IASI_DEFENSE_2,
+    /// DCB value: `R_PU_IASI_COLLECTION_2`
+    R_PU_IASI_COLLECTION_2,
+    /// DCB value: `R_PU_IASI_OP_3`
+    R_PU_IASI_OP_3,
+    /// DCB value: `R_PU_IASI_TRANSPORT_3`
+    R_PU_IASI_TRANSPORT_3,
+    /// DCB value: `R_PU_IASI_DEFENSE_3`
+    R_PU_IASI_DEFENSE_3,
+    /// DCB value: `R_PU_IASI_COLLECTION_3`
+    R_PU_IASI_COLLECTION_3,
+    /// DCB value: `R_PU_IASI_OP_4`
+    R_PU_IASI_OP_4,
+    /// DCB value: `R_PU_IASI_TRANSPORT_4`
+    R_PU_IASI_TRANSPORT_4,
+    /// DCB value: `R_PU_IASI_DEFENSE_4`
+    R_PU_IASI_DEFENSE_4,
+    /// DCB value: `R_PU_IASI_COLLECTION_4`
+    R_PU_IASI_COLLECTION_4,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
 }
@@ -15267,6 +15311,28 @@ impl EAwardId {
             "R_PU_CA_COLLECTION_2" => Self::R_PU_CA_COLLECTION_2,
             "R_PU_CA_COLLECTION_3" => Self::R_PU_CA_COLLECTION_3,
             "R_PU_CA_COLLECTION_4" => Self::R_PU_CA_COLLECTION_4,
+            "ORS_Light_Armor" => Self::ORS_Light_Armor,
+            "ORS_Medium_Armor" => Self::ORS_Medium_Armor,
+            "ORS_Heavy_Armor" => Self::ORS_Heavy_Armor,
+            "ORS_Pistol" => Self::ORS_Pistol,
+            "ORS_SMG" => Self::ORS_SMG,
+            "ORS_Rifle" => Self::ORS_Rifle,
+            "R_PU_IASI_OP_1" => Self::R_PU_IASI_OP_1,
+            "R_PU_IASI_TRANSPORT_1" => Self::R_PU_IASI_TRANSPORT_1,
+            "R_PU_IASI_DEFENSE_1" => Self::R_PU_IASI_DEFENSE_1,
+            "R_PU_IASI_COLLECTION_1" => Self::R_PU_IASI_COLLECTION_1,
+            "R_PU_IASI_OP_2" => Self::R_PU_IASI_OP_2,
+            "R_PU_IASI_TRANSPORT_2" => Self::R_PU_IASI_TRANSPORT_2,
+            "R_PU_IASI_DEFENSE_2" => Self::R_PU_IASI_DEFENSE_2,
+            "R_PU_IASI_COLLECTION_2" => Self::R_PU_IASI_COLLECTION_2,
+            "R_PU_IASI_OP_3" => Self::R_PU_IASI_OP_3,
+            "R_PU_IASI_TRANSPORT_3" => Self::R_PU_IASI_TRANSPORT_3,
+            "R_PU_IASI_DEFENSE_3" => Self::R_PU_IASI_DEFENSE_3,
+            "R_PU_IASI_COLLECTION_3" => Self::R_PU_IASI_COLLECTION_3,
+            "R_PU_IASI_OP_4" => Self::R_PU_IASI_OP_4,
+            "R_PU_IASI_TRANSPORT_4" => Self::R_PU_IASI_TRANSPORT_4,
+            "R_PU_IASI_DEFENSE_4" => Self::R_PU_IASI_DEFENSE_4,
+            "R_PU_IASI_COLLECTION_4" => Self::R_PU_IASI_COLLECTION_4,
             _ => Self::Unrecognized(s.to_string()),
         }
     }
@@ -15356,6 +15422,28 @@ impl EAwardId {
             Self::R_PU_CA_COLLECTION_2 => "R_PU_CA_COLLECTION_2",
             Self::R_PU_CA_COLLECTION_3 => "R_PU_CA_COLLECTION_3",
             Self::R_PU_CA_COLLECTION_4 => "R_PU_CA_COLLECTION_4",
+            Self::ORS_Light_Armor => "ORS_Light_Armor",
+            Self::ORS_Medium_Armor => "ORS_Medium_Armor",
+            Self::ORS_Heavy_Armor => "ORS_Heavy_Armor",
+            Self::ORS_Pistol => "ORS_Pistol",
+            Self::ORS_SMG => "ORS_SMG",
+            Self::ORS_Rifle => "ORS_Rifle",
+            Self::R_PU_IASI_OP_1 => "R_PU_IASI_OP_1",
+            Self::R_PU_IASI_TRANSPORT_1 => "R_PU_IASI_TRANSPORT_1",
+            Self::R_PU_IASI_DEFENSE_1 => "R_PU_IASI_DEFENSE_1",
+            Self::R_PU_IASI_COLLECTION_1 => "R_PU_IASI_COLLECTION_1",
+            Self::R_PU_IASI_OP_2 => "R_PU_IASI_OP_2",
+            Self::R_PU_IASI_TRANSPORT_2 => "R_PU_IASI_TRANSPORT_2",
+            Self::R_PU_IASI_DEFENSE_2 => "R_PU_IASI_DEFENSE_2",
+            Self::R_PU_IASI_COLLECTION_2 => "R_PU_IASI_COLLECTION_2",
+            Self::R_PU_IASI_OP_3 => "R_PU_IASI_OP_3",
+            Self::R_PU_IASI_TRANSPORT_3 => "R_PU_IASI_TRANSPORT_3",
+            Self::R_PU_IASI_DEFENSE_3 => "R_PU_IASI_DEFENSE_3",
+            Self::R_PU_IASI_COLLECTION_3 => "R_PU_IASI_COLLECTION_3",
+            Self::R_PU_IASI_OP_4 => "R_PU_IASI_OP_4",
+            Self::R_PU_IASI_TRANSPORT_4 => "R_PU_IASI_TRANSPORT_4",
+            Self::R_PU_IASI_DEFENSE_4 => "R_PU_IASI_DEFENSE_4",
+            Self::R_PU_IASI_COLLECTION_4 => "R_PU_IASI_COLLECTION_4",
             Self::Unrecognized(s) => s,
         }
     }
@@ -19324,6 +19412,50 @@ impl EFortitudeImprovementType {
             Self::Health => "Health",
             Self::InjuryChance => "InjuryChance",
             Self::StunDuration => "StunDuration",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `EFreightElevatorCategoryType`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum EFreightElevatorCategoryType {
+    /// DCB value: `Default`
+    Default,
+    /// DCB value: `LocationInventory`
+    LocationInventory,
+    /// DCB value: `Deliveries`
+    Deliveries,
+    /// DCB value: `Entitlements`
+    Entitlements,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl EFreightElevatorCategoryType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "LocationInventory" => Self::LocationInventory,
+            "Deliveries" => Self::Deliveries,
+            "Entitlements" => Self::Entitlements,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::LocationInventory => "LocationInventory",
+            Self::Deliveries => "Deliveries",
+            Self::Entitlements => "Entitlements",
             Self::Unrecognized(s) => s,
         }
     }
@@ -40089,6 +40221,46 @@ impl LandingExitStance {
     }
 }
 
+/// DCB enum: `LandingGearControl`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum LandingGearControl {
+    /// DCB value: `Deploy`
+    Deploy,
+    /// DCB value: `Retract`
+    Retract,
+    /// DCB value: `Toggle`
+    Toggle,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl LandingGearControl {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Deploy" => Self::Deploy,
+            "Retract" => Self::Retract,
+            "Toggle" => Self::Toggle,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Deploy => "Deploy",
+            Self::Retract => "Retract",
+            Self::Toggle => "Toggle",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
 /// DCB enum: `LandingStrength`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LandingStrength {
@@ -45948,6 +46120,8 @@ pub enum TransportDestinationOrderingMethod {
     Height,
     /// DCB value: `Priority`
     Priority,
+    /// DCB value: `PriorityDescending`
+    PriorityDescending,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
 }
@@ -45962,6 +46136,7 @@ impl TransportDestinationOrderingMethod {
         match s {
             "Height" => Self::Height,
             "Priority" => Self::Priority,
+            "PriorityDescending" => Self::PriorityDescending,
             _ => Self::Unrecognized(s.to_string()),
         }
     }
@@ -45972,6 +46147,7 @@ impl TransportDestinationOrderingMethod {
         match self {
             Self::Height => "Height",
             Self::Priority => "Priority",
+            Self::PriorityDescending => "PriorityDescending",
             Self::Unrecognized(s) => s,
         }
     }

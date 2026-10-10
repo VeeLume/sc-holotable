@@ -589,6 +589,31 @@ impl<'a> Extract<'a> for SDummyPlayerComponentParams {
     }
 }
 
+/// DCB type: `SAddHealthRatio`
+/// Inherits from: `SModHealth`
+pub struct SAddHealthRatio {
+    /// `healthRatio` (Single)
+    pub health_ratio: f32,
+}
+
+impl Pooled for SAddHealthRatio {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.actor_actors.sadd_health_ratio
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.actor_actors.sadd_health_ratio
+    }
+}
+
+impl<'a> Extract<'a> for SAddHealthRatio {
+    const TYPE_NAME: &'static str = "SAddHealthRatio";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            health_ratio: inst.get_f32("healthRatio").unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `TerrainTrashCleanupGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
 pub struct TerrainTrashCleanupGameplayTrigger {

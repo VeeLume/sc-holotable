@@ -68,9 +68,6 @@ pub struct DormantPools {
     pub building_blocks_bindings_boolean_from_string_switch:
         Vec<Option<BuildingBlocks_BindingsBooleanFromStringSwitch>>,
     pub bindings_operations_dialogue_event: Vec<Option<BindingsOperations_DialogueEvent>>,
-    pub building_blocks_boolean_integer_pair: Vec<Option<BuildingBlocks_BooleanIntegerPair>>,
-    pub building_blocks_integer_from_boolean_condition_def:
-        Vec<Option<BuildingBlocks_IntegerFromBooleanConditionDef>>,
     pub building_blocks_integer_from_boolean_condition_sum_def:
         Vec<Option<BuildingBlocks_IntegerFromBooleanConditionSumDef>>,
     pub building_blocks_bindings_number_range_remap:
@@ -155,6 +152,7 @@ pub struct DormantPools {
     pub scharacter_customizer_feature_preset: Vec<Option<SCharacterCustomizerFeaturePreset>>,
     pub sarchetype_entity_asset_def_base: Vec<Option<SArchetypeEntityAssetDefBase>>,
     pub sarchetype_asset_entity_def: Vec<Option<SArchetypeAssetEntityDef>>,
+    pub sarchetype_asset_item_port_name_pair: Vec<Option<SArchetypeAssetItemPortNamePair>>,
     pub sarchetype_asset_tag_def: Vec<Option<SArchetypeAssetTagDef>>,
     pub cockpit_rule_int: Vec<Option<CockpitRuleInt>>,
     pub scollectible_component_params: Vec<Option<SCollectibleComponentParams>>,
@@ -333,7 +331,6 @@ pub struct DormantPools {
     pub easerialized_carrier: Vec<Option<EASerializedCarrier>>,
     pub sentity_targeting_properties: Vec<Option<SEntityTargetingProperties>>,
     pub radar_quantum_override_params: Vec<Option<RadarQuantumOverrideParams>>,
-    pub sattachment_implementation_bone: Vec<Option<SAttachmentImplementationBone>>,
     pub quantum_grid_component_params: Vec<Option<QuantumGridComponentParams>>,
     pub sbase_object_container_component_params: Vec<Option<SBaseObjectContainerComponentParams>>,
     pub sstreaming_object_container_component_params:
@@ -419,7 +416,7 @@ pub struct DormantPools {
     pub entity_component_effects_test_link: Vec<Option<EntityComponentEffects_Test_Link>>,
     pub entity_component_effects_test_color_link:
         Vec<Option<EntityComponentEffects_Test_ColorLink>>,
-    pub send_landing_gear_obstructed_event: Vec<Option<SendLandingGearObstructedEvent>>,
+    pub send_landing_gear_request_state_event: Vec<Option<SendLandingGearRequestStateEvent>>,
     pub send_attempt_wireless_link_event: Vec<Option<SendAttemptWirelessLinkEvent>>,
     pub set_power_source_state_event: Vec<Option<SetPowerSourceStateEvent>>,
     pub set_radar_jammer_enabled_event: Vec<Option<SetRadarJammerEnabledEvent>>,
@@ -810,13 +807,11 @@ pub struct DormantPools {
     pub set_sub_geometry_tag_gameplay_trigger: Vec<Option<SetSubGeometryTagGameplayTrigger>>,
     pub sadd_health_value: Vec<Option<SAddHealthValue>>,
     pub ssubstract_health_value: Vec<Option<SSubstractHealthValue>>,
-    pub sadd_health_ratio: Vec<Option<SAddHealthRatio>>,
     pub invulnerability_state: Vec<Option<InvulnerabilityState>>,
     pub sself_hint_activator: Vec<Option<SSelfHintActivator>>,
     pub sinteractor_hint_activator: Vec<Option<SInteractorHintActivator>>,
     pub sactivate_item_expiration_gameplay_trigger:
         Vec<Option<SActivateItemExpirationGameplayTrigger>>,
-    pub teleport_gameplay_trigger: Vec<Option<TeleportGameplayTrigger>>,
     pub gameplay_trigger_physics_set_parameter_kinematic_state:
         Vec<Option<GameplayTrigger_Physics_SetParameter_KinematicState>>,
     pub sset_screen_shake_area_enabled_state_gameplay_trigger:
@@ -868,6 +863,8 @@ pub struct DormantPools {
     pub weapon_aiaiming_method_high_low_arc: Vec<Option<WeaponAIAimingMethodHighLowArc>>,
     pub weapon_aiaiming_method_preferred_height_arc:
         Vec<Option<WeaponAIAimingMethodPreferredHeightArc>>,
+    pub sweapon_aisingle_params: Vec<Option<SWeaponAISingleParams>>,
+    pub sweapon_aiburst_params: Vec<Option<SWeaponAIBurstParams>>,
     pub sthrowable_launcher: Vec<Option<SThrowableLauncher>>,
     pub sweapon_condition_any: Vec<Option<SWeaponConditionAny>>,
     pub sweapon_condition_not: Vec<Option<SWeaponConditionNot>>,

@@ -58,6 +58,230 @@ impl<'a> Extract<'a> for SpawnerPrerequisite_OR {
     }
 }
 
+/// DCB type: `DeliveryLockerComponentParams`
+/// Inherits from: `DataForgeComponentParams`
+pub struct DeliveryLockerComponentParams {
+    /// `placeInteraction` (WeakPointer)
+    pub place_interaction: Option<Handle<SSharedInteractionParams>>,
+    /// `pickupInteraction` (WeakPointer)
+    pub pickup_interaction: Option<Handle<SSharedInteractionParams>>,
+    /// `dropOffInteraction` (WeakPointer)
+    pub drop_off_interaction: Option<Handle<SSharedInteractionParams>>,
+    /// `openHatchInteraction` (WeakPointer)
+    pub open_hatch_interaction: Option<Handle<SSharedInteractionParams>>,
+    /// `closeHatchInteraction` (WeakPointer)
+    pub close_hatch_interaction: Option<Handle<SSharedInteractionParams>>,
+    /// `hatchOpenState` (WeakPointer)
+    pub hatch_open_state: Option<Handle<SInteractionState>>,
+    /// `hatchClosedState` (WeakPointer)
+    pub hatch_closed_state: Option<Handle<SInteractionState>>,
+    /// `homeState` (WeakPointer)
+    pub home_state: Option<Handle<SInteractionState>>,
+    /// `checkingState` (WeakPointer)
+    pub checking_state: Option<Handle<SInteractionState>>,
+    /// `collectPackageState` (WeakPointer)
+    pub collect_package_state: Option<Handle<SInteractionState>>,
+    /// `deliverPackageState` (WeakPointer)
+    pub deliver_package_state: Option<Handle<SInteractionState>>,
+    /// `completeState` (WeakPointer)
+    pub complete_state: Option<Handle<SInteractionState>>,
+    /// `timedOutState` (WeakPointer)
+    pub timed_out_state: Option<Handle<SInteractionState>>,
+    /// `wrongItemState` (WeakPointer)
+    pub wrong_item_state: Option<Handle<SInteractionState>>,
+    /// `failedRequestState` (WeakPointer)
+    pub failed_request_state: Option<Handle<SInteractionState>>,
+    /// `spawnTimeOutSeconds` (Single)
+    pub spawn_time_out_seconds: f32,
+    /// `requestProcessSeconds` (Single)
+    pub request_process_seconds: f32,
+    /// `waitForPickupSeconds` (Single)
+    pub wait_for_pickup_seconds: f32,
+    /// `finishedPickupSeconds` (Single)
+    pub finished_pickup_seconds: f32,
+    /// `despawnFailedPickupSeconds` (Single)
+    pub despawn_failed_pickup_seconds: f32,
+    /// `pickUpShutterDelaySeconds` (Single)
+    pub pick_up_shutter_delay_seconds: f32,
+    /// `waitForDropOffSeconds` (Single)
+    pub wait_for_drop_off_seconds: f32,
+    /// `dropOffShutterDelaySeconds` (Single)
+    pub drop_off_shutter_delay_seconds: f32,
+    /// `wrongItemPickUpSeconds` (Single)
+    pub wrong_item_pick_up_seconds: f32,
+}
+
+impl Pooled for DeliveryLockerComponentParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_gameplayinteractables
+            .delivery_locker_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_gameplayinteractables
+            .delivery_locker_component_params
+    }
+}
+
+impl<'a> Extract<'a> for DeliveryLockerComponentParams {
+    const TYPE_NAME: &'static str = "DeliveryLockerComponentParams";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            place_interaction: match inst.get("placeInteraction") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            pickup_interaction: match inst.get("pickupInteraction") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            drop_off_interaction: match inst.get("dropOffInteraction") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            open_hatch_interaction: match inst.get("openHatchInteraction") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            close_hatch_interaction: match inst.get("closeHatchInteraction") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            hatch_open_state: match inst.get("hatchOpenState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            hatch_closed_state: match inst.get("hatchClosedState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            home_state: match inst.get("homeState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            checking_state: match inst.get("checkingState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            collect_package_state: match inst.get("collectPackageState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            deliver_package_state: match inst.get("deliverPackageState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            complete_state: match inst.get("completeState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            timed_out_state: match inst.get("timedOutState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            wrong_item_state: match inst.get("wrongItemState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            failed_request_state: match inst.get("failedRequestState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            spawn_time_out_seconds: inst.get_f32("spawnTimeOutSeconds").unwrap_or_default(),
+            request_process_seconds: inst.get_f32("requestProcessSeconds").unwrap_or_default(),
+            wait_for_pickup_seconds: inst.get_f32("waitForPickupSeconds").unwrap_or_default(),
+            finished_pickup_seconds: inst.get_f32("finishedPickupSeconds").unwrap_or_default(),
+            despawn_failed_pickup_seconds: inst
+                .get_f32("despawnFailedPickupSeconds")
+                .unwrap_or_default(),
+            pick_up_shutter_delay_seconds: inst
+                .get_f32("pickUpShutterDelaySeconds")
+                .unwrap_or_default(),
+            wait_for_drop_off_seconds: inst.get_f32("waitForDropOffSeconds").unwrap_or_default(),
+            drop_off_shutter_delay_seconds: inst
+                .get_f32("dropOffShutterDelaySeconds")
+                .unwrap_or_default(),
+            wrong_item_pick_up_seconds: inst.get_f32("wrongItemPickUpSeconds").unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `SWeightedRewardEntry`
 pub struct SWeightedRewardEntry {
     /// `rewardEntityRecord` (Reference)

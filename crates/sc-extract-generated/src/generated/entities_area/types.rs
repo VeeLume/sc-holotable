@@ -485,6 +485,8 @@ pub struct RestrictedAreaKillParams {
     pub despawn_objects: bool,
     /// `despawnDelay` (Single)
     pub despawn_delay: f32,
+    /// `invertKillArea` (Boolean)
+    pub invert_kill_area: bool,
     /// `allowTagsOnLoad` (Reference (array))
     pub allow_tags_on_load: Vec<CigGuid>,
 }
@@ -507,6 +509,7 @@ impl<'a> Extract<'a> for RestrictedAreaKillParams {
             kill_ships: inst.get_bool("killShips").unwrap_or_default(),
             despawn_objects: inst.get_bool("despawnObjects").unwrap_or_default(),
             despawn_delay: inst.get_f32("despawnDelay").unwrap_or_default(),
+            invert_kill_area: inst.get_bool("invertKillArea").unwrap_or_default(),
             allow_tags_on_load: inst
                 .get_array("allowTagsOnLoad")
                 .map(|arr| {
@@ -671,6 +674,58 @@ impl<'a> Extract<'a> for RestrictedAreaSphereParams {
     const TYPE_NAME: &'static str = "RestrictedAreaSphereParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
+    }
+}
+
+/// DCB type: `KillVolumeParams`
+/// Inherits from: `DataForgeComponentParams`
+pub struct KillVolumeParams {
+    /// `shapeLinkName` (String)
+    pub shape_link_name: String,
+    /// `enabled` (Boolean)
+    pub enabled: bool,
+    /// `invert` (Boolean)
+    pub invert: bool,
+    /// `includeChildZones` (Boolean)
+    pub include_child_zones: bool,
+    /// `ignoreTags` (Reference (array))
+    pub ignore_tags: Vec<CigGuid>,
+}
+
+impl Pooled for KillVolumeParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.kill_volume_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.kill_volume_params
+    }
+}
+
+impl<'a> Extract<'a> for KillVolumeParams {
+    const TYPE_NAME: &'static str = "KillVolumeParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            shape_link_name: inst
+                .get_str("shapeLinkName")
+                .map(String::from)
+                .unwrap_or_default(),
+            enabled: inst.get_bool("enabled").unwrap_or_default(),
+            invert: inst.get_bool("invert").unwrap_or_default(),
+            include_child_zones: inst.get_bool("includeChildZones").unwrap_or_default(),
+            ignore_tags: inst
+                .get_array("ignoreTags")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
     }
 }
 

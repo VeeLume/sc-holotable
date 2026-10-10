@@ -23,6 +23,7 @@ pub struct EntitlementpoliciesPools {
     pub item_recovery_notification_params: Vec<Option<ItemRecoveryNotificationParams>>,
     pub item_recovery_economy_params: Vec<Option<ItemRecoveryEconomyParams>>,
     pub item_recovery_override_group_def: Vec<Option<ItemRecoveryOverrideGroupDef>>,
+    pub item_recovery_escalating_claims_params: Vec<Option<ItemRecoveryEscalatingClaimsParams>>,
     pub item_recovery_condition_item_type: Vec<Option<ItemRecoveryCondition_ItemType>>,
     pub debug_loadout_kit: Vec<Option<DebugLoadoutKit>>,
     pub web_customization_debug: Vec<Option<WebCustomizationDebug>>,

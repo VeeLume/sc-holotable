@@ -15,6 +15,7 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesScitemGameplayinteractablesPools {
     pub spawner_prerequisite_or: Vec<Option<SpawnerPrerequisite_OR>>,
+    pub delivery_locker_component_params: Vec<Option<DeliveryLockerComponentParams>>,
     pub sweighted_reward_entry: Vec<Option<SWeightedRewardEntry>>,
     pub sreward_generator_component_params: Vec<Option<SRewardGeneratorComponentParams>>,
     pub sspawner_analytics_event_gameplay_trigger:

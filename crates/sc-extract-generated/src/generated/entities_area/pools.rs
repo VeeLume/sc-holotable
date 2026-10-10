@@ -33,6 +33,7 @@ pub struct EntitiesAreaPools {
     pub restricted_area_hudmessage_params: Vec<Option<RestrictedAreaHUDMessageParams>>,
     pub restricted_area_params: Vec<Option<RestrictedAreaParams>>,
     pub restricted_area_sphere_params: Vec<Option<RestrictedAreaSphereParams>>,
+    pub kill_volume_params: Vec<Option<KillVolumeParams>>,
     pub ship_recall_banned_area_params: Vec<Option<ShipRecallBannedAreaParams>>,
     pub eamessage_trigger_component_params: Vec<Option<EAMessageTriggerComponentParams>>,
     pub eaplayable_area_movement_type_params_def: Vec<Option<EAPlayableAreaMovementTypeParamsDef>>,

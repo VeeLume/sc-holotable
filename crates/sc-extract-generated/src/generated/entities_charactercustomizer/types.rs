@@ -2314,6 +2314,10 @@ pub struct SCustomizableMaterialParams {
     pub additional_flags: String,
     /// `validationParams` (StrongPointer)
     pub validation_params: Option<SCharacterValidationParamsPtr>,
+    /// `itemportName` (String)
+    pub itemport_name: String,
+    /// `forceFromSubMtl` (Int32)
+    pub force_from_sub_mtl: i32,
 }
 
 impl Pooled for SCustomizableMaterialParams {
@@ -2371,6 +2375,11 @@ impl<'a> Extract<'a> for SCustomizableMaterialParams {
                 }
                 _ => None,
             },
+            itemport_name: inst
+                .get_str("itemportName")
+                .map(String::from)
+                .unwrap_or_default(),
+            force_from_sub_mtl: inst.get_i32("forceFromSubMtl").unwrap_or_default(),
         }
     }
 }
