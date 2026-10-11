@@ -1,13 +1,14 @@
 # Changelog
 
-Consumers pin **`sc-holotable/vX.Y.Z`** tags, tracked in this file. Pre-1.0
-convention: `0.X.0` bumps for any public-surface change (additive *or*
-breaking); `0.x.Y` bumps for bugfixes and internal-only changes. A bindings
-regen for a new game build ships as a release too: `0.x.Y` when it only adds
-generated types, `0.X.0` when it removes any.
+Consumers pin **`sc-holotable/vX.Y.Z`** tags, tracked in this file. Releases
+are cut by `.github/workflows/release.yml`, automatically after a bindings
+regen merges or by hand ("Run workflow"); it moves `[Unreleased]` into a
+dated section, with a *Bindings* subsection per regen. Pre-1.0 convention:
+`0.X.0` when the section has Added, Changed, Removed or Deprecated entries
+or a regen removed record types; `0.x.Y` otherwise.
 
 **`datacore/<label>`** tags mark the commit whose generated bindings came from
-a game build. They are cut automatically when a regen PR merges and are not
+a game build. The same workflow cuts them when a regen merges; they are not
 pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
@@ -24,8 +25,13 @@ pinned. Both tag kinds are monotonic and immutable.
 - **`tools/sc-regen`: bindings regen without anyone running it.** A
   scheduled task notices a new installed game build, regenerates in its own
   worktree off `origin/main`, runs the tests and smoke examples, and opens a
-  PR with a change report (record types added/removed, bucket sizes).
-  Merging it tags `datacore/<label>` (`.github/workflows/datacore-tag.yml`).
+  PR with a change report (record types added/removed, bucket sizes). A
+  safe regen (LIVE, checks green, no record type removed, no bucket drift)
+  merges itself once CI passes; the rest wait for review.
+- **Releases cut themselves.** `.github/workflows/release.yml` tags a merged
+  regen `datacore/<label>` and then releases `sc-holotable/vX.Y.Z`
+  (CHANGELOG commit, tag, GitHub release); "Run workflow" releases work
+  without a regen.
 
 ### Changed
 
@@ -36,6 +42,8 @@ pinned. Both tag kinds are monotonic and immutable.
 ### Removed
 
 - **`tools/regenerate.ps1`** — replaced by `sc-regen`.
+- **`tools/release.ps1`** — replaced by `release.yml`; there is no local
+  release path any more.
 
 ### Fixed
 
