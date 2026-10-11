@@ -86,6 +86,7 @@ pub use record_collection::RecordCollection;
 pub use record_paths::{RecordPath, RecordPaths, RecordPathsBuilder};
 pub use sc_extract_generated::{
     Builder, DataPools, Extract, Handle, Pooled, RecordIndex, RecordLookup, RecordStore,
+    UnknownRecordType,
 };
 pub use snapshot::{ExtractSnapshot, SnapshotCaptureConfig, SnapshotMeta};
 

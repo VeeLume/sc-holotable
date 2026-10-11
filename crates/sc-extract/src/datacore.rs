@@ -14,7 +14,8 @@ use crate::Guid;
 use crate::asset_data::AssetData;
 use crate::assets::AssetSource;
 use crate::error::{Error, Result};
-use crate::generated::{Builder, Handle, RecordLookup, RecordStore};
+use crate::generated::metadata::{GENERATED_CHANGELIST, GENERATED_GAME_BRANCH};
+use crate::generated::{Builder, Handle, RecordLookup, RecordStore, UnknownRecordType};
 use crate::svarog_datacore::DataCoreDatabase;
 
 /// Live datacore session: owns the parsed [`DataCoreDatabase`] plus the
@@ -29,6 +30,7 @@ use crate::svarog_datacore::DataCoreDatabase;
 pub struct Datacore {
     db: DataCoreDatabase,
     records: RecordStore,
+    unknown_record_types: Vec<UnknownRecordType>,
 }
 
 /// Stack size for the parse worker thread. The materialize walk recurses per
@@ -66,15 +68,22 @@ impl Datacore {
                 let db = DataCoreDatabase::parse(&dcb_bytes).map_err(Error::DcbParse)?;
 
                 tracing::info!("building record store");
-                let records = Builder::new(&db).consume_database().finish();
+                let builder = Builder::new(&db).consume_database();
+                let unknown_record_types = builder.unknown_record_types().to_vec();
+                let records = builder.finish();
                 tracing::info!(records = records.len(), "record store built");
+                log_binding_drift(&unknown_record_types);
 
                 tracing::info!(
                     records = records.len(),
                     elapsed_ms = start.elapsed().as_millis(),
                     "datacore parse complete"
                 );
-                Ok(Self { db, records })
+                Ok(Self {
+                    db,
+                    records,
+                    unknown_record_types,
+                })
             })
             .expect("spawn datacore parse thread")
             .join()
@@ -92,6 +101,26 @@ impl Datacore {
     /// by concrete Rust type.
     pub fn records(&self) -> &RecordStore {
         &self.records
+    }
+
+    /// Record types in this DCB that the generated bindings have never
+    /// seen, sorted by name. Their records were skipped, so every index
+    /// built from this session is silently missing them.
+    ///
+    /// Empty when the bindings match the game build. Non-empty means the
+    /// bindings are stale: [`Self::parse`] already logged a `warn!` naming
+    /// the build they came from. Debug builds panic during parsing instead,
+    /// so this is only ever non-empty in release builds.
+    ///
+    /// ```no_run
+    /// # fn demo(datacore: &sc_extract::Datacore) {
+    /// for t in datacore.unknown_record_types() {
+    ///     println!("{}: {} records skipped", t.name, t.records);
+    /// }
+    /// # }
+    /// ```
+    pub fn unknown_record_types(&self) -> &[UnknownRecordType] {
+        &self.unknown_record_types
     }
 
     /// Resolve a record `Reference` GUID back onto the typed surface.
@@ -118,6 +147,30 @@ impl Datacore {
     pub fn resolve_handle<T: RecordLookup>(&self, guid: &Guid) -> Option<Handle<T>> {
         T::lookup(&self.records().records, guid)
     }
+}
+
+/// Name the game build the bindings came from on every parse, and warn when
+/// the DCB has record types they don't know.
+fn log_binding_drift(unknown: &[UnknownRecordType]) {
+    let bindings_changelist = GENERATED_CHANGELIST.unwrap_or("-");
+    if unknown.is_empty() {
+        tracing::info!(
+            bindings_branch = GENERATED_GAME_BRANCH,
+            bindings_changelist,
+            "generated bindings know every record type in this DCB"
+        );
+        return;
+    }
+    let names: Vec<&str> = unknown.iter().map(|t| t.name.as_str()).collect();
+    tracing::warn!(
+        bindings_branch = GENERATED_GAME_BRANCH,
+        bindings_changelist,
+        unknown_types = unknown.len(),
+        skipped_records = unknown.iter().map(|t| t.records).sum::<usize>(),
+        ?names,
+        "generated bindings are stale for this game build: DCB record types they don't know \
+         were skipped; regenerate the bindings"
+    );
 }
 
 impl std::fmt::Debug for Datacore {

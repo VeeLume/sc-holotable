@@ -35,7 +35,7 @@ Load-bearing; deviating is a deliberate decision, not an accident. Rationale for
 - **Foundational** (build from `&RecordStore`): `sc-items`, `sc-tags`, `sc-manufacturers`, `sc-resources`, `sc-locations`, `sc-gathering`.
 - **Domain** (build from `&Datacore` + indices): `sc-crafting`, `sc-items-{fps-weapons,armor,ship-components,ship-weapons}`, `sc-missions`, `sc-weapons` (legacy; still the only home of DPS maths).
 - **Umbrella**: `sc-holotable` — the recommended consumer dependency (features, `prelude`, `build_foundations`, `HolotableSnapshot`).
-- **Tools**: `sc-generator` (DCB schema → Rust), `sc-bench`, `sc-explorer` (TUI), `sc-cargo-viewer` (3D cargo-grid viewer), `regenerate.ps1`, `release.ps1`, `bench/bench.ps1`.
+- **Tools**: `sc-generator` (DCB schema → Rust), `sc-bench`, `sc-explorer` (TUI), `sc-cargo-viewer` (3D cargo-grid viewer), `sc-regen` (bindings watcher), `release.ps1`, `bench/bench.ps1`.
 
 **Never depend on `sc-extract-generated` directly** from another crate — go through `sc-extract`. Consumers never name svarog.
 
@@ -79,15 +79,17 @@ Git dep on `https://github.com/19h/Svarog.git`; all four crates (`svarog-common`
 
 ## Regenerating bindings and releasing
 
+Regens are not run by hand. `sc-regen` (a Windows scheduled task) notices a new installed game build, regenerates in its own worktree off `origin/main` and opens a `regen/<label>` PR with a change report; merging it makes `.github/workflows/datacore-tag.yml` tag `datacore/<label>`. Setup, flags and logs: `sc-regen` crate docs. Never regenerate in a development checkout.
+
 ```powershell
-pwsh tools/regenerate.ps1            # regen + fmt + clippy-fix + one local commit
-pwsh tools/regenerate.ps1 -Publish   # + push + annotated tag datacore/<sc_version>
-pwsh tools/release.ps1 -Version vX.Y.Z -Publish   # after editing CHANGELOG [Unreleased]
+cargo install --path tools/sc-regen                       # after changing it
+sc-regen --repo <path> --now                              # regen + PR now, even if already covered
+pwsh tools/release.ps1 -Version vX.Y.Z -Publish           # after editing CHANGELOG [Unreleased]
 ```
 
-Two immutable, monotonic tag families: `datacore/<sc_version>` (bindings for a game build) and `sc-holotable/vX.Y.Z` (library API; pre-1.0: `0.X.0` for any public-surface change, `0.x.Y` for fixes). **Never move or recreate a tag** — Cargo lockfiles keep the old SHA; ship a library fix as a new `sc-holotable/v*` tag. Commit messages must be Conventional Commits (the `commit-msg` hook rejects others). The full patch-day runbook is a Firefly note.
+Consumers pin `sc-holotable/vX.Y.Z` only (pre-1.0: `0.X.0` for any public-surface change, `0.x.Y` for fixes; a regen that only adds generated types is `0.x.Y`, one that removes any is `0.X.0`). `datacore/<label>` marks which commit's bindings came from a game build and is never pinned. Both are monotonic. **Never move or recreate a tag** — Cargo lockfiles keep the old SHA; ship a fix as a new `sc-holotable/v*` tag. Commit messages must be Conventional Commits (the `commit-msg` hook rejects others). The full patch-day runbook is a Firefly note.
 
-Run a **debug** build after a game patch: `seed_database` panics with the list of record types the bindings don't know. Release builds skip unknown records silently.
+Stale bindings: release builds skip record types the bindings don't know and report them (`Datacore::unknown_record_types`, plus a `warn!` from `Datacore::parse`); debug builds panic with the list.
 
 ## Build / test / lint
 

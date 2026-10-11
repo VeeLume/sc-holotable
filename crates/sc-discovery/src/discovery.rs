@@ -12,7 +12,7 @@ use tracing::{debug, warn};
 use crate::channel::Channel;
 use crate::error::{Error, Result};
 use crate::installation::Installation;
-use crate::launcher_store::{read_launcher_snapshot, read_launcher_store};
+use crate::launcher_store::{StoreInstall, read_launcher_snapshot, read_launcher_store};
 use crate::log_parser::{LogEntryKind, launcher_log_path, parse_launcher_log_entries};
 
 /// Discover every reachable Star Citizen installation.
@@ -47,8 +47,7 @@ pub fn discover() -> Result<Vec<Installation>> {
             let mut installations = Vec::new();
             for s in store_installs {
                 if let Some(mut install) = validate_install(s.channel, &s.root) {
-                    install.launcher_version_label = s.version_label;
-                    install.platform_id = s.platform_id;
+                    attach_store_fields(&mut install, s);
                     installations.push(install);
                 }
             }
@@ -142,8 +141,7 @@ pub fn discover_default() -> Result<Installation> {
         && let Some(s) = snapshot.installs.into_iter().find(|s| s.channel == default)
         && let Some(mut install) = validate_install(s.channel, &s.root)
     {
-        install.launcher_version_label = s.version_label;
-        install.platform_id = s.platform_id;
+        attach_store_fields(&mut install, s);
         return Ok(install);
     }
     discover_primary()
@@ -198,6 +196,36 @@ pub fn discover_last_launched_from(log_path: &Path) -> Result<Installation> {
 ///
 /// This is the single canonical definition of "is this install valid?" used
 /// by all the discovery functions.
+/// Copy the launcher store's label and platform tag onto a validated install.
+///
+/// The label is dropped when its changelist contradicts the build on disk.
+/// The store keys labels by channel slot, not by what the folder holds: a
+/// LIVE folder renamed to PTU (to seed a PTU patch from it) sits in the PTU
+/// slot while still holding the LIVE build, and the PTU label would misname
+/// it until the launcher has patched it. A missing changelist on either side
+/// is no evidence of a mismatch, so the label is kept.
+fn attach_store_fields(install: &mut Installation, store: StoreInstall) {
+    let on_disk = install
+        .manifest
+        .changelist
+        .as_deref()
+        .and_then(|c| c.parse::<u64>().ok());
+    install.launcher_version_label = match (store.changelist, on_disk) {
+        (Some(labelled), Some(on_disk)) if labelled != on_disk => {
+            warn!(
+                channel = %install.channel,
+                path = %install.root.display(),
+                label = ?store.version_label,
+                on_disk,
+                "launcher label names another build than the one on disk; dropping it"
+            );
+            None
+        }
+        _ => store.version_label,
+    };
+    install.platform_id = store.platform_id;
+}
+
 fn validate_install(channel: Channel, root: &Path) -> Option<Installation> {
     if !root.is_dir() {
         debug!(
@@ -288,6 +316,40 @@ mod tests {
             .unwrap();
         }
         tmp
+    }
+
+    /// A LIVE build sitting in the PTU slot (folder renamed to seed a PTU
+    /// patch) must not take the PTU label; a matching build keeps it.
+    #[test]
+    fn store_label_is_kept_only_for_the_build_on_disk() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().join("PTU");
+        std::fs::create_dir_all(&root).unwrap();
+        std::fs::write(
+            root.join("build_manifest.id"),
+            r#"{"Data":{"Branch":"sc-alpha-4.10.2","BuildId":"1","Version":"4.10.196.36804","RequestedP4ChangeNum":"12881860"}}"#,
+        )
+        .unwrap();
+        std::fs::write(root.join("Data.p4k"), b"fake p4k").unwrap();
+        let store = |label: &str, changelist: u64| StoreInstall {
+            channel: Channel::Ptu,
+            root: root.clone(),
+            version_label: Some(label.to_string()),
+            changelist: Some(changelist),
+            platform_id: Some("ptu".to_string()),
+        };
+
+        let mut install = validate_install(Channel::Ptu, &root).unwrap();
+        attach_store_fields(&mut install, store("4.11.0-ptu.13000000", 13000000));
+        assert_eq!(install.launcher_version_label, None);
+        assert_eq!(install.platform_id.as_deref(), Some("ptu"));
+
+        let mut install = validate_install(Channel::Ptu, &root).unwrap();
+        attach_store_fields(&mut install, store("4.10.2-ptu.12881860", 12881860));
+        assert_eq!(
+            install.launcher_version_label.as_deref(),
+            Some("4.10.2-ptu.12881860")
+        );
     }
 
     #[test]

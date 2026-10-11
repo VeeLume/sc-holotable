@@ -9,9 +9,9 @@
 //! sc-holotable = { git = "https://github.com/VeeLume/sc-holotable.git", tag = "sc-holotable/vX.Y.Z", features = ["missions", "fps-weapons"] }
 //! ```
 //!
-//! Pin a `sc-holotable/v*` tag to follow the library API, or a `datacore/<sc
-//! version>` tag to follow the generated bindings for a game build. Both are
-//! immutable; they advance independently.
+//! Pin a `sc-holotable/v*` tag. A regen of the generated bindings for a new
+//! game build ships as one too; the `datacore/*` tags only mark which commit
+//! a game build's bindings came from.
 //!
 //! # Why one crate
 //!

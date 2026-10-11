@@ -19,6 +19,7 @@ members = [
     "crates/sc-missions",
     "crates/sc-holotable",
     "tools/sc-generator",
+    "tools/sc-regen",
     "tools/sc-bench",
     "tools/sc-explorer",
     "tools/sc-cargo-viewer",

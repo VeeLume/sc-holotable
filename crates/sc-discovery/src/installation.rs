@@ -31,7 +31,10 @@ pub struct Installation {
     /// which doesn't roll forward when hotfixes ship.
     ///
     /// Set when discovery used the launcher store. `None` when discovery
-    /// fell back to log parsing, or when the install was constructed via
+    /// fell back to log parsing, when the store's label carries another
+    /// changelist than the manifest on disk (the store labels channel
+    /// slots, and a folder renamed between channels holds another build
+    /// until the launcher patches it), or when the install was constructed via
     /// [`Installation::from_root`] / [`Installation::from_parts`]. Callers
     /// that need a fallback when this is `None` must opt in explicitly via
     /// [`Installation::launcher_version_string_derived`] and accept the

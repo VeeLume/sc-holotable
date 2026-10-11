@@ -80,6 +80,24 @@ pub struct Builder<'a> {
 
     /// FIFO work queue of deferred instance materialisations.
     pending: VecDeque<PendingSlot<'a>>,
+
+    /// Record types in the database that no feature has a binding for,
+    /// filled by the generated `seed_database`.
+    pub(crate) unknown_record_types: Vec<UnknownRecordType>,
+}
+
+/// A DCB record type the generated bindings have never seen, in any
+/// feature: the database is from a different (usually newer) game build
+/// than the bindings.
+///
+/// Its records were skipped. Types a narrow feature set merely gates away
+/// are not listed — only regenerating the bindings can fix what is.
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub struct UnknownRecordType {
+    /// The DCB struct name.
+    pub name: String,
+    /// How many top-level records of this type were skipped.
+    pub records: usize,
 }
 
 impl<'a> Builder<'a> {
@@ -91,6 +109,7 @@ impl<'a> Builder<'a> {
             records: RecordIndex::default(),
             dedup: HashMap::new(),
             pending: VecDeque::new(),
+            unknown_record_types: Vec::new(),
         }
     }
 
@@ -104,6 +123,13 @@ impl<'a> Builder<'a> {
         self.seed_database();
         self.drain();
         self
+    }
+
+    /// Record types [`Self::consume_database`] skipped because no feature
+    /// has a binding for them, sorted by name. Empty when the bindings
+    /// match the database's game build. Debug builds panic instead.
+    pub fn unknown_record_types(&self) -> &[UnknownRecordType] {
+        &self.unknown_record_types
     }
 
     /// Finalize: assert the queue drained cleanly and return a populated

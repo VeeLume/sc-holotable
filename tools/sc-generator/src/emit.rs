@@ -951,13 +951,11 @@ pub fn emit_record_store(
         // Every DCB record-type name for which the generator emitted a
         // binding, regardless of feature gating. Used below to distinguish
         // feature-gated-away types (expected for narrow consumers, skipped
-        // silently) from truly-unknown types (real generator staleness,
-        // which panics in debug). Release builds skip unknown records
-        // silently by design, so the list is only read under
-        // `cfg(debug_assertions)` — gate the const itself too so release
-        // builds don't carry ~6k string literals they never reference.
-        // Sorted + deduped so the runtime lookup is a binary search.
-        out.push_str("        #[cfg(debug_assertions)]\n");
+        // silently) from truly-unknown types (real generator staleness).
+        // Release builds keep it too: they still skip unknown records, but
+        // report them through `Builder::unknown_record_types` instead of
+        // dropping them unseen. Sorted + deduped so the runtime lookup is a
+        // binary search.
         out.push_str("        const KNOWN_RECORD_TYPE_NAMES: &[&str] = &[\n");
         let mut known_names: Vec<&str> = entries
             .iter()
@@ -982,8 +980,10 @@ pub fn emit_record_store(
         out.push_str("             and deduplicated for binary_search to be correct — regenerate bindings.\",\n");
         out.push_str("        );\n\n");
 
-        out.push_str("        #[cfg(debug_assertions)]\n");
-        out.push_str("        let mut unknown_record_types: std::collections::HashSet<u32> = std::collections::HashSet::new();\n\n");
+        // Records with no enabled extractor, counted per struct index. Most
+        // are feature-gated away; the name check after the loop runs once
+        // per type rather than once per record.
+        out.push_str("        let mut undispatched: HashMap<u32, usize> = HashMap::new();\n\n");
 
         out.push_str("        let records: Vec<(CigGuid, u32, Instance<'a>)> = self\n");
         out.push_str("            .db\n");
@@ -995,29 +995,32 @@ pub fn emit_record_store(
         out.push_str("            if let Some(Some(f)) = dispatch.get(i) {\n");
         out.push_str("                f(self, guid, inst);\n");
         out.push_str("            } else {\n");
-        out.push_str("                #[cfg(debug_assertions)]\n");
-        out.push_str("                {\n");
-        out.push_str(
-            "                    let name = self.db.struct_name(i).unwrap_or(\"<unnamed>\");\n",
-        );
-        out.push_str(
-            "                    if KNOWN_RECORD_TYPE_NAMES.binary_search(&name).is_err() {\n",
-        );
-        out.push_str("                        unknown_record_types.insert(struct_idx);\n");
-        out.push_str("                    }\n");
-        out.push_str("                }\n");
+        out.push_str("                *undispatched.entry(struct_idx).or_default() += 1;\n");
         out.push_str("            }\n");
         out.push_str("        }\n\n");
 
-        out.push_str("        #[cfg(debug_assertions)]\n");
-        out.push_str("        if !unknown_record_types.is_empty() {\n");
-        out.push_str("            let mut names: Vec<&str> = unknown_record_types\n");
-        out.push_str("                .iter()\n");
+        out.push_str("        let mut unknown: Vec<crate::UnknownRecordType> = undispatched\n");
+        out.push_str("            .into_iter()\n");
+        out.push_str("            .filter_map(|(idx, records)| {\n");
         out.push_str(
-            "                .map(|&i| self.db.struct_name(i as usize).unwrap_or(\"<unnamed>\"))\n",
+            "                let name = self.db.struct_name(idx as usize).unwrap_or(\"<unnamed>\");\n",
         );
-        out.push_str("                .collect();\n");
-        out.push_str("            names.sort_unstable();\n");
+        out.push_str(
+            "                KNOWN_RECORD_TYPE_NAMES.binary_search(&name).is_err().then(|| {\n",
+        );
+        out.push_str(
+            "                    crate::UnknownRecordType { name: name.to_string(), records }\n",
+        );
+        out.push_str("                })\n");
+        out.push_str("            })\n");
+        out.push_str("            .collect();\n");
+        out.push_str("        unknown.sort_unstable_by(|a, b| a.name.cmp(&b.name));\n\n");
+
+        out.push_str("        #[cfg(debug_assertions)]\n");
+        out.push_str("        if !unknown.is_empty() {\n");
+        out.push_str(
+            "            let names: Vec<&str> = unknown.iter().map(|t| t.name.as_str()).collect();\n",
+        );
         out.push_str("            panic!(\n");
         out.push_str(
             "                \"sc-extract-generated: runtime DCB contains {} record type(s) \\\n",
@@ -1034,6 +1037,7 @@ pub fn emit_record_store(
         out.push_str("                names,\n");
         out.push_str("            );\n");
         out.push_str("        }\n");
+        out.push_str("        self.unknown_record_types = unknown;\n");
     }
     out.push_str("    }\n");
     out.push_str("}\n");
