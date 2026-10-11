@@ -165,8 +165,16 @@ fn parse_args() -> Result<Options, String> {
             other => return Err(format!("unknown argument: {other}")),
         }
     }
-    options.repo = std::fs::canonicalize(&options.repo)
+    // Not `canonicalize`: on Windows it yields a `\\?\` path, which then
+    // lands in the scheduled task's command line.
+    options.repo = std::path::absolute(&options.repo)
         .map_err(|e| format!("--repo {}: {e}", options.repo.display()))?;
+    if !options.repo.join(".git").exists() {
+        return Err(format!(
+            "--repo {}: not a git checkout",
+            options.repo.display()
+        ));
+    }
     Ok(options)
 }
 
