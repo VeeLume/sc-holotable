@@ -216,8 +216,22 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
         }
         if let Some(pr) = find_pr(repo, &build.branch())? {
             if pr.open && pr.auto_merge && !options.dry_run {
+                // Only the commit this machine pushed may be merged; the
+                // worktree's branch still holds it from the interrupted run.
+                let pushed = capture(
+                    Command::new("git")
+                        .args(["rev-parse", "--verify", "--quiet"])
+                        .arg(format!("refs/heads/{}", build.branch()))
+                        .current_dir(state.join("worktree")),
+                );
+                let Ok(pushed) = pushed else {
+                    return Ok(format!(
+                        "{} has {} but no local record of the pushed commit; left for review",
+                        build.label, pr.url
+                    ));
+                };
                 info!(pr = %pr.url, "resuming the merge of an open auto-merge PR");
-                return land(repo, &pr.url, &build, log);
+                return land(repo, &pr.url, pushed.trim(), &build, log);
             }
             return Ok(format!(
                 "{} already has {}; nothing to do",
@@ -380,7 +394,12 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
     let url = url.trim().to_string();
 
     if auto_merge {
-        return land(&worktree, &url, &build, log);
+        let pushed = capture(
+            Command::new("git")
+                .args(["rev-parse", "HEAD"])
+                .current_dir(&worktree),
+        )?;
+        return land(&worktree, &url, pushed.trim(), &build, log);
     }
     let summary = format!(
         "regen PR for {} opened for review ({}): {url}",
@@ -397,9 +416,15 @@ const AUTO_MERGE_LABEL: &str = "auto-merge";
 /// minutes; a run that gives up leaves the PR to the next run.
 const CI_WAIT: Duration = Duration::from_secs(45 * 60);
 
-/// Wait for GitHub CI on an auto-merge PR, then squash-merge it. The label
-/// is the off switch, so it is read again right before merging.
-fn land(dir: &Path, url: &str, build: &Build, log: &File) -> Result<String, String> {
+/// The GitHub check that must pass before a regen merges itself. If CI is
+/// renamed, auto-merge times out and the PR waits for review: fail closed.
+const REQUIRED_CHECK: &str = "ci / check";
+
+/// Wait for GitHub CI on an auto-merge PR, then squash-merge it. Merges
+/// only `pushed`, the commit this run (or the interrupted one) pushed: a PR
+/// whose head moved, or one from a fork, is left alone whatever its label.
+/// The label is the off switch, so it is read again right before merging.
+fn land(dir: &Path, url: &str, pushed: &str, build: &Build, log: &File) -> Result<String, String> {
     info!(pr = url, "waiting for GitHub CI");
     match wait_for_ci(dir, url) {
         Ci::Passed => {}
@@ -433,9 +458,24 @@ fn land(dir: &Path, url: &str, build: &Build, log: &File) -> Result<String, Stri
             build.label
         ));
     }
+    if pr.fork || pr.head != pushed {
+        return Ok(format!(
+            "regen PR for {} no longer points at the pushed commit {pushed}; left for review: {url}",
+            build.label
+        ));
+    }
+    // `--match-head-commit` makes GitHub refuse the merge if the head moved
+    // after the check above.
     capture(
         Command::new("gh")
-            .args(["pr", "merge", url, "--squash"])
+            .args([
+                "pr",
+                "merge",
+                url,
+                "--squash",
+                "--match-head-commit",
+                pushed,
+            ])
             .current_dir(dir),
     )?;
     // Not `gh pr merge --delete-branch`: that also switches the local
@@ -461,39 +501,45 @@ enum Ci {
     TimedOut,
 }
 
-/// Poll the PR's checks every 30 s. No checks yet (right after the push)
-/// counts as pending.
+/// Poll the PR's checks every 30 s until [`ci_verdict`] decides.
 fn wait_for_ci(dir: &Path, url: &str) -> Ci {
     let deadline = Instant::now() + CI_WAIT;
     loop {
         // `gh pr checks` exits non-zero while checks are pending or failing,
-        // so read the buckets whatever the status.
-        let buckets = Command::new("gh")
-            .args([
-                "pr",
-                "checks",
-                url,
-                "--json",
-                "bucket",
-                "--jq",
-                ".[].bucket",
-            ])
+        // so read the output whatever the status.
+        let checks = Command::new("gh")
+            .args(["pr", "checks", url, "--json", "bucket,name"])
+            .args(["--jq", r#".[] | "\(.bucket) \(.name)""#])
             .current_dir(dir)
             .output()
             .map(|o| String::from_utf8_lossy(&o.stdout).into_owned())
             .unwrap_or_default();
-        let buckets: Vec<&str> = buckets.split_whitespace().collect();
-        if buckets.iter().any(|b| matches!(*b, "fail" | "cancel")) {
-            return Ci::Failed;
-        }
-        if !buckets.is_empty() && buckets.iter().all(|b| matches!(*b, "pass" | "skipping")) {
-            return Ci::Passed;
+        if let Some(verdict) = ci_verdict(&checks) {
+            return verdict;
         }
         if Instant::now() >= deadline {
             return Ci::TimedOut;
         }
         std::thread::sleep(Duration::from_secs(30));
     }
+}
+
+/// Decide from `gh pr checks` lines (`<bucket> <name>`): any failure fails;
+/// a pass needs [`REQUIRED_CHECK`] to have passed and nothing pending. No
+/// checks yet, or only skipped ones, is undecided (`None`), never a pass.
+fn ci_verdict(checks: &str) -> Option<Ci> {
+    let checks: Vec<(&str, &str)> = checks
+        .lines()
+        .filter_map(|l| l.trim().split_once(' '))
+        .collect();
+    if checks.iter().any(|(b, _)| matches!(*b, "fail" | "cancel")) {
+        return Some(Ci::Failed);
+    }
+    let pending = checks.iter().any(|(b, _)| *b == "pending");
+    let required = checks
+        .iter()
+        .any(|(b, n)| *b == "pass" && *n == REQUIRED_CHECK);
+    (required && !pending).then_some(Ci::Passed)
 }
 
 /// Create the label if the repo lacks it (`--force` makes this idempotent).
@@ -576,10 +622,16 @@ struct Pr {
     open: bool,
     draft: bool,
     auto_merge: bool,
+    /// The head commit.
+    head: String,
+    /// Opened from a fork rather than a branch of this repo.
+    fork: bool,
 }
 
-/// One PR as a line `url state isDraft has-label`.
-const PR_JQ: &str = r#""\(.url) \(.state) \(.isDraft) \(any(.labels[]; .name == "auto-merge"))""#;
+const PR_FIELDS: &str = "url,state,isDraft,labels,headRefOid,isCrossRepository";
+
+/// One PR as a line `url state isDraft has-label head fork`.
+const PR_JQ: &str = r#""\(.url) \(.state) \(.isDraft) \(any(.labels[]; .name == "auto-merge")) \(.headRefOid) \(.isCrossRepository)""#;
 
 impl Pr {
     fn parse(line: &str) -> Option<Pr> {
@@ -589,18 +641,21 @@ impl Pr {
             open: fields.next()? == "OPEN",
             draft: fields.next()? == "true",
             auto_merge: fields.next()? == "true",
+            head: fields.next()?.to_string(),
+            fork: fields.next()? == "true",
         })
     }
 }
 
-/// Any PR, in any state, whose head is `branch`. A closed one counts too:
-/// rejecting a regen PR must not bring it back every three hours.
+/// Any PR, in any state, from this repo's `branch`. A closed one counts
+/// too: rejecting a regen PR must not bring it back every three hours. PRs
+/// from forks are ignored: anyone can name a fork branch `regen/<label>`.
 fn find_pr(repo: &Path, branch: &str) -> Result<Option<Pr>, String> {
-    let jq = format!(".[0] | select(. != null) | {PR_JQ}");
+    let jq = format!("map(select(.isCrossRepository | not)) | .[0] | select(. != null) | {PR_JQ}");
     let out = capture(
         Command::new("gh")
             .args(["pr", "list", "--state", "all", "--head", branch])
-            .args(["--json", "url,state,isDraft,labels", "--jq", &jq])
+            .args(["--json", PR_FIELDS, "--jq", &jq])
             .current_dir(repo),
     )?;
     Ok(Pr::parse(&out))
@@ -610,7 +665,7 @@ fn view_pr(dir: &Path, url: &str) -> Result<Option<Pr>, String> {
     let out = capture(
         Command::new("gh")
             .args(["pr", "view", url])
-            .args(["--json", "url,state,isDraft,labels", "--jq", PR_JQ])
+            .args(["--json", PR_FIELDS, "--jq", PR_JQ])
             .current_dir(dir),
     )?;
     Ok(Pr::parse(&out))
@@ -782,11 +837,28 @@ mod tests {
 
     #[test]
     fn parses_the_pr_line() {
-        let pr = Pr::parse("https://github.com/o/r/pull/2 OPEN false true\n").unwrap();
+        let pr = Pr::parse("https://github.com/o/r/pull/2 OPEN false true abc123 false\n").unwrap();
         assert_eq!(pr.url, "https://github.com/o/r/pull/2");
-        assert!(pr.open && !pr.draft && pr.auto_merge);
-        let merged = Pr::parse("https://github.com/o/r/pull/2 MERGED false false").unwrap();
-        assert!(!merged.open && !merged.auto_merge);
+        assert_eq!(pr.head, "abc123");
+        assert!(pr.open && !pr.draft && pr.auto_merge && !pr.fork);
+        let fork = Pr::parse("https://github.com/o/r/pull/2 MERGED false false abc true").unwrap();
+        assert!(!fork.open && !fork.auto_merge && fork.fork);
         assert!(Pr::parse("").is_none());
+        assert!(Pr::parse("https://github.com/o/r/pull/2 OPEN false true").is_none());
+    }
+
+    #[test]
+    fn ci_passes_only_on_the_required_check() {
+        let pass = |s| matches!(ci_verdict(s), Some(Ci::Passed));
+        let fail = |s| matches!(ci_verdict(s), Some(Ci::Failed));
+        assert!(pass("pass ci / check\n"));
+        assert!(pass("pass ci / check\nskipping other\n"));
+        // Nothing yet, only skipped, or another check alone: undecided.
+        assert!(ci_verdict("").is_none());
+        assert!(ci_verdict("skipping ci / check\n").is_none());
+        assert!(ci_verdict("pass lint\n").is_none());
+        assert!(ci_verdict("pass ci / check\npending other\n").is_none());
+        assert!(fail("pass ci / check\nfail other\n"));
+        assert!(fail("cancel ci / check\n"));
     }
 }
