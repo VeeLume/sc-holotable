@@ -1,0 +1,182 @@
+# The only release path: tags merged bindings regens and cuts sc-holotable
+# releases. There is no local release script.
+#
+# On every push to main it looks for regen commits (subject
+# "chore(datacore): regenerate bindings (SC <label>)", as sc-regen writes it;
+# squash, merge or rebase alike) and tags each LIVE or hotfix one
+# datacore/<label>. A PTU regen is never tagged. A label whose changelist is
+# lower than the newest datacore tag fails the job: tags only move forward.
+# When a regen was tagged, a release follows. "Run workflow"
+# (workflow_dispatch) cuts a release by hand for work without a regen.
+#
+# A release moves CHANGELOG [Unreleased] into a dated vX.Y.Z section, with a
+# "Bindings" subsection per regen, commits that to main as
+# "chore(release): sc-holotable/vX.Y.Z", tags it with the section as the
+# message and publishes a GitHub release. Bump (pre-1.0): 0.X.0 when the
+# section has Added, Changed, Removed or Deprecated entries or a regen
+# removed record types, 0.x.Y otherwise; "Run workflow" can force it.
+# Existing tags are never moved. Pushes made with GITHUB_TOKEN start no
+# workflows, so the release commit doesn't run this again.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump (auto reads CHANGELOG [Unreleased])"
+        type: choice
+        options: [auto, patch, minor]
+        default: auto
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned to a commit (v4) because this job pushes to main and tags.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Tag regen commits
+        id: regen
+        if: github.event_name == 'push'
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+          NOTES: ${{ runner.temp }}/bindings.md
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          range="$BEFORE..$AFTER"
+          if ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            range="$AFTER^!"
+          fi
+
+          store=crates/sc-extract-generated/src/generated/record_store.rs
+          record_types() {
+            git show "$1:$store" \
+              | sed -n '/const KNOWN_RECORD_TYPE_NAMES/,/^ *\];/p' \
+              | sed -nE 's/^ *"([^"]+)",$/\1/p' | sort
+          }
+          names() { awk '{ printf "%s`%s`", (NR > 1 ? ", " : ""), $0 }'; }
+
+          previous=$(git tag --list 'datacore/*' | awk -F. '{ print $NF, $0 }' | sort -n | tail -1 | cut -d' ' -f2)
+          newest=${previous##*.}
+          newest=${newest:-0}
+
+          git log --reverse --format='%H %s' "$range" | while read -r sha subject; do
+            # The label comes from a commit subject: accept only the shape
+            # sc-regen writes (e.g. 4.10.2-live.12881860), nothing else.
+            label=$(sed -nE 's/^chore\(datacore\): regenerate bindings \(SC ([0-9][0-9A-Za-z.]*-[a-z]+\.[0-9]+)\).*/\1/p' <<< "$subject")
+            [ -n "$label" ] || continue
+            if ! grep -qE -- '-(live|hotfix)\.[0-9]+$' <<< "$label"; then
+              echo "skip $label: not a LIVE or hotfix build"
+              continue
+            fi
+            tag="datacore/$label"
+            if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+              echo "skip $tag: exists"
+              continue
+            fi
+            changelist=${label##*.}
+            if [ "$changelist" -lt "$newest" ]; then
+              echo "::error::$tag would go backwards: changelist $changelist < $newest"
+              exit 1
+            fi
+
+            line="- Regenerated from SC $label (\`$tag\`)"
+            if [ -n "$previous" ]; then
+              added=$(comm -13 <(record_types "$previous") <(record_types "$sha"))
+              removed=$(comm -23 <(record_types "$previous") <(record_types "$sha"))
+              line="$line, since \`$previous\`"
+              [ -z "$added" ] || line="$line. Record types added: $(names <<< "$added")"
+              [ -z "$removed" ] || { line="$line. Record types removed: $(names <<< "$removed")"; echo "removed=true" >> "$GITHUB_OUTPUT"; }
+            fi
+            echo "$line." >> "$NOTES"
+
+            git tag -a "$tag" -m "DataCore bindings regenerated from SC $label" "$sha"
+            git push origin "refs/tags/$tag"
+            echo "tagged=true" >> "$GITHUB_OUTPUT"
+            previous=$tag
+            newest=$changelist
+            echo "tagged $tag at $sha"
+          done
+
+      - name: Cut release
+        if: github.event_name == 'workflow_dispatch' || steps.regen.outputs.tagged == 'true'
+        env:
+          BUMP: ${{ inputs.bump || 'auto' }}
+          NOTES: ${{ runner.temp }}/bindings.md
+          REGEN_REMOVED: ${{ steps.regen.outputs.removed }}
+          GH_TOKEN: ${{ github.token }}
+        shell: python3 {0}
+        run: |
+          import datetime, os, pathlib, re, subprocess, sys
+
+          def git(*args):
+              return subprocess.run(["git", *args], check=True, capture_output=True, text=True).stdout
+
+          notes = pathlib.Path(os.environ["NOTES"])
+          bindings = notes.read_text(encoding="utf-8").strip() if notes.is_file() else ""
+          git("config", "user.name", "github-actions[bot]")
+          git("config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
+
+          # Retried from a fresh main when someone pushed in between.
+          for attempt in range(3):
+              git("fetch", "--quiet", "--tags", "origin", "main")
+              git("reset", "--quiet", "--hard", "origin/main")
+              changelog = pathlib.Path("CHANGELOG.md")
+              text = changelog.read_text(encoding="utf-8")
+              unreleased = re.search(r"^## \[Unreleased\][^\n]*\n(.*?)(?=^## \[|\Z)", text, re.M | re.S)
+              if not unreleased:
+                  sys.exit("::error::CHANGELOG.md has no '## [Unreleased]' section")
+              body = unreleased.group(1).strip()
+              if not body and not bindings:
+                  sys.exit("::error::nothing to release: CHANGELOG [Unreleased] is empty")
+
+              versions = sorted(
+                  tuple(int(n) for n in m.groups())
+                  for t in git("tag", "--list", "sc-holotable/v*").split()
+                  if (m := re.fullmatch(r"sc-holotable/v(\d+)\.(\d+)\.(\d+)", t))
+              )
+              major, minor, patch = versions[-1] if versions else (0, 0, 0)
+              bump = os.environ["BUMP"]
+              if bump == "auto":
+                  surface = re.search(r"^### (Added|Changed|Removed|Deprecated)\s*\n\s*[-*]", body, re.M)
+                  bump = "minor" if surface or os.environ.get("REGEN_REMOVED") == "true" else "patch"
+              version = f"v{major}.{minor + 1}.0" if bump == "minor" else f"v{major}.{minor}.{patch + 1}"
+              tag = f"sc-holotable/{version}"
+
+              section = (f"### Bindings\n\n{bindings}\n\n" if bindings else "") + body
+              section = section.strip() + "\n"
+              date = datetime.date.today().isoformat()
+              changelog.write_text(
+                  text[: unreleased.start()]
+                  + f"## [Unreleased]\n\n## [{version}] - {date}\n\n{section}\n"
+                  + text[unreleased.end():],
+                  encoding="utf-8",
+              )
+              git("commit", "--quiet", "-am", f"chore(release): {tag}")
+              subprocess.run(["git", "tag", "-a", tag, "-F", "-"], input=f"sc-holotable {version}\n\n{section}", text=True, check=True)
+              push = subprocess.run(["git", "push", "--atomic", "origin", "HEAD:main", f"refs/tags/{tag}"], capture_output=True, text=True)
+              if push.returncode == 0:
+                  break
+              print(push.stderr)
+              git("tag", "-d", tag)
+          else:
+              sys.exit("::error::pushing the release failed three times")
+
+          subprocess.run(["gh", "release", "create", tag, "--verify-tag", "--title", f"sc-holotable {version}", "--notes", section], check=True)
+          print(f"released {tag} ({bump})")

@@ -16,6 +16,12 @@
 //! 4. Runs `cargo test --workspace` and the smoke examples, pushes the
 //!    branch and opens a PR whose body reports what changed. The PR is a
 //!    draft when a check failed or the build is not LIVE.
+//! 5. Merges the PR itself when the regen is safe
+//!    ([`report::auto_merge_blockers`]): it gets the `auto-merge` label,
+//!    `sc-regen` waits for GitHub CI and squash-merges. The push to `main`
+//!    runs `.github/workflows/release.yml`, which tags `datacore/<label>` and
+//!    cuts the `sc-holotable/v*` release. Removing the label stops the merge;
+//!    a run interrupted while waiting picks the PR up again next time.
 //!
 //! ```text
 //! cargo install --path tools/sc-regen
@@ -37,7 +43,7 @@ use std::io::Write as _;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode, Stdio};
 use std::sync::Mutex;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use sc_discovery::Channel;
 use tracing::{info, warn};
@@ -208,8 +214,29 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
                 build.label
             ));
         }
-        if let Some(pr) = existing_pr(repo, &build.branch())? {
-            return Ok(format!("{} already has {pr}; nothing to do", build.label));
+        if let Some(pr) = find_pr(repo, &build.branch())? {
+            if pr.open && pr.auto_merge && !options.dry_run {
+                // Only the commit this machine pushed may be merged; the
+                // worktree's branch still holds it from the interrupted run.
+                let pushed = capture(
+                    Command::new("git")
+                        .args(["rev-parse", "--verify", "--quiet"])
+                        .arg(format!("refs/heads/{}", build.branch()))
+                        .current_dir(state.join("worktree")),
+                );
+                let Ok(pushed) = pushed else {
+                    return Ok(format!(
+                        "{} has {} but no local record of the pushed commit; left for review",
+                        build.label, pr.url
+                    ));
+                };
+                info!(pr = %pr.url, "resuming the merge of an open auto-merge PR");
+                return land(repo, &pr.url, pushed.trim(), &build, log);
+            }
+            return Ok(format!(
+                "{} already has {}; nothing to do",
+                build.label, pr.url
+            ));
         }
     }
     if options.dry_run {
@@ -313,17 +340,27 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
         changelist: build.changelist,
         previous_tag: previous_tag.as_ref().map(|(t, _)| t.as_str()),
     };
-    let body = report::pr_body(&info, &before, &after, &checks);
+    let blockers = report::auto_merge_blockers(build.is_live(), &before, &after, &checks);
+    let body = report::pr_body(&info, &before, &after, &checks, &blockers);
     let body_file = state.join("pr-body.md");
     std::fs::write(&body_file, &body).map_err(|e| format!("writing the PR body: {e}"))?;
 
     if options.no_publish {
         return Ok(format!(
-            "regenerated {} locally (checks {}); PR body in {}",
+            "regenerated {} locally (checks {}, {}); PR body in {}",
             build.label,
             if all_passed { "passed" } else { "FAILED" },
+            if blockers.is_empty() {
+                "would auto-merge"
+            } else {
+                "would wait for review"
+            },
             body_file.display()
         ));
+    }
+    let auto_merge = blockers.is_empty();
+    if auto_merge {
+        ensure_auto_merge_label(&worktree)?;
     }
 
     let branch = build.branch();
@@ -350,19 +387,171 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
     if draft {
         pr.push("--draft");
     }
+    if auto_merge {
+        pr.extend(["--label", AUTO_MERGE_LABEL]);
+    }
     let url = capture(Command::new("gh").args(&pr).current_dir(&worktree))?;
     let url = url.trim().to_string();
 
-    let summary = if all_passed {
-        format!("regen PR for {} opened: {url}", build.label)
-    } else {
-        format!(
-            "regen PR for {} opened as draft, checks failed: {url}",
-            build.label
-        )
-    };
+    if auto_merge {
+        let pushed = capture(
+            Command::new("git")
+                .args(["rev-parse", "HEAD"])
+                .current_dir(&worktree),
+        )?;
+        return land(&worktree, &url, pushed.trim(), &build, log);
+    }
+    let summary = format!(
+        "regen PR for {} opened for review ({}): {url}",
+        build.label,
+        blockers.join("; ")
+    );
     windows::notify(&format!("Bindings for {}", build.label), &summary);
     Ok(summary)
+}
+
+const AUTO_MERGE_LABEL: &str = "auto-merge";
+
+/// How long to wait for GitHub CI on a regen PR. CI takes about ten
+/// minutes; a run that gives up leaves the PR to the next run.
+const CI_WAIT: Duration = Duration::from_secs(45 * 60);
+
+/// The GitHub check that must pass before a regen merges itself. If CI is
+/// renamed, auto-merge times out and the PR waits for review: fail closed.
+const REQUIRED_CHECK: &str = "ci / check";
+
+/// Wait for GitHub CI on an auto-merge PR, then squash-merge it. Merges
+/// only `pushed`, the commit this run (or the interrupted one) pushed: a PR
+/// whose head moved, or one from a fork, is left alone whatever its label.
+/// The label is the off switch, so it is read again right before merging.
+fn land(dir: &Path, url: &str, pushed: &str, build: &Build, log: &File) -> Result<String, String> {
+    info!(pr = url, "waiting for GitHub CI");
+    match wait_for_ci(dir, url) {
+        Ci::Passed => {}
+        Ci::Failed => {
+            // Drop the label so later runs don't wait on the same failure.
+            let _ = capture(
+                Command::new("gh")
+                    .args(["pr", "edit", url, "--remove-label", AUTO_MERGE_LABEL])
+                    .current_dir(dir),
+            );
+            let summary = format!(
+                "regen PR for {}: GitHub CI failed, left for review: {url}",
+                build.label
+            );
+            windows::notify(&format!("Bindings for {}", build.label), &summary);
+            return Ok(summary);
+        }
+        Ci::TimedOut => {
+            return Ok(format!(
+                "regen PR for {}: GitHub CI still running; the next run merges it: {url}",
+                build.label
+            ));
+        }
+    }
+    let Some(pr) = view_pr(dir, url)? else {
+        return Err(format!("{url} vanished while waiting for CI"));
+    };
+    if !(pr.open && pr.auto_merge && !pr.draft) {
+        return Ok(format!(
+            "regen PR for {} is no longer marked {AUTO_MERGE_LABEL}; left for review: {url}",
+            build.label
+        ));
+    }
+    if pr.fork || pr.head != pushed {
+        return Ok(format!(
+            "regen PR for {} no longer points at the pushed commit {pushed}; left for review: {url}",
+            build.label
+        ));
+    }
+    // `--match-head-commit` makes GitHub refuse the merge if the head moved
+    // after the check above.
+    capture(
+        Command::new("gh")
+            .args([
+                "pr",
+                "merge",
+                url,
+                "--squash",
+                "--match-head-commit",
+                pushed,
+            ])
+            .current_dir(dir),
+    )?;
+    // Not `gh pr merge --delete-branch`: that also switches the local
+    // checkout to `main`, which the development checkout holds.
+    if let Err(e) = git(
+        dir,
+        &["push", "--quiet", "origin", "--delete", &build.branch()],
+        log,
+    ) {
+        warn!("deleting the merged branch: {e}");
+    }
+    let summary = format!(
+        "regen PR for {} merged; the release workflow tags and releases it: {url}",
+        build.label
+    );
+    windows::notify(&format!("Bindings for {}", build.label), &summary);
+    Ok(summary)
+}
+
+enum Ci {
+    Passed,
+    Failed,
+    TimedOut,
+}
+
+/// Poll the PR's checks every 30 s until [`ci_verdict`] decides.
+fn wait_for_ci(dir: &Path, url: &str) -> Ci {
+    let deadline = Instant::now() + CI_WAIT;
+    loop {
+        // `gh pr checks` exits non-zero while checks are pending or failing,
+        // so read the output whatever the status.
+        let checks = Command::new("gh")
+            .args(["pr", "checks", url, "--json", "bucket,name"])
+            .args(["--jq", r#".[] | "\(.bucket) \(.name)""#])
+            .current_dir(dir)
+            .output()
+            .map(|o| String::from_utf8_lossy(&o.stdout).into_owned())
+            .unwrap_or_default();
+        if let Some(verdict) = ci_verdict(&checks) {
+            return verdict;
+        }
+        if Instant::now() >= deadline {
+            return Ci::TimedOut;
+        }
+        std::thread::sleep(Duration::from_secs(30));
+    }
+}
+
+/// Decide from `gh pr checks` lines (`<bucket> <name>`): any failure fails;
+/// a pass needs [`REQUIRED_CHECK`] to have passed and nothing pending. No
+/// checks yet, or only skipped ones, is undecided (`None`), never a pass.
+fn ci_verdict(checks: &str) -> Option<Ci> {
+    let checks: Vec<(&str, &str)> = checks
+        .lines()
+        .filter_map(|l| l.trim().split_once(' '))
+        .collect();
+    if checks.iter().any(|(b, _)| matches!(*b, "fail" | "cancel")) {
+        return Some(Ci::Failed);
+    }
+    let pending = checks.iter().any(|(b, _)| *b == "pending");
+    let required = checks
+        .iter()
+        .any(|(b, n)| *b == "pass" && *n == REQUIRED_CHECK);
+    (required && !pending).then_some(Ci::Passed)
+}
+
+/// Create the label if the repo lacks it (`--force` makes this idempotent).
+fn ensure_auto_merge_label(dir: &Path) -> Result<(), String> {
+    capture(
+        Command::new("gh")
+            .args(["label", "create", AUTO_MERGE_LABEL, "--force"])
+            .args(["--color", "0E8A16"])
+            .args(["--description", "sc-regen merges this once CI passes"])
+            .current_dir(dir),
+    )
+    .map(drop)
 }
 
 fn schedule(repo: &Path) -> Result<(), String> {
@@ -427,17 +616,59 @@ fn newest_datacore_tag(repo: &Path) -> Result<Option<(String, u64)>, String> {
         .max_by_key(|(_, cl)| *cl))
 }
 
-/// Any PR, in any state, whose head is `branch`. A closed one counts too:
-/// rejecting a regen PR must not bring it back every three hours.
-fn existing_pr(repo: &Path, branch: &str) -> Result<Option<String>, String> {
+/// A regen PR as `gh` reports it.
+struct Pr {
+    url: String,
+    open: bool,
+    draft: bool,
+    auto_merge: bool,
+    /// The head commit.
+    head: String,
+    /// Opened from a fork rather than a branch of this repo.
+    fork: bool,
+}
+
+const PR_FIELDS: &str = "url,state,isDraft,labels,headRefOid,isCrossRepository";
+
+/// One PR as a line `url state isDraft has-label head fork`.
+const PR_JQ: &str = r#""\(.url) \(.state) \(.isDraft) \(any(.labels[]; .name == "auto-merge")) \(.headRefOid) \(.isCrossRepository)""#;
+
+impl Pr {
+    fn parse(line: &str) -> Option<Pr> {
+        let mut fields = line.split_whitespace();
+        Some(Pr {
+            url: fields.next()?.to_string(),
+            open: fields.next()? == "OPEN",
+            draft: fields.next()? == "true",
+            auto_merge: fields.next()? == "true",
+            head: fields.next()?.to_string(),
+            fork: fields.next()? == "true",
+        })
+    }
+}
+
+/// Any PR, in any state, from this repo's `branch`. A closed one counts
+/// too: rejecting a regen PR must not bring it back every three hours. PRs
+/// from forks are ignored: anyone can name a fork branch `regen/<label>`.
+fn find_pr(repo: &Path, branch: &str) -> Result<Option<Pr>, String> {
+    let jq = format!("map(select(.isCrossRepository | not)) | .[0] | select(. != null) | {PR_JQ}");
     let out = capture(
         Command::new("gh")
             .args(["pr", "list", "--state", "all", "--head", branch])
-            .args(["--json", "url", "--jq", ".[0].url"])
+            .args(["--json", PR_FIELDS, "--jq", &jq])
             .current_dir(repo),
     )?;
-    let url = out.trim();
-    Ok((!url.is_empty()).then(|| url.to_string()))
+    Ok(Pr::parse(&out))
+}
+
+fn view_pr(dir: &Path, url: &str) -> Result<Option<Pr>, String> {
+    let out = capture(
+        Command::new("gh")
+            .args(["pr", "view", url])
+            .args(["--json", PR_FIELDS, "--jq", PR_JQ])
+            .current_dir(dir),
+    )?;
+    Ok(Pr::parse(&out))
 }
 
 /// Create the worktree on first use, then reset it to `origin/main` on a
@@ -597,5 +828,37 @@ impl Lock {
 impl Drop for Lock {
     fn drop(&mut self) {
         let _ = std::fs::remove_file(&self.0);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parses_the_pr_line() {
+        let pr = Pr::parse("https://github.com/o/r/pull/2 OPEN false true abc123 false\n").unwrap();
+        assert_eq!(pr.url, "https://github.com/o/r/pull/2");
+        assert_eq!(pr.head, "abc123");
+        assert!(pr.open && !pr.draft && pr.auto_merge && !pr.fork);
+        let fork = Pr::parse("https://github.com/o/r/pull/2 MERGED false false abc true").unwrap();
+        assert!(!fork.open && !fork.auto_merge && fork.fork);
+        assert!(Pr::parse("").is_none());
+        assert!(Pr::parse("https://github.com/o/r/pull/2 OPEN false true").is_none());
+    }
+
+    #[test]
+    fn ci_passes_only_on_the_required_check() {
+        let pass = |s| matches!(ci_verdict(s), Some(Ci::Passed));
+        let fail = |s| matches!(ci_verdict(s), Some(Ci::Failed));
+        assert!(pass("pass ci / check\n"));
+        assert!(pass("pass ci / check\nskipping other\n"));
+        // Nothing yet, only skipped, or another check alone: undecided.
+        assert!(ci_verdict("").is_none());
+        assert!(ci_verdict("skipping ci / check\n").is_none());
+        assert!(ci_verdict("pass lint\n").is_none());
+        assert!(ci_verdict("pass ci / check\npending other\n").is_none());
+        assert!(fail("pass ci / check\nfail other\n"));
+        assert!(fail("cancel ci / check\n"));
     }
 }

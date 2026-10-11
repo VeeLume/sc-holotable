@@ -73,7 +73,57 @@ pub struct BuildInfo<'a> {
     pub previous_tag: Option<&'a str>,
 }
 
-pub fn pr_body(build: &BuildInfo, before: &Bindings, after: &Bindings, checks: &[Check]) -> String {
+/// Why a regen must wait for a human instead of merging itself; empty when
+/// it may merge once GitHub CI passes. Removed record types make the release
+/// `0.X.0` and can break consumers; drifting buckets mean the classifier
+/// needs a look (CLAUDE.md, *Generated code and feature gating*).
+pub fn auto_merge_blockers(
+    live: bool,
+    before: &Bindings,
+    after: &Bindings,
+    checks: &[Check],
+) -> Vec<String> {
+    let mut blockers = Vec::new();
+    if !live {
+        blockers.push("not a LIVE or hotfix build".to_string());
+    }
+    for check in checks.iter().filter(|c| !c.passed) {
+        blockers.push(format!("`{}` failed", check.name));
+    }
+    let removed = removed_record_types(before, after);
+    if !removed.is_empty() {
+        blockers.push(format!("record types removed: {}", names(&removed)));
+    }
+    // More than 10% growth in `core/`, or more than 25% shrinkage in `dormant/`.
+    if after.core * 10 > before.core * 11 {
+        blockers.push(format!(
+            "`core/` grew from {} to {} types",
+            before.core, after.core
+        ));
+    }
+    if after.dormant * 4 < before.dormant * 3 {
+        blockers.push(format!(
+            "`dormant/` shrank from {} to {} types",
+            before.dormant, after.dormant
+        ));
+    }
+    blockers
+}
+
+fn removed_record_types<'a>(before: &'a Bindings, after: &'a Bindings) -> Vec<&'a String> {
+    before
+        .record_types
+        .difference(&after.record_types)
+        .collect()
+}
+
+pub fn pr_body(
+    build: &BuildInfo,
+    before: &Bindings,
+    after: &Bindings,
+    checks: &[Check],
+    blockers: &[String],
+) -> String {
     let mut out = String::new();
     let previous = build
         .previous_tag
@@ -116,10 +166,7 @@ pub fn pr_body(build: &BuildInfo, before: &Bindings, after: &Bindings, checks: &
         .record_types
         .difference(&before.record_types)
         .collect();
-    let removed: Vec<&String> = before
-        .record_types
-        .difference(&after.record_types)
-        .collect();
+    let removed = removed_record_types(before, after);
     let _ = writeln!(
         out,
         "**Record types added ({}):** {}",
@@ -157,6 +204,20 @@ pub fn pr_body(build: &BuildInfo, before: &Bindings, after: &Bindings, checks: &
             check.name,
             check.tail.trim_end()
         );
+    }
+    out.push_str("\n### Merge\n\n");
+    if blockers.is_empty() {
+        out.push_str(
+            "`sc-regen` merges this once GitHub CI passes; the release workflow then \
+             tags `datacore/*` and cuts the `sc-holotable/v*` release. Remove the \
+             `auto-merge` label to stop it.\n",
+        );
+    } else {
+        out.push_str("Left for review:\n\n");
+        for blocker in blockers {
+            let _ = writeln!(out, "- {blocker}");
+        }
+        out.push_str("\nMerging it by hand still tags `datacore/*` and cuts the release.\n");
     }
     out.push_str("\nOpened by `sc-regen`.\n");
     out
@@ -215,5 +276,47 @@ mod tests {
             "pub const STRUCT_COUNT: usize = 6696;\npub const ENUM_COUNT: usize = 774;\n";
         assert_eq!(metadata_count(metadata, "STRUCT_COUNT"), 6696);
         assert_eq!(metadata_count(metadata, "ENUM_COUNT"), 774);
+    }
+
+    fn bindings(record_types: &[&str], core: usize, dormant: usize) -> Bindings {
+        Bindings {
+            record_types: record_types.iter().map(|s| s.to_string()).collect(),
+            structs: 0,
+            enums: 0,
+            core,
+            multi_feature: 0,
+            dormant,
+            leaf: 0,
+            leaf_features: 0,
+        }
+    }
+
+    #[test]
+    fn auto_merge_only_for_a_clean_live_regen() {
+        let before = bindings(&["A", "B"], 100, 100);
+        let pass = [Check {
+            name: "t".into(),
+            passed: true,
+            tail: String::new(),
+        }];
+        let fail = [Check {
+            name: "t".into(),
+            passed: false,
+            tail: String::new(),
+        }];
+
+        // Added types and modest bucket movement are fine.
+        let grown = bindings(&["A", "B", "C"], 110, 75);
+        assert!(auto_merge_blockers(true, &before, &grown, &pass).is_empty());
+
+        assert_eq!(auto_merge_blockers(false, &before, &grown, &pass).len(), 1);
+        assert_eq!(auto_merge_blockers(true, &before, &grown, &fail).len(), 1);
+        let removed = bindings(&["A"], 100, 100);
+        assert_eq!(
+            auto_merge_blockers(true, &before, &removed, &pass),
+            ["record types removed: `B`"]
+        );
+        let drifted = bindings(&["A", "B"], 111, 74);
+        assert_eq!(auto_merge_blockers(true, &before, &drifted, &pass).len(), 2);
     }
 }
