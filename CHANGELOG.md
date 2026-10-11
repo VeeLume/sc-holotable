@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.18.0] - 2026-10-11
+
 ### Added
 
 - **`sc-extract`: stale bindings are visible in release builds.**
