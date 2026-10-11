@@ -149,7 +149,8 @@ pub fn pr_body(build: &BuildInfo, before: &Bindings, after: &Bindings, checks: &
         let mark = if check.passed { "pass" } else { "**FAIL**" };
         let _ = writeln!(out, "- {mark}: `{}`", check.name);
     }
-    for check in checks {
+    // A passing check's tail is a list of test binaries; only failures say anything.
+    for check in checks.iter().filter(|c| !c.passed) {
         let _ = writeln!(
             out,
             "\n<details><summary>{} output (tail)</summary>\n\n```text\n{}\n```\n</details>",
