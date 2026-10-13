@@ -78,3 +78,7 @@ tempfile = "3"
 [[example]]
 name = "foundations_snapshot"
 required-features = ["full"]
+
+[[example]]
+name = "ship_threat_census"
+required-features = ["full"]
