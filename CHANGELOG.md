@@ -52,8 +52,15 @@ pinned. Both tag kinds are monotonic and immutable.
   `cracks_to_collect` / `collectable_pieces`), and
   `RockType::geometries_for(&Tags, geometry_tags)` (which meshes a provider
   entry spawns). `Spawner` rolls rocks as the client does and `Survey`
-  summarises how a setup fares on them. Checked against a fractured iron
-  asteroid's six pieces (`mining_mesh_probe`, `mining_spawn_probe`).
+  summarises how a setup fares on them, the pieces of a fracture included.
+  `Spawn::fracture` / `fracture_odds` split a rock's elements across its
+  pieces as the client does; `Composition::roll_with_quality` with a
+  `QualityRoll` rolls each entry's quality (`Entry::quality`), and
+  `Composition::odds` gives each part's chance and share. Sampling functions
+  take a `seed` that picks one draw (the game seeds per spawn location at
+  runtime); the odds functions take none. Checked against a fractured iron
+  asteroid's pieces and the scanned qualities (`mining_mesh_probe`,
+  `mining_spawn_probe`, `mining_fracture_probe`, `mining_quality_probe`).
 - **`sc-extract`: `Mesh`.** `Mesh::read(&AssetSource, path)` reads an IVO
   geometry file's node tree with the volume each node's triangles enclose.
 

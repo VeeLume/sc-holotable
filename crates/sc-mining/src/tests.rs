@@ -106,14 +106,17 @@ fn scmdb_worked_example() {
         Entry {
             element: guid(1),
             fraction: 0.183,
+            quality: None,
         },
         Entry {
             element: guid(1),
             fraction: 0.709,
+            quality: None,
         },
         Entry {
             element: guid(2),
             fraction: 0.108,
+            quality: None,
         },
     ];
     let rock = Rock::from_mass(&ship(), &elements, &entries, 69259.0).expect("rock");
@@ -140,10 +143,12 @@ fn resistance_sign_split() {
         Entry {
             element: guid(1),
             fraction: 0.5,
+            quality: None,
         },
         Entry {
             element: guid(2),
             fraction: 0.5,
+            quality: None,
         },
     ];
     let rock = Rock::from_volume(&ship(), &elements, &entries, 1000.0).expect("rock");
@@ -163,6 +168,7 @@ fn window_size_and_modifier() {
     let entries = [Entry {
         element: guid(1),
         fraction: 1.0,
+        quality: None,
     }];
     let rock = Rock::from_volume(&ship(), &elements, &entries, 1000.0).expect("rock");
     assert!(close(rock.window.size(), 0.025, 1e-4));
@@ -181,6 +187,7 @@ fn mass_and_scu() {
     let entries = [Entry {
         element: guid(1),
         fraction: 0.25,
+        quality: None,
     }];
     let rock = Rock::from_volume(&ship(), &elements, &entries, 1000.0).expect("rock");
     assert!(close(rock.mass, 1000.0 * (0.25 * 4.0 + 0.75), 1e-6));
@@ -197,6 +204,7 @@ fn modifiers_and_owners() {
     let entries = [Entry {
         element: guid(1),
         fraction: 1.0,
+        quality: None,
     }];
     let ruleset = ship();
     let rock = Rock::from_volume(&ruleset, &elements, &entries, 5122.499).expect("rock");
@@ -292,6 +300,7 @@ fn simulation_matches_threshold() {
     let entries = [Entry {
         element: guid(1),
         fraction: 1.0,
+        quality: None,
     }];
     let setup = Setup {
         lasers: vec![laser(2000.0, MiningModifiers::default())],
@@ -322,6 +331,7 @@ fn balance_throttle_holds() {
     let entries = [Entry {
         element: guid(1),
         fraction: 0.8,
+        quality: None,
     }];
     let rock = Rock::from_mass(&ruleset, &elements, &entries, 5000.0).expect("rock");
     let mined = ModifiedRock::new(
@@ -396,6 +406,7 @@ fn difficulty_orders_rocks() {
         let entries = [Entry {
             element: guid(n),
             fraction: 0.7,
+            quality: None,
         }];
         let rock = Rock::from_mass(&ruleset, &elements, &entries, 8000.0).expect("rock");
         let mined = ModifiedRock::new(&ruleset, &rock, &setup);

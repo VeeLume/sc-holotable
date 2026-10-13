@@ -200,7 +200,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             compositions: &compositions,
             shapes: &meshes,
         };
-        let survey = spawner.survey(&golem, 5000, 1);
+        let survey = spawner.survey(&golem, 5000);
         println!("{label} ({}):\n  {survey:?}", name(guid));
     }
     Ok(())

@@ -12,6 +12,8 @@ use crate::{Elements, Ruleset};
 pub struct Entry {
     pub element: Guid,
     pub fraction: f32,
+    /// The entry's quality (0..1000), when known.
+    pub quality: Option<u16>,
 }
 
 /// The optimal charge window, as fractions of the charge bar.

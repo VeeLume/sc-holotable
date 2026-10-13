@@ -40,7 +40,7 @@
 //!     rulesets.values().next().ok_or("no ruleset")?,
 //!     elements.values().next().ok_or("no element")?,
 //! );
-//! let entries = [Entry { element: element.guid, fraction: 0.6 }];
+//! let entries = [Entry { element: element.guid, fraction: 0.6, quality: None }];
 //! let rock = Rock::from_mass(ruleset, &elements, &entries, 9000.0).ok_or("no density")?;
 //! let items = sc_items::Items::build(datacore.records());
 //! let weapons = sc_items_ship_weapons::ShipWeapons::build(&datacore, &items);
@@ -57,6 +57,8 @@
 
 mod composition;
 mod element;
+mod fracture;
+mod quality;
 mod rock;
 mod rock_type;
 mod ruleset;
@@ -67,8 +69,10 @@ mod spawn;
 #[cfg(test)]
 mod tests;
 
-pub use composition::{Composition, Compositions, Part};
+pub use composition::{Composition, Compositions, Part, PartOdds};
 pub use element::{Element, Elements};
+pub use fracture::{EntryOdds, PieceOdds};
+pub use quality::QualityRoll;
 pub use rock::{Entry, Rock, Window};
 pub use rock_type::{Geometry, RockType, RockTypes};
 pub use ruleset::{HitConsistency, Ruleset, Rulesets};

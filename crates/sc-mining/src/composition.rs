@@ -6,8 +6,8 @@ use std::collections::{BTreeSet, HashMap};
 use sc_extract::{Datacore, Guid, LocaleKey, RecordCollection};
 use serde::{Deserialize, Serialize};
 
-use crate::Entry;
 use crate::sim::Rng;
+use crate::{Entry, QualityRoll, Quantiles};
 
 /// One `MineableComposition`: the parts a rock of this kind can contain.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -38,18 +38,70 @@ pub struct Part {
 
 impl Composition {
     /// Roll one rock's composition, as the client does at spawn (LIVE 4.10):
-    /// each part in order is in with its `probability`, at `min + (max - min)
-    /// * u^curveExponent` percent, and dropped if it would take the total over
-    /// 100 %; then, while fewer than `minimumDistinctElements` parts are in,
+    /// each part in order is in with its `probability`, at
+    /// `min + (max - min) * u^curveExponent` percent, and dropped if it would
+    /// take the total over 100 %; then, while fewer than `minimumDistinctElements` parts are in,
     /// one more is picked among the rest weighted by `probability`, stopping
     /// at the first that does not fit. Not normalised: the rest is inert.
-    /// The client seeds per spawn location; `seed` stands in for that.
+    ///
+    /// One draw: `seed` picks it (same seed, same rock). It is not the game's
+    /// seed: the client seeds each rock from its spawn location id, which
+    /// exists only at runtime, so no tool can predict a particular rock; for
+    /// the odds use [`odds`](Self::odds). Entries carry no quality; see
+    /// [`roll_with_quality`](Self::roll_with_quality).
     pub fn roll(&self, seed: u64) -> Vec<Entry> {
+        self.roll_parts(&mut Rng::new(seed))
+            .into_iter()
+            .map(|(entry, _)| entry)
+            .collect()
+    }
+
+    /// [`roll`](Self::roll), then each entry's quality from the same stream
+    /// (one independent roll per entry, scaled by its part's `qualityScale`;
+    /// see [`QualityRoll`]).
+    pub fn roll_with_quality(&self, seed: u64, quality: &QualityRoll<'_>) -> Vec<Entry> {
         let mut rng = Rng::new(seed);
+        let mut entries = self.roll_parts(&mut rng);
+        for (entry, part) in &mut entries {
+            entry.quality = quality.roll(&entry.element, self.parts[*part].quality_scale, &mut rng);
+        }
+        entries.into_iter().map(|(entry, _)| entry).collect()
+    }
+
+    /// Each part's odds over `runs` rolls: how often it is in a rock and the
+    /// share it has when it is.
+    pub fn odds(&self, runs: u32) -> Vec<PartOdds> {
+        let mut shares: Vec<Vec<f32>> = vec![Vec::new(); self.parts.len()];
+        for seed in 0..u64::from(runs) {
+            for (entry, part) in self.roll_parts(&mut Rng::new(seed)) {
+                shares[part].push(entry.fraction);
+            }
+        }
+        let runs = runs.max(1) as f32;
+        self.parts
+            .iter()
+            .zip(shares)
+            .map(|(part, s)| PartOdds {
+                element: part.element,
+                quality_scale: part.quality_scale,
+                chance: s.len() as f32 / runs,
+                mean_share: if s.is_empty() {
+                    0.0
+                } else {
+                    s.iter().sum::<f32>() / s.len() as f32
+                },
+                share: Quantiles::of(s),
+            })
+            .collect()
+    }
+
+    /// The rolled entries with the index of the part each came from.
+    fn roll_parts(&self, rng: &mut Rng) -> Vec<(Entry, usize)> {
         let mut total = 0.0f32;
         let mut chosen = BTreeSet::new();
         let mut entries = Vec::new();
-        let take = |part: &Part, rng: &mut Rng, total: &mut f32, entries: &mut Vec<Entry>| {
+        let take = |i: usize, rng: &mut Rng, total: &mut f32, entries: &mut Vec<(Entry, usize)>| {
+            let part = &self.parts[i];
             let pct = part.min_percentage
                 + (part.max_percentage - part.min_percentage)
                     * rng.unit().powf(part.curve_exponent);
@@ -58,15 +110,19 @@ impl Composition {
             }
             *total += pct;
             if let Some(element) = part.element {
-                entries.push(Entry {
-                    element,
-                    fraction: pct / 100.0,
-                });
+                entries.push((
+                    Entry {
+                        element,
+                        fraction: pct / 100.0,
+                        quality: None,
+                    },
+                    i,
+                ));
             }
             true
         };
         for (i, part) in self.parts.iter().enumerate() {
-            if rng.unit() <= part.probability && take(part, &mut rng, &mut total, &mut entries) {
+            if rng.unit() <= part.probability && take(i, rng, &mut total, &mut entries) {
                 chosen.insert(i);
             }
         }
@@ -86,13 +142,25 @@ impl Composition {
             }) else {
                 break;
             };
-            if !take(&self.parts[pick], &mut rng, &mut total, &mut entries) {
+            if !take(pick, rng, &mut total, &mut entries) {
                 break;
             }
             chosen.insert(pick);
         }
         entries
     }
+}
+
+/// One part's odds (see [`Composition::odds`]).
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct PartOdds {
+    pub element: Option<Guid>,
+    pub quality_scale: f32,
+    /// Chance the part is in a rock.
+    pub chance: f32,
+    /// Its share of the rock's volume (0..1) when it is in.
+    pub share: Quantiles,
+    pub mean_share: f32,
 }
 
 /// Every `MineableComposition`, keyed by GUID.

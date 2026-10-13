@@ -86,6 +86,9 @@ impl Spawner<'_> {
     /// Roll one rock as the client does at spawn: a scale uniform in the
     /// type's range, a mesh, a composition. `None` without a mesh or a
     /// composition, or when an element lacks a density.
+    ///
+    /// One draw, picked by `seed` (not the game's seed, which comes from the
+    /// spawn location at runtime); for odds use [`survey`](Self::survey).
     pub fn spawn(&self, seed: u64) -> Option<Spawn> {
         let mut rng = Rng::new(seed);
         let t = self.rock_type;
@@ -101,16 +104,15 @@ impl Spawner<'_> {
         Some(Spawn { scale, shape, rock })
     }
 
-    /// `runs` rocks (seeds `seed`, `seed + 1`, …).
-    pub fn spawns(&self, runs: u32, seed: u64) -> Vec<Spawn> {
-        (0..runs)
-            .filter_map(|i| self.spawn(seed.wrapping_add(u64::from(i))))
-            .collect()
+    /// `runs` rocks (draws `0..runs`): a deterministic sample of the type.
+    pub fn spawns(&self, runs: u32) -> Vec<Spawn> {
+        (0..u64::from(runs)).filter_map(|i| self.spawn(i)).collect()
     }
 
-    /// How `setup` fares on `runs` rolled rocks of this type.
-    pub fn survey(&self, setup: &Setup, runs: u32, seed: u64) -> Survey {
-        Survey::of(&self.spawns(runs, seed), self.ruleset, setup)
+    /// How `setup` fares on this rock type, over `runs` rolled rocks (a few
+    /// thousand give shares to about a percent).
+    pub fn survey(&self, setup: &Setup, runs: u32) -> Survey {
+        Survey::of(&self.spawns(runs), self.ruleset, self.elements, setup)
     }
 }
 
@@ -129,6 +131,10 @@ pub struct Survey {
     pub cracks: Quantiles,
     /// Over the breakable rocks: their balance throttle.
     pub balance_throttle: Quantiles,
+    /// Over the pieces a fracture of a breakable rock leaves that are still
+    /// too big to collect: the share the setup can break in turn (pieces get
+    /// their composition by [`Spawn::fracture`]).
+    pub pieces_breakable: f32,
 }
 
 /// 10th / 50th / 90th percentile; `NaN` when empty.
@@ -159,13 +165,28 @@ impl Quantiles {
 }
 
 impl Survey {
-    pub fn of(spawns: &[Spawn], ruleset: &Ruleset, setup: &Setup) -> Self {
+    pub fn of(spawns: &[Spawn], ruleset: &Ruleset, elements: &Elements, setup: &Setup) -> Self {
         let n = spawns.len().max(1) as f32;
         let mined: Vec<ModifiedRock> = spawns
             .iter()
             .map(|s| ModifiedRock::new(ruleset, &s.rock, setup))
             .collect();
         let share = |count: usize| count as f32 / n;
+        let (mut pieces, mut pieces_ok) = (0usize, 0usize);
+        for (i, (spawn, m)) in spawns.iter().zip(&mined).enumerate() {
+            if !m.is_breakable(ruleset) || spawn.rock.is_absorbable(ruleset) {
+                continue;
+            }
+            for piece in spawn.fracture(ruleset, elements, m.cluster_factor, i as u64) {
+                if piece.rock.is_absorbable(ruleset) {
+                    continue;
+                }
+                pieces += 1;
+                if ModifiedRock::new(ruleset, &piece.rock, setup).is_breakable(ruleset) {
+                    pieces_ok += 1;
+                }
+            }
+        }
         Self {
             rocks: spawns.len() as u32,
             breakable: share(mined.iter().filter(|m| m.is_breakable(ruleset)).count()),
@@ -190,6 +211,11 @@ impl Survey {
                     .filter_map(|m| m.balance_throttle(ruleset))
                     .collect(),
             ),
+            pieces_breakable: if pieces > 0 {
+                pieces_ok as f32 / pieces as f32
+            } else {
+                1.0
+            },
         }
     }
 }
