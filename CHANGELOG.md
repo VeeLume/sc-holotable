@@ -44,11 +44,26 @@ pinned. Both tag kinds are monotonic and immutable.
   times with a `Player` model. `Laser::extraction_scu_per_s` gives extraction
   speed. Checked against in-game scans and Mort13's Breakability Chart
   (`mining_rocks_probe`).
+- **`sc-mining`: rock spawns and fracture trees.** `RockTypes::build`
+  (every `HarvestablePreset` mineable: scale range, meshes, composition),
+  `Compositions::build` (`MineableComposition` with `Composition::roll`, the
+  client's spawn roll), `Shapes::build(&AssetSource, &RockTypes)` (each
+  rock mesh's `Shape`: the pieces it breaks into and theirs, with
+  `cracks_to_collect` / `collectable_pieces`), and
+  `RockType::geometries_for(&Tags, geometry_tags)` (which meshes a provider
+  entry spawns). `Spawner` rolls rocks as the client does and `Survey`
+  summarises how a setup fares on them. Checked against a fractured iron
+  asteroid's six pieces (`mining_mesh_probe`, `mining_spawn_probe`).
+- **`sc-extract`: `Mesh`.** `Mesh::read(&AssetSource, path)` reads an IVO
+  geometry file's node tree with the volume each node's triangles enclose.
 
 ### Changed
 
 - **`sc-items-ship-weapons`: `ShipWeaponStats` has a new `mining` field**
   (`None` for guns). Code that builds the struct with a literal must add it.
+- **`sc-gathering`: `GatherableElement` has a new `geometry_tags` field**
+  (the provider entry's model tags, which pick the rock's mesh). Code that
+  builds the struct with a literal must add it.
 
 ## [v0.18.1] - 2026-10-13
 

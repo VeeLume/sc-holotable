@@ -424,11 +424,11 @@ impl Wave {
     }
 }
 
-/// SplitMix64: small, seedable, good enough for wave draws.
-struct Rng(u64);
+/// SplitMix64: small, seedable, good enough for wave and spawn draws.
+pub(crate) struct Rng(u64);
 
 impl Rng {
-    fn new(seed: u64) -> Self {
+    pub(crate) fn new(seed: u64) -> Self {
         Self(seed)
     }
 
@@ -441,7 +441,7 @@ impl Rng {
     }
 
     /// Uniform in [0, 1).
-    fn unit(&mut self) -> f32 {
+    pub(crate) fn unit(&mut self) -> f32 {
         (self.next() >> 40) as f32 / (1u64 << 24) as f32
     }
 }

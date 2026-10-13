@@ -406,3 +406,66 @@ fn difficulty_orders_rocks() {
     assert!(easy.controlled > 0.9 && easy.mean_danger < 0.05, "{easy:?}");
     assert!(wild.overcharged > easy.overcharged, "{easy:?} vs {wild:?}");
 }
+
+/// The composition roll: every part with probability 1 is in, shares stay in
+/// range, the total never passes 100 %, and missing parts are forced up to
+/// the minimum count.
+#[test]
+fn composition_roll() {
+    let part = |n, min, max, probability| Part {
+        element: Some(guid(n)),
+        min_percentage: min,
+        max_percentage: max,
+        probability,
+        curve_exponent: 1.0,
+        quality_scale: 1.0,
+    };
+    let composition = Composition {
+        guid: Guid::default(),
+        deposit_name: Default::default(),
+        minimum_distinct_elements: 2,
+        // The forced parts always fit (a forced part that would pass 100 %
+        // stops the forcing, as in the client).
+        parts: vec![
+            part(1, 30.0, 70.0, 1.0),
+            part(2, 10.0, 15.0, 0.01),
+            part(3, 10.0, 15.0, 0.01),
+        ],
+    };
+    for seed in 0..200 {
+        let entries = composition.roll(seed);
+        assert!(entries.len() >= 2, "{entries:?}");
+        assert_eq!(entries[0].element, guid(1));
+        assert!((0.3..=0.7).contains(&entries[0].fraction));
+        assert!(entries.iter().map(|e| e.fraction).sum::<f32>() <= 1.0 + 1e-6);
+    }
+}
+
+/// Fracture tree: scaling by s multiplies every volume by s³; cracks count
+/// the rock and each uncollectable piece.
+#[test]
+fn shape_cracks() {
+    let leaf = |v| Piece {
+        volume: v,
+        pieces: vec![],
+    };
+    let shape = Shape {
+        path: "rock.cgf".into(),
+        volume: 1000.0,
+        pieces: vec![
+            Piece {
+                volume: 600.0,
+                pieces: vec![leaf(300.0), leaf(290.0)],
+            },
+            leaf(300.0),
+        ],
+    };
+    let ruleset = ship();
+    assert_eq!(shape.cracks_to_collect(&ruleset), Some(2));
+    assert_eq!(shape.collectable_pieces(&ruleset), [300.0, 290.0, 300.0]);
+    let small = shape.scaled(0.5);
+    assert!((small.volume - 125.0).abs() < 1e-3);
+    assert_eq!(small.cracks_to_collect(&ruleset), Some(0));
+    let big = shape.scaled(1.2);
+    assert_eq!(big.cracks_to_collect(&ruleset), None); // 300 * 1.728 m³ leaves
+}

@@ -53,8 +53,9 @@ ship-components = ["dep:sc-items-ship-components", "extract", "items"]
 ship-weapons = ["dep:sc-items-ship-weapons", "extract", "items"]
 mining-items = ["dep:sc-items-mining", "extract", "items"]
 # Rock-side mining maths: rulesets, elements, rock properties, breakability,
-# the charge simulation; reads laser, module and gadget stats.
-mining = ["dep:sc-mining", "extract", "resources", "ship-weapons", "mining-items"]
+# the charge simulation, rock spawns and fracture trees; reads laser, module
+# and gadget stats.
+mining = ["dep:sc-mining", "extract", "resources", "tags", "ship-weapons", "mining-items"]
 crafting = ["dep:sc-crafting", "extract", "items", "resources", "fps-weapons", "armor", "ship-components", "ship-weapons"]
 # sc-gathering self-enables its sc-extract leaf features (harvestable / mining /
 # entities-mineable); the umbrella pulls the crate + the location surface it joins.

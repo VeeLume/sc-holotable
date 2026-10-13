@@ -78,6 +78,12 @@ pub enum Error {
     #[error("unrecognized object-container format: {0}")]
     ObjectContainerFormat(String),
 
+    // ── Geometry ─────────────────────────────────────────────────────────
+    /// An IVO geometry file (`.cgf` / `.cga` and its `m` companion) was
+    /// malformed or lacked the chunk asked for.
+    #[error("malformed IVO geometry: {0}")]
+    Mesh(String),
+
     // ── DCB parse ────────────────────────────────────────────────────────
     /// `Game2.dcb` could not be located inside the P4K archive.
     #[error("Game2.dcb not found inside P4K archive")]

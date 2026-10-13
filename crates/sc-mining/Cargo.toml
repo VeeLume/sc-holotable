@@ -6,11 +6,17 @@ rust-version.workspace = true
 
 [dependencies]
 # Domain crate: the rock side of mining and its maths. Rulesets
-# (`MiningGlobalParams`) and elements (`MineableElement`) are typed `mining`
-# records; densities join through sc-resources; laser, module and gadget
+# (`MiningGlobalParams`), elements and compositions are typed `mining`
+# records, rock types the `harvestable` presets of `entities-mineable` rocks; densities join through sc-resources; laser, module and gadget
 # stats come from the two item crates.
-sc-extract = { workspace = true, features = ["mining", "resourcetypedatabase"] }
+sc-extract = { workspace = true, features = [
+    "mining",
+    "resourcetypedatabase",
+    "harvestable",
+    "entities-mineable",
+] }
 sc-resources = { workspace = true }
+sc-tags = { workspace = true }
 sc-items-mining = { workspace = true }
 sc-items-ship-weapons = { workspace = true }
 serde = { workspace = true }
@@ -19,3 +25,5 @@ tracing = { workspace = true }
 [dev-dependencies]
 sc-discovery = { workspace = true }
 sc-items = { workspace = true }
+# mining_spawn_probe: provider entries (geometry tags) for the rock types.
+sc-gathering = { workspace = true }
