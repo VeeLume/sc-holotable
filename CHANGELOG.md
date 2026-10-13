@@ -13,6 +13,31 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-items-mining`: mining modules and gadgets** (umbrella feature
+  `mining-items`, module `mining_items`). `MiningModules` /
+  `MiningGadgets::build(&Datacore, &Items)` read each module's power
+  multiplier per laser fire action (`MiningModule::damage_multiplier(i)`; the
+  Surge is x1.5 on the fracturing beam and x1.0 on extraction), its mining
+  modifiers, inert filter and activation (`Passive`, or `Active` with
+  duration and uses), and each gadget's rock modifiers. The shared
+  `MiningModifiers` / `FloatModifier` types keep each value's kind
+  (multiplicative or additive), as the client combines them differently.
+- **`sc-items-ship-weapons`: mining-laser stats.** `ShipWeaponStats::mining`
+  (`MiningLaserStats`) carries every beam (`MiningBeam`: energy per second,
+  `full_damage_range` / `zero_damage_range`, hit type), the fracturing and
+  extraction beam (`fracture_beam()` / `extraction_beam()`), the throttle
+  minimum and lerp speed, `uses_power_throttle`, the laser's own mining
+  modifiers and inert filter, and its number of module slots.
+  `MiningBeam::falloff(distance)` is the client's range falloff: full power up
+  to the optimal range, linear to 0 at the maximum range, no bonus closer in.
+
+### Changed
+
+- **`sc-items-ship-weapons`: `ShipWeaponStats` has a new `mining` field**
+  (`None` for guns). Code that builds the struct with a literal must add it.
+
 ## [v0.18.1] - 2026-10-13
 
 ### Bindings

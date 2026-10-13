@@ -36,6 +36,7 @@
 //! | `items` / `tags` / `manufacturers` / `resources` / `locations` | same names | the foundational record indices |
 //! | `gathering` | `gathering` | resource providers (pulls `locations`) |
 //! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
+//! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
 //! | `missions` | `missions` | missions, encounters, pools (pulls `items`, `tags`) |
 //! | `missions-payout` | — | `missions` + aUEC payout estimation; separate because it compiles the deeply nested `gamemode` pools |
@@ -130,6 +131,13 @@ pub mod ship_components {
     pub use sc_items_ship_components::*;
 }
 
+#[cfg(feature = "mining-items")]
+pub mod mining_items {
+    //! Mining modules and gadgets ([`sc_items_mining`]) — their mining
+    //! modifiers, damage multiplier and activation.
+    pub use sc_items_mining::*;
+}
+
 #[cfg(feature = "ship-weapons")]
 pub mod ship_weapons {
     //! Ship-weapon base-stat sheet ([`sc_items_ship_weapons`]) — integrity +
@@ -192,6 +200,8 @@ pub mod prelude {
     pub use sc_items_armor::{Armor, ArmorKind, ArmorStats, DamageResistance, ResistanceEntry};
     #[cfg(feature = "fps-weapons")]
     pub use sc_items_fps_weapons::{Damage, FpsWeaponStats, FpsWeapons};
+    #[cfg(feature = "mining-items")]
+    pub use sc_items_mining::{MiningGadget, MiningGadgets, MiningModule, MiningModules};
     #[cfg(feature = "ship-components")]
     pub use sc_items_ship_components::{ShipComponentKind, ShipComponentStats, ShipComponents};
     #[cfg(feature = "ship-weapons")]
