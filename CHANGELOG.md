@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.19.0] - 2026-10-13
+
 ### Added
 
 - **`sc-items-mining`: mining modules and gadgets** (umbrella feature
