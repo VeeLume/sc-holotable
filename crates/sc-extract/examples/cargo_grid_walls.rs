@@ -152,14 +152,47 @@ struct Grid {
     port: String,
     min: [f32; 3],
     max: [f32; 3],
+    placed: Placed,
+}
+
+/// How a grid's transform was resolved (see `GridCtx::collect`).
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+enum Placed {
+    /// Explicit `SItemPortDef.AttachmentImplementation` helper + offset.
+    Attachment,
+    /// An NMC node named after the port.
+    Node,
+    /// A grid entity placed in an interior object container.
+    OcEntity,
+    /// Attachment names an anchor node that exists in no geometry.
+    AnchorMissing,
+    /// Neither attachment nor node: item origin (identity).
+    Origin,
+}
+
+impl Placed {
+    fn is_fallback(self) -> bool {
+        matches!(self, Placed::AnchorMissing | Placed::Origin)
+    }
+
+    fn label(self) -> &'static str {
+        match self {
+            Placed::Attachment => "attachment",
+            Placed::Node => "port node",
+            Placed::OcEntity => "OC entity",
+            Placed::AnchorMissing => "attachment anchor missing",
+            Placed::Origin => "no attachment, no port node",
+        }
+    }
 }
 
 /// A wall piece in ship-world space (AABB of a placed interior mesh).
 struct WallBox {
     min: [f32; 3],
     max: [f32; 3],
-    #[allow(dead_code)]
     cgf: String,
+    /// Placed as an OC entity rather than a baked brush.
+    entity: bool,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -186,9 +219,41 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         return Ok(());
     }
+    // --xml-grep <p4k path> <substr>: elements of one XML/CryXmlB file whose
+    // tag or attribute values contain <substr>, with their ancestor tags.
+    if let Some(pos) = std::env::args().position(|a| a == "--xml-grep")
+        && let (Some(path), Some(pat)) =
+            (std::env::args().nth(pos + 1), std::env::args().nth(pos + 2))
+    {
+        let bytes = read_p4k(&assets, &path)?;
+        let root = sc_extract::object_container::decode(&bytes)?.ok_or("not XML")?;
+        let pat = pat.to_lowercase();
+        let mut stack: Vec<(&sc_extract::object_container::XmlNode, String)> =
+            vec![(&root, root.tag.clone())];
+        while let Some((n, trail)) = stack.pop() {
+            let hit = n.tag.to_lowercase().contains(&pat)
+                || n.attrs.iter().any(|(_, v)| v.to_lowercase().contains(&pat));
+            if hit {
+                let attrs: Vec<String> = n.attrs.iter().map(|(k, v)| format!("{k}={v}")).collect();
+                println!("  {trail}\n      {}", attrs.join("  "));
+            }
+            for c in n.children.iter().rev() {
+                let label = c
+                    .attr("name")
+                    .map_or(c.tag.clone(), |nm| format!("{}[{nm}]", c.tag));
+                stack.push((c, format!("{trail} > {label}")));
+            }
+        }
+        return Ok(());
+    }
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
     let db = datacore.db();
+
+    if std::env::args().any(|a| a == "--census") {
+        census(db, &assets);
+        return Ok(());
+    }
 
     let Some(rec) = shortest_entity(db, &ship) else {
         eprintln!("no EntityClassDefinition named '{ship}'");
@@ -196,6 +261,38 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
     let inst = rec.as_instance();
     println!("entity: {}", rec.name().unwrap_or("?"));
+
+    // --files: every geometry/skeleton/animation asset path the entity tree
+    // names (finds skeleton-driven parts the static hull NMC does not hold).
+    if std::env::args().any(|a| a == "--files") {
+        const EXTS: [&str; 10] = [
+            ".cga",
+            ".cgf",
+            ".chr",
+            ".cdf",
+            ".skin",
+            ".dba",
+            ".caf",
+            ".chrparams",
+            ".adb",
+            ".xml",
+        ];
+        let mut files = std::collections::BTreeSet::new();
+        walk(db, &inst, 12, &mut 400_000, &mut |ci| {
+            for p in ci.properties() {
+                if let Some(s) = p.value.as_str() {
+                    let l = s.to_lowercase();
+                    if EXTS.iter().any(|e| l.ends_with(e)) {
+                        files.insert(format!("{:<20} {s}", p.name));
+                    }
+                }
+            }
+        });
+        for f in &files {
+            println!("  {f}");
+        }
+        return Ok(());
+    }
 
     // ── 1. hull NMC with hierarchy-composed world transforms ─────────────────
     let Some(hull) = first_cga(db, &inst) else {
@@ -214,6 +311,52 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "hull: {hull}  ({} NMC nodes, hierarchy-composed)",
         node_world.len()
     );
+    // --hull-nodes <substr>: hull NMC node names (+ world position) matching
+    if let Some(pos) = std::env::args().position(|a| a == "--hull-nodes")
+        && let Some(pat) = std::env::args().nth(pos + 1)
+    {
+        let pat = pat.to_lowercase();
+        for (n, w) in node_world.iter().filter(|(n, _)| n.contains(&pat)) {
+            let t = mat_translation(w);
+            println!(
+                "  node {n:<48} at ({:+7.2},{:+7.2},{:+7.2})",
+                t[0], t[1], t[2]
+            );
+        }
+        return Ok(());
+    }
+    // --mount-nodes <substr>: every item mounted on the ship and the nodes of
+    // its own geometry matching <substr> (where a grid port's helper may live
+    // when the hull NMC lacks it).
+    if let Some(pos) = std::env::args().position(|a| a == "--mount-nodes")
+        && let Some(pat) = std::env::args().nth(pos + 1)
+    {
+        let pat = pat.to_lowercase();
+        let mut ctx = GridCtx {
+            db,
+            assets: &assets,
+            nmc_cache: HashMap::new(),
+            loadout_cache: HashMap::new(),
+            quiet: true,
+            unplaced_parents: Vec::new(),
+        };
+        let (mounts, _) = ctx.mounts(&inst);
+        for (port, rec) in mounts {
+            let gi = rec.as_instance();
+            let item = rec.name().unwrap_or("?");
+            let item = item.rsplit('.').next().unwrap_or(item);
+            let mut hits = Vec::new();
+            for g in ctx.geometries(&gi) {
+                if let Some(m) = ctx.nmc_of(&g) {
+                    hits.extend(m.keys().filter(|n| n.contains(&pat)).cloned());
+                }
+            }
+            if !hits.is_empty() || port.to_lowercase().contains(&pat) {
+                println!("  port {port:<36} -> {item:<44} nodes: {}", hits.join(", "));
+            }
+        }
+        return Ok(());
+    }
 
     // ── 2. grids at corrected world nodes ─────────────────────────────────────
     let mut grids = {
@@ -222,6 +365,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             assets: &assets,
             nmc_cache: HashMap::new(),
             loadout_cache: HashMap::new(),
+            quiet: false,
+            unplaced_parents: Vec::new(),
         };
         ctx.nmc_cache
             .insert(hull.to_lowercase(), Some(node_world.clone()));
@@ -306,6 +451,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 port: format!("oc:{}", og.label),
                 min: wmin,
                 max: wmax,
+                placed: Placed::OcEntity,
             });
         }
         let n_before = walls.len();
@@ -330,6 +476,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     min: wmn,
                     max: wmx,
                     cgf: pl.cgf.clone(),
+                    entity: pl.entity,
                 });
             }
             // triangles for near-grid placements (skips light-glow files? no —
@@ -641,6 +788,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
+    // The client queries ENTITIES with a physics controller; baked brushes
+    // (IncludedObjects) are not entities, so the entity-only pass is the one
+    // that mirrors the game. The all-boxes pass shows what our walls would do.
+    let all: Vec<&WallBox> = walls.iter().collect();
+    let entities: Vec<&WallBox> = walls.iter().filter(|w| w.entity).collect();
+    game_rule_report("all wall boxes", &grids, &all);
+    game_rule_report("OC entities only", &grids, &entities);
+
     // ── 5. per-face distance-to-wall occupancy ────────────────────────────────
     // For each face cell: distance along the outward normal to the nearest wall
     // box that overlaps the cell's footprint. Then summarize per face.
@@ -699,6 +854,214 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     Ok(())
+}
+
+/// `--census`: grid placement for every vehicle (top-level
+/// `VehicleComponentParams`) in one DCB parse. Reports how each grid's
+/// transform was resolved and lists the fallbacks (grid parked at its item
+/// origin), plus interior sections whose `boneName` is absent from the hull
+/// NMC (their walls and OC grids sit at the hull origin too). Both symptoms
+/// mark geometry the static NMC does not describe — e.g. the Hull series'
+/// articulated spine.
+fn census(db: &DataCoreDatabase, assets: &AssetSource) {
+    let mut ctx = GridCtx {
+        db,
+        assets,
+        nmc_cache: HashMap::new(),
+        loadout_cache: HashMap::new(),
+        quiet: true,
+        unplaced_parents: Vec::new(),
+    };
+    let scu = |g: &Grid| -> usize {
+        (0..3)
+            .map(|a| ((g.max[a] - g.min[a]) * 0.8).round().max(0.0) as usize)
+            .product()
+    };
+    let mut n_vehicles = 0usize;
+    let mut n_with_grids = 0usize;
+    let mut by_placed: BTreeMap<&'static str, (usize, usize)> = BTreeMap::new();
+    let mut fallback_ships: Vec<(String, usize, usize, Vec<String>)> = Vec::new();
+    let mut bone_ships: Vec<(String, usize, Vec<String>)> = Vec::new();
+    let mut parent_ships: Vec<(String, Vec<String>)> = Vec::new();
+    for rec in db.records_by_type("EntityClassDefinition") {
+        let inst = rec.as_instance();
+        let is_vehicle = inst.get_array("Components").is_some_and(|comps| {
+            comps.into_iter().any(|c| {
+                value_to_instance(db, &c)
+                    .and_then(|ci| ci.type_name().map(|t| t == "VehicleComponentParams"))
+                    .unwrap_or(false)
+            })
+        });
+        if !is_vehicle {
+            continue;
+        }
+        n_vehicles += 1;
+        let name = rec.name().unwrap_or("?");
+        let name = name.rsplit('.').next().unwrap_or(name).to_string();
+        let hull = first_cga(db, &inst);
+        let node_world = hull
+            .as_deref()
+            .and_then(|h| ctx.nmc_of(h))
+            .unwrap_or_default();
+        let geoms: Vec<String> = hull.iter().cloned().collect();
+        ctx.unplaced_parents.clear();
+        let mut grids = Vec::new();
+        ctx.collect(
+            &inst,
+            &MAT_IDENTITY,
+            &geoms,
+            "",
+            0,
+            &[],
+            &mut HashSet::new(),
+            &mut grids,
+        );
+        let bad_bones: Vec<String> = object_container_refs(db, &inst)
+            .into_iter()
+            .filter_map(|r| r.bone_name)
+            .filter(|b| !node_world.contains_key(&b.to_lowercase()))
+            .collect::<std::collections::BTreeSet<_>>()
+            .into_iter()
+            .collect();
+        if !ctx.unplaced_parents.is_empty() {
+            parent_ships.push((name.clone(), ctx.unplaced_parents.clone()));
+        }
+        if grids.is_empty() {
+            continue;
+        }
+        n_with_grids += 1;
+        let total: usize = grids.iter().map(scu).sum();
+        for g in &grids {
+            let e = by_placed.entry(g.placed.label()).or_default();
+            e.0 += 1;
+            e.1 += scu(g);
+        }
+        let fb: Vec<&Grid> = grids.iter().filter(|g| g.placed.is_fallback()).collect();
+        if !fb.is_empty() {
+            let fb_scu = fb.iter().map(|g| scu(g)).sum();
+            let ports = fb
+                .iter()
+                .map(|g| format!("{} ({})", g.port, g.placed.label()))
+                .collect();
+            fallback_ships.push((name.clone(), fb_scu, total, ports));
+        }
+        if !bad_bones.is_empty() {
+            bone_ships.push((name, total, bad_bones));
+        }
+    }
+
+    println!("\n== grid placement census ==");
+    println!("vehicles: {n_vehicles}   with cargo grids: {n_with_grids}");
+    for (label, (n, s)) in &by_placed {
+        println!("  {label:<28} {n:>5} grids  {s:>7} SCU");
+    }
+    println!(
+        "\n-- ships with grids at the item-origin fallback: {} --",
+        fallback_ships.len()
+    );
+    for (ship, fb, total, ports) in &fallback_ships {
+        println!(
+            "  {ship:<44} {fb:>5} of {total:>5} SCU   {}",
+            ports.join(", ")
+        );
+    }
+    println!(
+        "\n-- ships with grids whose interior-section bone is not in the hull NMC: {} --",
+        bone_ships.len()
+    );
+    for (ship, total, bones) in &bone_ships {
+        println!("  {ship:<44} {total:>5} SCU   bones: {}", bones.join(", "));
+    }
+    println!(
+        "\n-- items with grids below but no resolvable port: {} ships --",
+        parent_ships.len()
+    );
+    for (ship, keys) in &parent_ships {
+        println!("  {ship:<44} {}", keys.join(", "));
+    }
+}
+
+/// The client's own obstruction rule (`CSCItemCargoGrid::UpdateObstructionData`,
+/// read from StarCitizen.exe 2026-10-13), applied to our wall boxes: cells are
+/// `round(dim × 0.8)` per axis, each an exact 1.25 m cube (x/y centred,
+/// bottom-anchored), tested bottom-up per column against every obstacle box;
+/// the first overlap caps the column, so nothing above it is usable. The game
+/// tests per-physics-part OBBs and counts touching as overlap; our boxes are
+/// render-node AABBs, so the cell is also shrunk by a small epsilon to show how
+/// much of the result hangs on boxes sitting exactly flush (floors).
+fn game_rule_report(label: &str, grids: &[Grid], walls: &[&WallBox]) {
+    const EPS: [f32; 3] = [0.0, 0.01, 0.05];
+    println!(
+        "\n== game obstruction rule, {label} ({} boxes; column capped at first blocked cell) ==",
+        walls.len()
+    );
+    let mut total_nominal = 0usize;
+    let mut total_usable = [0usize; 3];
+    for g in grids {
+        let dims = [0, 1, 2].map(|a| g.max[a] - g.min[a]);
+        let n = dims.map(|d| (d * 0.8).round().max(0.0) as usize);
+        let origin = [
+            (g.min[0] + g.max[0]) / 2.0 - n[0] as f32 * CELL_M / 2.0,
+            (g.min[1] + g.max[1]) / 2.0 - n[1] as f32 * CELL_M / 2.0,
+            g.min[2],
+        ];
+        let nominal = n[0] * n[1] * n[2];
+        total_nominal += nominal;
+        let mut usable = [0usize; 3];
+        let mut capped_cols = [0usize; 3];
+        let mut blockers: BTreeMap<String, usize> = BTreeMap::new();
+        for (ei, eps) in EPS.iter().enumerate() {
+            for x in 0..n[0] {
+                for y in 0..n[1] {
+                    let mut height = n[2];
+                    for z in 0..n[2] {
+                        let lo = [x, y, z].map(|i| i as f32 * CELL_M);
+                        let mn = [0, 1, 2].map(|a| origin[a] + lo[a] + eps);
+                        let mx = [0, 1, 2].map(|a| origin[a] + lo[a] + CELL_M - eps);
+                        let hit = walls
+                            .iter()
+                            .find(|w| (0..3).all(|a| w.min[a] <= mx[a] && w.max[a] >= mn[a]));
+                        if let Some(w) = hit {
+                            height = z;
+                            if ei == 0 {
+                                *blockers.entry(short_path(&w.cgf).to_string()).or_default() += 1;
+                            }
+                            break;
+                        }
+                    }
+                    usable[ei] += height;
+                    if height < n[2] {
+                        capped_cols[ei] += 1;
+                    }
+                }
+            }
+            total_usable[ei] += usable[ei];
+        }
+        println!(
+            "  {:<38} {}x{}x{} = {:>4} SCU   usable eps0/1cm/5cm = {:>4}/{:>4}/{:>4}   capped cols = {}/{}/{} of {}",
+            g.port,
+            n[0],
+            n[1],
+            n[2],
+            nominal,
+            usable[0],
+            usable[1],
+            usable[2],
+            capped_cols[0],
+            capped_cols[1],
+            capped_cols[2],
+            n[0] * n[1]
+        );
+        let mut b: Vec<_> = blockers.into_iter().collect();
+        b.sort_by_key(|e| std::cmp::Reverse(e.1));
+        for (cgf, cols) in b.iter().take(4) {
+            println!("      blocks {cols:>3} col(s) at eps0: {cgf}");
+        }
+    }
+    println!(
+        "  TOTAL nominal {total_nominal} SCU   usable eps0/1cm/5cm = {}/{}/{}",
+        total_usable[0], total_usable[1], total_usable[2]
+    );
 }
 
 /// Distances from each cell of a grid face to the nearest wall in front of it.
@@ -874,6 +1237,10 @@ struct GridCtx<'a> {
     assets: &'a AssetSource,
     nmc_cache: HashMap<String, Option<BTreeMap<String, Mat34>>>,
     loadout_cache: HashMap<String, Vec<(String, String)>>,
+    /// Suppress per-item progress lines (census mode).
+    quiet: bool,
+    /// Items with grids below them whose own port could not be resolved.
+    unplaced_parents: Vec<String>,
 }
 
 impl<'a> GridCtx<'a> {
@@ -1093,16 +1460,19 @@ impl<'a> GridCtx<'a> {
         let (mounts, attach) = self.mounts(inst);
         // full port resolution: explicit DCB attachment (anchor node ∘ offset)
         // → NMC node named after the port → item origin.
-        let resolve_port = |port: &str| -> Option<(Mat34, Mat34)> {
+        let resolve_port = |port: &str| -> Option<(Mat34, Mat34, Placed)> {
             if let Some(pa) = attach.get(&port.to_lowercase()) {
-                let (anchor, anchor_base) = if pa.helper.is_empty() {
-                    (MAT_IDENTITY, *base)
+                let (anchor, anchor_base, how) = if pa.helper.is_empty() {
+                    (MAT_IDENTITY, *base, Placed::Attachment)
                 } else {
-                    lookup(&pa.helper).unwrap_or((MAT_IDENTITY, *base))
+                    match lookup(&pa.helper) {
+                        Some((a, b)) => (a, b, Placed::Attachment),
+                        None => (MAT_IDENTITY, *base, Placed::AnchorMissing),
+                    }
                 };
-                return Some((mat_mul(&anchor, &pa.offset), anchor_base));
+                return Some((mat_mul(&anchor, &pa.offset), anchor_base, how));
             }
-            lookup(port)
+            lookup(port).map(|(n, b)| (n, b, Placed::Node))
         };
         for (port, rec) in mounts {
             let key = if chain.is_empty() {
@@ -1113,14 +1483,14 @@ impl<'a> GridCtx<'a> {
             let gi = rec.as_instance();
             if let Some((dims, off, true)) = grid_box(self.db, &gi) {
                 // no attachment + no node anywhere → engine default: item origin
-                let (node, node_base) = resolve_port(&port).unwrap_or_else(|| {
-                    if depth > 0 {
-                        println!(
-                            "  [~] grid at '{key}': port helper missing — placed at item origin"
-                        );
-                    }
-                    (MAT_IDENTITY, *base)
-                });
+                let (node, node_base, placed) =
+                    resolve_port(&port).unwrap_or((MAT_IDENTITY, *base, Placed::Origin));
+                if !self.quiet && placed.is_fallback() {
+                    println!(
+                        "  [~] grid at '{key}': {} — placed at item origin",
+                        placed.label()
+                    );
+                }
                 let w = mat_mul(&node_base, &node);
                 // bottom-anchored, centred X/Y (verified vs Ironclad floor plates)
                 let lmin = [off[0] - dims[0] / 2.0, off[1] - dims[1] / 2.0, off[2]];
@@ -1134,6 +1504,7 @@ impl<'a> GridCtx<'a> {
                     port: key,
                     min: wmin,
                     max: wmax,
+                    placed,
                 });
             } else if depth < 2 {
                 if !visited.insert(format!("{}", rec.id())) {
@@ -1142,22 +1513,27 @@ impl<'a> GridCtx<'a> {
                 if !self.has_grid(&gi, 0) {
                     continue;
                 }
-                let Some((node, node_base)) = resolve_port(&port) else {
-                    println!("  [!] item at '{key}' has grids below but no parent node");
+                let Some((node, node_base, _)) = resolve_port(&port) else {
+                    if !self.quiet {
+                        println!("  [!] item at '{key}' has grids below but no parent node");
+                    }
+                    self.unplaced_parents.push(key);
                     continue;
                 };
                 let child_base = mat_mul(&node_base, &node);
                 let child_geoms = self.geometries(&gi);
-                println!(
-                    "  [child item] '{key}' → {} (geo {:?})",
-                    rec.name()
-                        .map(|n| n.rsplit('.').next().unwrap_or(n))
-                        .unwrap_or("?"),
-                    child_geoms
-                        .iter()
-                        .map(|g| short_path(g))
-                        .collect::<Vec<_>>()
-                );
+                if !self.quiet {
+                    println!(
+                        "  [child item] '{key}' → {} (geo {:?})",
+                        rec.name()
+                            .map(|n| n.rsplit('.').next().unwrap_or(n))
+                            .unwrap_or("?"),
+                        child_geoms
+                            .iter()
+                            .map(|g| short_path(g))
+                            .collect::<Vec<_>>()
+                    );
+                }
                 let mut fb = fallbacks.to_vec();
                 for m in maps.clone() {
                     fb.push((m, *base));
@@ -1260,6 +1636,8 @@ fn object_container_refs(db: &DataCoreDatabase, ship: &Instance) -> Vec<OcRef> {
 struct Placement {
     cgf: String,
     local: Mat34,
+    /// An OC `Entity` (true) or a baked `IncludedObjects` brush (false).
+    entity: bool,
 }
 
 /// A cargo-grid ENTITY placed directly in an interior object container (the
@@ -1395,6 +1773,7 @@ fn entity_placement(
     Some(Placement {
         cgf: geom,
         local: mat_from_pos_quat_scale(pos, q, scale),
+        entity: true,
     })
 }
 
@@ -1546,6 +1925,7 @@ fn parse_included_objects(data: &[u8]) -> Vec<Placement> {
                     out.push(Placement {
                         cgf: cgf.clone(),
                         local,
+                        entity: false,
                     });
                 }
                 off = end;
