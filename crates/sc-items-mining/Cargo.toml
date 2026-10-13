@@ -1,0 +1,19 @@
+[package]
+name = "sc-items-mining"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# T1 data crate: mining modules and gadgets (their mining-laser modifiers,
+# damage multiplier and activation), plus the shared `MiningModifiers` /
+# `FloatModifier` types the mining-laser stats in sc-items-ship-weapons reuse.
+# Classification via sc-items (EItemType); values read through the raw
+# `Datacore::db()` layer.
+sc-extract = { workspace = true }
+sc-items = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }

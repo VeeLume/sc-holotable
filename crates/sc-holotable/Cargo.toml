@@ -16,6 +16,7 @@ sc-extract = { workspace = true, optional = true }
 sc-items = { workspace = true, optional = true }
 sc-items-armor = { workspace = true, optional = true }
 sc-items-fps-weapons = { workspace = true, optional = true }
+sc-items-mining = { workspace = true, optional = true }
 sc-items-ship-components = { workspace = true, optional = true }
 sc-items-ship-weapons = { workspace = true, optional = true }
 sc-locations = { workspace = true, optional = true }
@@ -49,6 +50,7 @@ fps-weapons = ["dep:sc-items-fps-weapons", "extract", "items"]
 armor = ["dep:sc-items-armor", "extract", "items"]
 ship-components = ["dep:sc-items-ship-components", "extract", "items"]
 ship-weapons = ["dep:sc-items-ship-weapons", "extract", "items"]
+mining-items = ["dep:sc-items-mining", "extract", "items"]
 crafting = ["dep:sc-crafting", "extract", "items", "resources", "fps-weapons", "armor", "ship-components", "ship-weapons"]
 # sc-gathering self-enables its sc-extract leaf features (harvestable / mining /
 # entities-mineable); the umbrella pulls the crate + the location surface it joins.
@@ -66,7 +68,7 @@ missions-payout = ["missions", "sc-missions/payout"]
 foundations = ["extract", "items", "tags", "manufacturers", "resources", "locations", "gathering"]
 
 # ── Aggregators ──────────────────────────────────────────────────────────────
-all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "crafting", "gathering", "foundations"]
+all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "mining-items", "crafting", "gathering", "foundations"]
 full = ["all-t1", "missions-payout"]
 
 [dev-dependencies]
