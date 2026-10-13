@@ -87,6 +87,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 Ok(Entry {
                     element: el(n)?,
                     fraction: pct / 100.0,
+                    quality: None,
                 })
             })
             .collect()

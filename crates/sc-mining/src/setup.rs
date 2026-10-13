@@ -151,6 +151,9 @@ pub struct ModifiedRock {
     pub optimal_rate: Combined,
     /// The fill above the window (`catastrophicChargeWindowRate`).
     pub catastrophic_rate: Combined,
+    /// The cluster-factor modifier (`clusterFactorModifier`): how strongly a
+    /// fracture concentrates each element (see [`Spawn::fracture`](crate::Spawn::fracture)).
+    pub cluster_factor: Combined,
 }
 
 /// One laser's contribution to [`ModifiedRock`].
@@ -197,6 +200,7 @@ impl ModifiedRock {
                 .collect(),
             optimal_rate: combine(|m| m.optimal_charge_window_rate.as_ref()),
             catastrophic_rate: combine(|m| m.catastrophic_charge_window_rate.as_ref()),
+            cluster_factor: combine(|m| m.cluster_factor.as_ref()),
         }
     }
 

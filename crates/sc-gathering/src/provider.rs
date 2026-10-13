@@ -52,6 +52,10 @@ pub struct GatherableElement {
     pub global_params: Option<Guid>,
     /// `Resource`-channel scan signature (raw; ×1000 is the displayed "sig").
     pub signal: Option<f32>,
+    /// `geometries[].tag`: the model tags the spawner picks from (uniformly)
+    /// to choose the rock's mesh; empty spawns the default mesh. Resolve with
+    /// sc-mining's `RockType::geometries_for`.
+    pub geometry_tags: Vec<Guid>,
 }
 
 /// Cluster spawn: a probability plus **weighted discrete sizes** (each band has
@@ -117,6 +121,12 @@ pub(crate) fn provider_for(
                     deposit: rock.deposit,
                     global_params: rock.global_params,
                     signal: rock.signal,
+                    geometry_tags: e
+                        .geometries
+                        .iter()
+                        .filter_map(|h| h.get(pools))
+                        .filter_map(|g| g.tag)
+                        .collect(),
                 }
             })
             .collect();

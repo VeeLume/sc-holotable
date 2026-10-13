@@ -15,6 +15,11 @@
 //!   pools included; [`difficulty`] runs it many times with a [`Player`] model
 //!   for our own difficulty (overcharges, danger at fracture, time).
 //! - [`Laser::extraction_scu_per_s`] — extraction speed.
+//! - [`RockTypes`] / [`Compositions`] / [`Shapes`] — what spawns: each
+//!   `HarvestablePreset` rock's scale range, meshes and composition parts,
+//!   and each mesh's fracture tree ([`Shape`]: the pieces it breaks into).
+//!   [`Spawner`] rolls rocks as the client does and [`Survey`]s how a setup
+//!   fares on them (breakable share, mass, SCU, cracks until collectable).
 //!
 //! Item stats come from `sc-items-ship-weapons` (lasers) and `sc-items-mining`
 //! (modules, gadgets); rock spawns and compositions per location from
@@ -35,7 +40,7 @@
 //!     rulesets.values().next().ok_or("no ruleset")?,
 //!     elements.values().next().ok_or("no element")?,
 //! );
-//! let entries = [Entry { element: element.guid, fraction: 0.6 }];
+//! let entries = [Entry { element: element.guid, fraction: 0.6, quality: None }];
 //! let rock = Rock::from_mass(ruleset, &elements, &entries, 9000.0).ok_or("no density")?;
 //! let items = sc_items::Items::build(datacore.records());
 //! let weapons = sc_items_ship_weapons::ShipWeapons::build(&datacore, &items);
@@ -50,22 +55,34 @@
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 
+mod composition;
 mod element;
+mod fracture;
+mod quality;
 mod rock;
+mod rock_type;
 mod ruleset;
 mod setup;
+mod shape;
 mod sim;
+mod spawn;
 #[cfg(test)]
 mod tests;
 
+pub use composition::{Composition, Compositions, Part, PartOdds};
 pub use element::{Element, Elements};
+pub use fracture::{EntryOdds, PieceOdds};
+pub use quality::QualityRoll;
 pub use rock::{Entry, Rock, Window};
+pub use rock_type::{Geometry, RockType, RockTypes};
 pub use ruleset::{HitConsistency, Ruleset, Rulesets};
 pub use setup::{Combined, Laser, LaserPower, ModifiedRock, Setup};
+pub use shape::{Piece, Shape};
 pub use sim::{
     Difficulty, Fixed, Outcome, Player, Pool, Sample, SimConfig, Throttle, Trace, View, difficulty,
     hit_consistency, simulate,
 };
+pub use spawn::{Quantiles, Shapes, Spawn, Spawner, Survey};
 
 /// Re-export the canonical accessor trait so consumers can bring the
 /// `get` / `iter` / `len` / `values` surface into scope alongside the collections.

@@ -3299,10 +3299,12 @@ version = "0.0.0"
 dependencies = [
  "sc-discovery",
  "sc-extract",
+ "sc-gathering",
  "sc-items",
  "sc-items-mining",
  "sc-items-ship-weapons",
  "sc-resources",
+ "sc-tags",
  "serde",
  "tracing",
 ]
