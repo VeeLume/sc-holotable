@@ -3191,6 +3191,7 @@ dependencies = [
  "sc-items-ship-weapons",
  "sc-locations",
  "sc-manufacturers",
+ "sc-mining",
  "sc-missions",
  "sc-resources",
  "sc-tags",
@@ -3290,6 +3291,20 @@ dependencies = [
  "serde_json",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-mining"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-items",
+ "sc-items-mining",
+ "sc-items-ship-weapons",
+ "sc-resources",
+ "serde",
+ "tracing",
 ]
 
 [[package]]
