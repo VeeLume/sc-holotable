@@ -37,6 +37,7 @@
 //! | `gathering` | `gathering` | resource providers (pulls `locations`) |
 //! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
 //! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
+//! | `mining` | `mining` | rock properties, breakability and the charge simulation (pulls `resources`, `ship-weapons`, `mining-items`) |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
 //! | `missions` | `missions` | missions, encounters, pools (pulls `items`, `tags`) |
 //! | `missions-payout` | — | `missions` + aUEC payout estimation; separate because it compiles the deeply nested `gamemode` pools |
@@ -138,6 +139,14 @@ pub mod mining_items {
     pub use sc_items_mining::*;
 }
 
+#[cfg(feature = "mining")]
+pub mod mining {
+    //! Mining maths ([`sc_mining`]) — rulesets, elements, a rock's
+    //! properties from its composition, a setup's view of it (breakability,
+    //! balance throttle) and the charge simulation behind our difficulty.
+    pub use sc_mining::*;
+}
+
 #[cfg(feature = "ship-weapons")]
 pub mod ship_weapons {
     //! Ship-weapon base-stat sheet ([`sc_items_ship_weapons`]) — integrity +
@@ -213,6 +222,10 @@ pub mod prelude {
     };
     #[cfg(feature = "manufacturers")]
     pub use sc_manufacturers::{Manufacturer, Manufacturers};
+    #[cfg(feature = "mining")]
+    pub use sc_mining::{
+        Element, Elements, Entry, Laser, ModifiedRock, Rock, Ruleset, Rulesets, Setup,
+    };
     #[cfg(feature = "missions")]
     pub use sc_missions::Missions;
     #[cfg(feature = "resources")]

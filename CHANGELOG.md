@@ -32,6 +32,18 @@ pinned. Both tag kinds are monotonic and immutable.
   modifiers and inert filter, and its number of module slots.
   `MiningBeam::falloff(distance)` is the client's range falloff: full power up
   to the optimal range, linear to 0 at the maximum range, no bonus closer in.
+- **`sc-mining`: the rock side of mining** (umbrella feature `mining`,
+  module `mining`). `Rulesets` / `Elements::build(&Datacore, &Resources)`
+  read `MiningGlobalParams` and `MineableElement` (with densities). `Rock`
+  computes a rock's resistance, instability, optimal window, mass and SCU from
+  the composition the scanner lists; `ModifiedRock::new(ruleset, rock, setup)`
+  applies a `Setup` (lasers with modules, gadgets) and answers breakability
+  (`max_mass`, `is_breakable`), the balance throttle, time to the window and
+  in it. `simulate` runs the charge bar tick by tick with the instability
+  wave, hit consistency and both breaking pools; `difficulty` runs it many
+  times with a `Player` model. `Laser::extraction_scu_per_s` gives extraction
+  speed. Checked against in-game scans and Mort13's Breakability Chart
+  (`mining_rocks_probe`).
 
 ### Changed
 
