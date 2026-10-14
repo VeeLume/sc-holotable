@@ -25,6 +25,8 @@
 use crate::{AssetSource, Error, Result};
 
 const MAGIC: &[u8; 4] = b"DDS ";
+/// CryEngine image flag: sample as sRGB.
+const SRGB_READ: u32 = 0x800;
 
 /// A reassembled DDS texture.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -86,6 +88,17 @@ impl Texture {
 
     pub fn mip_count(&self) -> u32 {
         u32_at(&self.dds, 28).max(1)
+    }
+
+    /// The engine samples this texture as sRGB (decoded to linear on read).
+    ///
+    /// CryEngine keeps its own image flags in the header's first reserved
+    /// word (file offset 36); bit `0x800` asks for sRGB reads. Colour
+    /// textures and LayerBlend blend maps carry it; normal and HueAoLum maps
+    /// do not. The legacy block formats (`DXT1`, …) have no sRGB variant, so
+    /// this flag is the only place the colour space is recorded.
+    pub fn is_srgb(&self) -> bool {
+        u32_at(&self.dds, 36) & SRGB_READ != 0
     }
 
     pub fn format(&self) -> TextureFormat {
@@ -176,6 +189,20 @@ mod tests {
         };
         assert_eq!((t.width(), t.height()), (32, 64));
         assert_eq!(t.format(), TextureFormat::FourCc(*b"DXT1"));
+    }
+
+    #[test]
+    fn srgb_comes_from_the_engine_flag() {
+        let mut dds = header(b"DXT1");
+        let t = Texture {
+            dds: dds.clone(),
+            alpha: None,
+        };
+        assert!(!t.is_srgb());
+        // A blend map's word: split mips (0x200000) + sRGB read (0x800).
+        dds[36..40].copy_from_slice(&0x0020_0800u32.to_le_bytes());
+        let t = Texture { dds, alpha: None };
+        assert!(t.is_srgb());
     }
 
     #[test]

@@ -104,14 +104,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let tex = Texture::read(&assets, &t.file);
                 match tex {
                     Ok(tex) => println!(
-                        "      {:9} {:56} {}x{} {:?} mips {} alpha {}",
+                        "      {:9} {:56} {}x{} {:?} mips {} alpha {} srgb {}",
                         t.slot,
                         short(&t.file),
                         tex.width(),
                         tex.height(),
                         tex.format(),
                         tex.mip_count(),
-                        tex.alpha.as_ref().map_or(0, Vec::len)
+                        tex.alpha.as_ref().map_or(0, Vec::len),
+                        tex.is_srgb()
                     ),
                     Err(e) => println!("      {:9} {:56} ERR {e}", t.slot, short(&t.file)),
                 }

@@ -22,7 +22,9 @@ pinned. Both tag kinds are monotonic and immutable.
   `.mtl` it names. `Material::read` parses a `.mtl` into `SubMaterial`s
   (shader, `StringGenMask` features, textures by slot, `LayerBlend` layers,
   public params). `Texture::read` reassembles a split DDS (`.dds` + `.1`…`.8`)
-  and its separate gloss texture (`.a` + `.1a`…`.8a`) into complete DDS files.
+  and its separate gloss texture (`.a` + `.1a`…`.8a`) into complete DDS files;
+  `Texture::is_srgb` reports the engine's sRGB-read flag (set on colour and
+  blend maps, which the block formats cannot express).
   `MeshGeometry::material_path` resolves a bare `MtlName` (no folder) next to
   the geometry file. `Skeleton::read` reads a `.chr`'s bones (both
   `CompiledBones` layouts) in model space, for parts attached to bones.
