@@ -96,8 +96,10 @@ pub struct MeshNode {
 #[derive(Debug, Clone, PartialEq)]
 pub struct MeshGeometry {
     pub nodes: Vec<MeshNode>,
-    /// The `.mtl` the submeshes index into, as an archive path without its
-    /// extension (`MtlName` chunk); `None` when the file names none.
+    /// The `.mtl` the submeshes index into, as the `MtlName` chunk writes
+    /// it: an archive path or a bare name (meaning the geometry file's own
+    /// folder), without extension; `None` when the file names none. Resolve
+    /// it with [`MeshGeometry::material_path`].
     pub material: Option<String>,
     pub positions: Vec<[f32; 3]>,
     /// Unit normals, one per vertex; empty when the file has none.
@@ -159,6 +161,26 @@ impl Mesh {
 }
 
 impl MeshGeometry {
+    /// The `.mtl` this geometry names, as an archive path with extension: a
+    /// bare `MtlName` (no folder) is resolved next to `geometry_path`.
+    pub fn material_path(&self, geometry_path: &str) -> Option<String> {
+        let name = self.material.as_deref()?.replace('\\', "/");
+        let name = if name.contains('/') {
+            name
+        } else {
+            let geometry_path = geometry_path.replace('\\', "/");
+            match geometry_path.rsplit_once('/') {
+                Some((dir, _)) => format!("{dir}/{name}"),
+                None => name,
+            }
+        };
+        Some(if name.to_ascii_lowercase().ends_with(".mtl") {
+            name
+        } else {
+            format!("{name}.mtl")
+        })
+    }
+
     /// Read `path` and its companion stream file (`x.cga` → `x.cgam`,
     /// `x.skin` → `x.skinm`) from the archive.
     pub fn read(assets: &AssetSource, path: &str) -> Result<Self> {
@@ -259,7 +281,7 @@ fn chunks(file: &[u8]) -> Result<Vec<(u32, usize)>> {
 }
 
 /// The chunk of `ty`, up to the next chunk.
-fn chunk(file: &[u8], ty: u32) -> Result<&[u8]> {
+pub(crate) fn chunk(file: &[u8], ty: u32) -> Result<&[u8]> {
     let all = chunks(file)?;
     let (_, off) = *all
         .iter()
@@ -742,6 +764,32 @@ mod tests {
             6, 3, 0, 4, 3, 4, 7,
         ];
         assert!((enclosed_volume(&p, &t) - 1.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn bare_material_names_resolve_next_to_the_geometry() {
+        let mut g = MeshGeometry {
+            nodes: Vec::new(),
+            material: Some("mgzn_mat".into()),
+            positions: Vec::new(),
+            normals: Vec::new(),
+            tangents: Vec::new(),
+            uvs: Vec::new(),
+            colors: Vec::new(),
+            indices: Vec::new(),
+            submeshes: Vec::new(),
+        };
+        assert_eq!(
+            g.material_path("objects/a/b/mgzn.cgf").as_deref(),
+            Some("objects/a/b/mgzn_mat.mtl")
+        );
+        g.material = Some("Objects/x/y/z_mat".into());
+        assert_eq!(
+            g.material_path("objects/a/b/c.cgf").as_deref(),
+            Some("Objects/x/y/z_mat.mtl")
+        );
+        g.material = None;
+        assert_eq!(g.material_path("objects/a/b/c.cgf"), None);
     }
 
     #[test]

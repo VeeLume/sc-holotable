@@ -23,6 +23,9 @@ pinned. Both tag kinds are monotonic and immutable.
   (shader, `StringGenMask` features, textures by slot, `LayerBlend` layers,
   public params). `Texture::read` reassembles a split DDS (`.dds` + `.1`…`.8`)
   and its separate gloss texture (`.a` + `.1a`…`.8a`) into complete DDS files.
+  `MeshGeometry::material_path` resolves a bare `MtlName` (no folder) next to
+  the geometry file. `Skeleton::read` reads a `.chr`'s bones (both
+  `CompiledBones` layouts) in model space, for parts attached to bones.
   Probe: `render_assets_probe`.
 
 ### Changed

@@ -66,6 +66,7 @@ pub mod object_container;
 mod processed_snapshot;
 mod record_collection;
 mod record_paths;
+mod skeleton;
 mod snapshot;
 mod texture;
 
@@ -93,6 +94,7 @@ pub use sc_extract_generated::{
     Builder, DataPools, Extract, Handle, Pooled, RecordIndex, RecordLookup, RecordStore,
     UnknownRecordType,
 };
+pub use skeleton::{Bone, Skeleton};
 pub use snapshot::{ExtractSnapshot, SnapshotCaptureConfig, SnapshotMeta};
 pub use texture::{Texture, TextureFormat};
 

@@ -5,13 +5,13 @@
 //! Re-proves the reader layouts against real files: the Aegis Regulus power
 //! plant (`.cga`, material named by its `MtlName` chunk, `LayerBlend_V2` +
 //! `Illum`) and the PIPS energy can (`.cga`, material from the DCB path,
-//! `Illum`).
+//! `Illum`), plus the skeletons two weapons attach their parts to.
 //!
 //! ```bash
 //! cargo run -p sc-extract --release --example render_assets_probe
 //! ```
 
-use sc_extract::{AssetSource, Material, MeshGeometry, Texture};
+use sc_extract::{AssetSource, Material, MeshGeometry, Skeleton, Texture};
 
 const ITEMS: &[(&str, Option<&str>)] = &[
     (
@@ -28,6 +28,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_discovery::discover_primary()?;
     println!("{} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
+
+    for chr in [
+        "objects/fps_weapons/weapons_v7/behr/rifle/p4ar/brfl_fps_behr_p4ar.chr",
+        "objects/fps_weapons/weapons_v7/gmni/pistol/lh86/bpst_fps_gmni_lh86.chr",
+    ] {
+        let s = Skeleton::read(&assets, chr)?;
+        println!("\n== {chr}: {} bones", s.bones.len());
+        for name in ["root", "magAttach", "sight_attachment", "bullet"] {
+            if let Some(b) = s.bone(name) {
+                println!("  {name:16} pos {:.4?} rot {:.4?}", b.position, b.rotation);
+            }
+        }
+    }
 
     for &(path, mtl_override) in ITEMS {
         println!("\n== {path}");
