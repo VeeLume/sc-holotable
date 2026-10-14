@@ -60,12 +60,14 @@ mod error;
 mod filters;
 mod graph;
 mod locale;
+mod material;
 mod mesh;
 pub mod object_container;
 mod processed_snapshot;
 mod record_collection;
 mod record_paths;
 mod snapshot;
+mod texture;
 
 /// Machine-generated DataCore schema bindings — workspace-internal escape
 /// hatch. Every type in this module mirrors a DCB struct or enum and
@@ -81,7 +83,8 @@ pub use error::{Error, Result};
 pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;
 pub use locale::{LocaleKey, LocaleMap, is_placeholder, strip_locale_metadata};
-pub use mesh::{Mesh, MeshNode};
+pub use material::{Material, MaterialLayer, MaterialTexture, SubMaterial};
+pub use mesh::{Mesh, MeshGeometry, MeshNode, Submesh};
 pub use object_container::{Socpak, XmlNode};
 pub use processed_snapshot::ProcessedSnapshot;
 pub use record_collection::RecordCollection;
@@ -91,6 +94,7 @@ pub use sc_extract_generated::{
     UnknownRecordType,
 };
 pub use snapshot::{ExtractSnapshot, SnapshotCaptureConfig, SnapshotMeta};
+pub use texture::{Texture, TextureFormat};
 
 // ── svarog re-exports ──────────────────────────────────────────────────────
 

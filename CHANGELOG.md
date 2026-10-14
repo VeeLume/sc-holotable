@@ -13,6 +13,23 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract`: render inputs for 3D models.** `MeshGeometry::read` reads a
+  geometry file and its stream companion into everything needed to draw it:
+  positions, normals, tangents, UVs and vertex colours, the triangle list,
+  `Submesh`es (material index, node, index range), the node tree and the
+  `.mtl` it names. `Material::read` parses a `.mtl` into `SubMaterial`s
+  (shader, `StringGenMask` features, textures by slot, `LayerBlend` layers,
+  public params). `Texture::read` reassembles a split DDS (`.dds` + `.1`…`.8`)
+  and its separate gloss texture (`.a` + `.1a`…`.8a`) into complete DDS files.
+  Probe: `render_assets_probe`.
+
+### Changed
+
+- **`sc-extract`: `MeshNode` gained `transform`** (the node's 3 × 4 placement
+  relative to its parent). Code constructing `MeshNode` literals must add it.
+
 ## [v0.19.0] - 2026-10-13
 
 ### Added
