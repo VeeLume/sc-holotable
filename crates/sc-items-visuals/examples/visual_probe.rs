@@ -92,7 +92,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             None => println!("  no look"),
         }
         for p in &v.ports {
-            println!("  port {} -> {:?} {:?}", p.name, p.helper, p.offset);
+            println!(
+                "  port {} -> {:?} {:?} item helper {:?}",
+                p.name, p.helper, p.offset, p.item_offset_helper
+            );
         }
         let mut stack: Vec<(usize, &sc_items_visuals::LoadoutEntry)> =
             v.default_loadout.iter().rev().map(|e| (1, e)).collect();

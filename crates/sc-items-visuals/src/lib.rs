@@ -117,6 +117,11 @@ pub struct Port {
     pub helper: Option<String>,
     /// The helper's `Offset`.
     pub offset: Transform,
+    /// `ItemOffsetHelperName`: the attached item's own helper (bone or node)
+    /// that meets this port's helper, instead of the item's origin. A
+    /// backpack's stocked-weapon ports name `attach_offset_right_01` /
+    /// `attach_offset_left_01` on the weapon.
+    pub item_offset_helper: Option<String>,
 }
 
 /// A `QuatT` as authored: position, then `Ang3` rotation in degrees.
@@ -405,6 +410,7 @@ fn port(h: Handle<sc_extract::generated::SItemPortDef>, pools: &DataPools) -> Op
         name: p.name.clone(),
         helper: helper.and_then(|h| non_empty(&h.name)),
         offset: helper.map_or_else(Transform::default, |h| transform(h.offset, pools)),
+        item_offset_helper: helper.and_then(|h| non_empty(&h.item_offset_helper_name)),
     })
 }
 

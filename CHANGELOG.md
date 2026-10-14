@@ -31,7 +31,8 @@ pinned. Both tag kinds are monotonic and immutable.
 - **`sc-items-visuals` (umbrella feature `visuals`): item render recipes.**
   `Visuals` holds, per item, the geometry node tree with its tagged
   variants, the material node, the skin tag (`geometryTags`), the ports with
-  their attach helpers, the default loadout and the inventory grid cell;
+  their attach helpers and offsets (and the attached item's own helper,
+  `ItemOffsetHelperName`), the default loadout and the inventory grid cell;
   `Visual::look` resolves the geometry, material and tint palette for the
   item's tags. `Palettes` reads the `TintPaletteTree` records.
   `InventoryView` reads the inventory's orientation and light-group tables
