@@ -26,7 +26,18 @@ pinned. Both tag kinds are monotonic and immutable.
   `MeshGeometry::material_path` resolves a bare `MtlName` (no folder) next to
   the geometry file. `Skeleton::read` reads a `.chr`'s bones (both
   `CompiledBones` layouts) in model space, for parts attached to bones.
-  Probe: `render_assets_probe`.
+  `CharacterDefinition::read` parses a `.cdf` (base model plus `CA_SKIN` /
+  `CA_BONE` attachments). Probe: `render_assets_probe`.
+- **`sc-items-visuals` (umbrella feature `visuals`): item render recipes.**
+  `Visuals` holds, per item, the geometry node tree with its tagged
+  variants, the material node, the skin tag (`geometryTags`), the ports with
+  their attach helpers, the default loadout and the inventory grid cell;
+  `Visual::look` resolves the geometry, material and tint palette for the
+  item's tags. `Palettes` reads the `TintPaletteTree` records.
+  `InventoryView` reads the inventory's orientation and light-group tables
+  and the light rigs, and picks an item's entries by type, sub type and
+  required tag. Probe: `visual_probe` re-derives the values sc-item-render
+  calibrated against in-game screenshots.
 
 ### Changed
 

@@ -54,6 +54,7 @@
 mod asset_data;
 mod assets;
 mod bundled_walk;
+mod character;
 mod crc;
 mod datacore;
 mod error;
@@ -78,6 +79,7 @@ pub use sc_extract_generated as generated;
 pub use asset_data::{AssetConfig, AssetData};
 pub use assets::AssetSource;
 pub use bundled_walk::{BundledWalk, Interest, RecordVisitor, VisitItem, VisitorSet};
+pub use character::{AttachmentKind, CharacterAttachment, CharacterDefinition};
 pub use crc::{CrcIndex, class_crc};
 pub use datacore::Datacore;
 pub use error::{Error, Result};

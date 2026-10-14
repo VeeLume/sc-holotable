@@ -88,6 +88,10 @@ pub enum Error {
     #[error("malformed material file: {0}")]
     Material(String),
 
+    /// A `.cdf` character definition was not a `<CharacterDefinition>` document.
+    #[error("malformed character definition: {0}")]
+    Character(String),
+
     /// A DDS texture (or one of its split mip files) was malformed.
     #[error("malformed DDS texture: {0}")]
     Texture(String),

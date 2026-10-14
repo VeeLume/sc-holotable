@@ -3189,6 +3189,7 @@ dependencies = [
  "sc-items-mining",
  "sc-items-ship-components",
  "sc-items-ship-weapons",
+ "sc-items-visuals",
  "sc-locations",
  "sc-manufacturers",
  "sc-mining",
@@ -3265,6 +3266,17 @@ dependencies = [
  "sc-extract",
  "sc-items",
  "sc-items-mining",
+ "serde",
+ "tracing",
+]
+
+[[package]]
+name = "sc-items-visuals"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-items",
  "serde",
  "tracing",
 ]
