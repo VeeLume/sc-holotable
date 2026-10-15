@@ -28,7 +28,9 @@ pinned. Both tag kinds are monotonic and immutable.
   `MeshGeometry::material_path` resolves a bare `MtlName` (no folder) next to
   the geometry file. `Skeleton::read` reads a `.chr`'s bones (both
   `CompiledBones` layouts) in model space, for parts attached to bones.
-  `CharacterDefinition::read` parses a `.cdf` (base model plus `CA_SKIN` /
+  `MeshGeometry::bone_weights` carries a `.skin`'s per-vertex skinning
+  (`BoneWeights`: up to eight joints into its own bone list, weights summing
+  to 255). `CharacterDefinition::read` parses a `.cdf` (base model plus `CA_SKIN` /
   `CA_BONE` attachments). Probe: `render_assets_probe`.
 - **`sc-items-visuals` (umbrella feature `visuals`): item render recipes.**
   `Visuals` holds, per item, the geometry node tree with its tagged

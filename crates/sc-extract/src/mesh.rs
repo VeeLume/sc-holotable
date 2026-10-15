@@ -52,6 +52,12 @@ const NORMALS_FLOAT: u32 = 0x38A5_81FE;
 const TANGENTS_QUAT: u32 = 0xB95E_9A1B;
 const TANGENTS_PACKED: u32 = 0xEE05_7252;
 const MTL_NAME: u32 = 0x8335_3333;
+/// Skinning, per vertex: four `u16` joints (into the skin's own bone list)
+/// then four `u8` weights.
+const BONE_MAP: u32 = 0x677C_7B23;
+/// Skinning with eight influences (character skins): eight `u16` joints
+/// then eight `u8` weights summing to 255.
+const BONE_MAP_8: u32 = 0x6ECA_3708;
 
 /// A geometry file's node tree.
 #[derive(Debug, Clone, PartialEq)]
@@ -109,9 +115,23 @@ pub struct MeshGeometry {
     pub uvs: Vec<[f32; 2]>,
     /// RGBA vertex colours; empty when the file has none.
     pub colors: Vec<[u8; 4]>,
+    /// Skinning weights, one per vertex; empty for unskinned geometry.
+    pub bone_weights: Vec<BoneWeights>,
     /// Triangle list, absolute vertex indices.
     pub indices: Vec<u32>,
     pub submeshes: Vec<Submesh>,
+}
+
+/// Up to eight bones moving a skinned vertex.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub struct BoneWeights {
+    /// Indices into the bone list of the `.skin` the vertex belongs to
+    /// ([`crate::Skeleton::read`] on the same file), not of the character's
+    /// `.chr`: the two join by bone name.
+    pub joints: [u16; 8],
+    /// Weights out of 255 (they sum to 255); unused slots are 0. Files with
+    /// four influences leave the last four empty.
+    pub weights: [u8; 8],
 }
 
 /// A run of triangles drawn with one material.
@@ -508,6 +528,7 @@ fn parse_render_streams(file: &[u8]) -> Result<MeshGeometry> {
         tangents: Vec::new(),
         uvs: Vec::new(),
         colors: Vec::new(),
+        bone_weights: Vec::new(),
         indices: Vec::new(),
         submeshes,
     };
@@ -616,6 +637,36 @@ fn parse_render_streams(file: &[u8]) -> Result<MeshGeometry> {
                         })
                         .collect(),
                 )
+            }
+            (BONE_MAP, 12) => {
+                g.bone_weights = s
+                    .as_chunks::<12>()
+                    .0
+                    .iter()
+                    .map(|v| BoneWeights {
+                        joints: std::array::from_fn(|i| {
+                            if i < 4 {
+                                u16::from_le_bytes([v[i * 2], v[i * 2 + 1]])
+                            } else {
+                                0
+                            }
+                        }),
+                        weights: std::array::from_fn(|i| if i < 4 { v[8 + i] } else { 0 }),
+                    })
+                    .collect()
+            }
+            (BONE_MAP_8, 24) => {
+                g.bone_weights = s
+                    .as_chunks::<24>()
+                    .0
+                    .iter()
+                    .map(|v| BoneWeights {
+                        joints: std::array::from_fn(|i| {
+                            u16::from_le_bytes([v[i * 2], v[i * 2 + 1]])
+                        }),
+                        weights: std::array::from_fn(|i| v[16 + i]),
+                    })
+                    .collect()
             }
             (TANGENTS_PACKED, 8) => {
                 frames = Some(
@@ -776,6 +827,7 @@ mod tests {
             tangents: Vec::new(),
             uvs: Vec::new(),
             colors: Vec::new(),
+            bone_weights: Vec::new(),
             indices: Vec::new(),
             submeshes: Vec::new(),
         };

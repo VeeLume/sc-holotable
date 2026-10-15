@@ -87,7 +87,7 @@ pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;
 pub use locale::{LocaleKey, LocaleMap, is_placeholder, strip_locale_metadata};
 pub use material::{Material, MaterialLayer, MaterialTexture, SubMaterial};
-pub use mesh::{Mesh, MeshGeometry, MeshNode, Submesh};
+pub use mesh::{BoneWeights, Mesh, MeshGeometry, MeshNode, Submesh};
 pub use object_container::{Socpak, XmlNode};
 pub use processed_snapshot::ProcessedSnapshot;
 pub use record_collection::RecordCollection;
