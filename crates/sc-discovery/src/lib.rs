@@ -69,6 +69,15 @@
 //!
 //! The raw manifest fields stay reachable through [`Installation::manifest`].
 //!
+//! # While the launcher patches
+//!
+//! The launcher rewrites `Data.p4k` in place, and `build_manifest.id` names the
+//! new build minutes before the patch ends. Discovery does not hide such an
+//! install; ask [`Installation::patch_state`] before reading `Data.p4k` or
+//! writing into the install (and again after a long read). It reports
+//! [`PatchState::Patching`] for an open launcher run and
+//! [`PatchState::Unsettled`] for an install a run left half-changed.
+//!
 //! # Quick start
 //!
 //! ```no_run
@@ -99,6 +108,7 @@ mod language;
 mod launcher_store;
 mod log_parser;
 mod manifest;
+mod patch_state;
 
 pub use channel::Channel;
 pub use discovery::{
@@ -118,3 +128,4 @@ pub use log_parser::{
     parse_launcher_log_entries,
 };
 pub use manifest::{BuildManifest, read_build_manifest};
+pub use patch_state::{LauncherRun, PatchState, RunKind, RunOutcome, Unsettled, launcher_runs};
