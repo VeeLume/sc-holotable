@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.20.0] - 2026-10-15
+
 ### Added
 
 - **`sc-discovery`: launcher patch state.** `Installation::patch_state()`
