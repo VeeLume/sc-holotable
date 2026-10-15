@@ -31,9 +31,10 @@ pub struct Palette {
 pub struct PaletteEntry {
     /// `tintColor`, sRGB bytes; multiplies the layer colour.
     pub tint: [u8; 3],
-    /// `specColor`, sRGB bytes; a dielectric layer's F0.
+    /// `specColor`, sRGB bytes; replaces the F0 of a layer whose `TintMode`
+    /// tints the specular (0 or 2).
     pub spec: [u8; 3],
-    /// 0..=255; pulls the layer's gloss towards 1.
+    /// 0..=255; multiplies the layer's gloss (as `glossiness / 255`).
     pub glossiness: u8,
 }
 
