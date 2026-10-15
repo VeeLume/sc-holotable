@@ -44,7 +44,12 @@ pinned. Both tag kinds are monotonic and immutable.
   `InventoryView` reads the inventory's orientation and light-group tables
   and the light rigs, and picks an item's entries by type, sub type and
   required tag. Probe: `visual_probe` re-derives the values sc-item-render
-  calibrated against in-game screenshots.
+  calibrated against in-game screenshots. `Visuals::scene` assembles an
+  item for drawing (`Scene`): its `.cdf` parts, what hangs on its ports
+  (the default loadout or the caller's `Attached` items), skinned children
+  sharing the parent's skeleton, and the variant tags per part (`Body`, the
+  stored prop unless worn, port flags); what it cannot resolve comes back as
+  `SceneNote`s. Probe: `scene_probe`.
 
 ### Changed
 
