@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.21.0] - 2026-10-15
+
 ### Added
 
 - **`sc-extract`: render inputs for 3D models.** `MeshGeometry::read` reads a
