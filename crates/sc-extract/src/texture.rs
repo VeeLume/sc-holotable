@@ -93,10 +93,11 @@ impl Texture {
     /// The engine samples this texture as sRGB (decoded to linear on read).
     ///
     /// CryEngine keeps its own image flags in the header's first reserved
-    /// word (file offset 36); bit `0x800` asks for sRGB reads. Colour
-    /// textures and LayerBlend blend maps carry it; normal and HueAoLum maps
-    /// do not. The legacy block formats (`DXT1`, …) have no sRGB variant, so
-    /// this flag is the only place the colour space is recorded.
+    /// word (file offset 36); bit `0x800` asks for sRGB reads. LayerBlend
+    /// blend maps and most diffuse maps carry it; normal, HueAoLum and wear
+    /// maps do not. Some diffuse maps lack it although they hold sRGB
+    /// colour, so treat a missing flag on a colour map as unknown. The
+    /// legacy block formats (`DXT1`, …) have no sRGB variant.
     pub fn is_srgb(&self) -> bool {
         u32_at(&self.dds, 36) & SRGB_READ != 0
     }
