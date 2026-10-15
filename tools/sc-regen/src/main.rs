@@ -6,6 +6,9 @@
 //!    its `build_manifest.id`. Only installs whose launcher label matches
 //!    that changelist count: a folder renamed between channels (LIVE moved
 //!    to PTU to seed a patch) is skipped until the launcher has patched it.
+//!    So is an install the launcher is patching or left half-patched
+//!    (`Installation::patch_state`); the check runs again once the generator
+//!    has read `Data.p4k`, and a change in between fails the run.
 //! 2. Stops if that build is no newer than the newest `datacore/*` tag, if
 //!    a PR for it already exists (open, merged or closed), or if the game is
 //!    running.
@@ -267,6 +270,18 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
         ],
         log,
     )?;
+    // The launcher rewrites Data.p4k in place; a patch that started while the
+    // generator read it leaves bindings from a torn file.
+    match newest_build() {
+        Ok(now) if now.label == build.label && now.p4k == build.p4k => {}
+        _ => {
+            return Err(format!(
+                "{} changed while the generator read it (did the launcher start patching?); \
+                 the next run retries",
+                build.label
+            ));
+        }
+    }
     cargo(&worktree, &["fmt", "--all"], log)?;
     info!("clippy --fix on the generated crate");
     cargo(
@@ -567,11 +582,33 @@ fn schedule(repo: &Path) -> Result<(), String> {
 }
 
 /// The newest installed build that carries a launcher label for the build
-/// actually on disk.
+/// actually on disk, and that the launcher is not patching or left
+/// half-patched.
 fn newest_build() -> Result<Build, String> {
     let installs = sc_discovery::discover().map_err(|e| format!("discovering installs: {e}"))?;
     let mut builds = Vec::new();
     for install in installs {
+        match install.patch_state() {
+            Ok(sc_discovery::PatchState::Settled) => {}
+            Ok(state) => {
+                warn!(
+                    channel = %install.channel,
+                    root = %install.root.display(),
+                    ?state,
+                    "skipping install: the launcher is patching it or left it half-patched"
+                );
+                continue;
+            }
+            Err(e) => {
+                warn!(
+                    channel = %install.channel,
+                    root = %install.root.display(),
+                    error = %e,
+                    "skipping install: cannot rule out a launcher patch"
+                );
+                continue;
+            }
+        }
         let changelist = install
             .manifest
             .changelist
