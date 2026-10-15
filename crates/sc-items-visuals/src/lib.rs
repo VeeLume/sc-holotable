@@ -7,6 +7,8 @@
 //! - [`Palettes`]: the `TintPaletteTree` records the recipes point at.
 //! - [`InventoryView`]: how the inventory presents an item (orientation
 //!   offset, light rig) and the size of its grid cell.
+//! - [`Visuals::scene`]: an item assembled for drawing, with what is
+//!   attached to it ([`Scene`]).
 //!
 //! Geometry files are paths into `Data.p4k`; reading them is
 //! `sc_extract::{MeshGeometry, Material, CharacterDefinition, Skeleton}`.
@@ -33,6 +35,7 @@
 
 mod inventory;
 mod palette;
+mod scene;
 
 use std::collections::HashMap;
 
@@ -49,6 +52,9 @@ use tracing::{debug, warn};
 pub use inventory::{InventoryView, LightRig, RigLight};
 pub use palette::{Palette, PaletteEntry, Palettes};
 pub use sc_extract::RecordCollection;
+pub use scene::{
+    Attached, Attachment, Body, MAX_DEPTH, Offset, Part, Piece, Scene, SceneNote, ang3_quaternion,
+};
 
 /// One item's render recipe.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
