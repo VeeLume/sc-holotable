@@ -126,6 +126,11 @@ pub struct Port {
     /// skinned to this item's skeleton, so in bind pose it sits at this
     /// item's origin (a body's head, a head's hair, eyes and piercings).
     pub skinned: bool,
+    /// `Flags`, space-separated as authored. Besides engine flags
+    /// (`uneditable`, `invisible`) they name geometry variants for the
+    /// attached item: a player head's `Eyes_ItemPort` says `Protos_Head`,
+    /// which picks the eyes' `Protos_head` sub-geometry.
+    pub flags: String,
 }
 
 /// A `QuatT` as authored: position, then `Ang3` rotation in degrees.
@@ -421,6 +426,7 @@ fn port(h: Handle<sc_extract::generated::SItemPortDef>, pools: &DataPools) -> Op
     Some(Port {
         name: p.name.clone(),
         skinned,
+        flags: p.flags.clone(),
         helper: helper.and_then(|h| non_empty(&h.name)),
         offset: helper.map_or_else(Transform::default, |h| transform(h.offset, pools)),
         item_offset_helper: helper.and_then(|h| non_empty(&h.item_offset_helper_name)),
