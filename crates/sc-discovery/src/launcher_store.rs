@@ -77,7 +77,7 @@
 use std::fs::File;
 use std::io::{BufReader, Read};
 use std::path::{Path, PathBuf};
-use std::sync::LazyLock;
+use std::sync::{LazyLock, Mutex};
 
 use aes::Aes256;
 use cbc::Decryptor;
@@ -197,23 +197,19 @@ pub fn read_identity() -> Result<LauncherIdentity> {
 /// and the launcher's `app.asar`. Useful for tests and for users with
 /// non-default launcher installs.
 pub fn read_identity_from(store_path: &Path, asar_path: &Path) -> Result<LauncherIdentity> {
-    let store_bytes = std::fs::read(store_path).map_err(|source| {
-        if source.kind() == std::io::ErrorKind::NotFound {
-            Error::LauncherStoreNotFound(store_path.to_path_buf())
-        } else {
-            Error::LauncherStoreUnreadable {
-                path: store_path.to_path_buf(),
-                source,
-            }
-        }
-    })?;
-    let key_b64 = extract_encryption_key(asar_path)?;
-    let plaintext = decrypt_store(&store_bytes, &key_b64)?;
-    parse_identity_json(&plaintext)
+    parse_identity_json(&read_store_plaintext(store_path, asar_path)?)
 }
 
 /// Like [`read_launcher_snapshot`] but with explicit paths.
+///
+/// The key scan of `app.asar` runs once per process and asar path; a store
+/// that no longer decrypts with the remembered key (launcher updated and
+/// rotated it) triggers one fresh scan.
 pub fn read_launcher_snapshot_from(store_path: &Path, asar_path: &Path) -> Result<StoreSnapshot> {
+    parse_store_json(&read_store_plaintext(store_path, asar_path)?)
+}
+
+fn read_store_plaintext(store_path: &Path, asar_path: &Path) -> Result<Vec<u8>> {
     let store_bytes = std::fs::read(store_path).map_err(|source| {
         if source.kind() == std::io::ErrorKind::NotFound {
             Error::LauncherStoreNotFound(store_path.to_path_buf())
@@ -224,9 +220,30 @@ pub fn read_launcher_snapshot_from(store_path: &Path, asar_path: &Path) -> Resul
             }
         }
     })?;
+    // A stale key can still unpad by chance; the JSON object check catches
+    // nearly all of those.
+    if let Some(key_b64) = cached_key(asar_path)
+        && let Ok(plaintext) = decrypt_store(&store_bytes, &key_b64)
+        && plaintext.first() == Some(&b'{')
+    {
+        return Ok(plaintext);
+    }
     let key_b64 = extract_encryption_key(asar_path)?;
     let plaintext = decrypt_store(&store_bytes, &key_b64)?;
-    parse_store_json(&plaintext)
+    *KEY_CACHE.lock().unwrap_or_else(|e| e.into_inner()) = Some((asar_path.to_path_buf(), key_b64));
+    Ok(plaintext)
+}
+
+/// The last key extracted, with the asar it came from.
+static KEY_CACHE: Mutex<Option<(PathBuf, Vec<u8>)>> = Mutex::new(None);
+
+fn cached_key(asar_path: &Path) -> Option<Vec<u8>> {
+    KEY_CACHE
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .as_ref()
+        .filter(|(path, _)| path == asar_path)
+        .map(|(_, key)| key.clone())
 }
 
 /// Probe well-known launcher install locations for `resources/app.asar`.

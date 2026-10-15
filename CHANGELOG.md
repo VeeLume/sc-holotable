@@ -13,6 +13,32 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-discovery`: launcher patch state.** `Installation::patch_state()`
+  reads the launcher log, the launcher store and `build_manifest.id` afresh
+  and returns `PatchState::Settled`, `Patching(LauncherRun)` (a launcher
+  install / update / verify run is open on the install, possibly paused) or
+  `Unsettled` (`RunDidNotComplete`: the last run that wrote files failed, was
+  cancelled or died; `NotTheRecordedBuild`: the store records another build
+  than the manifest). The launcher rewrites `Data.p4k` in place and moves
+  `build_manifest.id` to the new build minutes before the patch ends, so check
+  before reading the p4k or writing into the install. `launcher_runs(path)`
+  lists every run in a launcher log with its kind, target label, start time,
+  whether it wrote files and how it ended.
+
+### Fixed
+
+- **`sc-discovery`: log fallback reads launcher 2.14+ lines.** The
+  `[Pipeline]`, `[PatcherPhase]` and `[InitialDownloadPhase]` install lines
+  that replaced `[Installer]` are recognised again, so the log fallback finds
+  installs patched since April 2026 that were never launched.
+- **`sc-discovery`: the launcher store key is scanned once per process.**
+  Repeated store reads no longer stream the ~430 MB `app.asar` each time; a
+  rotated key triggers one fresh scan.
+- **`sc-regen` skips an install the launcher is patching**, and fails the run
+  when the build changed while the generator read it.
+
 ## [v0.19.0] - 2026-10-13
 
 ### Added

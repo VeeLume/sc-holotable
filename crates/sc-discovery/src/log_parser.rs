@@ -22,21 +22,28 @@ static LAUNCH_RE: LazyLock<Regex> = LazyLock::new(|| {
 });
 
 /// `[Installer] Installing Star Citizen <CHAN> <VER> at <LIB> (force DP: ...)`
-/// and the matching `Verifying ...` shape. The captured path is the parent
-/// **library directory**; the channel subdir still has to be appended.
+/// (launcher before 2.14) or `[Pipeline] ... at <LIB> (type: update, forceDP:
+/// ...)` (2.14 on), and the matching `Verifying ...` shapes. The captured path
+/// is the parent **library directory**; the channel subdir still has to be
+/// appended.
 static INSTALLER_AT_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"\[Installer\] (?:Installing|Verifying) Star Citizen (\S+) \S+ at (.+?) \(force DP")
-        .expect("installer-at regex is valid")
+    Regex::new(
+        r"\[(?:Installer|Pipeline)\] (?:Installing|Verifying) Star Citizen (\S+) \S+ at (.+?) \((?:force DP|type:)",
+    )
+    .expect("installer-at regex is valid")
 });
 
 /// `[Installer] ... (SC <CHAN> <VER>) in <PATH>` (with an occasional stray
-/// extra `(` that the launcher emits — `(SC (LIVE 4.7.0-live...) in ...`).
-/// Captured path may be either a library dir or a full root; the caller
-/// normalises by checking whether the path's last component already matches
-/// the channel.
+/// extra `(` that the launcher emits — `(SC (LIVE 4.7.0-live...) in ...`), and
+/// the 2.14+ `[PatcherPhase]` / `[InitialDownloadPhase]` lines, which may end
+/// in ` (statistics enabled: ...)`. Captured path may be either a library dir
+/// or a full root; the caller normalises by checking whether the path's last
+/// component already matches the channel.
 static INSTALLER_IN_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r#"\[Installer\][^(]*\(SC \(?(\S+) \S+\)? in (.+?)(?:\\?"|$)"#)
-        .expect("installer-in regex is valid")
+    Regex::new(
+        r#"\[(?:Installer|PatcherPhase|InitialDownloadPhase)\][^(]*\(SC \(?(\S+) \S+\)? in (.+?)(?: \(statistics enabled|\\?"|$)"#,
+    )
+    .expect("installer-in regex is valid")
 });
 
 /// `[Launcher::launch] Deleting <ROOT>\loginData.json for <CHAN>`.
@@ -55,8 +62,10 @@ static DELETE_LOGIN_RE: LazyLock<Regex> = LazyLock::new(|| {
 pub enum LogEntryKind {
     /// `Launcher::launch Launching Star Citizen ... from (...)`.
     Launch,
-    /// Any `[Installer] ...` marker (Installing, Verifying, Delta update
-    /// applied, base pack download, ...).
+    /// Any install-pipeline marker naming a path: `[Installer] ...` before
+    /// launcher 2.14, `[Pipeline]` / `[PatcherPhase]` /
+    /// `[InitialDownloadPhase]` since (Installing, Verifying, delta update
+    /// started / completed, base pack download, ...).
     Install,
     /// `Launcher::launch Deleting <root>\loginData.json for <channel>`,
     /// emitted as part of a launch but observed even on launches that
@@ -169,13 +178,13 @@ fn extract_entry(line: &str) -> Option<LogEntry> {
 /// JSON-framed lines escape backslashes as `\\`; flip them back. Plain lines
 /// (which don't exist any more in 2.x but the regex still matches) are
 /// unaffected because they don't contain `\\`.
-fn unescape_path(s: &str) -> PathBuf {
+pub(crate) fn unescape_path(s: &str) -> PathBuf {
     PathBuf::from(s.replace("\\\\", "\\"))
 }
 
 /// Decide whether a captured path is already a channel root or a parent
 /// library directory, and return the channel root in either case.
-fn normalise_root(channel: Channel, path: &Path) -> PathBuf {
+pub(crate) fn normalise_root(channel: Channel, path: &Path) -> PathBuf {
     let last = path.file_name().and_then(|s| s.to_str()).unwrap_or("");
     if last.eq_ignore_ascii_case(channel.install_dir_name()) {
         path.to_path_buf()
@@ -268,6 +277,28 @@ mod tests {
         let entry = parse(line).unwrap();
         assert_eq!(entry.channel, Channel::Live);
         assert_eq!(entry.root, PathBuf::from("C:\\Games\\StarCitizen\\LIVE"));
+    }
+
+    #[test]
+    fn parse_pipeline_start_line() {
+        // Launcher 2.14+ shape, from a real 2.18.1 log.
+        let line = r#"{ "t":"2026-10-13 17:47:20.295", "[main][info] ": "[Pipeline] Installing Star Citizen LIVE 4.10.2-live.12913470 at C:\\Games\\StarCitizen (type: update, forceDP: false)"  },"#;
+        let entry = parse(line).unwrap();
+        assert_eq!(entry.channel, Channel::Live);
+        assert_eq!(entry.root, PathBuf::from("C:\\Games\\StarCitizen\\LIVE"));
+        assert_eq!(entry.kind, LogEntryKind::Install);
+    }
+
+    #[test]
+    fn parse_patcher_phase_lines() {
+        let start = r#"{ "t":"2026-10-08 23:34:45.443", "[main][info] ": "[PatcherPhase] Starting delta update (SC PTU 4.10.2-ptu.12878398) in C:\\Games\\StarCitizen (statistics enabled: false)"  },"#;
+        let entry = parse(start).unwrap();
+        assert_eq!(entry.channel, Channel::Ptu);
+        assert_eq!(entry.root, PathBuf::from("C:\\Games\\StarCitizen\\PTU"));
+
+        let done = r#"{ "t":"2026-10-08 23:49:16.600", "[main][info] ": "[PatcherPhase] Delta update completed (SC PTU 4.10.2-ptu.12878398) in C:\\Games\\StarCitizen\\PTU"  },"#;
+        let entry = parse(done).unwrap();
+        assert_eq!(entry.root, PathBuf::from("C:\\Games\\StarCitizen\\PTU"));
     }
 
     #[test]
