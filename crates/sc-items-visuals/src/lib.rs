@@ -122,6 +122,10 @@ pub struct Port {
     /// backpack's stocked-weapon ports name `attach_offset_right_01` /
     /// `attach_offset_left_01` on the weapon.
     pub item_offset_helper: Option<String>,
+    /// `SItemPortDefAttachmentImplementationSkin`: the attached item is
+    /// skinned to this item's skeleton, so in bind pose it sits at this
+    /// item's origin (a body's head, a head's hair, eyes and piercings).
+    pub skinned: bool,
 }
 
 /// A `QuatT` as authored: position, then `Ang3` rotation in degrees.
@@ -406,8 +410,17 @@ fn port(h: Handle<sc_extract::generated::SItemPortDef>, pools: &DataPools) -> Op
             .and_then(|h| h.get(pools)),
         _ => None,
     };
+    let skinned = matches!(
+        p.attachment_implementation,
+        Some(
+            SItemPortDefAttachmentImplementationBasePtr::SItemPortDefAttachmentImplementationSkin(
+                _
+            )
+        )
+    );
     Some(Port {
         name: p.name.clone(),
+        skinned,
         helper: helper.and_then(|h| non_empty(&h.name)),
         offset: helper.map_or_else(Transform::default, |h| transform(h.offset, pools)),
         item_offset_helper: helper.and_then(|h| non_empty(&h.item_offset_helper_name)),
