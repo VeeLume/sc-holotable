@@ -1,0 +1,28 @@
+[package]
+name = "sc-items-visuals"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Domain crate: what an item looks like, as a render recipe (geometry variant,
+# material, tint palette, ports, default loadout) plus how the inventory
+# presents it (orientation, light rig, grid cell).
+#   entities-scitem       item EntityClassDefinitions
+#   entities-decorations  hangar decorations (racks, flair)
+#   entities-lights       the inventory light-group entities
+#   tintpalettes          TintPaletteTree records
+#   ui-playerchoice_pitconfig_playerchoicepersonalthought  inventory orientation + light-group tables
+sc-extract = { workspace = true, features = [
+    "entities-scitem",
+    "entities-decorations",
+    "entities-lights",
+    "tintpalettes",
+    "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+] }
+sc-items = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }

@@ -12,6 +12,7 @@ members = [
     "crates/sc-mining",
     "crates/sc-items-ship-components",
     "crates/sc-items-ship-weapons",
+    "crates/sc-items-visuals",
     "crates/sc-locations",
     "crates/sc-gathering",
     "crates/sc-manufacturers",
@@ -46,6 +47,7 @@ sc-items-mining = { path = "crates/sc-items-mining" }
 sc-mining = { path = "crates/sc-mining" }
 sc-items-ship-components = { path = "crates/sc-items-ship-components" }
 sc-items-ship-weapons = { path = "crates/sc-items-ship-weapons" }
+sc-items-visuals = { path = "crates/sc-items-visuals" }
 sc-locations = { path = "crates/sc-locations" }
 sc-manufacturers = { path = "crates/sc-manufacturers" }
 sc-resources = { path = "crates/sc-resources" }

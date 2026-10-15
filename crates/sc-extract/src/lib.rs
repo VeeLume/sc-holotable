@@ -54,18 +54,22 @@
 mod asset_data;
 mod assets;
 mod bundled_walk;
+mod character;
 mod crc;
 mod datacore;
 mod error;
 mod filters;
 mod graph;
 mod locale;
+mod material;
 mod mesh;
 pub mod object_container;
 mod processed_snapshot;
 mod record_collection;
 mod record_paths;
+mod skeleton;
 mod snapshot;
+mod texture;
 
 /// Machine-generated DataCore schema bindings — workspace-internal escape
 /// hatch. Every type in this module mirrors a DCB struct or enum and
@@ -75,13 +79,15 @@ pub use sc_extract_generated as generated;
 pub use asset_data::{AssetConfig, AssetData};
 pub use assets::AssetSource;
 pub use bundled_walk::{BundledWalk, Interest, RecordVisitor, VisitItem, VisitorSet};
+pub use character::{AttachmentKind, CharacterAttachment, CharacterDefinition};
 pub use crc::{CrcIndex, class_crc};
 pub use datacore::Datacore;
 pub use error::{Error, Result};
 pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;
 pub use locale::{LocaleKey, LocaleMap, is_placeholder, strip_locale_metadata};
-pub use mesh::{Mesh, MeshNode};
+pub use material::{Material, MaterialLayer, MaterialTexture, SubMaterial};
+pub use mesh::{BoneWeights, Mesh, MeshGeometry, MeshNode, Submesh};
 pub use object_container::{Socpak, XmlNode};
 pub use processed_snapshot::ProcessedSnapshot;
 pub use record_collection::RecordCollection;
@@ -90,7 +96,9 @@ pub use sc_extract_generated::{
     Builder, DataPools, Extract, Handle, Pooled, RecordIndex, RecordLookup, RecordStore,
     UnknownRecordType,
 };
+pub use skeleton::{Bone, Skeleton};
 pub use snapshot::{ExtractSnapshot, SnapshotCaptureConfig, SnapshotMeta};
+pub use texture::{Texture, TextureFormat};
 
 // ── svarog re-exports ──────────────────────────────────────────────────────
 

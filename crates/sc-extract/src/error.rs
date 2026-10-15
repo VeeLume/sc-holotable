@@ -84,6 +84,18 @@ pub enum Error {
     #[error("malformed IVO geometry: {0}")]
     Mesh(String),
 
+    /// A `.mtl` material file was not a `<Material>` document.
+    #[error("malformed material file: {0}")]
+    Material(String),
+
+    /// A `.cdf` character definition was not a `<CharacterDefinition>` document.
+    #[error("malformed character definition: {0}")]
+    Character(String),
+
+    /// A DDS texture (or one of its split mip files) was malformed.
+    #[error("malformed DDS texture: {0}")]
+    Texture(String),
+
     // ── DCB parse ────────────────────────────────────────────────────────
     /// `Game2.dcb` could not be located inside the P4K archive.
     #[error("Game2.dcb not found inside P4K archive")]

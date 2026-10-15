@@ -13,6 +13,49 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract`: render inputs for 3D models.** `MeshGeometry::read` reads a
+  geometry file and its stream companion into everything needed to draw it:
+  positions, normals, tangents, UVs and vertex colours, the triangle list,
+  `Submesh`es (material index, node, index range), the node tree and the
+  `.mtl` it names. `Material::read` parses a `.mtl` into `SubMaterial`s
+  (shader, `StringGenMask` features, textures by slot, `LayerBlend` layers,
+  public params). `Texture::read` reassembles a split DDS (`.dds` + `.1`…`.8`)
+  and its separate gloss texture (`.a` + `.1a`…`.8a`) into complete DDS files;
+  `Texture::is_srgb` reports the engine's sRGB-read flag (set on colour and
+  blend maps, which the block formats cannot express).
+  `MeshGeometry::material_path` resolves a bare `MtlName` (no folder) next to
+  the geometry file. `Skeleton::read` reads a `.chr`'s bones (both
+  `CompiledBones` layouts) in model space, for parts attached to bones.
+  `MeshGeometry::bone_weights` carries a `.skin`'s per-vertex skinning
+  (`BoneWeights`: up to eight joints into its own bone list, weights summing
+  to 255). `CharacterDefinition::read` parses a `.cdf` (base model plus `CA_SKIN` /
+  `CA_BONE` attachments). Probe: `render_assets_probe`.
+- **`sc-items-visuals` (umbrella feature `visuals`): item render recipes.**
+  `Visuals` holds, per item, the geometry node tree with its tagged
+  variants, the material node, the skin tag (`geometryTags`), the ports with
+  their attach helpers and offsets (and the attached item's own helper,
+  `ItemOffsetHelperName`) or whether the attached item is skinned to the
+  item's skeleton (`Port::skinned`: a body's head, a head's hair, worn
+  armor), the default loadout and the inventory grid cell;
+  `Visual::look` resolves the geometry, material and tint palette for the
+  item's tags. `Palettes` reads the `TintPaletteTree` records.
+  `InventoryView` reads the inventory's orientation and light-group tables
+  and the light rigs, and picks an item's entries by type, sub type and
+  required tag. Probe: `visual_probe` re-derives the values sc-item-render
+  calibrated against in-game screenshots. `Visuals::scene` assembles an
+  item for drawing (`Scene`): its `.cdf` parts, what hangs on its ports
+  (the default loadout or the caller's `Attached` items), skinned children
+  sharing the parent's skeleton, and the variant tags per part (`Body`, the
+  stored prop unless worn, port flags); what it cannot resolve comes back as
+  `SceneNote`s. Probe: `scene_probe`.
+
+### Changed
+
+- **`sc-extract`: `MeshNode` gained `transform`** (the node's 3 × 4 placement
+  relative to its parent). Code constructing `MeshNode` literals must add it.
+
 ## [v0.20.0] - 2026-10-15
 
 ### Added

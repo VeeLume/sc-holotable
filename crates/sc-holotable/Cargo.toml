@@ -15,6 +15,7 @@ sc-discovery = { workspace = true, optional = true }
 sc-extract = { workspace = true, optional = true }
 sc-items = { workspace = true, optional = true }
 sc-items-armor = { workspace = true, optional = true }
+sc-items-visuals = { workspace = true, optional = true }
 sc-items-fps-weapons = { workspace = true, optional = true }
 sc-items-mining = { workspace = true, optional = true }
 sc-mining = { workspace = true, optional = true }
@@ -52,6 +53,9 @@ armor = ["dep:sc-items-armor", "extract", "items"]
 ship-components = ["dep:sc-items-ship-components", "extract", "items"]
 ship-weapons = ["dep:sc-items-ship-weapons", "extract", "items"]
 mining-items = ["dep:sc-items-mining", "extract", "items"]
+# Render recipes: geometry variant, material, tint palette, ports, default
+# loadout, inventory orientation and light rig per item.
+visuals = ["dep:sc-items-visuals", "extract", "items"]
 # Rock-side mining maths: rulesets, elements, rock properties, breakability,
 # the charge simulation, rock spawns and fracture trees; reads laser, module
 # and gadget stats.
@@ -73,7 +77,7 @@ missions-payout = ["missions", "sc-missions/payout"]
 foundations = ["extract", "items", "tags", "manufacturers", "resources", "locations", "gathering"]
 
 # ── Aggregators ──────────────────────────────────────────────────────────────
-all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "mining-items", "mining", "crafting", "gathering", "foundations"]
+all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "mining-items", "mining", "crafting", "gathering", "visuals", "foundations"]
 full = ["all-t1", "missions-payout"]
 
 [dev-dependencies]

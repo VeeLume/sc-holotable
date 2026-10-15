@@ -36,6 +36,7 @@
 //! | `items` / `tags` / `manufacturers` / `resources` / `locations` | same names | the foundational record indices |
 //! | `gathering` | `gathering` | resource providers (pulls `locations`) |
 //! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
+//! | `visuals` | `visuals` | render recipes and inventory presentation (orientation, light rig, palettes) |
 //! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
 //! | `mining` | `mining` | rock properties, breakability, the charge simulation, rock spawns and fracture trees (pulls `resources`, `tags`, `ship-weapons`, `mining-items`) |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
@@ -116,6 +117,14 @@ pub mod fps_weapons {
     //! FPS-weapon base-stat sheet ([`sc_items_fps_weapons`]) — the T1
     //! per-itemtype data source for crafting product stats.
     pub use sc_items_fps_weapons::*;
+}
+
+#[cfg(feature = "visuals")]
+pub mod visuals {
+    //! Item render recipes ([`sc_items_visuals`]) — geometry variant,
+    //! material, tint palette, ports, default loadout, and how the inventory
+    //! presents an item.
+    pub use sc_items_visuals::*;
 }
 
 #[cfg(feature = "armor")]
@@ -216,6 +225,8 @@ pub mod prelude {
     pub use sc_items_ship_components::{ShipComponentKind, ShipComponentStats, ShipComponents};
     #[cfg(feature = "ship-weapons")]
     pub use sc_items_ship_weapons::{ShipWeaponKind, ShipWeaponStats, ShipWeapons};
+    #[cfg(feature = "visuals")]
+    pub use sc_items_visuals::{InventoryView, Palettes, Visual, Visuals};
     #[cfg(feature = "locations")]
     pub use sc_locations::{
         Location, LocationKind, Locations, ObjectContainers, Place, Placement, PlacementId,
