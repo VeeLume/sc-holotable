@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.23.0] - 2026-10-16
+
 ### Added
 
 - **`sc-locations`: `ObjectContainers::walk`** cooks only what given root
