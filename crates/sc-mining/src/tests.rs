@@ -356,6 +356,88 @@ fn balance_throttle_holds() {
     assert!(below.samples.iter().all(|s| s.power == 0.0));
 }
 
+/// With the rock updating twice per hit, the 1.2-tick drain makes the ticks
+/// alternate between 1.2x and 0.8x the mean gain, and the wave amplifies the
+/// strong ones: the bar climbs just under the balance throttle, where even
+/// hits leave it at zero.
+#[test]
+fn hit_queue_lets_wave_climb_under_balance() {
+    let ruleset = ship();
+    let mut elements = Elements::new();
+    elements.insert(element(1, 500.0, 0.3, 2.0));
+    let entries = [Entry {
+        element: guid(1),
+        fraction: 0.8,
+        quality: None,
+    }];
+    let rock = Rock::from_mass(&ruleset, &elements, &entries, 5000.0).expect("rock");
+    let mined = ModifiedRock::new(
+        &ruleset,
+        &rock,
+        &Setup {
+            lasers: vec![laser(4000.0, MiningModifiers::default())],
+            gadgets: vec![],
+        },
+    );
+    assert!(mined.instability > 10.0);
+    let under = mined.balance_throttle(&ruleset).expect("holdable") * 0.99;
+    let peak = |tick_s: f32| {
+        let config = SimConfig {
+            tick_s,
+            max_time_s: 20.0,
+            ..Default::default()
+        };
+        simulate(&mined, &ruleset, &mut Fixed(under), &config)
+            .samples
+            .iter()
+            .map(|s| s.power)
+            .fold(0.0, f32::max)
+    };
+    assert_eq!(peak(1.0 / 30.0), 0.0);
+    assert!(peak(1.0 / 60.0) > 0.01, "peak {}", peak(1.0 / 60.0));
+}
+
+/// The queue delivers all hit time: without a wave, hits every other tick
+/// charge the bar as fast as hits every tick, but for what is still queued
+/// (at most one hit).
+#[test]
+fn hit_queue_conserves_hit_time() {
+    let ruleset = ship();
+    let mut elements = Elements::new();
+    elements.insert(element(1, 0.0, 0.3, 2.0));
+    let entries = [Entry {
+        element: guid(1),
+        fraction: 0.8,
+        quality: None,
+    }];
+    let rock = Rock::from_mass(&ruleset, &elements, &entries, 5000.0).expect("rock");
+    let mined = ModifiedRock::new(
+        &ruleset,
+        &rock,
+        &Setup {
+            lasers: vec![laser(4000.0, MiningModifiers::default())],
+            gadgets: vec![],
+        },
+    );
+    assert_eq!(mined.instability, 0.0);
+    let power_at = |hit_interval_s: f32| {
+        let config = SimConfig {
+            hit_interval_s,
+            max_time_s: 2.0,
+            ..Default::default()
+        };
+        let trace = simulate(&mined, &ruleset, &mut Fixed(0.5), &config);
+        trace.samples.last().expect("ticks").power
+    };
+    let (even, paired) = (power_at(1.0 / 30.0), power_at(2.0 / 30.0));
+    let one_hit = mined.gain_rate(&ruleset, 0.5) * 2.0 / 30.0;
+    assert!(even > 0.0 && even < 1.0, "even {even}");
+    assert!(
+        paired <= even + 1e-6 && even - paired <= one_hit + 1e-6,
+        "even {even}, paired {paired}, one hit {one_hit}"
+    );
+}
+
 /// Hit consistency: 1 after 4 s within 0.1 m; ramps as (t/4)^2; 0.2 at 0.5 m.
 #[test]
 fn hit_consistency_values() {

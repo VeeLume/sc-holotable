@@ -13,6 +13,19 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Changed
+
+- **`sc-mining`: `simulate` meters hits through the client's hit queue.**
+  Each laser's hits wait in a queue, and every rock update drains at most
+  `HIT_DRAIN` (1.2) updates' worth of hit time, at the throttle set then.
+  The queue holds `HIT_QUEUE_CAP_S` (1 s); hits beyond that are dropped.
+  `SimConfig` gained `hit_interval_s` (default 1/30 s), and `tick_s` is now
+  the rock's update step. When hits arrive at a different rate than the rock
+  updates, ticks alternate between strong and weak, and the instability wave
+  amplifies the strong ones even at the balance throttle. The defaults (both
+  1/30 s) give the same results as before. Code constructing `SimConfig`
+  literals must add the field.
+
 ## [v0.21.0] - 2026-10-15
 
 ### Added
