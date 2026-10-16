@@ -79,8 +79,8 @@ pub use ruleset::{HitConsistency, Ruleset, Rulesets};
 pub use setup::{Combined, Laser, LaserPower, ModifiedRock, Setup};
 pub use shape::{Piece, Shape};
 pub use sim::{
-    Difficulty, Fixed, Outcome, Player, Pool, Sample, SimConfig, Throttle, Trace, View, difficulty,
-    hit_consistency, simulate,
+    Difficulty, Fixed, HIT_DRAIN, HIT_QUEUE_CAP_S, Outcome, Player, Pool, Sample, SimConfig,
+    Throttle, Trace, View, difficulty, hit_consistency, simulate,
 };
 pub use spawn::{Quantiles, Shapes, Spawn, Spawner, Survey};
 

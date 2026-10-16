@@ -31,11 +31,24 @@ pub fn hit_consistency(params: &HitConsistency, firing_s: f32, scatter_m: f32) -
     (covered / spread).clamp(0.0, 1.0)
 }
 
+/// Hit time the rock takes from a laser's queue per tick, as a multiple of
+/// the tick (client code, LIVE 4.10: a literal 1.2).
+pub const HIT_DRAIN: f32 = 1.2;
+
+/// A laser's hit queue holds at most this much hit time; a hit arriving at a
+/// full queue is dropped (client code, LIVE 4.10).
+pub const HIT_QUEUE_CAP_S: f32 = 1.0;
+
 /// How a simulation runs.
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct SimConfig {
-    /// Seconds per tick (the client's beam samples hits at 1/30 s).
+    /// Seconds per rock update: the frame time of the machine that owns the
+    /// rock, a runtime value the data does not give.
     pub tick_s: f32,
+    /// Seconds between a laser's hits. The beam ticks at a fixed 1/30 s and
+    /// keeps one raycast in flight; each answer delivers the hit time since
+    /// the previous one, so this is 1/30 s times the ticks a raycast takes.
+    pub hit_interval_s: f32,
     /// Give up after this long.
     pub max_time_s: f32,
     /// Standard deviation of the hit points, m (see [`hit_consistency`]).
@@ -51,6 +64,7 @@ impl Default for SimConfig {
     fn default() -> Self {
         Self {
             tick_s: 1.0 / 30.0,
+            hit_interval_s: 1.0 / 30.0,
             max_time_s: 180.0,
             aim_scatter_m: 0.25,
             seed: 0,
@@ -183,11 +197,18 @@ pub struct Trace {
 ///
 /// Per tick, as the client does (LIVE 4.10): the wave `w = sin(2π t / T) *
 /// amp` (each period draws `T = period ± variance` and `amp` in 0..1); the
-/// lasers' gain minus the decay; if that is a gain, it is multiplied by `1 +
-/// f` (or divided by `1 - f`) with `f = instability * w * (1 - min(c,
-/// maxEffectOnInstability))`; then the bar, then the breaking pools. Not
-/// modelled: the throttle's lerp toward the setting, gaps in the hits, and
-/// rotation changing the distance.
+/// hits that arrived join the queue, and up to [`HIT_DRAIN`] ticks of hit
+/// time leave it, at the throttle set now; their gain minus the decay; if
+/// that is a gain, it is multiplied by `1 + f` (or divided by `1 - f`) with
+/// `f = instability * w * (1 - min(c, maxEffectOnInstability))`; then the
+/// bar, then the breaking pools.
+///
+/// When hits arrive once per tick ([`SimConfig::hit_interval_s`] equal to
+/// [`SimConfig::tick_s`], the default) every tick drains exactly one hit and
+/// the gain is even. Otherwise ticks alternate between more and less than
+/// the mean, and the wave amplifies the surplus of the strong ones even at
+/// the balance throttle. Every laser hits in step. Not modelled: the
+/// throttle's lerp toward the setting, and rotation changing the distance.
 pub fn simulate(
     rock: &ModifiedRock,
     ruleset: &Ruleset,
@@ -195,6 +216,7 @@ pub fn simulate(
     config: &SimConfig,
 ) -> Trace {
     let dt = config.tick_s.max(1e-4);
+    let interval = config.hit_interval_s.max(1e-4);
     let decay = decay_rate(ruleset) * dt;
     let scale = breaking_scale(ruleset, rock.mass);
     let mut rng = Rng::new(config.seed);
@@ -204,6 +226,9 @@ pub fn simulate(
     let (mut power, mut controlled, mut danger) = (0.0f32, 0.0f32, 0.0f32);
     let mut time_in_window = 0.0;
     let mut time = 0.0f32;
+    // Hits are counted on an exact clock so that equal tick and hit intervals
+    // never drift into a tick with two hits or none.
+    let (mut ticks, mut hits, mut queued) = (0u64, 0u64, 0.0f32);
     let outcome = loop {
         if time >= config.max_time_s {
             break Outcome::TimedOut;
@@ -217,7 +242,18 @@ pub fn simulate(
         };
         let setting = throttle.throttle(&view).clamp(0.0, 1.0);
 
-        let mut change = rock.gain_rate(ruleset, setting) * dt - decay;
+        ticks += 1;
+        let end = ticks as f64 * f64::from(dt);
+        while (hits + 1) as f64 * f64::from(interval) <= end + 1e-9 {
+            hits += 1;
+            if queued < HIT_QUEUE_CAP_S {
+                queued += interval;
+            }
+        }
+        let drained = queued.min(HIT_DRAIN * dt);
+        queued -= drained;
+
+        let mut change = rock.gain_rate(ruleset, setting) * drained - decay;
         let consistency =
             hit_consistency(&ruleset.hit_consistency, time + dt, config.aim_scatter_m);
         let damping = 1.0 - consistency.min(ruleset.hit_consistency.max_effect_on_instability);
