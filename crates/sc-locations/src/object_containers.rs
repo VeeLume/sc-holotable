@@ -30,11 +30,12 @@
 //! search means we don't care.
 
 use std::collections::{HashMap, HashSet};
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 use sc_extract::object_container::{Socpak, XmlNode, decode};
 use sc_extract::{AssetSource, Guid, Result};
 use serde::{Deserialize, Serialize};
-use tracing::warn;
+use tracing::{debug, warn};
 
 // ── GUID canonicalization + CRC (shared by the projections) ─────────────────
 
@@ -208,6 +209,9 @@ pub struct ObjectContainers {
     /// bridge (formerly `LocationContainers`).
     #[serde(skip)]
     by_realized_socpak: HashMap<String, Vec<Guid>>,
+    /// `nested socpak → every placement that includes it`, named or not.
+    #[serde(skip)]
+    by_nests: HashMap<String, Vec<PlacementId>>,
 }
 
 /// Serialization shadow: only `placements` is persisted; indices are recomputed
@@ -227,10 +231,167 @@ impl From<ObjectContainersRepr> for ObjectContainers {
             by_starmap: HashMap::new(),
             by_mission_crc: HashMap::new(),
             by_realized_socpak: HashMap::new(),
+            by_nests: HashMap::new(),
         };
         g.rebuild_indices();
         g
     }
+}
+
+/// An `objectcontainers/*.socpak` archive entry.
+fn is_object_container(name: &str) -> bool {
+    let l = name.to_ascii_lowercase().replace('\\', "/");
+    l.ends_with(".socpak") && l.contains("objectcontainers")
+}
+
+/// What one socpak yields: its placements and what the visitor found.
+struct Harvested<T> {
+    placements: Vec<Placement>,
+    found: Vec<T>,
+}
+
+/// Open one socpak's `bytes`, harvest its placements and hand every decoded
+/// member to `visit`. `None` (with a warning) when it cannot be read or opened.
+fn harvest_socpak<T>(
+    bytes: Result<Vec<u8>>,
+    sp_norm: &str,
+    visit: &impl Fn(&str, &str, &XmlNode) -> Vec<T>,
+) -> Option<Harvested<T>> {
+    let bytes = match bytes {
+        Ok(b) => b,
+        Err(e) => {
+            warn!(socpak = %sp_norm, error = %e, "skip unreadable socpak");
+            return None;
+        }
+    };
+    let mut pak = match Socpak::open(bytes) {
+        Ok(p) => p,
+        Err(e) => {
+            warn!(socpak = %sp_norm, error = %e, "skip unopenable socpak");
+            return None;
+        }
+    };
+    // System nav-graph placements live in `.xml` members; decoding every
+    // socpak's `.xml` would explode parse time, so gate on `/system/`.
+    let allow_xml = sp_norm.contains("/system/");
+    let mut out = Harvested {
+        placements: Vec::new(),
+        found: Vec::new(),
+    };
+    for m in 0..pak.len() {
+        let member = pak.name(m).unwrap_or_default();
+        let lower = member.to_ascii_lowercase();
+        let ok = lower.ends_with(".soc")
+            || lower.ends_with(".pla")
+            || lower.ends_with(".entxml")
+            || (allow_xml && lower.ends_with(".xml"));
+        if !ok {
+            continue;
+        }
+        let Ok(b) = pak.read(m) else { continue };
+        let Ok(Some(root)) = decode(&b) else { continue };
+        harvest(&root, sp_norm, &mut out.placements);
+        out.found.extend(visit(sp_norm, &member, &root));
+    }
+    Some(out)
+}
+
+/// Index every placement entity in one decoded member tree into `out`.
+fn harvest(root: &XmlNode, sp_norm: &str, out: &mut Vec<Placement>) {
+    for e in root.find_all("Entity") {
+        let class = e.attr("EntityClass").unwrap_or("");
+        let Some(disp) = e.attr("EntityCryGUID") else {
+            continue;
+        };
+        let disp = disp.to_ascii_lowercase();
+        let Some(key) = cry_key(&disp) else { continue };
+
+        // Optional identity facets — tag-agnostic, never gated on.
+        let starmap = first_attr(e, "starmapRecord")
+            .filter(|s| !s.starts_with("00000000-"))
+            .map(str::to_string);
+        let starmap_guid = starmap
+            .as_deref()
+            .and_then(|s| s.trim().trim_matches(['{', '}']).parse::<Guid>().ok());
+        let has_mission = first_attr(e, "template").is_some()
+            || e.find_all("MissionLocationParams").next().is_some();
+
+        // Selection: object-container placements + any nav/mission leaf. This
+        // is deliberately broad but excludes pure geometry (no OC, no facet).
+        if !(class.contains("ObjectContainer") || starmap.is_some() || has_mission) {
+            continue;
+        }
+
+        let parent = first_attr(e, "parentGUID").and_then(std_key);
+        let nests = e
+            .find_all("EntityComponentObjectContainer")
+            .next()
+            .and_then(|c| c.attr("objectContainer"))
+            .map(normalize_socpak_path);
+        let pos = e.attr("Pos").and_then(vec3);
+        let orbit = e.find_all("EntityComponentOrbit").next().and_then(|o| {
+            let r = o.attr("OrbitalRadius").and_then(|v| v.trim().parse().ok());
+            let a = o.attr("OrbitalAngle").and_then(|v| v.trim().parse().ok());
+            match (r, a) {
+                (Some(radius), Some(angle)) => Some(Orbit { radius, angle }),
+                _ => None,
+            }
+        });
+
+        out.push(Placement {
+            key,
+            disp,
+            socpak: sp_norm.to_string(),
+            parent,
+            nests,
+            is_leaf: starmap.is_some() || has_mission,
+            starmap,
+            starmap_guid,
+            name: e.attr("Name").unwrap_or("").to_string(),
+            pos,
+            orbit,
+        });
+    }
+}
+
+/// `f` over `items` on every core, results in input order. Workers get the
+/// main thread's 8 MB stack: decoding deep XML trees recurses.
+fn parallel_map<I: Sync, R: Send>(items: &[I], f: impl Fn(&I) -> R + Sync) -> Vec<R> {
+    let workers = std::thread::available_parallelism()
+        .map_or(1, std::num::NonZeroUsize::get)
+        .min(items.len());
+    if workers <= 1 {
+        return items.iter().map(f).collect();
+    }
+    let next = AtomicUsize::new(0);
+    let mut slots: Vec<Option<R>> = items.iter().map(|_| None).collect();
+    std::thread::scope(|s| {
+        let handles: Vec<_> = (0..workers)
+            .map(|_| {
+                std::thread::Builder::new()
+                    .stack_size(8 << 20)
+                    .spawn_scoped(s, || {
+                        let mut out = Vec::new();
+                        loop {
+                            let i = next.fetch_add(1, Ordering::Relaxed);
+                            let Some(item) = items.get(i) else { break };
+                            out.push((i, f(item)));
+                        }
+                        out
+                    })
+                    .expect("spawn socpak worker")
+            })
+            .collect();
+        for handle in handles {
+            for (i, r) in handle.join().expect("socpak worker panicked") {
+                slots[i] = Some(r);
+            }
+        }
+    });
+    slots
+        .into_iter()
+        .map(|r| r.expect("every item mapped"))
+        .collect()
 }
 
 impl ObjectContainers {
@@ -238,57 +399,88 @@ impl ObjectContainers {
     /// every placement entity. Returns an empty graph for a snapshot-backed
     /// [`AssetSource`] (entry enumeration is live-only).
     pub fn cook(assets: &AssetSource) -> Result<Self> {
-        let socpaks: Vec<String> = assets
-            .find(|n| {
-                let l = n.to_ascii_lowercase().replace('\\', "/");
-                l.ends_with(".socpak") && l.contains("objectcontainers")
-            })
-            .map(|e| e.name.to_string())
+        let roots: Vec<String> = assets
+            .find(is_object_container)
+            .map(|e| normalize_socpak_path(e.name))
             .collect();
-        if socpaks.is_empty() {
-            warn!("no objectcontainers/*.socpak entries (snapshot-backed source?)");
-            return Ok(Self::empty());
-        }
+        let (graph, _) = Self::walk(assets, &roots, |_, _, _| Vec::<()>::new())?;
+        Ok(graph)
+    }
 
-        let mut g = Self::empty();
-        for sp in &socpaks {
-            let sp_norm = normalize_socpak_path(sp);
-            // System nav-graph placements live in `.xml` members; decoding every
-            // socpak's `.xml` would explode parse time, so gate on `/system/`.
-            let allow_xml = sp
-                .to_ascii_lowercase()
-                .replace('\\', "/")
-                .contains("/system/");
-            let bytes = match assets.read(sp) {
-                Ok(b) => b,
-                Err(e) => {
-                    warn!(socpak = %sp, error = %e, "skip unreadable socpak");
-                    continue;
-                }
-            };
-            let mut pak = match Socpak::open(bytes) {
-                Ok(p) => p,
-                Err(e) => {
-                    warn!(socpak = %sp, error = %e, "skip unopenable socpak");
-                    continue;
-                }
-            };
-            for m in 0..pak.len() {
-                let member = pak.name(m).unwrap_or_default().to_ascii_lowercase();
-                let ok = member.ends_with(".soc")
-                    || member.ends_with(".pla")
-                    || member.ends_with(".entxml")
-                    || (allow_xml && member.ends_with(".xml"));
-                if !ok {
-                    continue;
-                }
-                let Ok(b) = pak.read(m) else { continue };
-                let Ok(Some(root)) = decode(&b) else { continue };
-                g.harvest(&root, &sp_norm);
-            }
+    /// Cook only what `roots` reach: harvest each root socpak, then every
+    /// socpak its placements nest, level by level, each level read in
+    /// parallel. `visit` sees every decoded member (`socpak`, member name,
+    /// tree) and what it returns is collected per socpak, so a caller reads
+    /// other components in the same pass.
+    ///
+    /// Roots are socpak paths in any rendering ([`normalize_socpak_path`]).
+    /// A nested socpak missing from the archive is skipped. The graph holds
+    /// only the reached placements, so projections that need the whole
+    /// universe (mission CRCs of unreached places) see less than [`cook`].
+    /// Empty for a snapshot-backed [`AssetSource`].
+    ///
+    /// [`cook`]: Self::cook
+    pub fn walk<T, F>(
+        assets: &AssetSource,
+        roots: &[String],
+        visit: F,
+    ) -> Result<(Self, HashMap<String, Vec<T>>)>
+    where
+        T: Send,
+        F: Fn(&str, &str, &XmlNode) -> Vec<T> + Sync,
+    {
+        let entries: HashMap<String, _> = assets
+            .find(is_object_container)
+            .map(|e| (normalize_socpak_path(e.name), e))
+            .collect();
+        let mut graph = Self::empty();
+        let mut found: HashMap<String, Vec<T>> = HashMap::new();
+        if entries.is_empty() {
+            warn!("no objectcontainers/*.socpak entries (snapshot-backed source?)");
+            return Ok((graph, found));
         }
-        g.rebuild_indices();
-        Ok(g)
+        let mut seen: HashSet<String> = HashSet::new();
+        let mut frontier: Vec<String> = roots
+            .iter()
+            .map(|r| normalize_socpak_path(r))
+            .filter(|r| seen.insert(r.clone()))
+            .collect();
+        while !frontier.is_empty() {
+            let jobs: Vec<_> = frontier
+                .iter()
+                .filter_map(|sp| match entries.get(sp) {
+                    Some(entry) => Some((sp.as_str(), entry)),
+                    None => {
+                        debug!(socpak = %sp, "nested socpak not in the archive");
+                        None
+                    }
+                })
+                .collect();
+            let results = parallel_map(&jobs, |(sp, entry)| {
+                harvest_socpak(assets.read_entry(entry), sp, &visit)
+            });
+            let mut next = Vec::new();
+            for ((sp, _), harvested) in jobs.iter().zip(results) {
+                let Some(harvested) = harvested else { continue };
+                for p in &harvested.placements {
+                    if let Some(child) = &p.nests
+                        && seen.insert(child.clone())
+                    {
+                        next.push(child.clone());
+                    }
+                }
+                graph.placements.extend(harvested.placements);
+                if !harvested.found.is_empty() {
+                    found
+                        .entry((*sp).to_string())
+                        .or_default()
+                        .extend(harvested.found);
+                }
+            }
+            frontier = next;
+        }
+        graph.rebuild_indices();
+        Ok((graph, found))
     }
 
     fn empty() -> Self {
@@ -300,6 +492,7 @@ impl ObjectContainers {
             by_starmap: HashMap::new(),
             by_mission_crc: HashMap::new(),
             by_realized_socpak: HashMap::new(),
+            by_nests: HashMap::new(),
         }
     }
 
@@ -314,11 +507,16 @@ impl ObjectContainers {
         self.by_starmap.clear();
         self.by_mission_crc.clear();
         self.by_realized_socpak.clear();
+        self.by_nests.clear();
 
         for (i, p) in self.placements.iter().enumerate() {
             // containment (first-placement-wins, matching the harvest order).
             if let Some(oc) = &p.nests {
                 self.nest_owner.entry(oc.clone()).or_insert(i);
+                self.by_nests
+                    .entry(oc.clone())
+                    .or_default()
+                    .push(PlacementId(i));
             }
             self.by_sp_key.entry((p.socpak.clone(), p.key)).or_insert(i);
             self.by_key.entry(p.key).or_default().push(i);
@@ -360,64 +558,6 @@ impl ObjectContainers {
             .into_iter()
             .map(|(c, i)| (c, PlacementId(i)))
             .collect();
-    }
-
-    /// Index every placement entity in one decoded member tree.
-    fn harvest(&mut self, root: &XmlNode, sp_norm: &str) {
-        for e in root.find_all("Entity") {
-            let class = e.attr("EntityClass").unwrap_or("");
-            let Some(disp) = e.attr("EntityCryGUID") else {
-                continue;
-            };
-            let disp = disp.to_ascii_lowercase();
-            let Some(key) = cry_key(&disp) else { continue };
-
-            // Optional identity facets — tag-agnostic, never gated on.
-            let starmap = first_attr(e, "starmapRecord")
-                .filter(|s| !s.starts_with("00000000-"))
-                .map(str::to_string);
-            let starmap_guid = starmap
-                .as_deref()
-                .and_then(|s| s.trim().trim_matches(['{', '}']).parse::<Guid>().ok());
-            let has_mission = first_attr(e, "template").is_some()
-                || e.find_all("MissionLocationParams").next().is_some();
-
-            // Selection: object-container placements + any nav/mission leaf. This
-            // is deliberately broad but excludes pure geometry (no OC, no facet).
-            if !(class.contains("ObjectContainer") || starmap.is_some() || has_mission) {
-                continue;
-            }
-
-            let parent = first_attr(e, "parentGUID").and_then(std_key);
-            let nests = e
-                .find_all("EntityComponentObjectContainer")
-                .next()
-                .and_then(|c| c.attr("objectContainer"))
-                .map(normalize_socpak_path);
-            let pos = e.attr("Pos").and_then(vec3);
-            let orbit = e.find_all("EntityComponentOrbit").next().and_then(|o| {
-                let r = o.attr("OrbitalRadius").and_then(|v| v.trim().parse().ok());
-                let a = o.attr("OrbitalAngle").and_then(|v| v.trim().parse().ok());
-                match (r, a) {
-                    (Some(radius), Some(angle)) => Some(Orbit { radius, angle }),
-                    _ => None,
-                }
-            });
-
-            self.placements.push(Placement {
-                key,
-                disp,
-                socpak: sp_norm.to_string(),
-                parent,
-                nests,
-                is_leaf: starmap.is_some() || has_mission,
-                starmap,
-                starmap_guid,
-                name: e.attr("Name").unwrap_or("").to_string(),
-                pos,
-                orbit,
-            });
-        }
     }
 
     /// Walk up from placement `start` to the system OOC, returning the chain of
@@ -524,6 +664,22 @@ impl ObjectContainers {
             .get(socpak)
             .map(Vec::as_slice)
             .unwrap_or(&[])
+    }
+    /// Every placement that includes `socpak` (normalized) as its
+    /// `objectContainer`, named or not (1:many for reused templates).
+    pub fn nesting(&self, socpak: &str) -> &[PlacementId] {
+        self.by_nests.get(socpak).map(Vec::as_slice).unwrap_or(&[])
+    }
+    /// The placement's `parentGUID` entity, preferring one in the same socpak;
+    /// `None` without a `parentGUID` or when it names no harvested placement.
+    pub fn parent_entity(&self, id: PlacementId) -> Option<PlacementId> {
+        let p = &self.placements[id.0];
+        let pk = p.parent?;
+        self.by_sp_key
+            .get(&(p.socpak.clone(), pk))
+            .copied()
+            .or_else(|| self.by_key.get(&pk).and_then(|v| v.first().copied()))
+            .map(PlacementId)
     }
     /// The mission DataSet CRC of a placement (its containment-chain id), if it
     /// has one.

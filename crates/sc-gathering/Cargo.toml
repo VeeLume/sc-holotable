@@ -8,12 +8,14 @@ rust-version.workspace = true
 # Provider spine (`harvestable`) + Tier-2 resource resolution: the rock entity
 # classes (`entities-mineable`), composition/element records (`mining`), and the
 # `ResourceType` catalog (`resourcetypedatabase`). Mode + signal, quality
-# (`sc-crafting`), and the location join (`sc-locations`) are layered on next.
+# (`sc-crafting`), and the location join (`sc-locations`) are layered on next;
+# the join walks from the solar systems the `MegaMap` records list (`megamap`).
 sc-extract = { workspace = true, features = [
     "harvestable",
     "entities-mineable",
     "mining",
     "resourcetypedatabase",
+    "megamap",
 ] }
 # Location join: ObjectContainers (socpak placement graph) composes with each
 # socpak's HarvestableProviderComponent.preset to key providers by StarMapObject.
@@ -22,9 +24,13 @@ serde = { workspace = true }
 tracing = { workspace = true }
 
 [dev-dependencies]
+# provider_locations_probe: the live install.
+sc-discovery = { workspace = true }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 # Tier-3 join demo: gathering exposes resource GUIDs; quality lives on
 # sc_resources::Resource. The dump_provider example resolves it downstream.
 sc-resources = { workspace = true }
 # Build synthetic socpaks for the location-extraction unit test.
 zip = "2"
+# Build a placement graph for the location-join unit test.
+serde_json = { workspace = true }

@@ -13,6 +13,32 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-locations`: `ObjectContainers::walk`** cooks only what given root
+  socpaks reach (level by level, each level read in parallel) and hands
+  every decoded member to a visitor, so a caller reads other components in
+  the same pass. `ObjectContainers::nesting` lists every placement that
+  includes a socpak, named or not; `ObjectContainers::parent_entity`
+  resolves a placement's `parentGUID`.
+
+### Changed
+
+- **`sc-gathering`: `ProviderLocations::cook(&AssetSource, &RecordStore)`**
+  walks only the object containers of the solar systems the `MegaMap`
+  records list: about 9 s and 0.8 GB over the DCB parse on LIVE, instead of
+  a full `ObjectContainers::cook` (about 200 s) plus a second pass.
+  `ProviderLocations::cook_from` takes other roots. A provider now applies to
+  the nearest named placement above its socpak, so nested fields get a place
+  (the Nyx belts map to Nyx, Pyro's Lagrange clouds to their Lagrange
+  points), and every provider in a socpak counts (Yela's ring). The places
+  that only the old full walk found come from content no live system
+  includes. `provider_at` is replaced by `providers_at`, which returns every
+  provider at a place. `compose` takes `HashMap<String, Vec<Guid>>`.
+  `COOK_SCHEMA_VERSION` is now 2.
+- **`sc-locations`: `ObjectContainers::cook` reads the socpaks in parallel**
+  (about 16 s instead of 200 s on LIVE), with the same result.
+
 ## [v0.22.0] - 2026-10-16
 
 ### Changed
