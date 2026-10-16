@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.22.0] - 2026-10-16
+
 ### Changed
 
 - **`sc-mining`: `simulate` meters hits through the client's hit queue.**
