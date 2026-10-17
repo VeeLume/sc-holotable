@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.24.0] - 2026-10-17
+
 ### Added
 
 - **`sc-mining`: `FractureBlast`**, the explosion every fracture makes, a
