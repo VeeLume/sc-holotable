@@ -2,10 +2,14 @@
 
 use std::collections::HashMap;
 
+use sc_extract::generated::DamageBasePtr;
 use sc_extract::{Datacore, Guid, RecordCollection};
+use sc_items_ship_weapons::Damage;
 use sc_resources::{DensityUnit, Resources};
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
+
+use crate::BlastParams;
 
 /// One `MiningGlobalParams` record: the constants every rock pointing at it
 /// is mined under (ship, ground-vehicle and FPS rocks each reference their own,
@@ -33,9 +37,15 @@ pub struct Ruleset {
     pub instability_wave_period: f32,
     /// `mineableInstabilityParams.instabilityWaveVariance`, seconds.
     pub instability_wave_variance: f32,
-    /// `mineableExplosionParams.defaultVolume`, m³: instability scales with
-    /// the rock's volume over this.
+    /// `mineableExplosionParams.defaultVolume`, m³: instability and the
+    /// fracture explosion scale with the rock's volume over this.
     pub default_volume: f32,
+    /// `mineableExplosionParams.dangerPoolFactor`: how much a full danger
+    /// pool adds to the fracture explosion's strength factor
+    /// (see [`FractureBlast`](crate::FractureBlast)).
+    pub danger_pool_factor: f32,
+    /// `mineableExplosionParams.defaultExplosionParams`.
+    pub blast: BlastParams,
     /// `defaultMass`: the mass the breaking pools' speed scale is relative to.
     pub default_mass: f32,
     /// `controlledBreakingFillRate`.
@@ -162,6 +172,29 @@ impl Rulesets {
                 instability_wave_period: instability.map_or(0.0, |i| i.instability_wave_period),
                 instability_wave_variance: instability.map_or(0.0, |i| i.instability_wave_variance),
                 default_volume: explosion.map_or(0.0, |e| e.default_volume),
+                danger_pool_factor: explosion.map_or(0.0, |e| e.danger_pool_factor),
+                blast: explosion
+                    .and_then(|e| e.default_explosion_params)
+                    .and_then(|h| h.get(pools))
+                    .map(|e| BlastParams {
+                        min_radius: e.min_radius,
+                        max_radius: e.max_radius,
+                        pressure: e.pressure,
+                        damage: match e.damage {
+                            Some(DamageBasePtr::DamageInfo(h)) => {
+                                h.get(pools).map_or_else(Damage::default, |d| Damage {
+                                    physical: d.damage_physical,
+                                    energy: d.damage_energy,
+                                    distortion: d.damage_distortion,
+                                    thermal: d.damage_thermal,
+                                    biochemical: d.damage_biochemical,
+                                    stun: d.damage_stun,
+                                })
+                            }
+                            _ => Damage::default(),
+                        },
+                    })
+                    .unwrap_or_default(),
                 default_mass: gp.default_mass,
                 controlled_breaking_fill_rate: gp.controlled_breaking_fill_rate,
                 controlled_breaking_fill_rate_danger: gp.controlled_breaking_fill_rate_danger,

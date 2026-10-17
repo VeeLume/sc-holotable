@@ -749,7 +749,19 @@ fn git(dir: &Path, args: &[&str], log: &File) -> Result<(), String> {
 }
 
 fn cargo(dir: &Path, args: &[&str], log: &File) -> Result<(), String> {
-    logged(Command::new("cargo").args(args).current_dir(dir), log)
+    logged(cargo_command().args(args).current_dir(dir), log)
+}
+
+/// `cargo` tuned for a throwaway build. The generated crate is rewritten every
+/// run, so incremental state never pays off, and debug info turned every
+/// example into a ~250 MB PDB (tens of GB under `target/debug`). Panic
+/// locations don't need debug info, so the check output loses nothing.
+fn cargo_command() -> Command {
+    let mut cmd = Command::new("cargo");
+    cmd.env("CARGO_INCREMENTAL", "0")
+        .env("CARGO_PROFILE_DEV_DEBUG", "0")
+        .env("CARGO_PROFILE_TEST_DEBUG", "0");
+    cmd
 }
 
 /// Run with stdout and stderr going to the run log.
@@ -786,7 +798,7 @@ fn capture(cmd: &mut Command) -> Result<String, String> {
 /// Run a cargo check; a failure is a result to report, not an error.
 fn check(dir: &Path, name: &str, args: &[&str], log: &File) -> Check {
     info!(check = name, "running");
-    let result = Command::new("cargo").args(args).current_dir(dir).output();
+    let result = cargo_command().args(args).current_dir(dir).output();
     let (passed, text) = match result {
         Ok(o) => {
             let mut text = String::from_utf8_lossy(&o.stdout).into_owned();
