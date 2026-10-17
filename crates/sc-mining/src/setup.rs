@@ -154,6 +154,9 @@ pub struct ModifiedRock {
     /// The cluster-factor modifier (`clusterFactorModifier`): how strongly a
     /// fracture concentrates each element (see [`Spawn::fracture`](crate::Spawn::fracture)).
     pub cluster_factor: Combined,
+    /// The shatter-damage modifier (`shatterdamageModifier`): scales the
+    /// rock's explosion multiplier in its [`FractureBlast`](crate::FractureBlast).
+    pub shatter_damage: Combined,
 }
 
 /// One laser's contribution to [`ModifiedRock`].
@@ -201,6 +204,7 @@ impl ModifiedRock {
             optimal_rate: combine(|m| m.optimal_charge_window_rate.as_ref()),
             catastrophic_rate: combine(|m| m.catastrophic_charge_window_rate.as_ref()),
             cluster_factor: combine(|m| m.cluster_factor.as_ref()),
+            shatter_damage: combine(|m| m.shatter_damage.as_ref()),
         }
     }
 

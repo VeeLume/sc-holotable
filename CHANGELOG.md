@@ -13,6 +13,31 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-mining`: `FractureBlast`**, the explosion every fracture makes, a
+  clean one included. Radii, damage and push are scaled from
+  `defaultExplosionParams` by the rock's volume, composition
+  (`explosion_multiplier`), shatter-damage modifier and the danger pool at
+  the moment of fracture (client 4.10). `radius_max` at the current danger
+  pool is the HUD's striped zone on the mining distance gauge. Build one
+  with `FractureBlast::new(ruleset, volume, explosion_multiplier, shatter,
+  danger_pool)` or `Rock::fracture_blast(ruleset, shatter, danger_pool)`.
+  `damage_at(distance)` / `damage_falloff` give what an item or other
+  non-vehicle target takes: full inside `radius_min`, then falling with the
+  squared distance to 0 at `radius_max`. A ship's hull takes no distance
+  falloff, so it takes the full `damage` anywhere in reach. `pressure_at`
+  gives the push, which falls off linearly.
+
+### Changed
+
+- **`sc-mining`: `Ruleset`** gains `danger_pool_factor` and `blast:
+  BlastParams` (min/max radius, pressure, damage from
+  `mineableExplosionParams.defaultExplosionParams`), and
+  **`ModifiedRock`** gains `shatter_damage: Combined`, folded from the
+  lasers', modules' and gadgets' `shatterdamageModifier`. Code that builds
+  either struct by literal must set the new fields.
+
 ## [v0.23.0] - 2026-10-16
 
 ### Added

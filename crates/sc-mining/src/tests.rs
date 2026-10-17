@@ -3,7 +3,7 @@
 
 use sc_extract::Guid;
 use sc_items_mining::{FloatModifier, MiningModifiers, ModifierKind};
-use sc_items_ship_weapons::{MiningBeam, MiningLaserStats};
+use sc_items_ship_weapons::{Damage, MiningBeam, MiningLaserStats};
 
 use crate::*;
 
@@ -21,6 +21,16 @@ fn ship() -> Ruleset {
         instability_wave_period: 3.0,
         instability_wave_variance: 1.0,
         default_volume: 5122.499,
+        danger_pool_factor: 560.0,
+        blast: BlastParams {
+            min_radius: 0.1,
+            max_radius: 0.5,
+            pressure: 25.0,
+            damage: Damage {
+                physical: 1.0,
+                ..Damage::default()
+            },
+        },
         default_mass: 100.0,
         controlled_breaking_fill_rate: 0.5,
         controlled_breaking_fill_rate_danger: 0.7,
@@ -249,6 +259,114 @@ fn modifiers_and_owners() {
         },
     );
     assert!(close(two_ships.instability, 200.0, 1e-4));
+}
+
+/// The two rocks captured on 2026-10-17 (Golem, ArcCorp moons): the Laranite
+/// rock showed the HUD's striped blast zone, the copper rock none. LIVE
+/// element explosion multipliers; volumes from the scanned masses.
+#[test]
+fn fracture_blast_captured_rocks() {
+    let mut elements = Elements::new();
+    for (n, explosion) in [(1, 200.0), (2, 80.0), (3, -36.0), (4, -20.0)] {
+        let mut e = element(n, 0.0, 0.0, 1.0);
+        e.explosion_multiplier = explosion;
+        elements.insert(e);
+    }
+    let entry = |n, fraction| Entry {
+        element: guid(n),
+        fraction,
+        quality: None,
+    };
+    let ruleset = ship();
+    let laranite = Rock::from_volume(
+        &ruleset,
+        &elements,
+        &[entry(1, 0.0727), entry(1, 0.7305), entry(2, 0.0706)],
+        596.0,
+    )
+    .expect("rock");
+    let copper = Rock::from_volume(
+        &ruleset,
+        &elements,
+        &[entry(3, 0.0684), entry(4, 0.1150), entry(4, 0.7234)],
+        1647.0,
+    )
+    .expect("rock");
+    assert!(close(laranite.explosion_multiplier, 166.288, 1e-4));
+
+    let clean = laranite.fracture_blast(&ruleset, Combined::NONE, 0.0);
+    assert!(close(clean.radius_max, 40.8, 2e-3), "{clean:?}");
+    assert!(close(clean.radius_min, 8.16, 2e-3), "{clean:?}");
+    assert!(close(clean.damage.physical, 19.46, 2e-3), "{clean:?}");
+    assert!(close(clean.pressure, 25.0 * 19.46, 2e-3), "{clean:?}");
+    let full = laranite.fracture_blast(&ruleset, Combined::NONE, 1.0);
+    assert!(close(full.radius_max, 177.5, 2e-3), "{full:?}");
+
+    let copper_clean = copper.fracture_blast(&ruleset, Combined::NONE, 0.0);
+    assert!(copper_clean.is_none(), "{copper_clean:?}");
+    assert_eq!(copper_clean.damage.total(), 0.0);
+    assert!(
+        !copper
+            .fracture_blast(&ruleset, Combined::NONE, 0.25)
+            .is_none()
+    );
+}
+
+/// Damage falls off with the squared distance between the radii, the push
+/// linearly.
+#[test]
+fn fracture_blast_falloff() {
+    let blast = FractureBlast {
+        radius_min: 10.0,
+        radius_max: 50.0,
+        damage: Damage {
+            physical: 100.0,
+            ..Damage::default()
+        },
+        pressure: 200.0,
+    };
+    assert_eq!(blast.damage_falloff(5.0), 1.0);
+    assert_eq!(blast.damage_falloff(10.0), 1.0);
+    assert_eq!(blast.damage_falloff(50.0), 0.0);
+    assert_eq!(blast.damage_falloff(80.0), 0.0);
+    // d = 30: (900 - 100) / (2500 - 100) = 1/3 of the way.
+    assert!(close(blast.damage_falloff(30.0), 2.0 / 3.0, 1e-6));
+    assert!(close(blast.damage_at(30.0).physical, 200.0 / 3.0, 1e-6));
+    assert!(close(blast.pressure_at(30.0), 100.0, 1e-6));
+    assert_eq!(blast.pressure_at(60.0), 0.0);
+}
+
+/// A shatter-damage modifier scales the explosion multiplier; the setup folds
+/// it like the other modifiers (Torpid +40 %, Brandt -30 %).
+#[test]
+fn fracture_blast_shatter_modifier() {
+    let mut elements = Elements::new();
+    let mut e = element(1, 0.0, 0.0, 1.0);
+    e.explosion_multiplier = 200.0;
+    elements.insert(e);
+    let entries = [Entry {
+        element: guid(1),
+        fraction: 1.0,
+        quality: None,
+    }];
+    let ruleset = ship();
+    let rock = Rock::from_volume(&ruleset, &elements, &entries, 5122.499).expect("rock");
+    let mods = |v| MiningModifiers {
+        shatter_damage: multiplicative(v),
+        ..Default::default()
+    };
+    let mined = ModifiedRock::new(
+        &ruleset,
+        &rock,
+        &Setup {
+            lasers: vec![laser(1000.0, mods(40.0)), laser(1000.0, mods(-30.0))],
+            gadgets: vec![],
+        },
+    );
+    assert!(close(mined.shatter_damage.factor, 1.4 * 0.7, 1e-6));
+    let blast = rock.fracture_blast(&ruleset, mined.shatter_damage, 0.0);
+    // u = 1, so the outer radius is (200 * 0.98 + 1) * maxRadius.
+    assert!(close(blast.radius_max, 197.0 * 0.5, 1e-5), "{blast:?}");
 }
 
 /// Mort13's Breakability Chart: max mass = 5 * (1 - R) * E; the Pitman's +25 %

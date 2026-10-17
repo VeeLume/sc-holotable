@@ -14,6 +14,9 @@
 //! - [`simulate`] — the charge bar tick by tick, instability wave and breaking
 //!   pools included; [`difficulty`] runs it many times with a [`Player`] model
 //!   for our own difficulty (overcharges, danger at fracture, time).
+//! - [`FractureBlast`] — the explosion every fracture makes: radius (what the
+//!   HUD's striped distance zone shows), damage and push, growing with the
+//!   danger pool.
 //! - [`Laser::extraction_scu_per_s`] — extraction speed.
 //! - [`RockTypes`] / [`Compositions`] / [`Shapes`] — what spawns: each
 //!   `HarvestablePreset` rock's scale range, meshes and composition parts,
@@ -55,6 +58,7 @@
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 
+mod blast;
 mod composition;
 mod element;
 mod fracture;
@@ -69,6 +73,7 @@ mod spawn;
 #[cfg(test)]
 mod tests;
 
+pub use blast::{BlastParams, FractureBlast};
 pub use composition::{Composition, Compositions, Part, PartOdds};
 pub use element::{Element, Elements};
 pub use fracture::{EntryOdds, PieceOdds};
