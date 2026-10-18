@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.25.0] - 2026-10-18
+
 ### Added
 
 - **`sc-mining`: what an overcharge keeps** (client 4.10.197). The danger
