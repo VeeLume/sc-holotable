@@ -216,7 +216,7 @@ fn loadout_entry(
 
 /// Lower-cased `EntityClassDefinition` record name → GUID, for the loadout
 /// entries that name their class instead of referencing it.
-fn class_names(datacore: &Datacore) -> HashMap<String, Guid> {
+pub(crate) fn class_names(datacore: &Datacore) -> HashMap<String, Guid> {
     datacore
         .db()
         .all_records()

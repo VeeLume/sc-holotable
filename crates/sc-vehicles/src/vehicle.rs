@@ -3,8 +3,8 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::{
-    DataForgeComponentParamsPtr, EntityClassDefinition, EntityClassStaticDataParamsPtr,
-    SSCSignatureSystemCrossSectionParamsPtr,
+    DataForgeComponentParamsPtr, EAEntityInclusionMode, EntityClassDefinition,
+    EntityClassStaticDataParamsPtr, SSCSignatureSystemCrossSectionParamsPtr,
 };
 use sc_extract::{
     AssetSource, DataPools, Datacore, Guid, LocaleKey, RecordCollection, VehicleDefinition,
@@ -48,6 +48,21 @@ pub struct Vehicle {
     /// insured.
     #[serde(default)]
     pub insurance: Option<Insurance>,
+    /// The base hull its insurance names
+    /// (`shipInsuranceParams.shipEntityClassName`): the record a claim
+    /// returns. `None` when empty or stale.
+    #[serde(default)]
+    pub insured_as: Option<Guid>,
+    /// Its crew manifest (`SEntityComponentCrewManifestParams`) lists AI
+    /// crew: an NPC-flown record.
+    #[serde(default)]
+    pub ai_crew: bool,
+    /// `EAEntityDataParams.inclusionMode` is `ReadyToInclude`.
+    #[serde(default)]
+    pub ea_ready: bool,
+    /// What a calculator should list it as.
+    #[serde(default)]
+    pub listing: Listing,
     /// The hull's parts (vehicle XML), each with its HP and mass.
     pub hull: Vec<VehiclePart>,
     /// The vehicle XML's `itemPortTags`.
@@ -58,6 +73,31 @@ pub struct Vehicle {
     pub ports: Vec<Port>,
     /// What every port holds as the vehicle ships.
     pub stock: Vec<Mounted>,
+}
+
+/// What a vehicle record is to a player. No DCB field marks a player
+/// ship (LIVE 4.10: insurance, entitlement, purchasable, inclusion and tags
+/// all also sit on AI records), so this combines two signals: the
+/// insurance link (`shipEntityClassName`, the only variant-to-base link)
+/// and, for records nothing names, an own `vehicleName`, no AI crew and
+/// `EAEntityDataParams` ready for inclusion.
+///
+/// LIVE 4.10: 223 bases + 84 editions = 307 records, 287 names, against
+/// about 250-300 on calculator sites. Against scunpacked's ship list it
+/// lists about 14 more (mission variants such as the hijacked 890 Jumps,
+/// and four crewless AI templates the data cannot tell apart) and misses
+/// 28 that share their base's name (BIS 2950, `_Display`, Apollo tiers),
+/// which a calculator folds into the base anyway.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+pub enum Listing {
+    /// A base hull: some vehicle's insurance names it.
+    Base,
+    /// An edition of a base: its own `vehicleName`, no AI crew, ready for
+    /// inclusion.
+    Edition,
+    /// An AI, mission, display or same-named variant.
+    #[default]
+    Variant,
 }
 
 /// `ShipInsuranceParams`.
@@ -149,6 +189,7 @@ impl Vehicles {
     ) -> Self {
         let store = datacore.records();
         let pools = &store.pools;
+        let class_names = crate::container::class_names(datacore);
         let mut hulls: HashMap<(String, String), Option<VehicleDefinition>> = HashMap::new();
         let mut by_guid = HashMap::new();
         for (&guid, &handle) in &store.records.multi_feature.entity_class_definition {
@@ -199,6 +240,32 @@ impl Vehicles {
                     cross_section: cross_section(ecd, pools),
                     geometry: geometry(ecd, pools),
                     insurance: insurance(ecd, pools),
+                    insured_as: insured_class(ecd, pools)
+                        .filter(|n| !n.is_empty())
+                        .and_then(|n| {
+                            let hit = class_names.get(&n.to_ascii_lowercase()).copied();
+                            if hit.is_none() {
+                                warn!(%guid, class = n, "insurance names no vehicle record");
+                            }
+                            hit
+                        }),
+                    ai_crew: ecd
+                        .components
+                        .iter()
+                        .find_map(|c| match c {
+                            DataForgeComponentParamsPtr::SEntityComponentCrewManifestParams(h) => {
+                                h.get(pools)?.crew_manifest
+                            }
+                            _ => None,
+                        })
+                        .and_then(|m| store.records.multi_feature.crew_manifest.get(&m))
+                        .and_then(|h| h.get(pools))
+                        .is_some_and(|m| !m.crew.is_empty()),
+                    ea_ready: ecd.static_entity_class_data.iter().any(|d| {
+                        matches!(d, EntityClassStaticDataParamsPtr::EAEntityDataParams(h)
+                            if h.get(pools).is_some_and(|e| e.inclusion_mode == EAEntityInclusionMode::ReadyToInclude))
+                    }),
+                    listing: Listing::Variant,
                     hull: hull.as_ref().map(|h| h.parts.clone()).unwrap_or_default(),
                     item_port_tags: hull
                         .as_ref()
@@ -227,7 +294,40 @@ impl Vehicles {
                 v.stock = stock;
             }
         }
+
+        // Listing. A base hull is what some insurance names; an edition has
+        // its own name, no AI crew and is ready for inclusion; the rest are
+        // variants (AI, mission, display, same-named).
+        let bases: std::collections::HashSet<Guid> =
+            by_guid.values().filter_map(|v| v.insured_as).collect();
+        let names: HashMap<Guid, Option<LocaleKey>> = by_guid
+            .iter()
+            .map(|(g, v)| (*g, v.name_key.clone()))
+            .collect();
+        for (guid, v) in &mut by_guid {
+            v.listing = if bases.contains(guid) {
+                Listing::Base
+            } else {
+                let own_name = v
+                    .insured_as
+                    .and_then(|b| names.get(&b))
+                    .is_none_or(|base| *base != v.name_key);
+                if own_name && !v.ai_crew && v.ea_ready {
+                    Listing::Edition
+                } else {
+                    Listing::Variant
+                }
+            };
+        }
         Self { by_guid }
+    }
+
+    /// The vehicles a calculator lists: [`Listing::Base`] and
+    /// [`Listing::Edition`].
+    pub fn listed(&self) -> impl Iterator<Item = (&Guid, &Vehicle)> + '_ {
+        self.by_guid
+            .iter()
+            .filter(|(_, v)| v.listing != Listing::Variant)
     }
 
     /// What `item` brings below it when mounted: its ports (a docked
@@ -254,6 +354,23 @@ impl Vehicles {
             None => containers.get(item).map_or(&[][..], |c| &c.ports[..]),
         }
     }
+}
+
+/// The class its insurance claims return (`shipEntityClassName`): an
+/// `EntityClassDefinition` record name, matched without case as the game's
+/// class registry does. The only link from a variant to its base hull; the
+/// data has no GUID for it.
+fn insured_class<'a>(ecd: &EntityClassDefinition, pools: &'a DataPools) -> Option<&'a str> {
+    ecd.static_entity_class_data.iter().find_map(|d| match d {
+        EntityClassStaticDataParamsPtr::SEntityInsuranceProperties(h) => Some(
+            h.get(pools)?
+                .ship_insurance_params?
+                .get(pools)?
+                .ship_entity_class_name
+                .as_str(),
+        ),
+        _ => None,
+    })
 }
 
 /// The entity's ship insurance terms.

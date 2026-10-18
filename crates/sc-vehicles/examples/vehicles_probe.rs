@@ -133,6 +133,35 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .find(|p| p.name.starts_with("hardpoint_thruster_main"))
     });
     assert!(!is_editable(&[thruster.ok_or("thruster port")?]));
+    // Listing: base hulls (named by some insurance), editions (own name,
+    // no AI crew, ready for inclusion), variants.
+    let mut listing: BTreeMap<String, u32> = BTreeMap::new();
+    for v in vehicles.values() {
+        *listing.entry(format!("{:?}", v.listing)).or_default() += 1;
+    }
+    let distinct: std::collections::HashSet<_> =
+        vehicles.listed().map(|(_, v)| v.name_key.clone()).collect();
+    println!(
+        "listing {listing:?}; listed {} records, {} distinct names",
+        vehicles.listed().count(),
+        distinct.len()
+    );
+    assert_eq!(listing.get("Base"), Some(&223));
+    assert_eq!(listing.get("Edition"), Some(&84));
+    assert_eq!(distinct.len(), 287);
+    assert_eq!(ship.listing, sc_vehicles::Listing::Edition);
+    let skylark = vehicles
+        .iter()
+        .find(|(g, _)| names.get(g).is_some_and(|n| n == "RSI_Skylark"))
+        .ok_or("no Skylark")?;
+    assert_eq!(skylark.1.listing, sc_vehicles::Listing::Base);
+    let ai: Vec<&str> = vehicles
+        .listed()
+        .filter_map(|(g, _)| names.get(g).map(String::as_str))
+        .filter(|n| n.contains("_AI"))
+        .collect();
+    println!("listed with _AI in the record name: {ai:?}");
+
     println!("asserts passed: Centaurus stock tree and locks ({guid})");
 
     // fits() over every stock attachment of the non-AI vehicles.

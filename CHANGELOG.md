@@ -93,6 +93,10 @@ pinned. Both tag kinds are monotonic and immutable.
   - fire rate and damage per shot are unchanged.
 - **`sc-vehicles`: `ItemportModifiers` and `weapon_power(…)`**: the attach-active item-port modifiers that change a vehicle's guns, and each gun's `WeaponPower` (its power ratio plus those multipliers).
   - Probe `weapons_probe`, the Centaurus at erkul's default (weapon pool 4 of 12.2, the engineering buff's ×9): CF-557 221 shots, 4.918/s, sustained 341.7; CF-337 152.3. erkul shows the same figures.
+- **`sc-vehicles`: `Listing`** (Base / Edition / Variant) on every `Vehicle`, and `Vehicles::listed()`. No field marks a player ship, so it combines two signals:
+  - base hulls are the records some vehicle's insurance names;
+  - editions have their own name, no AI crew and are EA-ready.
+  - LIVE 4.10 gives 307 records with 287 names. Also new: `Vehicle::insured_as`, `ai_crew`, `ea_ready`.
 - **`sc-vehicles`: `Armament`** lists a loadout's guns, missiles and countermeasure launchers with their port paths, for joining to their stats. The Centaurus has 12 guns, 32 StrikeForce II and 2 launchers.
 - **`sc-items-ship-components`: `radar` and `ammo` sheets, and `ShipComponentKind::CountermeasureLauncher`.**
   - `Radar`: detection per signature type (sensitivity, piercing, passive / active), aim-assist distances, ping cooldown.
