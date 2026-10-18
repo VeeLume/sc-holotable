@@ -52,6 +52,7 @@ mod power;
 mod quantum;
 mod raycast;
 mod resource;
+mod scene;
 mod vehicle;
 
 pub use armament::Armament;
@@ -76,6 +77,7 @@ pub use resource::{
     DeltaKind, DynamicAmount, PowerRange, ResourceAmount, ResourceDelta, ResourceProfile,
     ResourceProfiles, ResourceState, ResourceUnits, Signature,
 };
+pub use scene::scene;
 pub use vehicle::{
     Insurance, Listing, Mounted, PenetrationRules, Vehicle, Vehicles, network_items,
 };

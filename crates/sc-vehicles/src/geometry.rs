@@ -2,7 +2,7 @@
 //! and where each mounted item sits, in the ship's frame (x right, y
 //! forward, z up, metres).
 
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 
 use sc_extract::{AssetSource, Datacore, Guid, MeshGeometry, PhysicsProxies, RecordCollection};
 use serde::{Deserialize, Serialize};
@@ -77,6 +77,10 @@ pub struct HullGeometry {
     /// shots hit. Closed shells, a little proud of the render skin (0.18 m
     /// on the Centaurus body).
     pub collision: Vec<PartMesh>,
+    /// Each hull mesh node (by name, as the geometry file spells it) under
+    /// a damage part, to that part's name: how a renderer drawing the hull
+    /// file itself colours it by part.
+    pub node_parts: BTreeMap<String, String>,
     /// Where each mounted item sits, outermost first (docked vehicles
     /// left out).
     pub placements: Vec<Placement>,
@@ -227,6 +231,12 @@ impl HullGeometry {
             collision = parts.clone();
         }
 
+        let node_parts = owner
+            .iter()
+            .enumerate()
+            .filter_map(|(i, o)| Some((hull.nodes[i].name.clone(), hull.nodes[(*o)?].name.clone())))
+            .collect();
+
         let mut placements = Vec::new();
         let mut meshes: HashMap<String, Option<ItemMesh>> = HashMap::new();
         let helpers = helper_map(&hull, &world);
@@ -250,6 +260,7 @@ impl HullGeometry {
         Some(Self {
             parts,
             collision,
+            node_parts,
             placements,
         })
     }

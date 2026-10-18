@@ -3383,6 +3383,7 @@ dependencies = [
  "sc-extract",
  "sc-items",
  "sc-items-ship-components",
+ "sc-items-visuals",
  "sc-weapons",
  "serde",
  "tracing",
