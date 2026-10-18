@@ -73,6 +73,13 @@ pinned. Both tag kinds are monotonic and immutable.
   - `health` (`ComponentHealth`: HP and per-type damage multipliers);
   - `capacity` (`ResourceContainer.capacity` of fuel and quantum fuel tanks).
   - Probe `component_sheets_probe` re-proves them on the Centaurus's components.
+- **`sc-vehicles`: `Loadout`**, an editable loadout:
+  - `stock`, `at(path)`;
+  - `chain(path)` gives the ports along a path and the items holding them;
+  - `check(path, item)` returns `Refusal::Locked`, `NoPort` or `Misfit` when the item can't go in;
+  - `candidates(path)` lists every item that fits;
+  - `equip(path, item)` puts the item in with its own default loadout, dropping what the old one carried.
+  - Probe `loadout_probe`: the Centaurus's gimbals are locked while their guns take the 11 S5 weapons. Two QuadraCell MT plants give 26, as erkul shows.
 - **`sc-vehicles`: `Flight`**, a loadout's flight figures under the legacy IFCS the PU runs:
   - speeds and angular velocity (boosted × the afterburner multipliers);
   - mass: hull, everything mounted and docked vehicles;

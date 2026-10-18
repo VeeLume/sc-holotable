@@ -212,6 +212,31 @@ impl Vehicles {
         }
         Self { by_guid }
     }
+
+    /// What `item` brings below it when mounted: its ports (a docked
+    /// vehicle's from its hull), filled from its own default loadout.
+    pub(crate) fn default_children(&self, item: Guid, containers: &PortContainers) -> Vec<Mounted> {
+        let container = containers.get(&item);
+        let ports = match self.by_guid.get(&item) {
+            Some(v) => &v.ports[..],
+            None => container.map_or(&[][..], |c| &c.ports[..]),
+        };
+        let entries = container.map_or(&[][..], |c| &c.default_loadout[..]);
+        mount(ports, entries, &self.by_guid, containers, 1)
+    }
+
+    /// The ports an item mounted in a loadout offers: a docked vehicle's
+    /// hull ports, else the item's own.
+    pub(crate) fn ports_of<'a>(
+        &'a self,
+        item: &Guid,
+        containers: &'a PortContainers,
+    ) -> &'a [Port] {
+        match self.by_guid.get(item) {
+            Some(v) => &v.ports,
+            None => containers.get(item).map_or(&[][..], |c| &c.ports[..]),
+        }
+    }
 }
 
 /// The entity's root geometry path.

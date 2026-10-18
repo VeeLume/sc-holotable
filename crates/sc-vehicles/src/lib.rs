@@ -40,6 +40,7 @@
 mod container;
 mod distribution;
 mod flight;
+mod loadout;
 mod network;
 mod port;
 mod power;
@@ -51,6 +52,7 @@ pub use distribution::{
     Allocation, Consumer, ItemReadout, Plant, Pool, PowerNetwork, Readout, Signals,
 };
 pub use flight::{Accelerations, Flight, port_axes};
+pub use loadout::{Loadout, Refusal};
 pub use network::{DistributionDefaults, NetworkParams, PoolSize, PowerPool};
 pub use port::{Misfit, Port, PortSource, fits, has_flag, is_editable};
 pub use power::{em_signature, plant_output, signature_ratio};
