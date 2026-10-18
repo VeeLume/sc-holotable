@@ -1,6 +1,6 @@
 //! The charge bar tick by tick, and a difficulty measured from many runs.
 
-use std::collections::VecDeque;
+use std::collections::{HashMap, VecDeque};
 use std::f32::consts::TAU;
 
 use serde::{Deserialize, Serialize};
@@ -97,13 +97,19 @@ pub struct LaserControl {
     /// Distance from the beam's start to the rock surface, m: the beam's
     /// range falloff is taken at it each tick (ship drift, a turning rock).
     pub distance_m: f32,
+    /// Whether the beam is on. A cut beam sends no new hits, but the hit
+    /// time already queued on the rock keeps draining, and its modifiers
+    /// stay on the rock until
+    /// [`modifier_persistence_time`](crate::Ruleset::modifier_persistence_time)
+    /// after the last hit drains.
+    pub firing: bool,
 }
 
 /// Sets each laser's throttle (and, optionally, its distance) each tick.
 pub trait Throttle {
     /// `lasers` holds last tick's settings, one per laser in setup order;
-    /// before the first tick every throttle is 1 and every distance the
-    /// setup's [`Laser::distance_m`](crate::Laser::distance_m). Leave a
+    /// before the first tick every throttle is 1, every beam is on and every
+    /// distance the setup's [`Laser::distance_m`](crate::Laser::distance_m). Leave a
     /// distance alone to keep that laser's power as the setup has it.
     fn throttle(&mut self, view: &View<'_>, lasers: &mut [LaserControl]);
 }
@@ -234,6 +240,13 @@ pub struct LaserSample {
     pub distance_m: f32,
     /// Fracturing energy per second at full throttle at that distance.
     pub power: f32,
+    /// Its beam is on.
+    pub firing: bool,
+    /// Hit time still queued on the rock after this tick's drain, s.
+    pub queued_s: f32,
+    /// Its modifiers are on the rock this tick (it hit within
+    /// [`modifier_persistence_time`](crate::Ruleset::modifier_persistence_time)).
+    pub contributing: bool,
 }
 
 /// A simulated attempt.
@@ -253,17 +266,27 @@ pub struct Trace {
 /// laser's throttle moves toward its setting
 /// ([`LaserPower::next_throttle`](crate::LaserPower::next_throttle); on the
 /// first tick it starts at the setting, a modelling choice); the hits that
-/// arrived join the queue, and up to [`HIT_DRAIN`] ticks of hit time leave
-/// it, at the throttles and distances now; their gain minus the decay; if
-/// that is a gain, it is multiplied by `1 + f` (or divided by `1 - f`) with
-/// `f = instability * w * (1 - min(c, maxEffectOnInstability))`; then the
+/// arrived join each firing laser's queue, and up to [`HIT_DRAIN`] ticks of
+/// hit time leave every queue, at that laser's throttle and distance now;
+/// their gain minus the decay; if that is a gain, it is multiplied by `1 +
+/// f` (or divided by `1 - f`) with `f = instability * w * damping`; then the
 /// bar, then the breaking pools.
+///
+/// A laser's modifiers are on the rock while it hit within
+/// [`modifier_persistence_time`](crate::Ruleset::modifier_persistence_time),
+/// so a beam cut longer than that takes them off until the next hit
+/// ([`ModifiedRock::with_lasers`]). The damping is the mean of `1 -
+/// min(c, maxEffectOnInstability)` over the lasers that delivered hit time
+/// this tick, each with its own hit consistency `c`
+/// ([`hit_consistency`]): a laser that has fired without a break counts its
+/// firing time, one that was cut the hit time it delivered within the
+/// history window.
 ///
 /// When hits arrive once per tick ([`SimConfig::hit_interval_s`] equal to
 /// [`SimConfig::tick_s`], the default) every tick drains exactly one hit and
 /// the gain is even. Otherwise ticks alternate between more and less than
 /// the mean, and the wave amplifies the surplus of the strong ones even at
-/// the balance throttle. Every laser hits in step.
+/// the balance throttle. Every firing laser hits in step.
 pub fn simulate(
     rock: &ModifiedRock,
     ruleset: &Ruleset,
@@ -285,6 +308,7 @@ pub fn simulate_timeline(
     let dt = config.tick_s.max(1e-4);
     let interval = config.hit_interval_s.max(1e-4);
     let decay = decay_rate(ruleset) * dt;
+    let window_s = ruleset.hit_consistency.history_window;
     let mut rng = Rng::new(config.seed);
     let mut wave = Wave::new(ruleset, &mut rng);
 
@@ -295,9 +319,15 @@ pub fn simulate_timeline(
         .map(|l| LaserControl {
             throttle: 1.0,
             distance_m: l.distance_m,
+            firing: true,
         })
         .collect();
+    let n = controls.len();
     let mut current: Vec<f32> = Vec::new();
+    let mut lasers = vec![LaserState::default(); n];
+    // Rocks with only some lasers' modifiers on, by span and hitting set.
+    let mut subsets: HashMap<(usize, Vec<bool>), ModifiedRock> = HashMap::new();
+    let mut hitting = vec![true; n];
 
     let mut samples = Vec::new();
     let mut laser_samples = Vec::new();
@@ -306,17 +336,18 @@ pub fn simulate_timeline(
     let mut time = 0.0f32;
     // Hits are counted on an exact clock so that equal tick and hit intervals
     // never drift into a tick with two hits or none.
-    let (mut ticks, mut hits, mut queued) = (0u64, 0u64, 0.0f32);
+    let (mut ticks, mut hits) = (0u64, 0u64);
     let outcome = loop {
         if time >= config.max_time_s {
             break Outcome::TimedOut;
         }
-        let rock = timeline.at(time);
+        let span = timeline.span_index(time);
+        let view_rock = rock_for(timeline, ruleset, &mut subsets, span, &hitting);
         let w = wave.advance(ruleset, &mut rng, dt);
         let view = View {
             time_s: time,
             power,
-            rock,
+            rock: view_rock,
             ruleset,
             throttles: &current,
         };
@@ -324,36 +355,90 @@ pub fn simulate_timeline(
         for c in &mut controls {
             c.throttle = c.throttle.clamp(0.0, 1.0);
         }
+        let lasers_now = &timeline.spans[span].1.lasers;
         if current.is_empty() {
             current = controls.iter().map(|c| c.throttle).collect();
+            for (l, c) in lasers.iter_mut().zip(&controls) {
+                // A beam on from the start has its entry on the rock at once.
+                l.last_hit_s = if c.firing { 0.0 } else { f32::NEG_INFINITY };
+            }
         } else {
-            for ((t, c), l) in current.iter_mut().zip(&controls).zip(&rock.lasers) {
+            for ((t, c), l) in current.iter_mut().zip(&controls).zip(lasers_now) {
                 *t = l.next_throttle(*t, c.throttle, dt);
             }
         }
-        let energy: f32 = rock
-            .lasers
-            .iter()
-            .zip(&controls)
-            .zip(&current)
-            .map(|((l, c), &t)| l.power_at(c.distance_m) * l.effective(t))
-            .sum();
 
         ticks += 1;
         let end = ticks as f64 * f64::from(dt);
         while (hits + 1) as f64 * f64::from(interval) <= end + 1e-9 {
             hits += 1;
-            if queued < HIT_QUEUE_CAP_S {
-                queued += interval;
+            for (l, c) in lasers.iter_mut().zip(&controls) {
+                if c.firing && l.queued_s < HIT_QUEUE_CAP_S {
+                    l.queued_s += interval;
+                }
             }
         }
-        let drained = queued.min(HIT_DRAIN * dt);
-        queued -= drained;
+        let now = time + dt;
+        let mut drained = vec![0.0f32; n];
+        for (i, (l, c)) in lasers.iter_mut().zip(&controls).enumerate() {
+            if !c.firing {
+                l.unbroken = false;
+            }
+            drained[i] = l.queued_s.min(HIT_DRAIN * dt);
+            l.queued_s -= drained[i];
+            if drained[i] > 0.0 {
+                l.last_hit_s = now;
+                if !l.unbroken {
+                    l.history.push_back((now, drained[i]));
+                }
+            }
+            while l.history.front().is_some_and(|&(t, _)| t <= now - window_s) {
+                l.history.pop_front();
+            }
+            hitting[i] = now - l.last_hit_s < ruleset.modifier_persistence_time;
+        }
+        let rock = rock_for(timeline, ruleset, &mut subsets, span, &hitting);
 
-        let mut change = rock.gain_per_energy(ruleset) * energy * drained - decay;
-        let consistency =
-            hit_consistency(&ruleset.hit_consistency, time + dt, config.aim_scatter_m);
-        let damping = 1.0 - consistency.min(ruleset.hit_consistency.max_effect_on_instability);
+        let energies: Vec<f32> = rock
+            .lasers
+            .iter()
+            .zip(&controls)
+            .zip(&current)
+            .map(|((l, c), &t)| l.power_at(c.distance_m) * l.effective(t))
+            .collect();
+        // Every queue drains the same while all lasers fire in step: then the
+        // gain is the old single-queue expression, bit for bit.
+        let gain = if drained.iter().all(|&d| d == drained[0]) {
+            rock.gain_per_energy(ruleset) * energies.iter().sum::<f32>() * drained[0]
+        } else {
+            rock.gain_per_energy(ruleset)
+                * energies
+                    .iter()
+                    .zip(&drained)
+                    .map(|(e, d)| e * d)
+                    .sum::<f32>()
+        };
+        let mut change = gain - decay;
+        let max_effect = ruleset.hit_consistency.max_effect_on_instability;
+        let (mut damping_sum, mut delivering) = (0.0f64, 0u32);
+        for (l, &d) in lasers.iter().zip(&drained) {
+            if d > 0.0 {
+                let covered = if l.unbroken {
+                    now
+                } else {
+                    l.history.iter().map(|&(_, a)| a).sum()
+                };
+                let c = hit_consistency(&ruleset.hit_consistency, covered, config.aim_scatter_m);
+                damping_sum += f64::from(1.0 - c.min(max_effect));
+                delivering += 1;
+            }
+        }
+        // f64 keeps the mean exact when every laser has the same value.
+        let damping = if delivering > 0 {
+            (damping_sum / f64::from(delivering)) as f32
+        } else {
+            1.0
+        };
         let f = rock.instability * w * damping;
         if change > 0.0 {
             change = if f < 0.0 {
@@ -404,7 +489,12 @@ pub fn simulate_timeline(
             samples.push(Sample {
                 time_s: time,
                 throttle: current.first().copied().unwrap_or(0.0),
-                energy,
+                energy: energies
+                    .iter()
+                    .zip(&controls)
+                    .filter(|(_, c)| c.firing)
+                    .map(|(e, _)| e)
+                    .sum(),
                 power,
                 wave: f,
                 controlled,
@@ -415,11 +505,15 @@ pub fn simulate_timeline(
                     .iter()
                     .zip(&controls)
                     .zip(&current)
-                    .map(|((l, c), &t)| LaserSample {
+                    .zip(lasers.iter().zip(&hitting))
+                    .map(|(((l, c), &t), (state, &on))| LaserSample {
                         throttle: t,
                         setting: c.throttle,
                         distance_m: c.distance_m,
                         power: l.power_at(c.distance_m),
+                        firing: c.firing,
+                        queued_s: state.queued_s,
+                        contributing: on,
                     })
                     .collect(),
             );
@@ -442,6 +536,49 @@ pub fn simulate_timeline(
         outcome,
         time_in_window_s: time_in_window,
     }
+}
+
+/// One laser's hit state in a simulation.
+#[derive(Debug, Clone)]
+struct LaserState {
+    /// Hit time waiting on the rock, s.
+    queued_s: f32,
+    /// When its last hit drained.
+    last_hit_s: f32,
+    /// It has fired every tick so far.
+    unbroken: bool,
+    /// Hit time delivered since its first cut, as (tick end, s), within the
+    /// history window.
+    history: VecDeque<(f32, f32)>,
+}
+
+impl Default for LaserState {
+    fn default() -> Self {
+        Self {
+            queued_s: 0.0,
+            last_hit_s: f32::NEG_INFINITY,
+            unbroken: true,
+            history: VecDeque::new(),
+        }
+    }
+}
+
+/// The span's rock with the `hitting` lasers' modifiers on, cached; the
+/// span's own rock when every laser hits.
+fn rock_for<'a>(
+    timeline: &'a Timeline,
+    ruleset: &Ruleset,
+    subsets: &'a mut HashMap<(usize, Vec<bool>), ModifiedRock>,
+    span: usize,
+    hitting: &[bool],
+) -> &'a ModifiedRock {
+    let full = &timeline.spans[span].1;
+    if hitting.iter().all(|&h| h) {
+        return full;
+    }
+    subsets
+        .entry((span, hitting.to_vec()))
+        .or_insert_with(|| full.subset(ruleset, hitting))
 }
 
 /// Our difficulty for one rock and setup: how a [`Player`] fares over many

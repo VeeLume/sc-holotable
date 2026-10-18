@@ -2,6 +2,7 @@
 //! rock as that setup works on it.
 
 use std::collections::BTreeMap;
+use std::sync::Arc;
 
 use sc_items_mining::{FloatModifier, MiningGadget, MiningModifiers, MiningModule, ModifierKind};
 use sc_items_ship_weapons::{MiningBeam, MiningLaserStats};
@@ -193,6 +194,20 @@ pub struct ModifiedRock {
     /// The shatter-damage modifier (`shatterdamageModifier`): scales the
     /// rock's explosion multiplier in its [`FractureBlast`](crate::FractureBlast).
     pub shatter_damage: Combined,
+    /// The bare rock and every modifier entry, so the rock can be taken
+    /// again with only some lasers hitting ([`with_lasers`](Self::with_lasers)).
+    #[serde(skip)]
+    sources: Option<Arc<Sources>>,
+}
+
+/// What a [`ModifiedRock`] was built from.
+#[derive(Debug, Clone, PartialEq)]
+struct Sources {
+    rock: Rock,
+    /// Per laser, in setup order: its owner and its modifier blocks (its own
+    /// and its modules').
+    lasers: Vec<(u32, Vec<MiningModifiers>)>,
+    gadgets: Vec<MiningModifiers>,
 }
 
 /// One laser's contribution to [`ModifiedRock`].
@@ -266,11 +281,66 @@ impl LaserPower {
 
 impl ModifiedRock {
     pub fn new(ruleset: &Ruleset, rock: &Rock, setup: &Setup) -> Self {
-        let blocks: Vec<&MiningModifiers> = setup
+        let sources = Arc::new(Sources {
+            rock: rock.clone(),
+            lasers: setup
+                .lasers
+                .iter()
+                .map(|l| (l.owner, l.modifier_blocks().copied().collect()))
+                .collect(),
+            gadgets: setup.gadgets.iter().map(|g| g.modifiers).collect(),
+        });
+        let lasers = setup.lasers.iter().map(Laser::laser_power).collect();
+        Self::from_sources(ruleset, sources, lasers, None)
+    }
+
+    /// The rock with only the lasers marked in `contributing` (setup order)
+    /// modifying it, as when the others have stopped hitting for longer
+    /// than [`modifier_persistence_time`](Ruleset::modifier_persistence_time).
+    /// Gadgets always modify it, and [`lasers`](Self::lasers) still lists
+    /// every laser; a laser missing from `contributing` counts as hitting.
+    pub fn with_lasers(
+        ruleset: &Ruleset,
+        rock: &Rock,
+        setup: &Setup,
+        contributing: &[bool],
+    ) -> Self {
+        Self::new(ruleset, rock, setup).subset(ruleset, contributing)
+    }
+
+    /// This rock with only the lasers marked in `contributing` modifying it
+    /// (see [`with_lasers`](Self::with_lasers)); itself when it does not
+    /// know its sources (a deserialized rock).
+    pub(crate) fn subset(&self, ruleset: &Ruleset, contributing: &[bool]) -> Self {
+        match &self.sources {
+            Some(sources) => Self::from_sources(
+                ruleset,
+                Arc::clone(sources),
+                self.lasers.clone(),
+                Some(contributing),
+            ),
+            None => self.clone(),
+        }
+    }
+
+    fn from_sources(
+        ruleset: &Ruleset,
+        sources: Arc<Sources>,
+        lasers: Vec<LaserPower>,
+        contributing: Option<&[bool]>,
+    ) -> Self {
+        let on = |i: usize| contributing.and_then(|c| c.get(i).copied()).unwrap_or(true);
+        let hitting: Vec<&(u32, Vec<MiningModifiers>)> = sources
             .lasers
             .iter()
-            .flat_map(Laser::modifier_blocks)
-            .chain(setup.gadgets.iter().map(|g| &g.modifiers))
+            .enumerate()
+            .filter(|&(i, _)| on(i))
+            .map(|(_, l)| l)
+            .collect();
+        let blocks: Vec<&MiningModifiers> = hitting
+            .iter()
+            .flat_map(|(_, blocks)| blocks)
+            .chain(&sources.gadgets)
             .collect();
         let combine = |pick: fn(&MiningModifiers) -> Option<&FloatModifier>| {
             Combined::of(blocks.iter().map(|b| pick(b)))
@@ -278,9 +348,10 @@ impl ModifiedRock {
 
         let resistance = combine(|m| m.resistance.as_ref());
         let mut instability = combine(|m| m.laser_instability.as_ref());
-        instability.factor *= owner_factor(&setup.lasers);
+        instability.factor *= owner_factor(hitting.iter().map(|(owner, _)| *owner));
         let window = combine(|m| m.optimal_charge_window_size.as_ref());
 
+        let rock = &sources.rock;
         Self {
             mass: rock.mass,
             volume: rock.volume,
@@ -291,11 +362,12 @@ impl ModifiedRock {
             window: rock
                 .window
                 .scaled(window.factor + window.add, ruleset.optimal_window_max_size),
-            lasers: setup.lasers.iter().map(Laser::laser_power).collect(),
+            lasers,
             optimal_rate: combine(|m| m.optimal_charge_window_rate.as_ref()),
             catastrophic_rate: combine(|m| m.catastrophic_charge_window_rate.as_ref()),
             cluster_factor: combine(|m| m.cluster_factor.as_ref()),
             shatter_damage: combine(|m| m.shatter_damage.as_ref()),
+            sources: Some(sources),
         }
     }
 
@@ -426,8 +498,14 @@ impl Timeline {
 
     /// The rock at `time_s` into the attempt.
     pub fn at(&self, time_s: f32) -> &ModifiedRock {
-        let i = self.spans.partition_point(|(start, _)| *start <= time_s);
-        &self.spans[i.saturating_sub(1)].1
+        &self.spans[self.span_index(time_s)].1
+    }
+
+    /// Index into [`spans`](Self::spans) of the stretch holding `time_s`.
+    pub(crate) fn span_index(&self, time_s: f32) -> usize {
+        self.spans
+            .partition_point(|(start, _)| *start <= time_s)
+            .saturating_sub(1)
     }
 }
 
@@ -503,10 +581,10 @@ pub(crate) fn breaking_scale(ruleset: &Ruleset, mass: f32) -> f32 {
 }
 
 /// `owners / Π lasers per owner`.
-fn owner_factor(lasers: &[Laser]) -> f32 {
+fn owner_factor(owners: impl Iterator<Item = u32>) -> f32 {
     let mut per_owner: BTreeMap<u32, u32> = BTreeMap::new();
-    for laser in lasers {
-        *per_owner.entry(laser.owner).or_default() += 1;
+    for owner in owners {
+        *per_owner.entry(owner).or_default() += 1;
     }
     if per_owner.is_empty() {
         return 1.0;

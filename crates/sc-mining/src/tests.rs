@@ -963,3 +963,114 @@ fn activations_switch_modules() {
     assert_eq!(trace.samples[tick(6.0)].energy, 1500.0);
     assert_eq!(trace.samples[tick(21.0)].energy, 1000.0);
 }
+
+/// A laser that stops hitting takes its modifiers off the rock:
+/// `with_lasers` drops them, and a beam cut longer than the 0.25 s
+/// persistence does too, while a shorter one does not.
+#[test]
+fn beam_cut_drops_modifiers_after_persistence() {
+    let ruleset = ship();
+    let mut elements = Elements::new();
+    elements.insert(element(1, 200.0, 0.4, 2.0));
+    let entries = [Entry {
+        element: guid(1),
+        fraction: 0.8,
+        quality: None,
+    }];
+    let rock = Rock::from_mass(&ruleset, &elements, &entries, 5000.0).expect("rock");
+    let mods = MiningModifiers {
+        resistance: multiplicative(-50.0),
+        optimal_charge_window_size: multiplicative(100.0),
+        ..Default::default()
+    };
+    let setup = Setup {
+        lasers: vec![laser(4000.0, mods)],
+        ..Default::default()
+    };
+    let full = ModifiedRock::new(&ruleset, &rock, &setup);
+    let bare = ModifiedRock::with_lasers(&ruleset, &rock, &setup, &[false]);
+    assert!(close(full.resistance, rock.resistance * 0.5, 1e-6));
+    assert!(close(bare.resistance, rock.resistance, 1e-6));
+    assert!(bare.window.high - bare.window.low < full.window.high - full.window.low);
+    assert_eq!(bare.lasers, full.lasers);
+    assert_eq!(
+        ModifiedRock::with_lasers(&ruleset, &rock, &setup, &[true]),
+        full
+    );
+
+    struct Cut(f32);
+    impl Throttle for Cut {
+        fn throttle(&mut self, view: &View<'_>, lasers: &mut [LaserControl]) {
+            lasers[0].throttle = 0.5;
+            lasers[0].firing = !(1.0..1.0 + self.0).contains(&view.time_s);
+        }
+    }
+    let config = SimConfig {
+        max_time_s: 3.0,
+        ..Default::default()
+    };
+    let dropped = |cut: f32| {
+        let trace = simulate(&full, &ruleset, &mut Cut(cut), &config);
+        assert!(trace.lasers.iter().any(|t| !t[0].firing));
+        trace.lasers.iter().filter(|t| !t[0].contributing).count()
+    };
+    assert_eq!(dropped(0.2), 0);
+    let ticks = dropped(0.3);
+    assert!((1..=3).contains(&ticks), "{ticks} ticks without modifiers");
+}
+
+/// Hit time already queued on the rock keeps draining after the beam is
+/// cut: with the rock updating twice per hit, the tick after the cut still
+/// delivers the rest of the last hit.
+#[test]
+fn beam_cut_keeps_draining_queue() {
+    let ruleset = ship();
+    let mut elements = Elements::new();
+    elements.insert(element(1, 0.0, 0.0, 2.0));
+    let entries = [Entry {
+        element: guid(1),
+        fraction: 0.8,
+        quality: None,
+    }];
+    let rock = Rock::from_mass(&ruleset, &elements, &entries, 10_000.0).expect("rock");
+    let mined = ModifiedRock::new(
+        &ruleset,
+        &rock,
+        &Setup {
+            lasers: vec![laser(4000.0, MiningModifiers::default())],
+            ..Default::default()
+        },
+    );
+    struct CutAt(f32);
+    impl Throttle for CutAt {
+        fn throttle(&mut self, view: &View<'_>, lasers: &mut [LaserControl]) {
+            lasers[0].firing = view.time_s < self.0;
+        }
+    }
+    let trace = simulate(
+        &mined,
+        &ruleset,
+        &mut CutAt(0.5),
+        &SimConfig {
+            tick_s: 1.0 / 60.0,
+            hit_interval_s: 1.0 / 30.0,
+            max_time_s: 1.0,
+            ..Default::default()
+        },
+    );
+    let cut = trace
+        .lasers
+        .iter()
+        .position(|t| !t[0].firing)
+        .expect("a cut");
+    // Some hit time was still queued when the beam went off, and it drains.
+    let queued: Vec<f32> = trace.lasers[cut - 1..cut + 3]
+        .iter()
+        .map(|t| t[0].queued_s)
+        .collect();
+    assert!(queued.iter().any(|&q| q > 0.0), "{queued:?}");
+    assert_eq!(*queued.last().expect("ticks"), 0.0);
+    // The bar still rose on a tick with the beam off.
+    let rose = (cut..cut + 3).any(|i| trace.samples[i].power > trace.samples[i - 1].power);
+    assert!(rose);
+}
