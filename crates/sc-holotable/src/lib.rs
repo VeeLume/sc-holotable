@@ -37,6 +37,7 @@
 //! | `gathering` | `gathering` | resource providers (pulls `locations`) |
 //! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
 //! | `visuals` | `visuals` | render recipes and inventory presentation (orientation, light rig, palettes) |
+//! | `vehicles` | `vehicles` | ships and ground vehicles: hull parts and HP, item ports, stock loadout trees, the fit rule and port locks |
 //! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
 //! | `mining` | `mining` | rock properties, breakability, the charge simulation, rock spawns and fracture trees (pulls `resources`, `tags`, `ship-weapons`, `mining-items`) |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
@@ -139,6 +140,14 @@ pub mod ship_components {
     //! Ship-component base-stat sheet ([`sc_items_ship_components`]) —
     //! integrity, quantum drive, shield, cooler / power-plant generation.
     pub use sc_items_ship_components::*;
+}
+
+#[cfg(feature = "vehicles")]
+pub mod vehicles {
+    //! Ships and ground vehicles ([`sc_vehicles`]) — hull parts with HP and
+    //! mass, item ports, the stock loadout as a tree, whether an item fits a
+    //! port and whether the player can change it.
+    pub use sc_vehicles::*;
 }
 
 #[cfg(feature = "mining-items")]
@@ -249,6 +258,8 @@ pub mod prelude {
     };
     #[cfg(feature = "tags")]
     pub use sc_tags::Tags;
+    #[cfg(feature = "vehicles")]
+    pub use sc_vehicles::{PortContainers, Vehicle, Vehicles};
     #[cfg(feature = "weapons")]
     pub use sc_weapons::{FpsWeapon, Missile, ShipWeapon, WeaponPools, Weapons};
 
