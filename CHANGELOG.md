@@ -87,6 +87,11 @@ pinned. Both tag kinds are monotonic and immutable.
   - the shield generators combined as the client combines them (`Shield::combine`: HP and regen add, delays averaged, resistance and absorption weighted by HP);
   - the emitter's face layout.
   - `flight_probe` re-proves it on the Centaurus: hull 170,500, armour 25,740 HP at 0.7 / 0.5, 2 × 5CA = 200,000 HP and 38,000/s, quadrant faces.
+- **`sc-vehicles`: `Quantum`**, a loadout's quantum drive and quantum fuel:
+  - `time(distance)` follows the client's travel envelope (`quantum_time`): five mirrored, jerk-limited phases, solving for the peak on short trips. Times are truncated to 1e-7 s ticks; spool and calibration are not included.
+  - `fuel(distance)` uses the drive's travelling-state QuantumFuel per Mm; `range()` divides the tank by it.
+  - The Centaurus's Khaos: 0.022 SCU per GM, range 390.9 GM, as spviewer shows. 31.92 GM takes 170.6 s; spviewer shows 2:46 from an older model, rounded up.
+- **`sc-vehicles`: `Flight::hydrogen_burn` / `hydrogen_capacity`** give the full-thrust burn per thruster type and the tanks. The Centaurus mains burn 0.5925 SCU/min from 46.8 SCU; nothing burns at rest.
 - **`sc-vehicles`: `Flight`**, a loadout's flight figures under the legacy IFCS the PU runs:
   - speeds and angular velocity (boosted × the afterburner multipliers);
   - mass: hull, everything mounted and docked vehicles;
@@ -101,6 +106,7 @@ pinned. Both tag kinds are monotonic and immutable.
 - **`sc-items-ship-components`: `ShipComponentKind` gains** `ShieldController`, `Armor`, `MainThruster`, `ManeuverThruster`, `LifeSupportGenerator`, `FlightController`, `FuelTank`, `QuantumFuelTank` and `JumpDrive`. The collection now covers them, and exhaustive matches need the new arms.
 
 - **`sc-items`: `Item` gains `tags` and `required_tags`** (`AttachDef.Tags` / `RequiredTags`, split on spaces), so struct literals need them.
+- **`sc-items-ship-components`: `Thruster::fuel_burn_rate_per_10kn` (the legacy float) is replaced by `fuel_burn_per_10kn`**, read from `fuelBurnRatePer10KNewtonRN` in SCU. That is the field the client burns.
 - **`sc-items`: `Item` gains `mass`** (`SEntityPhysicsControllerParams.PhysType.Mass`, kg) and no longer derives `Eq`.
 - **`sc-extract` / `sc-vehicles`: `hull_mass()` sums every part's mass**, not just the root's. The Skylark's 11 detachable panels add 115.5 kg; the Centaurus has none.
 

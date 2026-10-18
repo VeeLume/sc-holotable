@@ -4,8 +4,9 @@ use sc_extract::DataPools;
 use sc_extract::generated::{
     DamageBasePtr, DamageInfo, DamageResistanceBasePtr, DamageResistanceEntry,
     DataForgeComponentParamsPtr, EFaceType, EThrusterType, EntityClassDefinition, Handle,
-    IFCSParams, SCItemQuantumDriveParams, SCItemShieldGeneratorParams, SCItemThrusterParams,
-    SCItemVehicleArmorParams, SHealthComponentParams, SQuantumDriveParams, Vec3,
+    IFCSParams, SBaseResourceUnitPtr, SCItemQuantumDriveParams, SCItemShieldGeneratorParams,
+    SCItemThrusterParams, SCItemVehicleArmorParams, SHealthComponentParams, SQuantumDriveParams,
+    Vec3,
 };
 use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
@@ -168,8 +169,10 @@ pub struct Thruster {
     /// `thrusterType`.
     #[serde(with = "thruster_type_serde")]
     pub thruster_type: EThrusterType,
-    /// `fuelBurnRatePer10KNewton`: hydrogen per second per 10 kN of thrust.
-    pub fuel_burn_rate_per_10kn: f32,
+    /// `fuelBurnRatePer10KNewtonRN`: hydrogen, SCU per second per 10 kN of
+    /// thrust, the rate the client burns (`FUN_1447adbf0`; the legacy
+    /// `fuelBurnRatePer10KNewton` float is unused).
+    pub fuel_burn_per_10kn: f64,
     /// `minHealthThrustMultiplier`: the thrust left at 0 health.
     pub min_health_thrust_multiplier: f32,
     /// `onlyActiveInVTOL`.
@@ -261,7 +264,7 @@ pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
             C::SCItemQuantumDriveParams(h) => {
                 out.quantum = h.get(pools).and_then(|q| quantum(q, pools));
             }
-            C::SCItemThrusterParams(h) => out.thruster = h.get(pools).map(thruster),
+            C::SCItemThrusterParams(h) => out.thruster = h.get(pools).map(|t| thruster(t, pools)),
             C::IFCSParams(h) => out.flight = h.get(pools).map(|f| flight(f, pools)),
             C::ResourceContainer(h) => {
                 out.capacity = h
@@ -425,11 +428,33 @@ fn flight(f: &IFCSParams, pools: &DataPools) -> FlightControl {
     }
 }
 
-fn thruster(t: &SCItemThrusterParams) -> Thruster {
+/// A resource-unit amount in standard units (1 SCU).
+fn standard_units(u: &SBaseResourceUnitPtr, pools: &DataPools) -> f64 {
+    match u {
+        SBaseResourceUnitPtr::SStandardResourceUnit(h) => h
+            .get(pools)
+            .map_or(0.0, |u| f64::from(u.standard_resource_units)),
+        SBaseResourceUnitPtr::SCentiResourceUnit(h) => h
+            .get(pools)
+            .map_or(0.0, |u| f64::from(u.centi_resource_units) / 100.0),
+        SBaseResourceUnitPtr::SMicroResourceUnit(h) => h
+            .get(pools)
+            .map_or(0.0, |u| f64::from(u.micro_resource_units) / 1e6),
+        SBaseResourceUnitPtr::SPowerSegmentResourceUnit(h) => {
+            h.get(pools).map_or(0.0, |u| f64::from(u.units))
+        }
+        _ => 0.0,
+    }
+}
+
+fn thruster(t: &SCItemThrusterParams, pools: &DataPools) -> Thruster {
     Thruster {
         thrust_capacity: t.thrust_capacity,
         thruster_type: t.thruster_type.clone(),
-        fuel_burn_rate_per_10kn: t.fuel_burn_rate_per10_knewton,
+        fuel_burn_per_10kn: t
+            .fuel_burn_rate_per10_knewton_rn
+            .as_ref()
+            .map_or(0.0, |u| standard_units(u, pools)),
         min_health_thrust_multiplier: t.min_health_thrust_multiplier,
         only_active_in_vtol: t.only_active_in_vtol,
     }

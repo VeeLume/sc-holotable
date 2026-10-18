@@ -5,7 +5,10 @@
 //! NAV 1075, pitch / roll / yaw 22 / 35 / 18 (boosted 33 / 70 / 27), and
 //! the accelerations spviewer rounds to forward 4.9, back 2.0, strafe 2.5
 //! G (boosted forward 7.4); and its defences: hull 170,500, armour 25,740
-//! HP at 0.7 / 0.5, 2 x 5CA = 200,000 HP and 38,000/s, quadrant faces.
+//! HP at 0.7 / 0.5, 2 x 5CA = 200,000 HP and 38,000/s, quadrant faces;
+//! hydrogen 0.5925 SCU/min on the mains from 46.8 SCU; the Khaos at 0.022
+//! SCU per GM, range 390.9 GM (spviewer), 31.92 GM in 170.6 s (the client's
+//! envelope; spviewer's older model shows 2:46).
 //!
 //! ```bash
 //! cargo run -p sc-vehicles --release --example flight_probe
@@ -17,7 +20,9 @@ use sc_extract::generated::EFaceType;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, RecordCollection};
 use sc_items::Items;
 use sc_items_ship_components::ShipComponents;
-use sc_vehicles::{Defense, Flight, PortContainers, Vehicles, port_axes};
+use sc_vehicles::{
+    Defense, Flight, PortContainers, Quantum, ResourceProfiles, Vehicles, port_axes,
+};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_discovery::discover_primary()?;
@@ -29,6 +34,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let containers = PortContainers::build(&datacore);
     let vehicles = Vehicles::build(&datacore, &items, &containers, &assets);
     let components = ShipComponents::build(&datacore, &items);
+    let profiles = ResourceProfiles::build(&datacore);
     let names: HashMap<Guid, String> = datacore
         .db()
         .all_records()
@@ -129,6 +135,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         d.emitter.as_ref().map(|e| &e.face_type),
         Some(&EFaceType::Quadrant)
     );
-    println!("asserts passed: Centaurus mass, speeds, rotation, accelerations, defences");
+    // Hydrogen: 4 mains of 19.75 MN at 1.25e-6 SCU / 10 kN / s.
+    let h = flight.hydrogen_burn;
+    println!("hydrogen {h:?}, tanks {} SCU", flight.hydrogen_capacity);
+    assert!(near(h.main, 0.5925, 0.0005) && near(h.retro, 0.2378, 0.0005));
+    assert!(near(flight.hydrogen_capacity, 46.8, 1e-4));
+
+    // Quantum: Khaos, 22 micro-SCU per Mm, 8.6 SCU tank.
+    let q = Quantum::compute(&ship.stock, &vehicles, &components, &profiles).ok_or("no QD")?;
+    println!(
+        "quantum: {:.6} SCU/Mm, {} SCU, range {:.2} GM, 31.92 GM in {:.2} s",
+        q.fuel_per_mm,
+        q.fuel_capacity,
+        q.range() / 1e9,
+        q.time(31.92e9)
+    );
+    assert!(near(q.fuel_per_mm, 22e-6, 1e-12) && near(q.fuel_capacity, 8.6, 1e-4));
+    assert!(near(q.range() / 1e9, 390.909, 0.001));
+    assert!(near(q.time(31.92e9), 170.58, 0.01));
+
+    println!(
+        "asserts passed: Centaurus mass, speeds, rotation, accelerations, defences, fuel, quantum"
+    );
     Ok(())
 }

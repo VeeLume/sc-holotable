@@ -3,9 +3,10 @@
 
 use std::collections::HashMap;
 
+use sc_extract::generated::EThrusterType;
 use sc_extract::{AssetSource, Mesh, RecordCollection};
 use sc_items::Items;
-use sc_items_ship_components::ShipComponents;
+use sc_items_ship_components::{ShipComponentKind, ShipComponents};
 use serde::{Deserialize, Serialize};
 use tracing::warn;
 
@@ -72,6 +73,21 @@ pub struct Flight {
     /// multipliers.
     pub acceleration: Accelerations,
     pub acceleration_boosted: Accelerations,
+    /// Hydrogen burnt at full thrust, SCU per minute, per thruster type:
+    /// `thrustCapacity` / 10 kN × `fuelBurnRatePer10KNewtonRN` per second
+    /// (`FUN_1447adbf0`). Nothing burns at rest (the flight controller adds
+    /// no idle cost in LIVE 4.10).
+    pub hydrogen_burn: Burn,
+    /// What the loadout's hydrogen tanks hold, SCU.
+    pub hydrogen_capacity: f64,
+}
+
+/// Hydrogen per minute at full thrust, SCU, by thruster type.
+#[derive(Debug, Clone, Copy, PartialEq, Default, Serialize, Deserialize)]
+pub struct Burn {
+    pub main: f64,
+    pub retro: f64,
+    pub maneuver: f64,
 }
 
 /// Accelerations per direction, G.
@@ -107,6 +123,8 @@ impl Flight {
         let mut mass = f64::from(vehicle.hull_mass().unwrap_or(0.0));
         let mut thrust = [0.0f64; 6]; // +x, -x, +y, -y, +z, -z
         let mut control = None;
+        let mut burn = Burn::default();
+        let mut hydrogen_capacity = 0.0;
         let mut stack: Vec<(&Mounted, Option<&str>, bool)> =
             loadout.iter().map(|m| (m, None, false)).collect();
         while let Some((m, outer, docked)) = stack.pop() {
@@ -124,9 +142,24 @@ impl Flight {
                 if control.is_none() {
                     control = sheet.and_then(|s| s.flight.clone());
                 }
+                if let Some(s) = sheet
+                    && s.kind == ShipComponentKind::FuelTank
+                {
+                    hydrogen_capacity += s
+                        .capacity
+                        .as_ref()
+                        .and_then(|c| c.to_scu())
+                        .map_or(0.0, f64::from);
+                }
                 if let Some(t) = sheet.and_then(|s| s.thruster.as_ref())
                     && !t.only_active_in_vtol
                 {
+                    let per_min = f64::from(t.thrust_capacity) / 1e4 * t.fuel_burn_per_10kn * 60.0;
+                    match t.thruster_type {
+                        EThrusterType::Main => burn.main += per_min,
+                        EThrusterType::Retro => burn.retro += per_min,
+                        _ => burn.maneuver += per_min,
+                    }
                     match axis(axes, &m.port, outer) {
                         Some(a) => push(&mut thrust, a, f64::from(t.thrust_capacity)),
                         None => warn!(port = %m.port, "thruster port has no hull helper"),
@@ -182,6 +215,8 @@ impl Flight {
             angular_velocity_boosted,
             acceleration,
             acceleration_boosted,
+            hydrogen_burn: burn,
+            hydrogen_capacity,
         })
     }
 }
