@@ -332,6 +332,17 @@ pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
     out
 }
 
+/// An entity's `SHealthComponentParams` as a [`ComponentHealth`]; `None`
+/// without one.
+pub fn component_health(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<ComponentHealth> {
+    ecd.components.iter().find_map(|c| match c {
+        DataForgeComponentParamsPtr::SHealthComponentParams(h) => {
+            h.get(pools).map(|h| health(h, pools))
+        }
+        _ => None,
+    })
+}
+
 fn health(h: &SHealthComponentParams, pools: &DataPools) -> ComponentHealth {
     let damage_multiplier = match h.damage_resistances.as_ref() {
         Some(DamageResistanceBasePtr::DamageResistance(r)) => r.get(pools).map(|r| {

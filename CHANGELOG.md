@@ -100,6 +100,20 @@ pinned. Both tag kinds are monotonic and immutable.
   - editions have their own name, no AI crew, are EA-ready and are not AI templates.
   - LIVE 4.10 lists 246 records with 240 names: all 222 of erkul's (GUID-joined) plus 24 event and special editions the data cannot tell apart. 27 are ground vehicles, 11 gravlev; there are 52 reward ships.
   - Also new: `Vehicle::insured_as`, `ai_crew`, `ea_ready`, `reward`, `scenario`, `display`, `explodes_from_hull_damage`, `ground`, `gravlev`.
+- **`sc-vehicles`: projectile hits** (`Target::hit`) follow the client's `CVehicle::OnHit` (LIVE 4.10.197):
+  - shield face: `D(1−R)A` taken, `D(1−R)(1−A)` passed on;
+  - armour deflection, damage multiplier and wear;
+  - the hull part a ray cast reaches (`Raycaster`, a BVH over the hull mesh) takes × (1 − 0.75 h);
+  - the penetration cylinder reaches components with health (`ComponentHealths`), with per-type depth falloff, the fuse / component multipliers (`Vehicle::penetration`) and item resistances;
+  - `Target::exposure` sweeps attack directions per component.
+  - Probe `hits_probe` reproduces the hand-worked Centaurus cases: CF-557 taken by the shield, BEHR 15.19 / 18.56, both deflected by intact armour, ESPR S5 armour 665 / wear 538.65 / hull 176.69 / depth 0.036 m.
+  - The render mesh is not closed everywhere, so exposure can over-report until the physics proxies are read.
+- **`sc-weapons`: `ShipWeapon::penetration_radius_m`** (near / far radius). **`sc-items-ship-components`: `component_health()`**.
+- **`sc-vehicles`: `HullGeometry`**: a loadout in 3D, in the ship frame.
+  - The hull's render mesh grouped by damage part. Each mesh node is named after its vehicle-XML `Part`.
+  - Each mounted item's `Placement` on its port's helper node (hull, then the holding item's mesh), with its mesh bounds.
+  - `GeometryPaths` gives every entity's geometry path.
+  - The Centaurus has 31 parts, 1.16 M triangles and 192 placements.
 - **`sc-vehicles`: `Armament`** lists a loadout's guns, missiles and countermeasure launchers with their port paths, for joining to their stats. The Centaurus has 12 guns, 32 StrikeForce II and 2 launchers.
 - **`sc-items-ship-components`: `radar` and `ammo` sheets, and `ShipComponentKind::CountermeasureLauncher`.**
   - `Radar`: detection per signature type (sensitivity, piercing, passive / active), aim-assist distances, ping cooldown.

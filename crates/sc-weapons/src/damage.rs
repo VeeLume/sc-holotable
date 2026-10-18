@@ -55,6 +55,8 @@ pub(crate) struct ResolvedAmmo {
     /// exists in the schema but the damage path doesn't model
     /// tachyons yet — keep penetration `None` to mirror that scope).
     pub penetration_m: Option<f32>,
+    /// `penetrationParams.nearRadius` / `farRadius`, m.
+    pub penetration_radius_m: Option<[f32; 2]>,
 }
 
 /// Resolve the ammo chain for a weapon entity and extract damage + ballistics.
@@ -71,12 +73,13 @@ pub(crate) fn resolve_ammo(
 ) -> Option<ResolvedAmmo> {
     let ammo = resolve_ammo_params(ecd, weapon_params, pools, ecd_map, ammo_map)?;
     let damage = extract_damage(ammo, pools);
-    let penetration_m = extract_penetration(ammo, pools);
+    let penetration = extract_penetration(ammo, pools);
     Some(ResolvedAmmo {
         damage,
         speed: ammo.speed,
         lifetime: ammo.lifetime,
-        penetration_m,
+        penetration_m: penetration.map(|p| p.0),
+        penetration_radius_m: penetration.map(|p| p.1),
     })
 }
 
@@ -85,13 +88,16 @@ pub(crate) fn resolve_ammo(
 /// projectile family that has its damage modeled.
 /// `TachyonProjectileParams.penetration_params` carries the same field
 /// in the DCB and can be folded in when tachyon damage lands.
-fn extract_penetration(ammo: &AmmoParams, pools: &DataPools) -> Option<f32> {
+fn extract_penetration(ammo: &AmmoParams, pools: &DataPools) -> Option<(f32, [f32; 2])> {
     let proj_ptr = ammo.projectile_params.as_ref()?;
     if let ProjectileParamsPtr::BulletProjectileParams(h) = proj_ptr
         && let Some(bullet) = h.get(pools)
         && let Some(pen) = bullet.penetration_params.and_then(|h| h.get(pools))
     {
-        return Some(pen.base_penetration_distance);
+        return Some((
+            pen.base_penetration_distance,
+            [pen.near_radius, pen.far_radius],
+        ));
     }
     None
 }

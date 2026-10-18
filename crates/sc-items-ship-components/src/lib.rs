@@ -39,7 +39,7 @@ mod sheets;
 pub use sheets::{
     Afterburner, Ammo, ComponentHealth, FlightControl, MinMax, PerDamageType, QuantumDrive,
     QuantumTravel, Radar, ShieldEmitter, ShieldGenerator, SignatureDetection, Thruster,
-    VehicleArmor,
+    VehicleArmor, component_health,
 };
 
 /// Which ship-component family a piece belongs to.

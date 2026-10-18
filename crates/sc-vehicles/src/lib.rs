@@ -39,6 +39,7 @@
 
 mod armament;
 mod container;
+mod damage;
 mod defense;
 mod distribution;
 mod flight;
@@ -49,11 +50,15 @@ mod network;
 mod port;
 mod power;
 mod quantum;
+mod raycast;
 mod resource;
 mod vehicle;
 
 pub use armament::Armament;
 pub use container::{LoadoutEntry, PortContainer, PortContainers};
+pub use damage::{
+    ComponentHealths, ComponentHit, Condition, DamageRules, Exposure, HitReport, Shot, Target,
+};
 pub use defense::{Defense, Shield};
 pub use distribution::{
     Allocation, Consumer, ItemReadout, Plant, Pool, PowerNetwork, Readout, Signals,
@@ -66,11 +71,14 @@ pub use network::{DistributionDefaults, NetworkParams, PoolSize, PowerPool};
 pub use port::{Misfit, Port, PortSource, fits, has_flag, is_editable};
 pub use power::{em_signature, plant_output, signature_ratio};
 pub use quantum::{Quantum, quantum_time};
+pub use raycast::{RayHit, Raycaster};
 pub use resource::{
     DeltaKind, DynamicAmount, PowerRange, ResourceAmount, ResourceDelta, ResourceProfile,
     ResourceProfiles, ResourceState, ResourceUnits, Signature,
 };
-pub use vehicle::{Insurance, Listing, Mounted, Vehicle, Vehicles, network_items};
+pub use vehicle::{
+    Insurance, Listing, Mounted, PenetrationRules, Vehicle, Vehicles, network_items,
+};
 
 /// Re-export the canonical accessor trait so consumers can bring the
 /// `get` / `iter` / `len` / `values` surface into scope alongside the collections.
