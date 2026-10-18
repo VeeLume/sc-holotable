@@ -42,6 +42,7 @@ mod container;
 mod defense;
 mod distribution;
 mod flight;
+mod geometry;
 mod loadout;
 mod modifiers;
 mod network;
@@ -58,6 +59,7 @@ pub use distribution::{
     Allocation, Consumer, ItemReadout, Plant, Pool, PowerNetwork, Readout, Signals,
 };
 pub use flight::{Accelerations, Burn, Flight, port_axes};
+pub use geometry::{Aabb, GeometryPaths, HullGeometry, PartMesh, Placement, Transform, apply, mul};
 pub use loadout::{Loadout, Refusal};
 pub use modifiers::{ItemportModifier, ItemportModifiers, RegenModifier, weapon_power};
 pub use network::{DistributionDefaults, NetworkParams, PoolSize, PowerPool};

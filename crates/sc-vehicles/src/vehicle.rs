@@ -488,7 +488,7 @@ fn insurance(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Insurance
 }
 
 /// The entity's root geometry path.
-fn geometry(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<String> {
+pub(crate) fn geometry(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<String> {
     let g = ecd.components.iter().find_map(|c| match c {
         DataForgeComponentParamsPtr::SGeometryResourceParams(h) => h.get(pools),
         _ => None,
