@@ -79,6 +79,10 @@ pub struct Consumer {
     pub minimum: i64,
     /// Coolant it makes per second at full power (coolers; 0 for the rest).
     pub coolant: f64,
+    /// Shield resource it makes per second at full power (shield
+    /// generators; 0 for the rest).
+    #[serde(default)]
+    pub shield: f64,
     /// The pool it draws from, an index into [`PowerNetwork::pools`].
     pub pool: Option<usize>,
     /// Switched on (every item is, after [`PowerNetwork::build`]: a ship
@@ -153,6 +157,8 @@ pub struct Readout {
     /// The items' EM and IR, summed.
     pub em: f64,
     pub ir: f64,
+    /// Shield resource the generators make, per second.
+    pub shield_made: f64,
 }
 
 impl Readout {
@@ -176,6 +182,10 @@ pub struct ItemReadout {
     pub coolant_made: f64,
     /// Coolant it asks for per second at equilibrium.
     pub coolant_asked: f64,
+    /// Shield resource it makes per second (shield generators): what the
+    /// shield emitter regenerates from, up to the generators'
+    /// `MaxShieldRegen`.
+    pub shield_made: f64,
 }
 
 impl PowerNetwork {
@@ -244,10 +254,8 @@ impl PowerNetwork {
                 item_type: info.item_type.clone(),
                 request,
                 minimum: (request as f32 * delta.minimum_fraction) as i64,
-                coolant: state
-                    .generation(&ResourceNetworkResource::Coolant)
-                    .and_then(|d| d.generates.as_ref())
-                    .map_or(0.0, |a| a.per_second.standard()),
+                coolant: output(state, &ResourceNetworkResource::Coolant),
+                shield: output(state, &ResourceNetworkResource::Shield),
                 pool: None,
                 on: true,
                 excluded_in,
@@ -559,7 +567,8 @@ impl PowerNetwork {
     /// network order), times the modifier of its power range
     /// ([`signature_ratio`]); its EM settles at nominal × that ratio
     /// (`UpdatePowerRatio`, `UpdateIdealSignature`). A cooler makes its
-    /// coolant × that ratio (`GetGenerationFromDelta`); its IR is nominal ×
+    /// coolant × that ratio (`GetGenerationFromDelta`), a shield generator
+    /// its shield resource likewise; a cooler's IR is nominal ×
     /// what is drawn from it over its full output, the coolers drained in
     /// network order (other items emit no IR below 323 K). Signature
     /// functionality curves are not applied (none in LIVE 4.10). An item that heats
@@ -602,6 +611,7 @@ impl PowerNetwork {
                 em: p.signals.em * ratio,
                 ir: 0.0,
                 coolant_made: 0.0,
+                shield_made: 0.0,
                 coolant_asked: if p.signals.heats {
                     f64::from(output) * f64::from(ratio)
                 } else {
@@ -623,6 +633,7 @@ impl PowerNetwork {
                 em: c.signals.em * ratio,
                 ir: 0.0,
                 coolant_made: c.coolant * f64::from(ratio),
+                shield_made: c.shield * f64::from(ratio),
                 coolant_asked: if c.signals.heats {
                     c.request_segments() * f64::from(ratio)
                 } else {
@@ -644,6 +655,7 @@ impl PowerNetwork {
             coolant_asked,
             em: items.iter().map(|i| f64::from(i.em)).sum(),
             ir: items.iter().map(|i| f64::from(i.ir)).sum(),
+            shield_made: items.iter().map(|i| i.shield_made).sum(),
             items,
         }
     }
@@ -728,6 +740,14 @@ impl PowerNetwork {
     }
 }
 
+/// What `state` makes of `resource` per second at full power.
+fn output(state: &crate::ResourceState, resource: &ResourceNetworkResource) -> f64 {
+    state
+        .generation(resource)
+        .and_then(|d| d.generates.as_ref())
+        .map_or(0.0, |a| a.per_second.standard())
+}
+
 /// A rate in micro-units, as the client converts them (standard units
 /// round up).
 fn micro(units: ResourceUnits) -> i64 {
@@ -756,6 +776,7 @@ mod tests {
             request,
             minimum: (request as f32 * fraction) as i64,
             coolant: 0.0,
+            shield: 0.0,
             pool: None,
             on: true,
             excluded_in: Vec::new(),

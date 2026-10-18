@@ -235,12 +235,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             );
         }
         println!(
-            "  cooling {:.2} / {:.2} = {:.1} %, EM {:.0}, IR {:.0}",
+            "  cooling {:.2} / {:.2} = {:.1} %, EM {:.0}, IR {:.0}, shield {:.0}/s",
             readout.coolant_asked,
             readout.coolant_made,
             100.0 * readout.cooling().unwrap_or(0.0),
             readout.em,
-            readout.ir
+            readout.ir,
+            readout.shield_made
         );
         assert_eq!(a.remaining, 0);
         assert_eq!(readout.coolant_made, 82.0);
@@ -249,6 +250,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             // support 2 × (0.5 × 0.85); one cooler's IR carries it all.
             assert!((readout.coolant_asked - 33.65).abs() < 1e-4);
             assert!((readout.ir - 8710.0 * 33.65 / 41.0).abs() < 0.5);
+            // Each 5CA at 2 of 4 (0.5 x 0.7): 19,000 x 0.35.
+            assert!((readout.shield_made - 2.0 * 19_000.0 * 0.35).abs() < 1.0);
         }
         assert_eq!(by_type.get("Cooler"), Some(&8.0));
         assert_eq!(by_type.get("FlightController"), Some(&3.0));

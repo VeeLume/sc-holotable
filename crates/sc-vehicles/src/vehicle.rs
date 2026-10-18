@@ -2,9 +2,12 @@
 
 use std::collections::HashMap;
 
-use sc_extract::generated::DataForgeComponentParamsPtr;
+use sc_extract::generated::{
+    DataForgeComponentParamsPtr, EntityClassDefinition, SSCSignatureSystemCrossSectionParamsPtr,
+};
 use sc_extract::{
-    AssetSource, Datacore, Guid, LocaleKey, RecordCollection, VehicleDefinition, VehiclePart,
+    AssetSource, DataPools, Datacore, Guid, LocaleKey, RecordCollection, VehicleDefinition,
+    VehiclePart,
 };
 use sc_items::Items;
 use serde::{Deserialize, Serialize};
@@ -29,6 +32,12 @@ pub struct Vehicle {
     pub crew_size: i32,
     /// `VehicleComponentParams.maxBoundingBoxSize`, m.
     pub bounding_box: Option<[f32; 3]>,
+    /// `SSCSignatureSystemParams.radarProperties.crossSectionParams`: the
+    /// radar cross-section seen along x / y / z (erkul and spviewer show the
+    /// largest). `None` when it comes from the geometry (an SDF
+    /// cross-section, e.g. the Golem) rather than the data.
+    #[serde(default)]
+    pub cross_section: Option<[f32; 3]>,
     /// The hull's parts (vehicle XML), each with its HP and mass.
     pub hull: Vec<VehiclePart>,
     /// The vehicle XML's `itemPortTags`.
@@ -165,6 +174,7 @@ impl Vehicles {
                         .max_bounding_box_size
                         .and_then(|h| h.get(pools))
                         .map(|v| [v.x, v.y, v.z]),
+                    cross_section: cross_section(ecd, pools),
                     hull: hull.as_ref().map(|h| h.parts.clone()).unwrap_or_default(),
                     item_port_tags: hull
                         .as_ref()
@@ -194,6 +204,26 @@ impl Vehicles {
             }
         }
         Self { by_guid }
+    }
+}
+
+/// The manual radar cross-section of a vehicle entity.
+fn cross_section(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<[f32; 3]> {
+    let params = ecd.components.iter().find_map(|c| match c {
+        DataForgeComponentParamsPtr::SSCSignatureSystemParams(h) => h.get(pools),
+        _ => None,
+    })?;
+    match params
+        .radar_properties
+        .and_then(|h| h.get(pools))?
+        .cross_section_params
+        .as_ref()?
+    {
+        SSCSignatureSystemCrossSectionParamsPtr::SSCSignatureSystemManualCrossSectionParams(h) => {
+            let v = h.get(pools)?.cross_section?.get(pools)?;
+            Some([v.x, v.y, v.z])
+        }
+        _ => None,
     }
 }
 

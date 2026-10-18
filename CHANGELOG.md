@@ -30,6 +30,7 @@ pinned. Both tag kinds are monotonic and immutable.
     - its ports: the hull XML's hardpoints plus the entity's own;
     - its `stock` loadout as a tree of `Mounted { port, item, children }`.
   - Stock loadout rule: an entry's item, or else the port's `defaultItem`; below it the entry's nested loadout, or else the item's own default loadout. Docked vehicles bring their hull's ports.
+  - `Vehicle::cross_section` gives the radar cross-section per axis (Centaurus 8,350 / 11,320 / 25,430; erkul shows the largest).
   - `PortContainers::build(datacore)` holds every entity's own ports and default loadout.
   - `fits(port, item, offered_tags)` checks the type / sub-type, size and tag rule. On the player-editable stock attachments of non-AI vehicles it rejects 1.5 %; locked ports are filled by force.
   - `Vehicle::offered_tags` collects the tags offered from above.
@@ -57,6 +58,7 @@ pinned. Both tag kinds are monotonic and immutable.
     - each item's power ratio with its range modifier, and its EM;
     - coolant made by the coolers, and coolant asked for by everything that heats (`P × ratio`);
     - cooler IR, which follows what is drawn from each cooler;
+    - shield resource made by the generators, which is what the shield regenerates from;
     - `Readout::cooling()` gives the cooling bar.
   - `Signature::curve` holds the functionality curve; LIVE 4.10 has none.
   - `PortContainer::max_default_distribution`.
