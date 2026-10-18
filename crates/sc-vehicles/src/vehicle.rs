@@ -2,9 +2,13 @@
 
 use std::collections::HashMap;
 
-use sc_extract::generated::DataForgeComponentParamsPtr;
+use sc_extract::generated::{
+    DataForgeComponentParamsPtr, EntityClassDefinition, EntityClassStaticDataParamsPtr,
+    SSCSignatureSystemCrossSectionParamsPtr,
+};
 use sc_extract::{
-    AssetSource, Datacore, Guid, LocaleKey, RecordCollection, VehicleDefinition, VehiclePart,
+    AssetSource, DataPools, Datacore, Guid, LocaleKey, RecordCollection, VehicleDefinition,
+    VehiclePart,
 };
 use sc_items::Items;
 use serde::{Deserialize, Serialize};
@@ -29,6 +33,21 @@ pub struct Vehicle {
     pub crew_size: i32,
     /// `VehicleComponentParams.maxBoundingBoxSize`, m.
     pub bounding_box: Option<[f32; 3]>,
+    /// `SSCSignatureSystemParams.radarProperties.crossSectionParams`: the
+    /// radar cross-section seen along x / y / z (erkul and spviewer show the
+    /// largest). `None` when it comes from the geometry (an SDF
+    /// cross-section, e.g. the Golem) rather than the data.
+    #[serde(default)]
+    pub cross_section: Option<[f32; 3]>,
+    /// `SGeometryResourceParams.Geometry.Geometry.Geometry.path`: the hull
+    /// geometry (`.cga`), whose helper nodes place the item ports.
+    #[serde(default)]
+    pub geometry: Option<String>,
+    /// `SEntityInsuranceProperties.shipInsuranceParams`: what an insurance
+    /// claim costs in time and money; `None` for vehicles that cannot be
+    /// insured.
+    #[serde(default)]
+    pub insurance: Option<Insurance>,
     /// The hull's parts (vehicle XML), each with its HP and mass.
     pub hull: Vec<VehiclePart>,
     /// The vehicle XML's `itemPortTags`.
@@ -39,6 +58,16 @@ pub struct Vehicle {
     pub ports: Vec<Port>,
     /// What every port holds as the vehicle ships.
     pub stock: Vec<Mounted>,
+}
+
+/// `ShipInsuranceParams`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Insurance {
+    /// `baseWaitTimeMinutes` / `mandatoryWaitTimeMinutes`.
+    pub base_wait_minutes: f32,
+    pub mandatory_wait_minutes: f32,
+    /// `baseExpeditingFee`, aUEC.
+    pub expediting_fee: u32,
 }
 
 /// A port of a loadout with what it holds, and what that holds in turn.
@@ -55,9 +84,11 @@ impl Vehicle {
         self.hull.iter().map(|p| p.damage_max).sum()
     }
 
-    /// The hull's mass, kg (the root part's), without the loadout.
+    /// The hull's mass, kg, without the loadout: every part's mass (the
+    /// root body plus detachable pieces, e.g. the Skylark's 11 panels of
+    /// 10.5 kg).
     pub fn hull_mass(&self) -> Option<f32> {
-        self.hull.iter().find(|p| p.parent.is_none())?.mass
+        self.hull.iter().filter_map(|p| p.mass).reduce(|a, b| a + b)
     }
 
     /// The port named `name` (case-insensitive, as the game matches them).
@@ -165,6 +196,9 @@ impl Vehicles {
                         .max_bounding_box_size
                         .and_then(|h| h.get(pools))
                         .map(|v| [v.x, v.y, v.z]),
+                    cross_section: cross_section(ecd, pools),
+                    geometry: geometry(ecd, pools),
+                    insurance: insurance(ecd, pools),
                     hull: hull.as_ref().map(|h| h.parts.clone()).unwrap_or_default(),
                     item_port_tags: hull
                         .as_ref()
@@ -195,6 +229,109 @@ impl Vehicles {
         }
         Self { by_guid }
     }
+
+    /// What `item` brings below it when mounted: its ports (a docked
+    /// vehicle's from its hull), filled from its own default loadout.
+    pub(crate) fn default_children(&self, item: Guid, containers: &PortContainers) -> Vec<Mounted> {
+        let container = containers.get(&item);
+        let ports = match self.by_guid.get(&item) {
+            Some(v) => &v.ports[..],
+            None => container.map_or(&[][..], |c| &c.ports[..]),
+        };
+        let entries = container.map_or(&[][..], |c| &c.default_loadout[..]);
+        mount(ports, entries, &self.by_guid, containers, 1)
+    }
+
+    /// The ports an item mounted in a loadout offers: a docked vehicle's
+    /// hull ports, else the item's own.
+    pub(crate) fn ports_of<'a>(
+        &'a self,
+        item: &Guid,
+        containers: &'a PortContainers,
+    ) -> &'a [Port] {
+        match self.by_guid.get(item) {
+            Some(v) => &v.ports,
+            None => containers.get(item).map_or(&[][..], |c| &c.ports[..]),
+        }
+    }
+}
+
+/// The entity's ship insurance terms.
+fn insurance(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Insurance> {
+    ecd.static_entity_class_data.iter().find_map(|d| match d {
+        EntityClassStaticDataParamsPtr::SEntityInsuranceProperties(h) => {
+            let p = h.get(pools)?.ship_insurance_params?.get(pools)?;
+            Some(Insurance {
+                base_wait_minutes: p.base_wait_time_minutes,
+                mandatory_wait_minutes: p.mandatory_wait_time_minutes,
+                expediting_fee: p.base_expediting_fee,
+            })
+        }
+        _ => None,
+    })
+}
+
+/// The entity's root geometry path.
+fn geometry(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<String> {
+    let g = ecd.components.iter().find_map(|c| match c {
+        DataForgeComponentParamsPtr::SGeometryResourceParams(h) => h.get(pools),
+        _ => None,
+    })?;
+    let path = &g
+        .geometry?
+        .get(pools)?
+        .geometry?
+        .get(pools)?
+        .geometry?
+        .get(pools)?
+        .path;
+    (!path.is_empty()).then(|| path.clone())
+}
+
+/// The manual radar cross-section of a vehicle entity.
+fn cross_section(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<[f32; 3]> {
+    let params = ecd.components.iter().find_map(|c| match c {
+        DataForgeComponentParamsPtr::SSCSignatureSystemParams(h) => h.get(pools),
+        _ => None,
+    })?;
+    match params
+        .radar_properties
+        .and_then(|h| h.get(pools))?
+        .cross_section_params
+        .as_ref()?
+    {
+        SSCSignatureSystemCrossSectionParamsPtr::SSCSignatureSystemManualCrossSectionParams(h) => {
+            let v = h.get(pools)?.cross_section?.get(pools)?;
+            Some([v.x, v.y, v.z])
+        }
+        _ => None,
+    }
+}
+
+/// Every item of `loadout` on the vehicle's own resource network, with its
+/// port path (`turret/gimbal/gun`), depth first. A docked vehicle (an item
+/// that is itself in `vehicles`, like the Centaurus's Skylark) runs its own
+/// network, so it and what it carries are left out.
+pub fn network_items(loadout: &[Mounted], vehicles: &Vehicles) -> Vec<(String, Guid)> {
+    let mut out = Vec::new();
+    let mut stack: Vec<(String, &Mounted)> =
+        loadout.iter().rev().map(|m| (m.port.clone(), m)).collect();
+    while let Some((path, m)) = stack.pop() {
+        let Some(item) = m.item else {
+            continue;
+        };
+        if vehicles.get(&item).is_some() {
+            continue;
+        }
+        out.push((path.clone(), item));
+        stack.extend(
+            m.children
+                .iter()
+                .rev()
+                .map(|c| (format!("{path}/{}", c.port), c)),
+        );
+    }
+    out
 }
 
 /// What `ports` hold under the loadout `entries`: an entry's item, or else

@@ -19,7 +19,8 @@ pub enum FireActionKind {
     /// Semi-automatic (cannons, scatter guns, pistols).
     Single { fire_rate: i32, heat_per_shot: f32 },
     /// Multi-barrel round-robin (repeaters, cannons).
-    /// `effective_rpm = min(sequence_delay, inner_rpm)` — verified with spviewer.
+    /// `effective_rpm`: entries per pass of the sequence, see
+    /// `sequence_timing` (erkul's rule, the client's per-barrel gating).
     Sequence {
         effective_rpm: f32,
         barrel_count: usize,
@@ -197,56 +198,84 @@ pub(crate) fn extract_fire_action(
 
 fn extract_sequence(seq: &SWeaponActionSequenceParams, pools: &DataPools) -> FireActionKind {
     let barrel_count = seq.sequence_entries.len();
-    if barrel_count == 0 {
-        return FireActionKind::Unknown;
+    match sequence_timing(seq, pools) {
+        Some(t) => FireActionKind::Sequence {
+            effective_rpm: t.rpm,
+            barrel_count,
+        },
+        None => FireActionKind::Unknown,
     }
+}
 
-    // Get the first entry's delay and inner action RPM.
-    let Some(first_entry) = seq.sequence_entries[0].get(pools) else {
-        return FireActionKind::Unknown;
-    };
+/// A sequence fire action's pace.
+pub(crate) struct SequenceTiming {
+    /// Shots per minute across the whole sequence.
+    pub rpm: f32,
+    /// The inner actions' mean `heatPerShot` (0 when none carries one).
+    pub heat_per_shot: f32,
+}
 
-    // Sequence delay — can be in RPM or Seconds.
-    let delay_rpm = match first_entry.unit {
-        EDelayUnit::RPM => first_entry.delay,
-        EDelayUnit::Seconds => {
-            if first_entry.delay > 0.0 {
-                60.0 / first_entry.delay
-            } else {
-                // delay=0 Seconds means "as fast as possible" — RPODs use this.
-                // The inner action's RPM is the limiter.
-                f32::INFINITY
+/// The pace of a sequence (client `CWeaponActionSequence::Update`): each
+/// entry waits its `delay` (`Seconds`, or `RPM` as 60 / rpm) before the
+/// next fires, and each inner action keeps its own cooldown (60 /
+/// `fireRate`). One pass of the sequence fires one shot per entry and
+/// takes the longer of the summed delays and the slowest inner cooldown,
+/// so `rpm = entries / max(Σ delay, max cooldown) × 60` (erkul's rule; the
+/// BEHR ballistic repeater: 2 entries at 750 rpm over inner Singles at 500
+/// fires 750).
+pub(crate) fn sequence_timing(
+    seq: &SWeaponActionSequenceParams,
+    pools: &DataPools,
+) -> Option<SequenceTiming> {
+    let entries: Vec<_> = seq
+        .sequence_entries
+        .iter()
+        .filter_map(|e| e.get(pools))
+        .collect();
+    if entries.is_empty() {
+        return None;
+    }
+    let mut delays = 0.0f32;
+    let mut slowest = 0.0f32;
+    let (mut heat, mut heated) = (0.0f32, 0u32);
+    for e in &entries {
+        delays += match e.unit {
+            EDelayUnit::Seconds => e.delay.max(0.0),
+            _ if e.delay > 0.0 => 60.0 / e.delay,
+            _ => 0.0,
+        };
+        let (rate, hps) = match e.weapon_action.as_ref() {
+            Some(SWeaponActionParamsPtr::SWeaponActionFireSingleParams(h)) => h
+                .get(pools)
+                .map_or((0, 0.0), |s| (s.fire_rate, s.heat_per_shot)),
+            Some(SWeaponActionParamsPtr::SWeaponActionFireRapidParams(h)) => h
+                .get(pools)
+                .map_or((0, 0.0), |r| (r.fire_rate, r.heat_per_shot)),
+            Some(SWeaponActionParamsPtr::SWeaponActionFireBurstParams(h)) => {
+                h.get(pools).map_or((0, 0.0), |b| (b.fire_rate, 0.0))
             }
+            _ => (0, 0.0),
+        };
+        if rate > 0 {
+            slowest = slowest.max(60.0 / rate as f32);
         }
-        _ => first_entry.delay, // Unrecognized unit — treat as RPM
-    };
-
-    // Inner action's RPM (if it has one).
-    let inner_rpm = first_entry
-        .weapon_action
-        .as_ref()
-        .and_then(|inner| match inner {
-            SWeaponActionParamsPtr::SWeaponActionFireSingleParams(h) => {
-                h.get(pools).map(|s| s.fire_rate as f32)
-            }
-            SWeaponActionParamsPtr::SWeaponActionFireRapidParams(h) => {
-                h.get(pools).map(|r| r.fire_rate as f32)
-            }
-            SWeaponActionParamsPtr::SWeaponActionFireBurstParams(h) => {
-                // For burst inner actions, effective shots/min = sequence_rate × burst_count
-                h.get(pools).map(|b| b.fire_rate as f32)
-            }
-            _ => None,
-        })
-        .unwrap_or(delay_rpm);
-
-    // Effective RPM = min(sequence_delay, inner_action_rpm) — verified with spviewer.
-    let effective_rpm = delay_rpm.min(inner_rpm);
-
-    FireActionKind::Sequence {
-        effective_rpm,
-        barrel_count,
+        if hps > 0.0 {
+            heat += hps;
+            heated += 1;
+        }
     }
+    let pass = delays.max(slowest);
+    if pass <= 0.0 {
+        return None;
+    }
+    Some(SequenceTiming {
+        rpm: entries.len() as f32 / pass * 60.0,
+        heat_per_shot: if heated > 0 {
+            heat / heated as f32
+        } else {
+            0.0
+        },
+    })
 }
 
 fn extract_beam_dps(ptr: &DamageBasePtr, pools: &DataPools) -> DamageSummary {

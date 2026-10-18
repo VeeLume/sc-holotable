@@ -166,9 +166,13 @@ impl VehicleDefinition {
         self.parts.iter().map(|p| p.damage_max).sum()
     }
 
-    /// The hull's mass, kg: the root part's `mass`.
+    /// The hull's mass, kg: every part's `mass` (the root body plus the
+    /// detachable pieces that carry one); `None` when no part has one.
     pub fn hull_mass(&self) -> Option<f32> {
-        self.parts.iter().find(|p| p.parent.is_none())?.mass
+        self.parts
+            .iter()
+            .filter_map(|p| p.mass)
+            .reduce(|a, b| a + b)
     }
 
     /// The part named `name`.

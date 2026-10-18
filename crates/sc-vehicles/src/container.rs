@@ -10,7 +10,8 @@ use sc_extract::{DataPools, Datacore, Guid, PortType, RecordCollection};
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
 
-use crate::{Port, PortSource};
+use crate::network::power_pools;
+use crate::{Port, PortSource, PowerPool};
 
 /// An entity's `SItemPortContainerComponentParams.Ports` and its default
 /// loadout (`SEntityComponentDefaultLoadoutParams`).
@@ -18,6 +19,14 @@ use crate::{Port, PortSource};
 pub struct PortContainer {
     pub ports: Vec<Port>,
     pub default_loadout: Vec<LoadoutEntry>,
+    /// `resourceNetworkPowerPools.itemPools`: the item types that share a
+    /// power budget on this entity's network (vehicles only).
+    #[serde(default)]
+    pub power_pools: Vec<PowerPool>,
+    /// `resourceNetworkPowerPools.maxDefaultDistribution`: at power-on every
+    /// pool gets its whole size rather than its default share.
+    #[serde(default)]
+    pub max_default_distribution: bool,
 }
 
 impl PortContainer {
@@ -65,7 +74,10 @@ impl PortContainers {
                 continue;
             };
             let container = container(ecd, pools, &names);
-            if !container.ports.is_empty() || !container.default_loadout.is_empty() {
+            if !container.ports.is_empty()
+                || !container.default_loadout.is_empty()
+                || !container.power_pools.is_empty()
+            {
                 debug!(%guid, ports = container.ports.len(), "port container");
                 by_guid.insert(guid, container);
             }
@@ -102,6 +114,11 @@ fn container(
                 if let Some(pc) = h.get(pools) {
                     out.ports
                         .extend(pc.ports.iter().filter_map(|p| entity_port(*p, pools)));
+                    out.power_pools = power_pools(pc.resource_network_power_pools, pools);
+                    out.max_default_distribution = pc
+                        .resource_network_power_pools
+                        .and_then(|h| h.get(pools))
+                        .is_some_and(|s| s.max_default_distribution);
                 }
             }
             DataForgeComponentParamsPtr::SEntityComponentDefaultLoadoutParams(h) => {

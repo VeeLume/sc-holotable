@@ -30,15 +30,94 @@ pinned. Both tag kinds are monotonic and immutable.
     - its ports: the hull XML's hardpoints plus the entity's own;
     - its `stock` loadout as a tree of `Mounted { port, item, children }`.
   - Stock loadout rule: an entry's item, or else the port's `defaultItem`; below it the entry's nested loadout, or else the item's own default loadout. Docked vehicles bring their hull's ports.
+  - `Vehicle::insurance` gives the insurance claim terms: wait minutes and expediting fee (Centaurus 13.5 min, 6,750 aUEC).
+  - `Vehicle::cross_section` gives the radar cross-section per axis (Centaurus 8,350 / 11,320 / 25,430; erkul shows the largest).
   - `PortContainers::build(datacore)` holds every entity's own ports and default loadout.
   - `fits(port, item, offered_tags)` checks the type / sub-type, size and tag rule. On the player-editable stock attachments of non-AI vehicles it rejects 1.5 %; locked ports are filled by force.
   - `Vehicle::offered_tags` collects the tags offered from above.
   - `has_flag` / `is_editable` follow the client's flag inheritance: `uneditable` locks a subtree, `$uneditable` only its port.
   - Probe `vehicles_probe`: the Constellation Mk V Centaurus resolves to every component spviewer lists, with its gimbals locked and their guns swappable.
+- **`sc-vehicles`: resource network inputs** for the power and cooling model.
+  - `ResourceProfiles::build(datacore)` holds every entity's `ItemResourceComponentParams` as `ResourceProfile`:
+    - states with their generation / consumption / conversion / storage deltas (`ResourceUnits` as authored), minimum fractions and dynamic-amount overrides;
+    - EM / IR signatures, power ranges and the power-plant modifier override.
+  - `NetworkParams::build(datacore)` holds `ItemResourceNetworkGlobal`: per-size plant modifiers and the power-on distribution defaults.
+  - `PortContainer::power_pools` lists the vehicle's `FixedPowerPool` / `DynamicPowerPool`s.
+  - `network_items(loadout, vehicles)` lists the items on a vehicle's own network; a docked vehicle runs its own.
+  - `plant_output` gives the client's share of several online plants. `signature_ratio` / `em_signature` give the power ratio with its range modifier and the EM it settles at.
+  - `NetworkParams::mode_exclusions` / `excluded` give the master modes each item type is off in (quantum drives in SCM, shields in Navigation). `ResourceProfile` gains the item's own override and `on_by_default`.
+  - Probe `ship_systems_probe`: the stock Centaurus gets 24 power from two Sedulity plants, as spviewer shows, and its nominal EMs and pools match.
+- **`sc-vehicles`: `PowerNetwork`**, a loadout's power network as the client runs it (LIVE 4.10.197):
+  - plants, consumers (request and minimum in micro-units, master-mode exclusions) and pools (members sorted as the client sorts them);
+  - `supply`, `pool_size`, `pool_minimum`;
+  - `power_on(mode)` gives the client's power-on distribution:
+    - minimums, pool minimums, coolers, pool shares of half for weapons / engines / shields, then a top-up;
+    - the client walks a runtime hash map, so the last segments can land on a different item than in game;
+  - `split_pools` shares a pool target out to its members, so a player-set target can be applied;
+  - `ratios` gives each item's power ratio.
+  - `readout(allocation, mode)` gives what the engineering screen shows once temperatures settle (`Readout`, `ItemReadout`, from the client's `Signals`):
+    - each item's power ratio with its range modifier, and its EM;
+    - coolant made by the coolers, and coolant asked for by everything that heats (`P × ratio`);
+    - cooler IR, which follows what is drawn from each cooler;
+    - shield resource made by the generators, which is what the shield regenerates from;
+    - `Readout::cooling()` gives the cooling bar.
+  - `Signature::curve` holds the functionality curve; LIVE 4.10 has none.
+  - `PortContainer::max_default_distribution`.
+  - The probe reproduces the stock Centaurus at power-on in SCM and Navigation: coolers 4 + 4, flight controller 3 of 6, shields 2 + 2 (off in Navigation), guns 2 of 12.2, quantum drive off in SCM.
+  - At power-on in SCM the probe's cooling bar is 33.65 / 82 = 41 %. spviewer's 65.9 % uses its own static formula.
+- **`sc-items-ship-components`: per-kind sheets**, read through the typed surface:
+  - `shield` (`ShieldGenerator`: HP, regen, delays, reserve pool, per-type resistance / absorption ranges);
+  - `emitter` (`ShieldEmitter`: face layout, reallocation);
+  - `armor` (`VehicleArmor`: damage multiplier, deflection, penetration, signal multipliers);
+  - `quantum` (`QuantumDrive`: travel and spline-jump parameters, fuel, ranges);
+  - `thruster` (`Thruster`: thrust, type, fuel burn);
+  - `health` (`ComponentHealth`: HP and per-type damage multipliers);
+  - `capacity` (`ResourceContainer.capacity` of fuel and quantum fuel tanks).
+  - Probe `component_sheets_probe` re-proves them on the Centaurus's components.
+- **`sc-vehicles`: `Loadout`**, an editable loadout:
+  - `stock`, `at(path)`;
+  - `chain(path)` gives the ports along a path and the items holding them;
+  - `check(path, item)` returns `Refusal::Locked`, `NoPort` or `Misfit` when the item can't go in;
+  - `candidates(path)` lists every item that fits;
+  - `equip(path, item)` puts the item in with its own default loadout, dropping what the old one carried.
+  - Probe `loadout_probe`: the Centaurus's gimbals are locked while their guns take the 11 S5 weapons. Two QuadraCell MT plants give 26, as erkul shows.
+- **`sc-vehicles`: `Defense`** sums up a loadout's protection:
+  - hull HP;
+  - the armour sheet and its own HP;
+  - the shield generators combined as the client combines them (`Shield::combine`: HP and regen add, delays averaged, resistance and absorption weighted by HP);
+  - the emitter's face layout.
+  - `flight_probe` re-proves it on the Centaurus: hull 170,500, armour 25,740 HP at 0.7 / 0.5, 2 × 5CA = 200,000 HP and 38,000/s, quadrant faces.
+- **`sc-weapons`: `ShipWeapon::powered(&WeaponPower)`** gives an energy weapon as it runs at its power ratio, under the ship's `SRegenConsumerModifier` (client `FUN_145ce27e0`):
+  - capacitor shots = round(load × `maxAmmoLoad` × multiplier);
+  - regen = load × `maxRegenPerSec` × multiplier;
+  - fire rate and damage per shot are unchanged.
+- **`sc-vehicles`: `ItemportModifiers` and `weapon_power(…)`**: the attach-active item-port modifiers that change a vehicle's guns, and each gun's `WeaponPower` (its power ratio plus those multipliers).
+  - Probe `weapons_probe`, the Centaurus at erkul's default (weapon pool 4 of 12.2, the engineering buff's ×9): CF-557 221 shots, 4.918/s, sustained 341.7; CF-337 152.3. erkul shows the same figures.
+- **`sc-vehicles`: `Quantum`**, a loadout's quantum drive and quantum fuel:
+  - `time(distance)` follows the client's travel envelope (`quantum_time`): five mirrored, jerk-limited phases, solving for the peak on short trips. Times are truncated to 1e-7 s ticks; spool and calibration are not included.
+  - `fuel(distance)` uses the drive's travelling-state QuantumFuel per Mm; `range()` divides the tank by it.
+  - The Centaurus's Khaos: 0.022 SCU per GM, range 390.9 GM, as spviewer shows. 31.92 GM takes 170.6 s; spviewer shows 2:46 from an older model, rounded up.
+- **`sc-vehicles`: `Flight::hydrogen_burn` / `hydrogen_capacity`** give the full-thrust burn per thruster type and the tanks. The Centaurus mains burn 0.5925 SCU/min from 46.8 SCU; nothing burns at rest.
+- **`sc-vehicles`: `Flight`**, a loadout's flight figures under the legacy IFCS the PU runs:
+  - speeds and angular velocity (boosted × the afterburner multipliers);
+  - mass: hull, everything mounted and docked vehicles;
+  - accelerations per direction in G, base and boosted. Each thruster counts once, along the axis it is most aligned with.
+  - `port_axes(assets, vehicle)` reads each port's push axis from the hull geometry's helper nodes. `Vehicle::geometry` gives the hull geometry path.
+  - Probe `flight_probe`: the Centaurus reproduces spviewer: 1.63 Mkg; forward 4.94, back 1.98, strafe 2.48, up 2.01, down 1.98 G; boosted 7.41 / 2.38 / 3.34 / 2.61 / 2.38; SCM 170, boost 365, NAV 1075; 22 / 35 / 18 deg/s, boosted 33 / 70 / 27.
+- **`sc-items-ship-components`: `flight` sheet** (`FlightControl`, `Afterburner`): the flight controller's legacy `IFCSParams`.
+- **`sc-resources`: `CargoQuantity::from_ptr`** projects a `SBaseCargoUnitPtr`. `sc_crafting::cargo_quantity_from_ptr` now delegates to it.
 
 ### Changed
 
+- **`sc-items-ship-components`: `ShipComponentKind` gains** `ShieldController`, `Armor`, `MainThruster`, `ManeuverThruster`, `LifeSupportGenerator`, `FlightController`, `FuelTank`, `QuantumFuelTank` and `JumpDrive`. The collection now covers them, and exhaustive matches need the new arms.
+
 - **`sc-items`: `Item` gains `tags` and `required_tags`** (`AttachDef.Tags` / `RequiredTags`, split on spaces), so struct literals need them.
+- **`sc-weapons`: `LoadoutContext::power_per_slot` is replaced by `power: Option<WeaponPower>`.** `effective_dps` no longer scales burst DPS linearly with power: power changes how long an energy weapon fires and refills, not its rate or damage.
+- **`sc-weapons`: sequence fire rate = entries / max(Σ entry delays, slowest inner cooldown)**, the client's per-barrel gating and erkul's rule. It was `min(first delay, inner rate)`; the BEHR ballistic repeater now fires 750 rpm, not 500.
+- **`sc-weapons`: sequence heat = the inner actions' `heatPerShot` × the sequence rate.** It was `heatRateOnline`, which the client doesn't read on the shot path. The BEHR repeater now overheats after 10 s (125 shots), as erkul shows, not 4.2 s.
+- **`sc-items-ship-components`: `Thruster::fuel_burn_rate_per_10kn` (the legacy float) is replaced by `fuel_burn_per_10kn`**, read from `fuelBurnRatePer10KNewtonRN` in SCU. That is the field the client burns.
+- **`sc-items`: `Item` gains `mass`** (`SEntityPhysicsControllerParams.PhysType.Mass`, kg) and no longer derives `Eq`.
+- **`sc-extract` / `sc-vehicles`: `hull_mass()` sums every part's mass**, not just the root's. The Skylark's 11 detachable panels add 115.5 kg; the Centaurus has none.
 
 ## [v0.26.0] - 2026-10-18
 

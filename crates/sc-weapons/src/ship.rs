@@ -510,49 +510,87 @@ impl ShipWeapon {
     // Single composite — loadout-aware DPS score
     // =========================================================
 
-    /// Effective DPS under loadout constraints — the canonical default
-    /// sort key for weapon comparison.
-    ///
-    /// `effective_dps = burst_dps × power_factor × sustain_factor` where:
-    /// - `power_factor = min(1.0, ctx.power_per_slot / power_draw)` when
-    ///   `ctx.power_per_slot` is set (ballistic weapons with token
-    ///   `power_draw = 0.1` are effectively unconstrained; energy and
-    ///   mass-driver weapons throttle linearly when starved).
-    /// - `sustain_factor = dps_retention_pct(window_seconds) / 100`.
-    ///
-    /// Both `window_seconds` and `power_per_slot` are caller-provided
-    /// with no defaults — consumer apps wire them to UI state / ship
-    /// loadouts.
+    /// Effective DPS under loadout constraints: `burst_dps` of the
+    /// [`powered`](Self::powered) weapon × its
+    /// [`dps_retention_pct`](Self::dps_retention_pct) over
+    /// `ctx.window_seconds`. Power changes how long an energy weapon fires
+    /// and how fast it refills, not how fast or how hard it hits.
     pub fn effective_dps(&self, ctx: &LoadoutContext) -> Option<f32> {
-        let burst = self.burst_dps()?;
-        let power_factor = match ctx.power_per_slot {
-            Some(pps) => match self.power_draw {
-                Some(pd) if pd > 0.0 => (pps / pd).clamp(0.0, 1.0),
-                _ => 1.0,
-            },
-            None => 1.0,
+        let powered;
+        let w = match &ctx.power {
+            Some(p) => {
+                powered = self.powered(p);
+                &powered
+            }
+            None => self,
         };
-        let sustain_factor = self
+        let burst = w.burst_dps()?;
+        let sustain_factor = w
             .dps_retention_pct(ctx.window_seconds)
             .map(|p| p / 100.0)
             .unwrap_or(1.0);
-        Some(burst * power_factor * sustain_factor)
+        Some(burst * sustain_factor)
+    }
+
+    /// This weapon as it runs at `power`: an energy weapon's capacitor and
+    /// regen scale together with its power ratio (client `FUN_145ce27e0`,
+    /// LIVE 4.10): `load = clamp(ratio × power_ratio_multiplier, 0, 1)`,
+    /// `max_ammo_load = round(load × max_ammo_load × max_ammo_load_multiplier)`,
+    /// `max_regen_per_sec = load × max_regen_per_sec × max_regen_multiplier`.
+    /// Fire rate and damage do not change. Heat and ballistic weapons are
+    /// returned as they are (a ballistic gun's power is all or nothing).
+    pub fn powered(&self, power: &WeaponPower) -> ShipWeapon {
+        let mut w = self.clone();
+        if let SustainKind::Energy(e) = &mut w.sustain {
+            let load = (power.ratio * power.power_ratio_multiplier).clamp(0.0, 1.0);
+            e.max_ammo_load = (load * e.max_ammo_load * power.max_ammo_load_multiplier).round();
+            e.max_regen_per_sec *= load * power.max_regen_multiplier;
+        }
+        w
     }
 }
 
 /// Loadout context for computing [`ShipWeapon::effective_dps`]. Both
 /// fields are caller-provided with no baked-in defaults — consumer apps
 /// wire them to runtime state (UI engagement-window slider, ship power
-/// plant / pip allocation).
+/// allocation).
 #[derive(Debug, Clone, Copy)]
 pub struct LoadoutContext {
     /// Engagement window in seconds. Typical values: 10-15s for dogfight,
     /// 30-60s for typical skirmish, 120s+ for capital-ship engagements.
     pub window_seconds: f32,
-    /// Power units allocated to this weapon's slot (from the ship's
-    /// shared power pool, in the same units as `ShipWeapon::power_draw`).
-    /// `None` = peak performance (unconstrained).
-    pub power_per_slot: Option<f32>,
+    /// The weapon's power and the ship's capacitor modifiers; `None` =
+    /// full power, no modifiers.
+    pub power: Option<WeaponPower>,
+}
+
+/// What powers an energy weapon on a ship: its power ratio and the ship's
+/// `SRegenConsumerModifier` (`weaponStats.regenModifier`), e.g. the
+/// Constellation Mk V's engineering buff that multiplies `maxAmmoLoad` by
+/// 9.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct WeaponPower {
+    /// Granted over requested power (a fixed weapon pool gives every gun
+    /// the same share: pool target / sum of requests).
+    pub ratio: f32,
+    /// `regenModifier.powerRatioMultiplier`.
+    pub power_ratio_multiplier: f32,
+    /// `regenModifier.maxAmmoLoadMultiplier`.
+    pub max_ammo_load_multiplier: f32,
+    /// `regenModifier.maxRegenPerSecMultiplier`.
+    pub max_regen_multiplier: f32,
+}
+
+impl WeaponPower {
+    /// `ratio` with no ship modifiers.
+    pub fn at(ratio: f32) -> Self {
+        Self {
+            ratio,
+            power_ratio_multiplier: 1.0,
+            max_ammo_load_multiplier: 1.0,
+            max_regen_multiplier: 1.0,
+        }
+    }
 }
 
 /// Extract power draw from `ItemResourceComponentParams`.

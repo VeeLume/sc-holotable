@@ -27,11 +27,19 @@ use std::collections::HashMap;
 use sc_extract::generated::EItemType;
 use sc_extract::{DataCoreDatabase, Datacore, Guid, Instance, LocaleKey, Value};
 use sc_items::Items;
+use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
 
 /// Re-export the canonical accessor trait so consumers can bring the
 /// `get` / `iter` / `len` / `values` surface into scope alongside the collection.
 pub use sc_extract::RecordCollection;
+
+mod sheets;
+
+pub use sheets::{
+    Afterburner, ComponentHealth, FlightControl, MinMax, PerDamageType, QuantumDrive,
+    QuantumTravel, ShieldEmitter, ShieldGenerator, Thruster, VehicleArmor,
+};
 
 /// Which ship-component family a piece belongs to.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -42,6 +50,15 @@ pub enum ShipComponentKind {
     Shield,
     Radar,
     DockingCollar,
+    ShieldController,
+    Armor,
+    MainThruster,
+    ManeuverThruster,
+    LifeSupportGenerator,
+    FlightController,
+    FuelTank,
+    QuantumFuelTank,
+    JumpDrive,
 }
 
 impl ShipComponentKind {
@@ -53,6 +70,15 @@ impl ShipComponentKind {
             EItemType::Shield => ShipComponentKind::Shield,
             EItemType::Radar => ShipComponentKind::Radar,
             EItemType::DockingCollar => ShipComponentKind::DockingCollar,
+            EItemType::ShieldController => ShipComponentKind::ShieldController,
+            EItemType::Armor => ShipComponentKind::Armor,
+            EItemType::MainThruster => ShipComponentKind::MainThruster,
+            EItemType::ManneuverThruster => ShipComponentKind::ManeuverThruster,
+            EItemType::LifeSupportGenerator => ShipComponentKind::LifeSupportGenerator,
+            EItemType::FlightController => ShipComponentKind::FlightController,
+            EItemType::FuelTank => ShipComponentKind::FuelTank,
+            EItemType::QuantumFuelTank => ShipComponentKind::QuantumFuelTank,
+            EItemType::JumpDrive => ShipComponentKind::JumpDrive,
             _ => return None,
         })
     }
@@ -85,6 +111,30 @@ pub struct ShipComponentStats {
     /// Radar aim-assist min/max assignment distance (m).
     pub radar_aim_assist_min: Option<f32>,
     pub radar_aim_assist_max: Option<f32>,
+    /// `SHealthComponentParams`: HP and damage taken per type.
+    #[serde(default)]
+    pub health: Option<ComponentHealth>,
+    /// Shield generators.
+    #[serde(default)]
+    pub shield: Option<ShieldGenerator>,
+    /// The shield controller's emitter (face layout).
+    #[serde(default)]
+    pub emitter: Option<ShieldEmitter>,
+    /// Hull armour.
+    #[serde(default)]
+    pub armor: Option<VehicleArmor>,
+    /// Quantum drives.
+    #[serde(default)]
+    pub quantum: Option<QuantumDrive>,
+    /// Main and maneuvering thrusters.
+    #[serde(default)]
+    pub thruster: Option<Thruster>,
+    /// `ResourceContainer.capacity`: what a fuel or quantum fuel tank holds.
+    #[serde(default)]
+    pub capacity: Option<CargoQuantity>,
+    /// Flight controllers' `IFCSParams`.
+    #[serde(default)]
+    pub flight: Option<FlightControl>,
 }
 
 /// Index of every ship component's [`ShipComponentStats`], keyed by GUID.
@@ -98,6 +148,8 @@ impl ShipComponents {
     /// one's base stats from its component structure (raw `db()` layer).
     pub fn build(datacore: &Datacore, items: &Items) -> Self {
         let db = datacore.db();
+        let store = datacore.records();
+        let entities = &store.records.multi_feature.entity_class_definition;
         let mut by_guid = HashMap::new();
         for (&guid, item) in items.iter() {
             let Some(kind) = ShipComponentKind::from_item_type(&item.item_type) else {
@@ -139,6 +191,12 @@ impl ShipComponents {
                 .as_ref()
                 .and_then(|a| a.get_f32("distanceMaxAssignment"));
 
+            let sheets = entities
+                .get(&guid)
+                .and_then(|h| h.get(&store.pools))
+                .map(|ecd| sheets::sheets(ecd, &store.pools))
+                .unwrap_or_default();
+
             by_guid.insert(
                 guid,
                 ShipComponentStats {
@@ -156,6 +214,14 @@ impl ShipComponents {
                     power_output,
                     radar_aim_assist_min,
                     radar_aim_assist_max,
+                    health: sheets.health,
+                    shield: sheets.shield,
+                    emitter: sheets.emitter,
+                    armor: sheets.armor,
+                    quantum: sheets.quantum,
+                    thruster: sheets.thruster,
+                    capacity: sheets.capacity,
+                    flight: sheets.flight,
                 },
             );
         }

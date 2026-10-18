@@ -11,12 +11,18 @@ rust-version.workspace = true
 #   entities-spaceships     ship EntityClassDefinitions
 #   entities-groundvehicles ground vehicle EntityClassDefinitions
 #   entities-scitem         the items in their loadouts (child ports, default loadouts)
+#   itemresourcenetwork     ItemResourceNetworkGlobal (power split, distribution defaults)
 sc-extract = { workspace = true, features = [
     "entities-spaceships",
     "entities-groundvehicles",
     "entities-scitem",
+    "itemresourcenetwork",
 ] }
 sc-items = { workspace = true }
+# Component sheets (thrust, flight controller) for the derived flight stats.
+sc-items-ship-components = { workspace = true }
+# WeaponPower: what a gun's power share and the ship's modifiers do to it.
+sc-weapons = { workspace = true }
 serde = { workspace = true }
 tracing = { workspace = true }
 

@@ -37,7 +37,7 @@
 //! | `gathering` | `gathering` | resource providers (pulls `locations`) |
 //! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
 //! | `visuals` | `visuals` | render recipes and inventory presentation (orientation, light rig, palettes) |
-//! | `vehicles` | `vehicles` | ships and ground vehicles: hull parts and HP, item ports, stock loadout trees, the fit rule and port locks |
+//! | `vehicles` | `vehicles` | ships and ground vehicles as a loadout calculator sees them: hull, ports, editable loadouts with the fit rule and locks, the power network (power-on, pips, cooling, EM / IR), defence, flight, fuel, quantum travel, weapon power |
 //! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
 //! | `mining` | `mining` | rock properties, breakability, the charge simulation, rock spawns and fracture trees (pulls `resources`, `tags`, `ship-weapons`, `mining-items`) |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
@@ -144,9 +144,12 @@ pub mod ship_components {
 
 #[cfg(feature = "vehicles")]
 pub mod vehicles {
-    //! Ships and ground vehicles ([`sc_vehicles`]) — hull parts with HP and
-    //! mass, item ports, the stock loadout as a tree, whether an item fits a
-    //! port and whether the player can change it.
+    //! Ships and ground vehicles ([`sc_vehicles`]) as a loadout calculator
+    //! sees them: hull, ports and an editable [`Loadout`](sc_vehicles::Loadout),
+    //! its [`PowerNetwork`](sc_vehicles::PowerNetwork) with the engineering
+    //! [`Readout`](sc_vehicles::Readout), [`Defense`](sc_vehicles::Defense),
+    //! [`Flight`](sc_vehicles::Flight), [`Quantum`](sc_vehicles::Quantum) and
+    //! each gun's [`weapon_power`](sc_vehicles::weapon_power).
     pub use sc_vehicles::*;
 }
 
@@ -259,7 +262,10 @@ pub mod prelude {
     #[cfg(feature = "tags")]
     pub use sc_tags::Tags;
     #[cfg(feature = "vehicles")]
-    pub use sc_vehicles::{PortContainers, Vehicle, Vehicles};
+    pub use sc_vehicles::{
+        Defense, Flight, ItemportModifiers, Loadout, NetworkParams, PortContainers, PowerNetwork,
+        Quantum, ResourceProfiles, Vehicle, Vehicles,
+    };
     #[cfg(feature = "weapons")]
     pub use sc_weapons::{FpsWeapon, Missile, ShipWeapon, WeaponPools, Weapons};
 

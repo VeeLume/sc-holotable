@@ -186,6 +186,7 @@ mod tests {
             grade: 1,
             tags: vec![],
             required_tags: vec![],
+            mass: None,
         }
     }
 
