@@ -37,8 +37,8 @@ pub use sc_extract::RecordCollection;
 mod sheets;
 
 pub use sheets::{
-    ComponentHealth, MinMax, PerDamageType, QuantumDrive, QuantumTravel, ShieldEmitter,
-    ShieldGenerator, Thruster, VehicleArmor,
+    Afterburner, ComponentHealth, FlightControl, MinMax, PerDamageType, QuantumDrive,
+    QuantumTravel, ShieldEmitter, ShieldGenerator, Thruster, VehicleArmor,
 };
 
 /// Which ship-component family a piece belongs to.
@@ -132,6 +132,9 @@ pub struct ShipComponentStats {
     /// `ResourceContainer.capacity`: what a fuel or quantum fuel tank holds.
     #[serde(default)]
     pub capacity: Option<CargoQuantity>,
+    /// Flight controllers' `IFCSParams`.
+    #[serde(default)]
+    pub flight: Option<FlightControl>,
 }
 
 /// Index of every ship component's [`ShipComponentStats`], keyed by GUID.
@@ -218,6 +221,7 @@ impl ShipComponents {
                     quantum: sheets.quantum,
                     thruster: sheets.thruster,
                     capacity: sheets.capacity,
+                    flight: sheets.flight,
                 },
             );
         }

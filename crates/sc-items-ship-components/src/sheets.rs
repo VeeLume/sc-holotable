@@ -4,8 +4,8 @@ use sc_extract::DataPools;
 use sc_extract::generated::{
     DamageBasePtr, DamageInfo, DamageResistanceBasePtr, DamageResistanceEntry,
     DataForgeComponentParamsPtr, EFaceType, EThrusterType, EntityClassDefinition, Handle,
-    SCItemQuantumDriveParams, SCItemShieldGeneratorParams, SCItemThrusterParams,
-    SCItemVehicleArmorParams, SHealthComponentParams, SQuantumDriveParams,
+    IFCSParams, SCItemQuantumDriveParams, SCItemShieldGeneratorParams, SCItemThrusterParams,
+    SCItemVehicleArmorParams, SHealthComponentParams, SQuantumDriveParams, Vec3,
 };
 use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
@@ -176,6 +176,57 @@ pub struct Thruster {
     pub only_active_in_vtol: bool,
 }
 
+/// `IFCSParams` on a flight controller, the legacy fields the PU runs
+/// (`IFCSGameModeParams_Default.enableNewModel` is false in LIVE 4.10).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FlightControl {
+    /// `scmSpeed`, m/s.
+    pub scm_speed: f32,
+    /// `boostSpeedForward` / `boostSpeedBackward`, m/s.
+    pub boost_speed_forward: f32,
+    pub boost_speed_backward: f32,
+    /// `maxSpeed`, m/s (Navigation).
+    pub max_speed: f32,
+    /// `maxAngularVelocity`, deg/s: x pitch, y roll, z yaw.
+    pub max_angular_velocity: [f32; 3],
+    /// `positiveLinearScale` / `negativeLinearScale` (x strafe, y forward /
+    /// back, z up / down).
+    pub positive_linear_scale: [f32; 3],
+    pub negative_linear_scale: [f32; 3],
+    /// `linearAccelDecay` / `angularAccelDecay`.
+    pub linear_accel_decay: f32,
+    pub angular_accel_decay: f32,
+    /// `afterburner`.
+    pub afterburner: Option<Afterburner>,
+}
+
+/// `AfterburnerParams` (the legacy `IFCSParams.afterburner`).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Afterburner {
+    /// `afterburnAccelMultiplierPositive` / `Negative` (x, y, z as for the
+    /// linear scales).
+    pub accel_multiplier_positive: [f32; 3],
+    pub accel_multiplier_negative: [f32; 3],
+    /// `afterburnAngVelocityMultiplier` / `afterburnAngAccelMultiplier`
+    /// (x pitch, y roll, z yaw).
+    pub angular_velocity_multiplier: [f32; 3],
+    pub angular_accel_multiplier: [f32; 3],
+    /// `afterburnerRampUpTime` / `afterburnerRampDownTime`, s.
+    pub ramp_up_time: f32,
+    pub ramp_down_time: f32,
+    /// `capacitorMax`.
+    pub capacitor_max: f32,
+    /// `capacitorAfterburnerIdleCost` / `LinearCost` / `AngularCost`, per s.
+    pub idle_cost: f32,
+    pub linear_cost: f32,
+    pub angular_cost: f32,
+    /// `capacitorRegenDelayAfterUse`, s, and `capacitorRegenPerSec`.
+    pub regen_delay: f32,
+    pub regen_per_sec: f32,
+    /// `afterburnerCapacitorThresholdRatio`.
+    pub threshold_ratio: f32,
+}
+
 /// The typed sheets of one entity, each `None` when it lacks the component.
 #[derive(Debug, Default)]
 pub(crate) struct Sheets {
@@ -186,6 +237,7 @@ pub(crate) struct Sheets {
     pub quantum: Option<QuantumDrive>,
     pub thruster: Option<Thruster>,
     pub capacity: Option<CargoQuantity>,
+    pub flight: Option<FlightControl>,
 }
 
 pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
@@ -210,6 +262,7 @@ pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
                 out.quantum = h.get(pools).and_then(|q| quantum(q, pools));
             }
             C::SCItemThrusterParams(h) => out.thruster = h.get(pools).map(thruster),
+            C::IFCSParams(h) => out.flight = h.get(pools).map(|f| flight(f, pools)),
             C::ResourceContainer(h) => {
                 out.capacity = h
                     .get(pools)
@@ -334,6 +387,42 @@ fn quantum(q: &SCItemQuantumDriveParams, pools: &DataPools) -> Option<QuantumDri
         jump_range: q.jump_range,
         disconnect_range: q.disconnect_range,
     })
+}
+
+fn flight(f: &IFCSParams, pools: &DataPools) -> FlightControl {
+    let v = |h: Option<Handle<Vec3>>| {
+        h.and_then(|h| h.get(pools))
+            .map_or([0.0; 3], |v| [v.x, v.y, v.z])
+    };
+    FlightControl {
+        scm_speed: f.scm_speed,
+        boost_speed_forward: f.boost_speed_forward,
+        boost_speed_backward: f.boost_speed_backward,
+        max_speed: f.max_speed,
+        max_angular_velocity: v(f.max_angular_velocity),
+        positive_linear_scale: v(f.positive_linear_scale),
+        negative_linear_scale: v(f.negative_linear_scale),
+        linear_accel_decay: f.linear_accel_decay,
+        angular_accel_decay: f.angular_accel_decay,
+        afterburner: f
+            .afterburner
+            .and_then(|h| h.get(pools))
+            .map(|a| Afterburner {
+                accel_multiplier_positive: v(a.afterburn_accel_multiplier_positive),
+                accel_multiplier_negative: v(a.afterburn_accel_multiplier_negative),
+                angular_velocity_multiplier: v(a.afterburn_ang_velocity_multiplier),
+                angular_accel_multiplier: v(a.afterburn_ang_accel_multiplier),
+                ramp_up_time: a.afterburner_ramp_up_time,
+                ramp_down_time: a.afterburner_ramp_down_time,
+                capacitor_max: a.capacitor_max,
+                idle_cost: a.capacitor_afterburner_idle_cost,
+                linear_cost: a.capacitor_afterburner_linear_cost,
+                angular_cost: a.capacitor_afterburner_angular_cost,
+                regen_delay: a.capacitor_regen_delay_after_use,
+                regen_per_sec: a.capacitor_regen_per_sec,
+                threshold_ratio: a.afterburner_capacitor_threshold_ratio,
+            }),
+    }
 }
 
 fn thruster(t: &SCItemThrusterParams) -> Thruster {

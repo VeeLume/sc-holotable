@@ -73,6 +73,13 @@ pinned. Both tag kinds are monotonic and immutable.
   - `health` (`ComponentHealth`: HP and per-type damage multipliers);
   - `capacity` (`ResourceContainer.capacity` of fuel and quantum fuel tanks).
   - Probe `component_sheets_probe` re-proves them on the Centaurus's components.
+- **`sc-vehicles`: `Flight`**, a loadout's flight figures under the legacy IFCS the PU runs:
+  - speeds and angular velocity (boosted × the afterburner multipliers);
+  - mass: hull, everything mounted and docked vehicles;
+  - accelerations per direction in G, base and boosted. Each thruster counts once, along the axis it is most aligned with.
+  - `port_axes(assets, vehicle)` reads each port's push axis from the hull geometry's helper nodes. `Vehicle::geometry` gives the hull geometry path.
+  - Probe `flight_probe`: the Centaurus reproduces spviewer: 1.63 Mkg; forward 4.94, back 1.98, strafe 2.48, up 2.01, down 1.98 G; boosted 7.41 / 2.38 / 3.34 / 2.61 / 2.38; SCM 170, boost 365, NAV 1075; 22 / 35 / 18 deg/s, boosted 33 / 70 / 27.
+- **`sc-items-ship-components`: `flight` sheet** (`FlightControl`, `Afterburner`): the flight controller's legacy `IFCSParams`.
 - **`sc-resources`: `CargoQuantity::from_ptr`** projects a `SBaseCargoUnitPtr`. `sc_crafting::cargo_quantity_from_ptr` now delegates to it.
 
 ### Changed
@@ -80,6 +87,8 @@ pinned. Both tag kinds are monotonic and immutable.
 - **`sc-items-ship-components`: `ShipComponentKind` gains** `ShieldController`, `Armor`, `MainThruster`, `ManeuverThruster`, `LifeSupportGenerator`, `FlightController`, `FuelTank`, `QuantumFuelTank` and `JumpDrive`. The collection now covers them, and exhaustive matches need the new arms.
 
 - **`sc-items`: `Item` gains `tags` and `required_tags`** (`AttachDef.Tags` / `RequiredTags`, split on spaces), so struct literals need them.
+- **`sc-items`: `Item` gains `mass`** (`SEntityPhysicsControllerParams.PhysType.Mass`, kg) and no longer derives `Eq`.
+- **`sc-extract` / `sc-vehicles`: `hull_mass()` sums every part's mass**, not just the root's. The Skylark's 11 detachable panels add 115.5 kg; the Centaurus has none.
 
 ## [v0.26.0] - 2026-10-18
 

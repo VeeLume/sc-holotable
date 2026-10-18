@@ -47,7 +47,7 @@ use std::collections::HashMap;
 
 use sc_extract::generated::{
     DataForgeComponentParamsPtr, EItemSubType, EItemType, EntityClassDefinition, RecordLookup,
-    SAttachableComponentParams,
+    SAttachableComponentParams, SEntityBasePhysicsControllerParamsPtr,
 };
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, RecordStore};
 use serde::{Deserialize, Serialize};
@@ -99,7 +99,7 @@ mod enum_serde {
 /// `item_type` / `item_sub_type` are the typed [`EItemType`] /
 /// [`EItemSubType`] enums (`Unrecognized(..)` only for values added in a
 /// game patch the generator hasn't seen yet).
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Item {
     /// `Localization.Name` — the primary display-name key.
     pub name_key: Option<LocaleKey>,
@@ -127,6 +127,10 @@ pub struct Item {
     /// into (or that port's parents and ship).
     #[serde(default)]
     pub required_tags: Vec<String>,
+    /// `SEntityPhysicsControllerParams.PhysType.Mass`, kg; `None` without a
+    /// physics component.
+    #[serde(default)]
+    pub mass: Option<f32>,
 }
 
 impl Item {
@@ -324,6 +328,29 @@ fn item_for(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Item> {
         grade: item_def.grade,
         tags: words(&item_def.tags),
         required_tags: words(&item_def.required_tags),
+        mass: mass(ecd, pools),
+    })
+}
+
+/// The entity's `SEntityPhysicsControllerParams.PhysType.Mass`, whatever
+/// its physics type.
+fn mass(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<f32> {
+    use SEntityBasePhysicsControllerParamsPtr as P;
+    ecd.components.iter().find_map(|c| match c {
+        DataForgeComponentParamsPtr::SEntityPhysicsControllerParams(h) => {
+            match h.get(pools)?.phys_type.as_ref()? {
+                P::SEntityBasePhysicsControllerParams(p) => p.get(pools).map(|p| p.mass),
+                P::SEntityStaticPhysicsControllerParams(p) => p.get(pools).map(|p| p.mass),
+                P::SEntityDummyPhysicsControllerParams(p) => p.get(pools).map(|p| p.mass),
+                P::SEntityRigidPhysicsControllerParams(p) => p.get(pools).map(|p| p.mass),
+                P::SEntityParticlePhysicsControllerParams(p) => p.get(pools).map(|p| p.mass),
+                P::SEntitySoftExPhysicsControllerParams(p) => p.get(pools).map(|p| p.mass),
+                // Actor / articulated / spaceship physics are outside this
+                // crate's features.
+                _ => None,
+            }
+        }
+        _ => None,
     })
 }
 
@@ -400,6 +427,7 @@ mod tests {
             grade: 0,
             tags: Vec::new(),
             required_tags: Vec::new(),
+            mass: None,
         }
     }
 

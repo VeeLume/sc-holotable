@@ -19,6 +19,8 @@ sc-extract = { workspace = true, features = [
     "itemresourcenetwork",
 ] }
 sc-items = { workspace = true }
+# Component sheets (thrust, flight controller) for the derived flight stats.
+sc-items-ship-components = { workspace = true }
 serde = { workspace = true }
 tracing = { workspace = true }
 

@@ -38,6 +38,10 @@ pub struct Vehicle {
     /// cross-section, e.g. the Golem) rather than the data.
     #[serde(default)]
     pub cross_section: Option<[f32; 3]>,
+    /// `SGeometryResourceParams.Geometry.Geometry.Geometry.path`: the hull
+    /// geometry (`.cga`), whose helper nodes place the item ports.
+    #[serde(default)]
+    pub geometry: Option<String>,
     /// The hull's parts (vehicle XML), each with its HP and mass.
     pub hull: Vec<VehiclePart>,
     /// The vehicle XML's `itemPortTags`.
@@ -64,9 +68,11 @@ impl Vehicle {
         self.hull.iter().map(|p| p.damage_max).sum()
     }
 
-    /// The hull's mass, kg (the root part's), without the loadout.
+    /// The hull's mass, kg, without the loadout: every part's mass (the
+    /// root body plus detachable pieces, e.g. the Skylark's 11 panels of
+    /// 10.5 kg).
     pub fn hull_mass(&self) -> Option<f32> {
-        self.hull.iter().find(|p| p.parent.is_none())?.mass
+        self.hull.iter().filter_map(|p| p.mass).reduce(|a, b| a + b)
     }
 
     /// The port named `name` (case-insensitive, as the game matches them).
@@ -175,6 +181,7 @@ impl Vehicles {
                         .and_then(|h| h.get(pools))
                         .map(|v| [v.x, v.y, v.z]),
                     cross_section: cross_section(ecd, pools),
+                    geometry: geometry(ecd, pools),
                     hull: hull.as_ref().map(|h| h.parts.clone()).unwrap_or_default(),
                     item_port_tags: hull
                         .as_ref()
@@ -205,6 +212,23 @@ impl Vehicles {
         }
         Self { by_guid }
     }
+}
+
+/// The entity's root geometry path.
+fn geometry(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<String> {
+    let g = ecd.components.iter().find_map(|c| match c {
+        DataForgeComponentParamsPtr::SGeometryResourceParams(h) => h.get(pools),
+        _ => None,
+    })?;
+    let path = &g
+        .geometry?
+        .get(pools)?
+        .geometry?
+        .get(pools)?
+        .geometry?
+        .get(pools)?
+        .path;
+    (!path.is_empty()).then(|| path.clone())
 }
 
 /// The manual radar cross-section of a vehicle entity.

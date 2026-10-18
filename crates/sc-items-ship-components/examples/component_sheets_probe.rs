@@ -86,6 +86,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(t.thruster_type, EThrusterType::Main);
     assert!(t.thrust_capacity > 0.0);
 
+    // The Centaurus's flight blade (legacy IFCS, as spviewer shows it):
+    // SCM 170, boost 365 / 191, NAV 1075, pitch / roll / yaw 22 / 35 / 18.
+    let blade = get("Controller_Flight_RSI_Constellation_Mk5")?;
+    println!("\nflight {:#?}", blade.flight);
+    let f = blade.flight.as_ref().ok_or("flight sheet")?;
+    assert_eq!((f.scm_speed, f.boost_speed_forward), (170.0, 365.0));
+    assert_eq!((f.boost_speed_backward, f.max_speed), (191.0, 1075.0));
+    assert_eq!(f.max_angular_velocity, [22.0, 35.0, 18.0]);
+    let ab = f.afterburner.as_ref().ok_or("afterburner")?;
+    assert_eq!(ab.accel_multiplier_positive, [1.35, 1.5, 1.3]);
+    assert_eq!(ab.capacitor_max, 20.0);
+
     // Tank capacities; the tanks without one are outpost props and
     // refinery parts (8 in LIVE 4.10), listed below.
     let tanks: Vec<&ShipComponentStats> = components
@@ -121,6 +133,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(scu("HTNK_RSI_Constellation_Mk5_Centaurus")?, Some(46.8));
     assert_eq!(scu("QTNK_RSI_Constellation_Mk5_Centaurus")?, Some(8.6));
 
-    println!("\nasserts passed: shield, emitter, armour, quantum drive, thruster, tank sheets");
+    println!(
+        "\nasserts passed: shield, emitter, armour, quantum drive, thruster, flight, tank sheets"
+    );
     Ok(())
 }
