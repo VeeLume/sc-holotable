@@ -37,6 +37,7 @@
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 
+mod armament;
 mod container;
 mod defense;
 mod distribution;
@@ -50,6 +51,7 @@ mod quantum;
 mod resource;
 mod vehicle;
 
+pub use armament::Armament;
 pub use container::{LoadoutEntry, PortContainer, PortContainers};
 pub use defense::{Defense, Shield};
 pub use distribution::{
@@ -66,7 +68,7 @@ pub use resource::{
     DeltaKind, DynamicAmount, PowerRange, ResourceAmount, ResourceDelta, ResourceProfile,
     ResourceProfiles, ResourceState, ResourceUnits, Signature,
 };
-pub use vehicle::{Insurance, Mounted, Vehicle, Vehicles, network_items};
+pub use vehicle::{Insurance, Listing, Mounted, Vehicle, Vehicles, network_items};
 
 /// Re-export the canonical accessor trait so consumers can bring the
 /// `get` / `iter` / `len` / `values` surface into scope alongside the collections.

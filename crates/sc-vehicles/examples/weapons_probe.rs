@@ -3,7 +3,8 @@
 //! at its full 4 of 12.2 requested (ratio 0.328) and the ship's engineering
 //! buff (guns' `maxAmmoLoad` × 9). CF-557 (S5): 221 shots, 4.918/s regen,
 //! sustained 341.7; CF-337 (S3): sustained 152.3. Prints the power-on state
-//! (2 of 12.2) too.
+//! (2 of 12.2) too, and the armament: 12 guns, 32 missiles, 2
+//! countermeasure launchers.
 //!
 //! ```bash
 //! cargo run -p sc-vehicles --release --example weapons_probe
@@ -14,9 +15,10 @@ use std::collections::HashMap;
 use sc_extract::generated::EMasterMode;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, RecordCollection};
 use sc_items::Items;
+use sc_items_ship_components::ShipComponents;
 use sc_vehicles::{
-    ItemportModifiers, NetworkParams, PortContainers, PowerNetwork, ResourceProfiles, Vehicles,
-    weapon_power,
+    Armament, ItemportModifiers, NetworkParams, PortContainers, PowerNetwork, ResourceProfiles,
+    Vehicles, weapon_power,
 };
 use sc_weapons::{LoadoutContext, ShipWeapon, SustainKind, Weapons};
 
@@ -61,6 +63,36 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .ok_or("no weapon pool")?;
     let mode = EMasterMode::SCM;
     let mut allocation = network.power_on(&mode);
+
+    // The armament: 12 guns, 32 StrikeForce II missiles (16 on each S6
+    // rack), a noise launcher (5) and a decoy launcher (48).
+    let arms = Armament::compute(&v.stock, &vehicles, &items);
+    let components = ShipComponents::build(&datacore, &items);
+    println!(
+        "armament: {} guns, {} missiles, {} countermeasure launchers",
+        arms.guns.len(),
+        arms.missiles.len(),
+        arms.countermeasures.len()
+    );
+    for (path, g) in &arms.countermeasures {
+        println!(
+            "  {path}: {} {:?}",
+            names.get(g).map_or("?", String::as_str),
+            components
+                .get(g)
+                .and_then(|c| c.ammo.as_ref())
+                .map(|a| a.max)
+        );
+    }
+    assert_eq!(arms.guns.len(), 12);
+    assert_eq!(arms.missiles.len(), 32);
+    assert!(!arms.countermeasures.is_empty());
+    assert!(arms.countermeasures.iter().all(|(_, g)| {
+        components
+            .get(g)
+            .and_then(|c| c.ammo.as_ref())
+            .is_some_and(|a| a.max > 0)
+    }));
 
     let mut check = |label: &str, target: i64| -> Result<Vec<(String, f32, f32)>, String> {
         allocation.pool_targets[weapons_pool] = target;
