@@ -93,10 +93,13 @@ pinned. Both tag kinds are monotonic and immutable.
   - fire rate and damage per shot are unchanged.
 - **`sc-vehicles`: `ItemportModifiers` and `weapon_power(…)`**: the attach-active item-port modifiers that change a vehicle's guns, and each gun's `WeaponPower` (its power ratio plus those multipliers).
   - Probe `weapons_probe`, the Centaurus at erkul's default (weapon pool 4 of 12.2, the engineering buff's ×9): CF-557 221 shots, 4.918/s, sustained 341.7; CF-337 152.3. erkul shows the same figures.
-- **`sc-vehicles`: `Listing`** (Base / Edition / Variant) on every `Vehicle`, and `Vehicles::listed()`. No field marks a player ship, so it combines two signals:
-  - base hulls are the records some vehicle's insurance names;
-  - editions have their own name, no AI crew and are EA-ready.
-  - LIVE 4.10 gives 307 records with 287 names. Also new: `Vehicle::insured_as`, `ai_crew`, `ea_ready`.
+- **`sc-vehicles`: `Listing`** (Base / Edition / Reward / Variant) on every `Vehicle`, and `Vehicles::listed()` (bases and editions). No field marks a player ship, so it combines signals:
+  - reward structs mark rewards;
+  - the scenario and display flags mark variants;
+  - insurance names the bases;
+  - editions have their own name, no AI crew, are EA-ready and are not AI templates.
+  - LIVE 4.10 lists 246 records with 240 names: all 222 of erkul's (GUID-joined) plus 24 event and special editions the data cannot tell apart. 27 are ground vehicles, 11 gravlev; there are 52 reward ships.
+  - Also new: `Vehicle::insured_as`, `ai_crew`, `ea_ready`, `reward`, `scenario`, `display`, `explodes_from_hull_damage`, `ground`, `gravlev`.
 - **`sc-vehicles`: `Armament`** lists a loadout's guns, missiles and countermeasure launchers with their port paths, for joining to their stats. The Centaurus has 12 guns, 32 StrikeForce II and 2 launchers.
 - **`sc-items-ship-components`: `radar` and `ammo` sheets, and `ShipComponentKind::CountermeasureLauncher`.**
   - `Radar`: detection per signature type (sensitivity, piercing, passive / active), aim-assist distances, ping cooldown.

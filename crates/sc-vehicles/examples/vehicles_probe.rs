@@ -133,8 +133,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .find(|p| p.name.starts_with("hardpoint_thruster_main"))
     });
     assert!(!is_editable(&[thruster.ok_or("thruster port")?]));
-    // Listing: base hulls (named by some insurance), editions (own name,
-    // no AI crew, ready for inclusion), variants.
+    // Listing: rewards, base hulls (named by some insurance), editions
+    // (own name, no AI crew, ready for inclusion), variants.
     let mut listing: BTreeMap<String, u32> = BTreeMap::new();
     for v in vehicles.values() {
         *listing.entry(format!("{:?}", v.listing)).or_default() += 1;
@@ -146,9 +146,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         vehicles.listed().count(),
         distinct.len()
     );
-    assert_eq!(listing.get("Base"), Some(&223));
-    assert_eq!(listing.get("Edition"), Some(&84));
-    assert_eq!(distinct.len(), 287);
+    let listed: Vec<&sc_vehicles::Vehicle> = vehicles.listed().map(|(_, v)| v).collect();
+    let ground = listed.iter().filter(|v| v.ground).count();
+    let gravlev = listed.iter().filter(|v| v.gravlev).count();
+    println!(
+        "  {} ground, {gravlev} gravlev, {} rewards",
+        ground,
+        vehicles.values().filter(|v| v.reward).count()
+    );
+    // Every one of erkul's 222 (GUID-joined) plus 24 the data cannot tell
+    // apart.
+    assert_eq!(listed.len(), 246);
+    assert_eq!(distinct.len(), 240);
+    assert_eq!((ground, gravlev), (27, 11));
     assert_eq!(ship.listing, sc_vehicles::Listing::Edition);
     let skylark = vehicles
         .iter()
