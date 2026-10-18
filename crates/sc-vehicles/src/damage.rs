@@ -111,7 +111,7 @@ impl Default for Condition {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct HitReport {
     /// The hull triangle the shot reaches: point and part (index into
-    /// [`HullGeometry::parts`] and its name); `None` for a miss.
+    /// [`HullGeometry::collision`] and its name); `None` for a miss.
     pub point: Option<[f32; 3]>,
     pub part: Option<(usize, String)>,
     /// Shield: what the face takes, and what passes through to the hull
@@ -147,6 +147,7 @@ pub struct ComponentHit {
 pub struct Target<'a> {
     pub vehicle: &'a Vehicle,
     pub geometry: &'a HullGeometry,
+    /// Built from [`HullGeometry::collision`].
     pub raycaster: &'a Raycaster,
     pub defense: &'a Defense,
     pub items: &'a Items,
@@ -179,9 +180,10 @@ impl Target<'_> {
     ///
     /// `h` is the armour's health ratio: before this shot's wear for the
     /// deflection, after it for the hull and the penetration. With intact armour every ship's
-    /// armour in LIVE 4.10 absorbs all penetration (depth 0). Hull geometry
-    /// is the render mesh (the client hits physics proxies; INFERRED to
-    /// match), item boxes are the render bounds.
+    /// armour in LIVE 4.10 absorbs all penetration (depth 0). The hull is
+    /// its ray-colliding physics proxies (INFERRED: the projectile query
+    /// tests those), item boxes are the render bounds (they match the
+    /// items' box proxies).
     pub fn hit(&self, shot: &Shot, condition: &Condition) -> HitReport {
         let mut report = HitReport::default();
         let dir = crate::raycast::normalize(shot.direction);
@@ -189,7 +191,7 @@ impl Target<'_> {
             return report;
         };
         report.point = Some(ray.point);
-        report.part = Some((ray.part, self.geometry.parts[ray.part].part.clone()));
+        report.part = Some((ray.part, self.geometry.collision[ray.part].part.clone()));
 
         // 1. Shield.
         report.passed = shot.damage;
@@ -342,13 +344,9 @@ impl Target<'_> {
     /// hull at some point; the distance from there to the centre is the
     /// penetration depth that reaches it on the shot's axis. Directions
     /// sorted shallowest first (the best attack angles); a component the
-    /// shot meets before any hull (mounted outside) has depth 0.
-    ///
-    /// Caveat: the hull here is the render mesh, which does not close
-    /// everywhere (the Centaurus's belly under its power-plant bays is not
-    /// in the hull file), so a shot through such an opening reads 0. The
-    /// client hits the physics proxies; until they are read, treat 0 on an
-    /// internal component as an opening in the render mesh.
+    /// shot meets before any hull (mounted outside) has depth 0. The hull
+    /// is [`HullGeometry::collision`]: closed, so an internal component
+    /// always has depth.
     pub fn exposure(&self, placement: usize, samples: usize) -> Vec<Exposure> {
         let Some(pl) = self.geometry.placements.get(placement) else {
             return Vec::new();
@@ -369,7 +367,7 @@ impl Target<'_> {
                 let (depth, part) = match hit {
                     Some(h) if h.distance < reach => (
                         reach - h.distance,
-                        Some(self.geometry.parts[h.part].part.clone()),
+                        Some(self.geometry.collision[h.part].part.clone()),
                     ),
                     _ => (0.0, None),
                 };
@@ -387,7 +385,7 @@ impl Target<'_> {
     /// A distance from which every shot starts outside the hull.
     fn reach(&self) -> f32 {
         let (mut lo, mut hi) = ([f32::MAX; 3], [f32::MIN; 3]);
-        for p in self.geometry.parts.iter().flat_map(|p| &p.positions) {
+        for p in self.geometry.collision.iter().flat_map(|p| &p.positions) {
             for k in 0..3 {
                 lo[k] = lo[k].min(p[k]);
                 hi[k] = hi[k].max(p[k]);

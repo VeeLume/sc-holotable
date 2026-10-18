@@ -1,10 +1,10 @@
-//! Ray casts against a hull's mesh: where a shot lands and on which damage
+//! Ray casts against a hull's meshes: where a shot lands and on which damage
 //! part.
 
-use crate::HullGeometry;
+use crate::PartMesh;
 
-/// A bounding-volume hierarchy over every hull triangle, built once per
-/// [`HullGeometry`].
+/// A bounding-volume hierarchy over every triangle of a set of part meshes
+/// (usually [`crate::HullGeometry::collision`]), built once per hull.
 pub struct Raycaster {
     triangles: Vec<Triangle>,
     nodes: Vec<Node>,
@@ -28,7 +28,7 @@ struct Node {
 /// Where a ray meets the hull.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct RayHit {
-    /// Index into [`HullGeometry::parts`].
+    /// Index into the part meshes the caster was built from.
     pub part: usize,
     /// Distance along the ray, m.
     pub distance: f32,
@@ -40,9 +40,9 @@ pub struct RayHit {
 const LEAF: usize = 8;
 
 impl Raycaster {
-    pub fn new(geometry: &HullGeometry) -> Self {
+    pub fn new(parts: &[PartMesh]) -> Self {
         let mut triangles = Vec::new();
-        for (part, mesh) in geometry.parts.iter().enumerate() {
+        for (part, mesh) in parts.iter().enumerate() {
             for t in mesh.indices.as_chunks::<3>().0 {
                 triangles.push(Triangle {
                     v: t.map(|i| mesh.positions[i as usize]),
@@ -214,7 +214,6 @@ pub(crate) fn normalize(v: [f32; 3]) -> [f32; 3] {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::PartMesh;
 
     #[test]
     fn hits_the_nearest_face() {
@@ -229,11 +228,7 @@ mod tests {
             ],
             indices: vec![0, 1, 2, 0, 2, 3],
         };
-        let g = HullGeometry {
-            parts: vec![quad(2.0), quad(1.0)],
-            placements: Vec::new(),
-        };
-        let r = Raycaster::new(&g);
+        let r = Raycaster::new(&[quad(2.0), quad(1.0)]);
         let hit = r.cast([0.0, 0.2, 0.3], [1.0, 0.0, 0.0]).expect("a hit");
         assert_eq!(hit.part, 1);
         assert!((hit.distance - 1.0).abs() < 1e-5);

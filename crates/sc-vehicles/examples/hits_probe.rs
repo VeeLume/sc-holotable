@@ -7,8 +7,13 @@
 //! - shields down, armour intact: both are deflected (380 / 531), 0 damage;
 //! - an ESPR S5 cannon shot (950 physical): 665 past the armour, 538.65
 //!   wear, 176.69 on the hull part, 0.036 m penetration;
-//! - the same with the armour gone: 1.7 m penetration, a power plant on the
-//!   axis takes 950 × (1 − s / 1.7) × 0.85.
+//! - the same with the armour gone: 1.7 m penetration; no power plant lies
+//!   within 1.7 m of the hull's collision shell (the nearest 1.73 m), the
+//!   radar does (1.39 m) and takes 950 × (1 − s / 1.7) × the component
+//!   multiplier × its resistance on its best axis;
+//! - the collision shell is closed: vertical rays over the power-plant
+//!   bays all hit it (the render mesh is open there), so no internal
+//!   component reads 0 exposure.
 //!
 //! ```bash
 //! cargo run -p sc-vehicles --release --example hits_probe
@@ -50,7 +55,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .ok_or("no Centaurus")?;
     let geometry =
         HullGeometry::read(&assets, ship, &ship.stock, &vehicles, &paths).ok_or("no hull")?;
-    let raycaster = Raycaster::new(&geometry);
+    let raycaster = Raycaster::new(&geometry.collision);
     let defense = Defense::compute(ship, &ship.stock, &vehicles, &components);
     let target = Target {
         vehicle: ship,
@@ -180,7 +185,43 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
-    println!("\n{checked} power-plant hits checked against 950 x (1 - s/1.7) x 0.85");
+    assert_eq!(checked, 0, "a power plant within 1.7 m of the shell");
+
+    // The radar is within reach: on its best axis the penetration reaches it.
+    let (ri, rpl) = geometry
+        .placements
+        .iter()
+        .enumerate()
+        .find(|(_, p)| names.get(&p.item).is_some_and(|n| n.starts_with("RADR_")))
+        .ok_or("no radar")?;
+    let b = rpl.bounds.ok_or("radar without bounds")?;
+    let centre = apply(
+        &rpl.transform,
+        std::array::from_fn(|k| 0.5 * (b.min[k] + b.max[k])),
+    );
+    let best = target.exposure(ri, 2000).remove(0);
+    assert!(
+        best.depth > 1.3 && best.depth < 1.7,
+        "radar depth {}",
+        best.depth
+    );
+    let origin = std::array::from_fn(|k| centre[k] - best.direction[k] * 100.0);
+    let r = target.hit(&shot(espr, origin, centre), &bare);
+    let c = r
+        .components
+        .iter()
+        .find(|c| c.placement == ri)
+        .ok_or("the radar is not reached")?;
+    let resist = healths
+        .get(&rpl.item)
+        .and_then(|h| h.damage_multiplier)
+        .map_or(1.0, |m| m.physical);
+    let want = 950.0 * (1.0 - c.depth / 1.7) * ship.penetration.component_multiplier * resist;
+    println!(
+        "radar at {:.2} m: {:.1} (950 x (1 - s/1.7) x {} x {resist} = {want:.1})",
+        c.depth, c.damage, ship.penetration.component_multiplier
+    );
+    assert!(near(c.damage, want, 0.05));
 
     // Exposure: for the key components, the shallowest attack angles.
     println!("\nexposure (hull surface to component centre, 2000 directions):");
@@ -194,6 +235,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         let e = target.exposure(i, 2000);
         let Some(best) = e.first() else { continue };
+        assert!(best.depth > 0.0, "{} reads 0 exposure", pl.path);
         let reachable = e.iter().filter(|x| x.depth <= 1.7).count();
         println!(
             "  {:<32} {:<34} best {:.2} m from {:?} through {:?}; {reachable} of {} directions within 1.7 m",
@@ -225,10 +267,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 pl.path,
                 back.map(|c| (c * 100.0).round() / 100.0),
                 out.map(|h| (h.distance * 100.0).round() / 100.0),
-                out.map(|h| geometry.parts[h.part].part.clone()),
+                out.map(|h| geometry.collision[h.part].part.clone()),
                 raycaster.cast(centre, x.direction).map(|h| (
                     (h.distance * 100.0).round() / 100.0,
-                    geometry.parts[h.part].part.clone()
+                    geometry.collision[h.part].part.clone()
                 ))
             );
         }
@@ -250,7 +292,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!(
             "\nvertical rays {label} (x -12..12 across, y 0..-9 down), {misses} misses:\n{row}"
         );
+        assert_eq!(misses, 0, "the collision shell is open {label}");
     }
-    println!("asserts passed: shield, deflection, armour, hull reduction, penetration");
+    println!(
+        "asserts passed: shield, deflection, armour, hull reduction, penetration, closed shell"
+    );
     Ok(())
 }

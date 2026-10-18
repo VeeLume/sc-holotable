@@ -317,7 +317,7 @@ pub(crate) fn chunk(file: &[u8], ty: u32) -> Result<&[u8]> {
 }
 
 /// Names, parents and properties from the `NodeMeshCombo` chunk.
-fn parse_nodes(file: &[u8]) -> Result<Vec<MeshNode>> {
+pub(crate) fn parse_nodes(file: &[u8]) -> Result<Vec<MeshNode>> {
     let d = chunk(file, NODE_MESH_COMBO)?;
     let mut r = Reader { d, p: 0 };
     let _ = r.u32()?;

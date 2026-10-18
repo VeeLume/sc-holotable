@@ -103,14 +103,14 @@ pinned. Both tag kinds are monotonic and immutable.
 - **`sc-vehicles`: projectile hits** (`Target::hit`) follow the client's `CVehicle::OnHit` (LIVE 4.10.197):
   - shield face: `D(1−R)A` taken, `D(1−R)(1−A)` passed on;
   - armour deflection, damage multiplier and wear;
-  - the hull part a ray cast reaches (`Raycaster`, a BVH over the hull mesh) takes × (1 − 0.75 h);
+  - the hull part a ray cast reaches (`Raycaster`, a BVH over the hull's collision shell) takes × (1 − 0.75 h);
   - the penetration cylinder reaches components with health (`ComponentHealths`), with per-type depth falloff, the fuse / component multipliers (`Vehicle::penetration`) and item resistances;
   - `Target::exposure` sweeps attack directions per component.
-  - Probe `hits_probe` reproduces the hand-worked Centaurus cases: CF-557 taken by the shield, BEHR 15.19 / 18.56, both deflected by intact armour, ESPR S5 armour 665 / wear 538.65 / hull 176.69 / depth 0.036 m.
-  - The render mesh is not closed everywhere, so exposure can over-report until the physics proxies are read.
+  - Probe `hits_probe` reproduces the hand-worked Centaurus cases: CF-557 taken by the shield, BEHR 15.19 / 18.56, both deflected by intact armour, ESPR S5 armour 665 / wear 538.65 / hull 176.69 / depth 0.036 m. With the armour gone, its 1.7 m reaches the radar (1.39 m deep) but no power plant (1.73 m at best).
 - **`sc-weapons`: `ShipWeapon::penetration_radius_m`** (near / far radius). **`sc-items-ship-components`: `component_health()`**.
+- **`sc-extract`: `PhysicsProxies`** reads a geometry file's collision shapes (`STATOBJ_PHYSICS`, slots 0–3): boxes and closed trimeshes per node, with the slot's `ProxyKind` (`hits_rays`). Probe `physics_proxies_probe`: the Constellation Mk V hull has 36 (22 meshes, 14 boxes), each closed and enclosing its stated volume.
 - **`sc-vehicles`: `HullGeometry`**: a loadout in 3D, in the ship frame.
-  - The hull's render mesh grouped by damage part. Each mesh node is named after its vehicle-XML `Part`.
+  - The hull's render mesh (`parts`, to draw) and its closed collision shell (`collision`, what shots hit: the ray-colliding physics proxies) grouped by damage part. Each mesh node is named after its vehicle-XML `Part`.
   - Each mounted item's `Placement` on its port's helper node (hull, then the holding item's mesh), with its mesh bounds.
   - `GeometryPaths` gives every entity's geometry path.
   - The Centaurus has 31 parts, 1.16 M triangles and 192 placements.

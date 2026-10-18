@@ -1,9 +1,10 @@
-//! A loadout in 3D: the hull mesh by damage part, and where each mounted
-//! item sits, in the ship's frame (x right, y forward, z up, metres).
+//! A loadout in 3D: the hull mesh and its collision shell by damage part,
+//! and where each mounted item sits, in the ship's frame (x right, y
+//! forward, z up, metres).
 
 use std::collections::HashMap;
 
-use sc_extract::{AssetSource, Datacore, Guid, MeshGeometry, RecordCollection};
+use sc_extract::{AssetSource, Datacore, Guid, MeshGeometry, PhysicsProxies, RecordCollection};
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
 
@@ -68,15 +69,21 @@ impl RecordCollection for GeometryPaths {
 /// The hull and the mounted items of one loadout in the ship frame.
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct HullGeometry {
-    /// The hull's render mesh grouped by damage part.
+    /// The hull's render mesh grouped by damage part: what to draw. It is
+    /// not closed everywhere (the Constellation Mk V's belly under its
+    /// power plants is open).
     pub parts: Vec<PartMesh>,
+    /// The hull's ray-colliding physics proxies grouped by damage part: what
+    /// shots hit. Closed shells, a little proud of the render skin (0.18 m
+    /// on the Centaurus body).
+    pub collision: Vec<PartMesh>,
     /// Where each mounted item sits, outermost first (docked vehicles
     /// left out).
     pub placements: Vec<Placement>,
 }
 
 /// The triangles of one hull damage part (a vehicle-XML `Part` with
-/// `damageMax`), ship frame.
+/// `damageMax`), ship frame: render mesh or collision shell.
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct PartMesh {
     /// The vehicle-XML part (and mesh node) name; empty for geometry under
@@ -127,10 +134,11 @@ impl Aabb {
 impl HullGeometry {
     /// Read `vehicle`'s hull geometry and place `loadout`'s items.
     ///
-    /// Each hull node's triangles go to the nearest node above it (itself
-    /// included) named after a damage part: the engine names a damage
-    /// part's mesh node after the vehicle-XML `Part` (`node=Part` in the
-    /// node properties). An item sits on the helper node named after its
+    /// Each hull node's triangles, render and physics proxy alike, go to
+    /// the nearest node above it (itself included) named after a damage
+    /// part: the engine names a damage part's mesh node after the
+    /// vehicle-XML `Part` (`node=Part` in the node properties). The proxies
+    /// kept are those ray queries test ([`sc_extract::ProxyKind::hits_rays`]). An item sits on the helper node named after its
     /// port, in the hull or in the item above it: the engine's own attach
     /// rule, joined by name within one mesh.
     pub fn read(
@@ -191,6 +199,34 @@ impl HullGeometry {
         let mut parts: Vec<PartMesh> = parts.into_values().collect();
         parts.sort_by(|a, b| a.part.cmp(&b.part));
 
+        let proxies = PhysicsProxies::read(assets, path).unwrap_or_else(|error| {
+            warn!(path, %error, "hull physics proxies unreadable");
+            PhysicsProxies::default()
+        });
+        let mut collision: HashMap<Option<usize>, PartMesh> = HashMap::new();
+        for p in proxies.proxies.iter().filter(|p| p.kind.hits_rays()) {
+            let key = p.node.and_then(|n| owner[n]);
+            let mesh = collision.entry(key).or_insert_with(|| PartMesh {
+                part: key.map(|k| hull.nodes[k].name.clone()).unwrap_or_default(),
+                ..PartMesh::default()
+            });
+            let m = p.node.map_or(&IDENTITY, |n| &world[n]);
+            let (positions, indices) = p.shape.triangles();
+            let base = mesh.positions.len() as u32;
+            mesh.positions
+                .extend(positions.into_iter().map(|v| apply(m, v)));
+            mesh.indices.extend(indices.into_iter().map(|i| base + i));
+        }
+        let mut collision: Vec<PartMesh> = collision.into_values().collect();
+        collision.sort_by(|a, b| a.part.cmp(&b.part));
+        if collision.is_empty() {
+            warn!(
+                path,
+                "no physics proxies; shots fall back to the render mesh"
+            );
+            collision = parts.clone();
+        }
+
         let mut placements = Vec::new();
         let mut meshes: HashMap<String, Option<ItemMesh>> = HashMap::new();
         let helpers = helper_map(&hull, &world);
@@ -207,10 +243,15 @@ impl HullGeometry {
         );
         debug!(
             parts = parts.len(),
+            collision = collision.len(),
             placements = placements.len(),
             "hull geometry"
         );
-        Some(Self { parts, placements })
+        Some(Self {
+            parts,
+            collision,
+            placements,
+        })
     }
 }
 
