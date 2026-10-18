@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.26.0] - 2026-10-18
+
 ### Added
 
 - **`sc-mining`: beam cuts in the simulation.**
