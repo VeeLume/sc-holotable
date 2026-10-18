@@ -37,6 +37,7 @@
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 
+mod armament;
 mod container;
 mod defense;
 mod distribution;
@@ -50,6 +51,7 @@ mod quantum;
 mod resource;
 mod vehicle;
 
+pub use armament::Armament;
 pub use container::{LoadoutEntry, PortContainer, PortContainers};
 pub use defense::{Defense, Shield};
 pub use distribution::{

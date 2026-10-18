@@ -1,13 +1,13 @@
 //! Per-kind stat sheets, read through the typed generated surface.
 
-use sc_extract::DataPools;
 use sc_extract::generated::{
     DamageBasePtr, DamageInfo, DamageResistanceBasePtr, DamageResistanceEntry,
-    DataForgeComponentParamsPtr, EFaceType, EThrusterType, EntityClassDefinition, Handle,
-    IFCSParams, SBaseResourceUnitPtr, SCItemQuantumDriveParams, SCItemShieldGeneratorParams,
-    SCItemThrusterParams, SCItemVehicleArmorParams, SHealthComponentParams, SQuantumDriveParams,
-    Vec3,
+    DataForgeComponentParamsPtr, EFaceType, ESignatureType, EThrusterType, EntityClassDefinition,
+    Handle, IFCSParams, SBaseResourceUnitPtr, SCItemQuantumDriveParams, SCItemRadarComponentParams,
+    SCItemShieldGeneratorParams, SCItemThrusterParams, SCItemVehicleArmorParams,
+    SHealthComponentParams, SQuantumDriveParams, Vec3,
 };
+use sc_extract::{DataPools, Guid};
 use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
 
@@ -230,6 +230,49 @@ pub struct Afterburner {
     pub threshold_ratio: f32,
 }
 
+/// `SCItemRadarComponentParams`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Radar {
+    /// `signatureDetection[]`, one per signature type.
+    pub detection: Vec<SignatureDetection>,
+    /// `aimAssist.distanceMinAssignment` / `distanceMaxAssignment` /
+    /// `outsideRangeBufferDistance`, m.
+    pub aim_assist_min: f32,
+    pub aim_assist_max: f32,
+    pub aim_assist_buffer: f32,
+    /// `pingProperties.cooldownTime`, s.
+    pub ping_cooldown: Option<f32>,
+}
+
+/// One `SCItemRadarSignatureDetection`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct SignatureDetection {
+    /// The signature type: the entry's index in `ESignatureType` order
+    /// (Infrared, Electromagnetic, CrossSection, Decibel, Resource,
+    /// Identity, CommsSignal, Interactable; the eight entries match the
+    /// eight values, the mapping by index is inferred).
+    #[serde(with = "signature_type_serde")]
+    pub signature: ESignatureType,
+    pub sensitivity: f32,
+    pub piercing: f32,
+    /// `permitPassiveDetection` / `permitActiveDetection`.
+    pub passive: bool,
+    pub active: bool,
+}
+
+/// `SAmmoContainerComponentParams`: a countermeasure launcher's, a
+/// ballistic gun's or a missile rack's ammunition.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Ammo {
+    /// `initialAmmoCount` / `maxAmmoCount`.
+    pub initial: i32,
+    pub max: i32,
+    /// `maxRestockCount`.
+    pub max_restock: u32,
+    /// `ammoParamsRecord`: the `AmmoParams` it fires.
+    pub ammo_params: Option<Guid>,
+}
+
 /// The typed sheets of one entity, each `None` when it lacks the component.
 #[derive(Debug, Default)]
 pub(crate) struct Sheets {
@@ -241,6 +284,8 @@ pub(crate) struct Sheets {
     pub thruster: Option<Thruster>,
     pub capacity: Option<CargoQuantity>,
     pub flight: Option<FlightControl>,
+    pub radar: Option<Radar>,
+    pub ammo: Option<Ammo>,
 }
 
 pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
@@ -266,6 +311,15 @@ pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
             }
             C::SCItemThrusterParams(h) => out.thruster = h.get(pools).map(|t| thruster(t, pools)),
             C::IFCSParams(h) => out.flight = h.get(pools).map(|f| flight(f, pools)),
+            C::SCItemRadarComponentParams(h) => out.radar = h.get(pools).map(|r| radar(r, pools)),
+            C::SAmmoContainerComponentParams(h) => {
+                out.ammo = h.get(pools).map(|a| Ammo {
+                    initial: a.initial_ammo_count,
+                    max: a.max_ammo_count,
+                    max_restock: a.max_restock_count,
+                    ammo_params: a.ammo_params_record,
+                });
+            }
             C::ResourceContainer(h) => {
                 out.capacity = h
                     .get(pools)
@@ -428,6 +482,44 @@ fn flight(f: &IFCSParams, pools: &DataPools) -> FlightControl {
     }
 }
 
+fn radar(r: &SCItemRadarComponentParams, pools: &DataPools) -> Radar {
+    const TYPES: [ESignatureType; 8] = [
+        ESignatureType::Infrared,
+        ESignatureType::Electromagnetic,
+        ESignatureType::CrossSection,
+        ESignatureType::Decibel,
+        ESignatureType::Resource,
+        ESignatureType::Identity,
+        ESignatureType::CommsSignal,
+        ESignatureType::Interactable,
+    ];
+    let aim = r.aim_assist.and_then(|h| h.get(pools));
+    Radar {
+        detection: r
+            .signature_detection
+            .iter()
+            .zip(TYPES)
+            .filter_map(|(d, signature)| {
+                let d = d.get(pools)?;
+                Some(SignatureDetection {
+                    signature,
+                    sensitivity: d.sensitivity,
+                    piercing: d.piercing,
+                    passive: d.permit_passive_detection,
+                    active: d.permit_active_detection,
+                })
+            })
+            .collect(),
+        aim_assist_min: aim.map_or(0.0, |a| a.distance_min_assignment),
+        aim_assist_max: aim.map_or(0.0, |a| a.distance_max_assignment),
+        aim_assist_buffer: aim.map_or(0.0, |a| a.outside_range_buffer_distance),
+        ping_cooldown: r
+            .ping_properties
+            .and_then(|h| h.get(pools))
+            .map(|p| p.cooldown_time),
+    }
+}
+
 /// A resource-unit amount in standard units (1 SCU).
 fn standard_units(u: &SBaseResourceUnitPtr, pools: &DataPools) -> f64 {
     match u {
@@ -470,6 +562,18 @@ mod face_type_serde {
     }
     pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<EFaceType, D::Error> {
         Ok(EFaceType::from_dcb_str(&String::deserialize(d)?))
+    }
+}
+
+mod signature_type_serde {
+    use sc_extract::generated::ESignatureType;
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    pub fn serialize<S: Serializer>(v: &ESignatureType, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(v.as_dcb_str())
+    }
+    pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<ESignatureType, D::Error> {
+        Ok(ESignatureType::from_dcb_str(&String::deserialize(d)?))
     }
 }
 

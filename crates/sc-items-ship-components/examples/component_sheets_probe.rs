@@ -98,6 +98,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(ab.accel_multiplier_positive, [1.35, 1.5, 1.3]);
     assert_eq!(ab.capacitor_max, 20.0);
 
+    // The Lephari radar: IR / EM / CS detection, and the Centaurus's
+    // countermeasure launchers.
+    let radar = get("RADR_WLOP_S03_Lephari")?;
+    let r = radar.radar.as_ref().ok_or("radar sheet")?;
+    println!("\nLephari {r:#?}");
+    assert_eq!(r.detection.len(), 8);
+    assert_eq!(
+        (r.detection[0].sensitivity, r.detection[0].piercing),
+        (0.95, 0.25)
+    );
+    assert!(r.detection[0].passive && !r.detection[2].passive);
+    let launchers: Vec<(&String, &ShipComponentStats)> = by_name
+        .iter()
+        .filter(|(n, _)| n.contains("CML") || n.contains("Countermeasure"))
+        .filter_map(|(n, g)| Some((n, components.get(g)?)))
+        .filter(|(_, c)| c.kind == ShipComponentKind::CountermeasureLauncher)
+        .take(4)
+        .collect();
+    for (n, c) in &launchers {
+        println!("  {n}: {:?}", c.ammo);
+    }
+    assert!(
+        launchers
+            .iter()
+            .any(|(_, c)| c.ammo.as_ref().is_some_and(|a| a.max > 0))
+    );
+
     // Tank capacities; the tanks without one are outpost props and
     // refinery parts (8 in LIVE 4.10), listed below.
     let tanks: Vec<&ShipComponentStats> = components

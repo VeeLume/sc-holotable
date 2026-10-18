@@ -93,6 +93,10 @@ pinned. Both tag kinds are monotonic and immutable.
   - fire rate and damage per shot are unchanged.
 - **`sc-vehicles`: `ItemportModifiers` and `weapon_power(…)`**: the attach-active item-port modifiers that change a vehicle's guns, and each gun's `WeaponPower` (its power ratio plus those multipliers).
   - Probe `weapons_probe`, the Centaurus at erkul's default (weapon pool 4 of 12.2, the engineering buff's ×9): CF-557 221 shots, 4.918/s, sustained 341.7; CF-337 152.3. erkul shows the same figures.
+- **`sc-vehicles`: `Armament`** lists a loadout's guns, missiles and countermeasure launchers with their port paths, for joining to their stats. The Centaurus has 12 guns, 32 StrikeForce II and 2 launchers.
+- **`sc-items-ship-components`: `radar` and `ammo` sheets, and `ShipComponentKind::CountermeasureLauncher`.**
+  - `Radar`: detection per signature type (sensitivity, piercing, passive / active), aim-assist distances, ping cooldown.
+  - `Ammo`: `SAmmoContainerComponentParams` (initial / max / restock, the `AmmoParams` fired). The Centaurus launchers hold noise 5 and decoy 48.
 - **`sc-vehicles`: `Quantum`**, a loadout's quantum drive and quantum fuel:
   - `time(distance)` follows the client's travel envelope (`quantum_time`): five mirrored, jerk-limited phases, solving for the peak on short trips. Times are truncated to 1e-7 s ticks; spool and calibration are not included.
   - `fuel(distance)` uses the drive's travelling-state QuantumFuel per Mm; `range()` divides the tank by it.
