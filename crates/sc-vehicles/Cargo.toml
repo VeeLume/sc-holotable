@@ -11,10 +11,12 @@ rust-version.workspace = true
 #   entities-spaceships     ship EntityClassDefinitions
 #   entities-groundvehicles ground vehicle EntityClassDefinitions
 #   entities-scitem         the items in their loadouts (child ports, default loadouts)
+#   itemresourcenetwork     ItemResourceNetworkGlobal (power split, distribution defaults)
 sc-extract = { workspace = true, features = [
     "entities-spaceships",
     "entities-groundvehicles",
     "entities-scitem",
+    "itemresourcenetwork",
 ] }
 sc-items = { workspace = true }
 serde = { workspace = true }

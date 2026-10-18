@@ -35,8 +35,27 @@ pinned. Both tag kinds are monotonic and immutable.
   - `Vehicle::offered_tags` collects the tags offered from above.
   - `has_flag` / `is_editable` follow the client's flag inheritance: `uneditable` locks a subtree, `$uneditable` only its port.
   - Probe `vehicles_probe`: the Constellation Mk V Centaurus resolves to every component spviewer lists, with its gimbals locked and their guns swappable.
+- **`sc-vehicles`: resource network inputs** for the power and cooling model.
+  - `ResourceProfiles::build(datacore)` holds every entity's `ItemResourceComponentParams` as `ResourceProfile`:
+    - states with their generation / consumption / conversion / storage deltas (`ResourceUnits` as authored), minimum fractions and dynamic-amount overrides;
+    - EM / IR signatures, power ranges and the power-plant modifier override.
+  - `NetworkParams::build(datacore)` holds `ItemResourceNetworkGlobal`: per-size plant modifiers and the power-on distribution defaults.
+  - `PortContainer::power_pools` lists the vehicle's `FixedPowerPool` / `DynamicPowerPool`s.
+  - `network_items(loadout, vehicles)` lists the items on a vehicle's own network; a docked vehicle runs its own.
+  - `plant_output` gives the client's share of several online plants. `signature_ratio` / `em_signature` give the power ratio with its range modifier and the EM it settles at.
+  - Probe `ship_systems_probe`: the stock Centaurus gets 24 power from two Sedulity plants, as spviewer shows, and its nominal EMs and pools match.
+- **`sc-items-ship-components`: per-kind sheets**, read through the typed surface:
+  - `shield` (`ShieldGenerator`: HP, regen, delays, reserve pool, per-type resistance / absorption ranges);
+  - `emitter` (`ShieldEmitter`: face layout, reallocation);
+  - `armor` (`VehicleArmor`: damage multiplier, deflection, penetration, signal multipliers);
+  - `quantum` (`QuantumDrive`: travel and spline-jump parameters, fuel, ranges);
+  - `thruster` (`Thruster`: thrust, type, fuel burn);
+  - `health` (`ComponentHealth`: HP and per-type damage multipliers).
+  - Probe `component_sheets_probe` re-proves them on the Centaurus's components.
 
 ### Changed
+
+- **`sc-items-ship-components`: `ShipComponentKind` gains** `ShieldController`, `Armor`, `MainThruster`, `ManeuverThruster`, `LifeSupportGenerator`, `FlightController`, `FuelTank`, `QuantumFuelTank` and `JumpDrive`. The collection now covers them, and exhaustive matches need the new arms.
 
 - **`sc-items`: `Item` gains `tags` and `required_tags`** (`AttachDef.Tags` / `RequiredTags`, split on spaces), so struct literals need them.
 

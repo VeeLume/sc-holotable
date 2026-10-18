@@ -197,6 +197,32 @@ impl Vehicles {
     }
 }
 
+/// Every item of `loadout` on the vehicle's own resource network, with its
+/// port path (`turret/gimbal/gun`), depth first. A docked vehicle (an item
+/// that is itself in `vehicles`, like the Centaurus's Skylark) runs its own
+/// network, so it and what it carries are left out.
+pub fn network_items(loadout: &[Mounted], vehicles: &Vehicles) -> Vec<(String, Guid)> {
+    let mut out = Vec::new();
+    let mut stack: Vec<(String, &Mounted)> =
+        loadout.iter().rev().map(|m| (m.port.clone(), m)).collect();
+    while let Some((path, m)) = stack.pop() {
+        let Some(item) = m.item else {
+            continue;
+        };
+        if vehicles.get(&item).is_some() {
+            continue;
+        }
+        out.push((path.clone(), item));
+        stack.extend(
+            m.children
+                .iter()
+                .rev()
+                .map(|c| (format!("{path}/{}", c.port), c)),
+        );
+    }
+    out
+}
+
 /// What `ports` hold under the loadout `entries`: an entry's item, or else
 /// the port's default item; below it the entry's nested loadout, or else the
 /// item's own default loadout. Entries naming no listed port follow at the

@@ -1,0 +1,148 @@
+//! Re-proves the ship systems inputs against spviewer (LIVE 4.10.197) on
+//! the stock RSI Constellation Mk V Centaurus: two Sedulity power plants
+//! (19 segments each) share 24, the coolers convert 4 segments into 41
+//! coolant, the nominal EM per component (plant 9,410, cooler 1,980,
+//! shield 1,800, radar 3,200, life support 625), and the ship's power pools
+//! (weapons fixed at 4, shields dynamic for 2 generators). Prints each
+//! mounted item's online deltas.
+//!
+//! ```bash
+//! cargo run -p sc-vehicles --release --example ship_systems_probe
+//! ```
+
+use std::collections::HashMap;
+
+use sc_extract::generated::{EItemType, ResourceNetworkResource};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, RecordCollection};
+use sc_items::Items;
+use sc_vehicles::{
+    NetworkParams, PoolSize, PortContainers, ResourceProfiles, ResourceUnits, Vehicles,
+    network_items, plant_output,
+};
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let install = sc_discovery::discover_primary()?;
+    println!("{} v{}", install.channel, install.short_version());
+    let assets = AssetSource::from_install(&install)?;
+    let data = AssetData::extract(&assets, &AssetConfig::standard())?;
+    let datacore = Datacore::parse(&assets, &data)?;
+    let items = Items::build(datacore.records());
+    let containers = PortContainers::build(&datacore);
+    let vehicles = Vehicles::build(&datacore, &items, &containers, &assets);
+    let profiles = ResourceProfiles::build(&datacore);
+    let network = NetworkParams::build(&datacore).ok_or("no ItemResourceNetworkGlobal")?;
+    println!("{} resource profiles; network {network:?}", profiles.len());
+    assert_eq!(network.plant_modifiers, [0, 1, 2, 3, 4]);
+    assert!(network.distribution.pools_fill_min);
+    assert_eq!(network.distribution.weapons, 0.5);
+
+    let names: HashMap<Guid, String> = datacore
+        .db()
+        .all_records()
+        .filter(|r| r.type_name() == Some("EntityClassDefinition"))
+        .filter_map(|r| Some((r.id(), short(r.name()?))))
+        .collect();
+    let (guid, ship) = vehicles
+        .iter()
+        .find(|(g, _)| names.get(g).map(String::as_str) == Some("RSI_Constellation_Mk5_Centaurus"))
+        .ok_or("no Centaurus")?;
+
+    let pools = &containers.get(guid).ok_or("no container")?.power_pools;
+    println!("\npools: {pools:?}");
+    assert!(
+        pools
+            .iter()
+            .any(|p| p.item_type == EItemType::WeaponGun && p.size == PoolSize::Fixed(4))
+    );
+    assert!(
+        pools.iter().any(|p| p.item_type == EItemType::Shield
+            && p.size == PoolSize::Dynamic { max_items: Some(2) })
+    );
+
+    // The docked Skylark (with its own plant) runs its own network.
+    let mounted = network_items(&ship.stock, &vehicles);
+    let mut plants = Vec::new();
+    let mut em = HashMap::new();
+    println!();
+    for (path, item) in &mounted {
+        let Some(online) = profiles.get(item).and_then(|p| p.online()) else {
+            continue;
+        };
+        let name = names.get(item).map_or("?", String::as_str);
+        let deltas: Vec<String> = online
+            .deltas
+            .iter()
+            .map(|d| {
+                let side = |a: &Option<sc_vehicles::ResourceAmount>| {
+                    a.as_ref()
+                        .map(|a| format!("{}={:?}", a.resource.as_dcb_str(), a.per_second))
+                };
+                format!(
+                    "{:?} {}->{} min{}{}",
+                    d.kind,
+                    side(&d.consumes).unwrap_or_default(),
+                    side(&d.generates).unwrap_or_default(),
+                    d.minimum_fraction,
+                    d.dynamic
+                        .as_ref()
+                        .map(|x| format!(" dyn {x:?}"))
+                        .unwrap_or_default()
+                )
+            })
+            .collect();
+        println!(
+            "{path:<60} {name:<40} EM {:>6} | {}",
+            online.em.map_or(0.0, |e| e.nominal),
+            deltas.join(" | ")
+        );
+        if let Some(e) = online.em {
+            em.insert(name.to_string(), e.nominal);
+        }
+        if let Some(ResourceUnits::Segments(units)) = online
+            .generation(&ResourceNetworkResource::Power)
+            .and_then(|d| d.generates.as_ref())
+            .map(|a| a.per_second)
+        {
+            let size = items.get(item).map_or(0, |i| i.size);
+            let own = profiles.get(item).and_then(|p| p.plant_modifier);
+            plants.push((units, network.plant_modifier(size, own)));
+        }
+        if name == "COOL_JUST_S02_Snowfall_SCItem" {
+            let conv = online
+                .generation(&ResourceNetworkResource::Coolant)
+                .ok_or("cooler")?;
+            assert_eq!(
+                conv.consumes.as_ref().map(|a| a.per_second),
+                Some(ResourceUnits::Segments(4))
+            );
+            assert_eq!(
+                conv.generates.as_ref().map(|a| a.per_second.standard()),
+                Some(41.0)
+            );
+        }
+    }
+
+    let online = plants.len() as i32;
+    let supply: i32 = plants
+        .iter()
+        .map(|&(u, m)| plant_output(u, online, m))
+        .sum();
+    println!("\nplants {plants:?} -> supply {supply}");
+    assert_eq!(plants, [(19, 2), (19, 2)]);
+    assert_eq!(supply, 24);
+    for (name, want) in [
+        ("POWR_JUST_S02_Sedulity_SCItem", 9410.0),
+        ("COOL_JUST_S02_Snowfall_SCItem", 1980.0),
+        ("SHLD_BEHR_S03_5CA_SCItem", 1800.0),
+        ("RADR_WLOP_S03_Lephari", 3200.0),
+        ("LFSP_TYDT_S02_ComfortAirPlus", 625.0),
+    ] {
+        assert_eq!(em.get(name), Some(&want), "{name}");
+    }
+    println!("asserts passed: Centaurus supply, cooler conversion, nominal EM, pools");
+    Ok(())
+}
+
+fn short(name: &str) -> String {
+    name.rsplit('.').next().unwrap_or(name).to_string()
+}

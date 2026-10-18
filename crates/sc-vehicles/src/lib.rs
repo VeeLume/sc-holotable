@@ -38,12 +38,21 @@
 //! ```
 
 mod container;
+mod network;
 mod port;
+mod power;
+mod resource;
 mod vehicle;
 
 pub use container::{LoadoutEntry, PortContainer, PortContainers};
+pub use network::{DistributionDefaults, NetworkParams, PoolSize, PowerPool};
 pub use port::{Misfit, Port, PortSource, fits, has_flag, is_editable};
-pub use vehicle::{Mounted, Vehicle, Vehicles};
+pub use power::{em_signature, plant_output, signature_ratio};
+pub use resource::{
+    DeltaKind, DynamicAmount, PowerRange, ResourceAmount, ResourceDelta, ResourceProfile,
+    ResourceProfiles, ResourceState, ResourceUnits, Signature,
+};
+pub use vehicle::{Mounted, Vehicle, Vehicles, network_items};
 
 /// Re-export the canonical accessor trait so consumers can bring the
 /// `get` / `iter` / `len` / `values` surface into scope alongside the collections.
