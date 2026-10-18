@@ -1,13 +1,13 @@
 //! Vehicles: hull, ports and stock loadout.
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use sc_extract::generated::{
-    DataForgeComponentParamsPtr, EAEntityInclusionMode, EntityClassDefinition,
+    DataForgeComponentParamsPtr, EAEntityInclusionMode, EItemSubType, EntityClassDefinition,
     EntityClassStaticDataParamsPtr, SSCSignatureSystemCrossSectionParamsPtr,
 };
 use sc_extract::{
-    AssetSource, DataPools, Datacore, Guid, LocaleKey, RecordCollection, VehicleDefinition,
+    AssetSource, DataPools, Datacore, Guid, LocaleKey, RecordCollection, Value, VehicleDefinition,
     VehiclePart,
 };
 use sc_items::Items;
@@ -60,6 +60,28 @@ pub struct Vehicle {
     /// `EAEntityDataParams.inclusionMode` is `ReadyToInclude`.
     #[serde(default)]
     pub ea_ready: bool,
+    /// A reward struct (`ContractResult_Item.entityClass`,
+    /// `ItemAwardEntityClass.entityClass`, `SWeightedRewardEntry.
+    /// rewardEntityRecord`) hands it out: a Wikelo, PYAM Exec or BTALA
+    /// reward ship. Rentals are not rewards.
+    #[serde(default)]
+    pub reward: bool,
+    /// `SEntityComponentHostilityCompositeParams.useOnlyPrimaryChildForHostility`:
+    /// set on mission and AI ships only (hijacked / drug-run hulls).
+    #[serde(default)]
+    pub scenario: bool,
+    /// `VehicleComponentParams.unmoveable`: a display hull.
+    #[serde(default)]
+    pub display: bool,
+    /// `aiEngineeringOptions.canExplodeFromHullDamage`.
+    #[serde(default)]
+    pub explodes_from_hull_damage: bool,
+    /// `AttachDef.SubType` is `Vehicle_GroundVehicle`.
+    #[serde(default)]
+    pub ground: bool,
+    /// `VehicleComponentParams.isGravlevVehicle`.
+    #[serde(default)]
+    pub gravlev: bool,
     /// What a calculator should list it as.
     #[serde(default)]
     pub listing: Listing,
@@ -77,17 +99,23 @@ pub struct Vehicle {
 
 /// What a vehicle record is to a player. No DCB field marks a player
 /// ship (LIVE 4.10: insurance, entitlement, purchasable, inclusion and tags
-/// all also sit on AI records), so this combines two signals: the
-/// insurance link (`shipEntityClassName`, the only variant-to-base link)
-/// and, for records nothing names, an own `vehicleName`, no AI crew and
-/// `EAEntityDataParams` ready for inclusion.
+/// all also sit on AI records), so this combines signals, in order:
 ///
-/// LIVE 4.10: 223 bases + 84 editions = 307 records, 287 names, against
-/// about 250-300 on calculator sites. Against scunpacked's ship list it
-/// lists about 14 more (mission variants such as the hijacked 890 Jumps,
-/// and four crewless AI templates the data cannot tell apart) and misses
-/// 28 that share their base's name (BIS 2950, `_Display`, Apollo tiers),
-/// which a calculator folds into the base anyway.
+/// 1. a record a reward struct hands out is a [`Reward`](Self::Reward);
+/// 2. a scenario hull ([`Vehicle::scenario`]) or a display hull
+///    ([`Vehicle::display`]) is a variant;
+/// 3. a record some vehicle's insurance names (`shipEntityClassName`, the
+///    only variant-to-base link) is a [`Base`](Self::Base), unless it is
+///    not ready for inclusion and no loadout docks it;
+/// 4. otherwise, a record with its own `vehicleName`, no AI crew, ready
+///    for inclusion and not exploding from hull damage (the AI templates)
+///    is an [`Edition`](Self::Edition);
+/// 5. the rest are variants.
+///
+/// LIVE 4.10: 246 listed records (240 names), every one of erkul's 222
+/// (joined by GUID) plus 24 the data cannot tell apart: event editions
+/// (BIS 2949 Showdowns, CitizenCon), Teach's Specials, five old hulls
+/// with a newer `_GS` twin of the same name, one TEMP record.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub enum Listing {
     /// A base hull: some vehicle's insurance names it.
@@ -95,6 +123,8 @@ pub enum Listing {
     /// An edition of a base: its own `vehicleName`, no AI crew, ready for
     /// inclusion.
     Edition,
+    /// A ship a contract or reward terminal hands out.
+    Reward,
     /// An AI, mission, display or same-named variant.
     #[default]
     Variant,
@@ -265,6 +295,20 @@ impl Vehicles {
                         matches!(d, EntityClassStaticDataParamsPtr::EAEntityDataParams(h)
                             if h.get(pools).is_some_and(|e| e.inclusion_mode == EAEntityInclusionMode::ReadyToInclude))
                     }),
+                    reward: false,
+                    scenario: ecd.components.iter().any(|c| {
+                        matches!(c, DataForgeComponentParamsPtr::SEntityComponentHostilityCompositeParams(h)
+                            if h.get(pools).is_some_and(|p| p.use_only_primary_child_for_hostility))
+                    }),
+                    display: params.unmoveable,
+                    explodes_from_hull_damage: params
+                        .ai_engineering_options
+                        .and_then(|h| h.get(pools))
+                        .is_some_and(|o| o.can_explode_from_hull_damage),
+                    ground: items
+                        .get(&guid)
+                        .is_some_and(|i| i.item_sub_type == EItemSubType::Vehicle_GroundVehicle),
+                    gravlev: params.is_gravlev_vehicle,
                     listing: Listing::Variant,
                     hull: hull.as_ref().map(|h| h.parts.clone()).unwrap_or_default(),
                     item_port_tags: hull
@@ -295,24 +339,36 @@ impl Vehicles {
             }
         }
 
-        // Listing. A base hull is what some insurance names; an edition has
-        // its own name, no AI crew and is ready for inclusion; the rest are
-        // variants (AI, mission, display, same-named).
-        let bases: std::collections::HashSet<Guid> =
-            by_guid.values().filter_map(|v| v.insured_as).collect();
+        // Listing (see `Listing`).
+        let rewards = reward_classes(datacore);
+        let bases: HashSet<Guid> = by_guid.values().filter_map(|v| v.insured_as).collect();
+        let docked: HashSet<Guid> = by_guid
+            .values()
+            .flat_map(|v| carried(&v.stock))
+            .filter(|g| by_guid.contains_key(g))
+            .collect();
         let names: HashMap<Guid, Option<LocaleKey>> = by_guid
             .iter()
             .map(|(g, v)| (*g, v.name_key.clone()))
             .collect();
         for (guid, v) in &mut by_guid {
-            v.listing = if bases.contains(guid) {
-                Listing::Base
+            v.reward = rewards.contains(guid);
+            v.listing = if v.reward {
+                Listing::Reward
+            } else if v.scenario || v.display {
+                Listing::Variant
+            } else if bases.contains(guid) {
+                if v.ea_ready || docked.contains(guid) {
+                    Listing::Base
+                } else {
+                    Listing::Variant
+                }
             } else {
                 let own_name = v
                     .insured_as
                     .and_then(|b| names.get(&b))
                     .is_none_or(|base| *base != v.name_key);
-                if own_name && !v.ai_crew && v.ea_ready {
+                if own_name && !v.ai_crew && v.ea_ready && !v.explodes_from_hull_damage {
                     Listing::Edition
                 } else {
                     Listing::Variant
@@ -323,11 +379,11 @@ impl Vehicles {
     }
 
     /// The vehicles a calculator lists: [`Listing::Base`] and
-    /// [`Listing::Edition`].
+    /// [`Listing::Edition`] ([`Listing::Reward`] ships are separate).
     pub fn listed(&self) -> impl Iterator<Item = (&Guid, &Vehicle)> + '_ {
         self.by_guid
             .iter()
-            .filter(|(_, v)| v.listing != Listing::Variant)
+            .filter(|(_, v)| matches!(v.listing, Listing::Base | Listing::Edition))
     }
 
     /// What `item` brings below it when mounted: its ports (a docked
@@ -354,6 +410,49 @@ impl Vehicles {
             None => containers.get(item).map_or(&[][..], |c| &c.ports[..]),
         }
     }
+}
+
+/// Every item a loadout tree carries.
+fn carried(level: &[Mounted]) -> Vec<Guid> {
+    let mut out = Vec::new();
+    let mut stack: Vec<&Mounted> = level.iter().collect();
+    while let Some(m) = stack.pop() {
+        out.extend(m.item);
+        stack.extend(&m.children);
+    }
+    out
+}
+
+/// The entity classes the reward structs hand out. Those structs sit in
+/// contract and reward-terminal records outside this crate's features, so
+/// their instances are walked on the raw layer by struct type and read by
+/// their typed `Reference` field (no record names involved).
+fn reward_classes(datacore: &Datacore) -> HashSet<Guid> {
+    const REWARDS: [(&str, &str); 3] = [
+        ("ContractResult_Item", "entityClass"),
+        ("ItemAwardEntityClass", "entityClass"),
+        ("SWeightedRewardEntry", "rewardEntityRecord"),
+    ];
+    let db = datacore.db();
+    let mut out = HashSet::new();
+    for m in db.data_mappings() {
+        let Ok(index) = usize::try_from(m.struct_index) else {
+            continue;
+        };
+        let Some(field) = db
+            .struct_name(index)
+            .and_then(|n| REWARDS.iter().find(|(s, _)| *s == n))
+            .map(|(_, f)| *f)
+        else {
+            continue;
+        };
+        for i in 0..m.struct_count {
+            if let Some(Value::Reference(Some(r))) = db.instance(index as u32, i).get(field) {
+                out.insert(r.guid);
+            }
+        }
+    }
+    out
 }
 
 /// The class its insurance claims return (`shipEntityClassName`): an
