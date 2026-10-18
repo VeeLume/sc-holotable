@@ -3,7 +3,8 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::{
-    DataForgeComponentParamsPtr, EntityClassDefinition, SSCSignatureSystemCrossSectionParamsPtr,
+    DataForgeComponentParamsPtr, EntityClassDefinition, EntityClassStaticDataParamsPtr,
+    SSCSignatureSystemCrossSectionParamsPtr,
 };
 use sc_extract::{
     AssetSource, DataPools, Datacore, Guid, LocaleKey, RecordCollection, VehicleDefinition,
@@ -42,6 +43,11 @@ pub struct Vehicle {
     /// geometry (`.cga`), whose helper nodes place the item ports.
     #[serde(default)]
     pub geometry: Option<String>,
+    /// `SEntityInsuranceProperties.shipInsuranceParams`: what an insurance
+    /// claim costs in time and money; `None` for vehicles that cannot be
+    /// insured.
+    #[serde(default)]
+    pub insurance: Option<Insurance>,
     /// The hull's parts (vehicle XML), each with its HP and mass.
     pub hull: Vec<VehiclePart>,
     /// The vehicle XML's `itemPortTags`.
@@ -52,6 +58,16 @@ pub struct Vehicle {
     pub ports: Vec<Port>,
     /// What every port holds as the vehicle ships.
     pub stock: Vec<Mounted>,
+}
+
+/// `ShipInsuranceParams`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Insurance {
+    /// `baseWaitTimeMinutes` / `mandatoryWaitTimeMinutes`.
+    pub base_wait_minutes: f32,
+    pub mandatory_wait_minutes: f32,
+    /// `baseExpeditingFee`, aUEC.
+    pub expediting_fee: u32,
 }
 
 /// A port of a loadout with what it holds, and what that holds in turn.
@@ -182,6 +198,7 @@ impl Vehicles {
                         .map(|v| [v.x, v.y, v.z]),
                     cross_section: cross_section(ecd, pools),
                     geometry: geometry(ecd, pools),
+                    insurance: insurance(ecd, pools),
                     hull: hull.as_ref().map(|h| h.parts.clone()).unwrap_or_default(),
                     item_port_tags: hull
                         .as_ref()
@@ -237,6 +254,21 @@ impl Vehicles {
             None => containers.get(item).map_or(&[][..], |c| &c.ports[..]),
         }
     }
+}
+
+/// The entity's ship insurance terms.
+fn insurance(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Insurance> {
+    ecd.static_entity_class_data.iter().find_map(|d| match d {
+        EntityClassStaticDataParamsPtr::SEntityInsuranceProperties(h) => {
+            let p = h.get(pools)?.ship_insurance_params?.get(pools)?;
+            Some(Insurance {
+                base_wait_minutes: p.base_wait_time_minutes,
+                mandatory_wait_minutes: p.mandatory_wait_time_minutes,
+                expediting_fee: p.base_expediting_fee,
+            })
+        }
+        _ => None,
+    })
 }
 
 /// The entity's root geometry path.

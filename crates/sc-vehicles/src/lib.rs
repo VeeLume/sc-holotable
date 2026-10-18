@@ -62,7 +62,7 @@ pub use resource::{
     DeltaKind, DynamicAmount, PowerRange, ResourceAmount, ResourceDelta, ResourceProfile,
     ResourceProfiles, ResourceState, ResourceUnits, Signature,
 };
-pub use vehicle::{Mounted, Vehicle, Vehicles, network_items};
+pub use vehicle::{Insurance, Mounted, Vehicle, Vehicles, network_items};
 
 /// Re-export the canonical accessor trait so consumers can bring the
 /// `get` / `iter` / `len` / `values` surface into scope alongside the collections.

@@ -46,6 +46,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .ok_or("no Centaurus")?;
     assert_eq!(ship.hull_health(), 170_500.0);
     assert_eq!(ship.crew_size, 4);
+    // Insurance terms (AI and unmanned records carry them too, so they do
+    // not tell player ships apart).
+    let ins = ship.insurance.as_ref().ok_or("no insurance")?;
+    assert_eq!((ins.base_wait_minutes, ins.expediting_fee), (13.5, 6750));
     // erkul's 25.4k cross-section is the largest axis.
     assert_eq!(ship.cross_section, Some([8350.0, 11320.0, 25430.0]));
     let at = |path: &[&str]| -> Option<&Mounted> {
