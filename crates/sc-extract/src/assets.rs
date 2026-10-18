@@ -276,11 +276,9 @@ impl AssetSource {
         }
     }
 
-    /// Read a vehicle XML by its in-archive relative path.
-    ///
-    /// This is currently a thin alias over [`read`](Self::read) — it exists
-    /// as a named entry point so future callers can find it even before the
-    /// hand-written vehicle XML parser lands.
+    /// Read a vehicle XML's bytes by its in-archive relative path. To parse
+    /// one, with its modification applied, use
+    /// [`VehicleDefinition::read`](crate::VehicleDefinition::read).
     pub fn vehicle_xml(&self, relative_path: &str) -> Result<Vec<u8>> {
         self.read(relative_path)
     }

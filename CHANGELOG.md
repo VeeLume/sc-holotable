@@ -13,6 +13,18 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract`: vehicle XML reader** (`VehicleDefinition`), the first piece of the ship model for Starlume's loadout calculator.
+  - `VehicleDefinition::read(assets, path, modification)` reads a ship's hull XML, named by `VehicleComponentParams.vehicleDefinition`. It applies the record's modification: first the `patchFile`, whose top-level elements replace the base elements with the same `id`, then the `<Elem idRef name value>` patches.
+  - It gives the `Part` tree: name, class, parent, mass, `damageMax`, detach ratio / probability.
+  - Each `ItemPort` gives size range, flags, port and required tags, display name, weapon group, typed `EItemType` / `EItemSubType` types, and pitch / yaw limits.
+  - Also the ship's `itemPortTags` / `requiredItemTags` and the vehicle damage multipliers.
+  - `hull_health()` sums `damageMax`; `hull_mass()` is the root part's mass.
+  - A patch file missing from the archive (three LIVE 4.10 wreck records) logs a warning and keeps the base.
+  - Probe `vehicle_xml_probe`: the RSI Constellation Mk V Centaurus reproduces spviewer / erkul (170,500 hull HP over 31 parts, 45,000 vital body, 1 / 12 / 14 / 4 part split, 1,240,000 kg). All 1,147 vehicle records read.
+- **`sc-extract`: `Error::VehicleXml`**.
+
 ## [v0.26.0] - 2026-10-18
 
 ### Added

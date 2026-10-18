@@ -70,6 +70,7 @@ mod record_paths;
 mod skeleton;
 mod snapshot;
 mod texture;
+mod vehicle;
 
 /// Machine-generated DataCore schema bindings — workspace-internal escape
 /// hatch. Every type in this module mirrors a DCB struct or enum and
@@ -99,6 +100,7 @@ pub use sc_extract_generated::{
 pub use skeleton::{Bone, Skeleton};
 pub use snapshot::{ExtractSnapshot, SnapshotCaptureConfig, SnapshotMeta};
 pub use texture::{Texture, TextureFormat};
+pub use vehicle::{PortType, VehicleDefinition, VehiclePart, VehiclePort};
 
 // ── svarog re-exports ──────────────────────────────────────────────────────
 

@@ -92,6 +92,10 @@ pub enum Error {
     #[error("malformed character definition: {0}")]
     Character(String),
 
+    /// A vehicle XML was not a `<Vehicle>` document.
+    #[error("malformed vehicle XML: {0}")]
+    VehicleXml(String),
+
     /// A DDS texture (or one of its split mip files) was malformed.
     #[error("malformed DDS texture: {0}")]
     Texture(String),
