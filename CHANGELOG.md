@@ -13,6 +13,33 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract`: vehicle XML reader** (`VehicleDefinition`), the first piece of the ship model for Starlume's loadout calculator.
+  - `VehicleDefinition::read(assets, path, modification)` reads a ship's hull XML, named by `VehicleComponentParams.vehicleDefinition`. It applies the record's modification: first the `patchFile`, whose top-level elements replace the base elements with the same `id`, then the `<Elem idRef name value>` patches.
+  - It gives the `Part` tree: name, class, parent, mass, `damageMax`, detach ratio / probability.
+  - Each `ItemPort` gives size range, flags, port and required tags, display name, weapon group, typed `EItemType` / `EItemSubType` types, and pitch / yaw limits.
+  - Also the ship's `itemPortTags` / `requiredItemTags` and the vehicle damage multipliers.
+  - `hull_health()` sums `damageMax`; `hull_mass()` is the root part's mass.
+  - A patch file missing from the archive (three LIVE 4.10 wreck records) logs a warning and keeps the base.
+  - Probe `vehicle_xml_probe`: the RSI Constellation Mk V Centaurus reproduces spviewer / erkul (170,500 hull HP over 31 parts, 45,000 vital body, 1 / 12 / 14 / 4 part split, 1,240,000 kg). All 1,147 vehicle records read.
+- **`sc-extract`: `Error::VehicleXml`**.
+- **`sc-vehicles` (new domain crate; umbrella feature `vehicles`)**: ships and ground vehicles as a loadout sees them.
+  - `Vehicles::build(datacore, items, containers, assets)` gives every entity with `VehicleComponentParams` (1,147 in LIVE 4.10):
+    - its hull parts with HP and mass (`hull_health()`, `hull_mass()`), crew size and bounding box;
+    - its ports: the hull XML's hardpoints plus the entity's own;
+    - its `stock` loadout as a tree of `Mounted { port, item, children }`.
+  - Stock loadout rule: an entry's item, or else the port's `defaultItem`; below it the entry's nested loadout, or else the item's own default loadout. Docked vehicles bring their hull's ports.
+  - `PortContainers::build(datacore)` holds every entity's own ports and default loadout.
+  - `fits(port, item, offered_tags)` checks the type / sub-type, size and tag rule. On the player-editable stock attachments of non-AI vehicles it rejects 1.5 %; locked ports are filled by force.
+  - `Vehicle::offered_tags` collects the tags offered from above.
+  - `has_flag` / `is_editable` follow the client's flag inheritance: `uneditable` locks a subtree, `$uneditable` only its port.
+  - Probe `vehicles_probe`: the Constellation Mk V Centaurus resolves to every component spviewer lists, with its gimbals locked and their guns swappable.
+
+### Changed
+
+- **`sc-items`: `Item` gains `tags` and `required_tags`** (`AttachDef.Tags` / `RequiredTags`, split on spaces), so struct literals need them.
+
 ## [v0.26.0] - 2026-10-18
 
 ### Added

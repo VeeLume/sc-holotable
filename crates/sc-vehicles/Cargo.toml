@@ -1,0 +1,24 @@
+[package]
+name = "sc-vehicles"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Domain crate: ships and ground vehicles as a loadout sees them. The hull
+# and its hardpoints come from the vehicle XML (sc-extract's reader), the
+# entity's own ports and default loadout from the DCB.
+#   entities-spaceships     ship EntityClassDefinitions
+#   entities-groundvehicles ground vehicle EntityClassDefinitions
+#   entities-scitem         the items in their loadouts (child ports, default loadouts)
+sc-extract = { workspace = true, features = [
+    "entities-spaceships",
+    "entities-groundvehicles",
+    "entities-scitem",
+] }
+sc-items = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }

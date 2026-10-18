@@ -119,6 +119,14 @@ pub struct Item {
     pub size: i32,
     /// `AttachDef.Grade` — the item's quality grade. `0` when ungraded.
     pub grade: i32,
+    /// `AttachDef.Tags`, split on spaces as authored: what the item offers a
+    /// port's required tags (ship-locked parts carry the ship's tag).
+    #[serde(default)]
+    pub tags: Vec<String>,
+    /// `AttachDef.RequiredTags`: tags the item needs from the port it goes
+    /// into (or that port's parents and ship).
+    #[serde(default)]
+    pub required_tags: Vec<String>,
 }
 
 impl Item {
@@ -314,7 +322,13 @@ fn item_for(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Item> {
         item_sub_type: item_def.sub_type.clone(),
         size: item_def.size,
         grade: item_def.grade,
+        tags: words(&item_def.tags),
+        required_tags: words(&item_def.required_tags),
     })
+}
+
+fn words(s: &str) -> Vec<String> {
+    s.split_whitespace().map(str::to_string).collect()
 }
 
 /// [`sc_extract::RecordVisitor`] that builds an [`Items`] in a bundled
@@ -384,6 +398,8 @@ mod tests {
             item_sub_type: EItemSubType::Unrecognized(String::new()),
             size: 0,
             grade: 0,
+            tags: Vec::new(),
+            required_tags: Vec::new(),
         }
     }
 
