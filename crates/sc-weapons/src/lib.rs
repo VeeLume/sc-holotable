@@ -22,7 +22,7 @@
 //!
 //! // Neither the engagement window nor the power share has a default — the
 //! // scenario decides, not this crate.
-//! let ctx = LoadoutContext { window_seconds: 30.0, power_per_slot: None };
+//! let ctx = LoadoutContext { window_seconds: 30.0, power: None };
 //! for w in &weapons.ships {
 //!     println!(
 //!         "{} S{}: burst {:?} dps, {:?} effective over 30 s",
@@ -71,7 +71,7 @@ pub use fire_action::{ChargeModifier, FireActionKind};
 pub use fps::FpsWeapon;
 pub use missile::{Missile, TrackingProfile};
 pub use pools::WeaponPools;
-pub use ship::{LoadoutContext, ShipWeapon};
+pub use ship::{LoadoutContext, ShipWeapon, WeaponPower};
 pub use sustain::{EnergyModel, HeatModel, SustainKind};
 
 // ── Narrow-consumer re-exports ──────────────────────────────────────────────

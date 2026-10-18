@@ -42,6 +42,7 @@ mod defense;
 mod distribution;
 mod flight;
 mod loadout;
+mod modifiers;
 mod network;
 mod port;
 mod power;
@@ -56,6 +57,7 @@ pub use distribution::{
 };
 pub use flight::{Accelerations, Burn, Flight, port_axes};
 pub use loadout::{Loadout, Refusal};
+pub use modifiers::{ItemportModifier, ItemportModifiers, RegenModifier, weapon_power};
 pub use network::{DistributionDefaults, NetworkParams, PoolSize, PowerPool};
 pub use port::{Misfit, Port, PortSource, fits, has_flag, is_editable};
 pub use power::{em_signature, plant_output, signature_ratio};

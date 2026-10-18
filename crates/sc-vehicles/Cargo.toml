@@ -21,6 +21,8 @@ sc-extract = { workspace = true, features = [
 sc-items = { workspace = true }
 # Component sheets (thrust, flight controller) for the derived flight stats.
 sc-items-ship-components = { workspace = true }
+# WeaponPower: what a gun's power share and the ship's modifiers do to it.
+sc-weapons = { workspace = true }
 serde = { workspace = true }
 tracing = { workspace = true }
 

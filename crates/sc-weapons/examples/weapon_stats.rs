@@ -33,11 +33,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let window: f32 = arg_value(&args, "--window")
         .and_then(|s| s.parse().ok())
         .unwrap_or(30.0);
+    // `--power` is the weapon's power ratio (granted / requested).
     let power: Option<f32> = arg_value(&args, "--power").and_then(|s| s.parse().ok());
 
     let ctx = LoadoutContext {
         window_seconds: window,
-        power_per_slot: power,
+        power: power.map(WeaponPower::at),
     };
 
     let t0 = Instant::now();
@@ -58,11 +59,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mfrs = Manufacturers::build(datacore.records());
 
     println!(
-        "\nLoadoutContext: window={}s, power_per_slot={}",
+        "\nLoadoutContext: window={}s, power ratio={}",
         ctx.window_seconds,
-        ctx.power_per_slot
-            .map(|p| format!("{p}"))
-            .unwrap_or_else(|| "unconstrained".into())
+        ctx.power
+            .map(|p| format!("{}", p.ratio))
+            .unwrap_or_else(|| "full".into())
     );
 
     if show_fps {

@@ -4,11 +4,12 @@ use sc_extract::generated::*;
 /// Ballistic heat model — extracted from `SWeaponSimplifiedHeatParams` +
 /// the weapon's primary fire action / `SWeaponConnectionParams`.
 ///
-/// `heat_rate_per_second` unifies two data paths observed in 4.7 LIVE:
-/// - **Rapid / Single** fire actions carry `heatPerShot`; heat rate =
-///   `heat_per_shot × rpm / 60`.
-/// - **Sequence** fire actions carry no per-shot heat; heat rate is read
-///   directly from `SWeaponConnectionParams.heatRateOnline`.
+/// `heat_rate_per_second` is `heatPerShot × shots per second`, as the
+/// client heats per shot (`FUN_145b2f800`; LIVE 4.10): a Rapid / Single
+/// action's own `heatPerShot` at its rate, a Sequence's inner actions'
+/// `heatPerShot` at the sequence's rate. `SWeaponConnectionParams.
+/// heatRateOnline` is not read on the shot path; it is only the fallback
+/// when no action carries per-shot heat.
 ///
 /// Weapons with no heat source at all (ship ballistic scatter guns in 4.7)
 /// have `heat_rate_per_second == 0.0` and never overheat — sustain methods
@@ -262,10 +263,9 @@ pub(crate) fn extract_sustain(
     SustainKind::None
 }
 
-/// Compute heat-per-second from the primary fire action, if it carries a
-/// `heat_per_shot` field with meaningful value. Returns `None` for
-/// Sequence variants (no per-shot heat) or Rapid/Single with zero hps
-/// (scatter guns) — the caller falls back to `heat_rate_online`.
+/// Compute heat-per-second from the primary fire action's per-shot heat
+/// (a sequence's inner actions'). `None` when no action carries one
+/// (scatter guns); the caller falls back to `heat_rate_online`.
 fn heat_rate_from_fire_action(wp: &SCItemWeaponComponentParams, pools: &DataPools) -> Option<f32> {
     let action = wp.fire_actions.first()?;
     match action {
@@ -284,6 +284,10 @@ fn heat_rate_from_fire_action(wp: &SCItemWeaponComponentParams, pools: &DataPool
             } else {
                 None
             }
+        }
+        SWeaponActionParamsPtr::SWeaponActionSequenceParams(h) => {
+            let t = crate::fire_action::sequence_timing(h.get(pools)?, pools)?;
+            (t.heat_per_shot > 0.0).then(|| t.heat_per_shot * t.rpm / 60.0)
         }
         _ => None,
     }
