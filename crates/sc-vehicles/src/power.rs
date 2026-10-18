@@ -43,7 +43,7 @@ pub fn signature_ratio(ranges: &[PowerRange], units: i32, ratio: f32) -> f32 {
 /// [`signature_ratio`] (the live value decays toward it at the entry's
 /// `decay_rate`).
 pub fn em_signature(state: &ResourceState, units: i32, ratio: f32) -> f32 {
-    state.em.map_or(0.0, |Signature { nominal, .. }| {
+    state.em.as_ref().map_or(0.0, |Signature { nominal, .. }| {
         nominal * signature_ratio(&state.power_ranges, units, ratio)
     })
 }

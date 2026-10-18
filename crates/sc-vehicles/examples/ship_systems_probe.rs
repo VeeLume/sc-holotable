@@ -7,7 +7,9 @@
 //! client's power-on distribution in SCM and Navigation: coolers 4 each,
 //! flight controller 3 of 6, shields 2 + 2 (off in Navigation), guns 2 of
 //! 12.2, the quantum drive off in SCM, the rest to radar and life support.
-//! Prints each mounted item's online deltas and both allocations.
+//! The engineering screen's cooling bar at power-on in SCM: 33.65 coolant
+//! asked of 82 made (41 %). Prints each mounted item's online deltas, both
+//! allocations and their readouts.
 //!
 //! ```bash
 //! cargo run -p sc-vehicles --release --example ship_systems_probe
@@ -35,6 +37,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let profiles = ResourceProfiles::build(&datacore);
     let network = NetworkParams::build(&datacore).ok_or("no ItemResourceNetworkGlobal")?;
     println!("{} resource profiles; network {network:?}", profiles.len());
+    // Signature functionality curves (none on LIVE 4.10 ship items, so the
+    // readout maps the ratio linearly).
+    let curved: Vec<&Guid> = profiles
+        .iter()
+        .filter(|(_, p)| {
+            p.states.iter().any(|s| {
+                [s.em.as_ref(), s.ir.as_ref()]
+                    .into_iter()
+                    .flatten()
+                    .any(|e| !e.curve.is_empty())
+            })
+        })
+        .map(|(g, _)| g)
+        .collect();
+    println!("{} profiles with a signature curve", curved.len());
+    assert!(
+        curved.is_empty(),
+        "signature curves appeared: the readout needs them"
+    );
     assert_eq!(network.plant_modifiers, [0, 1, 2, 3, 4]);
     assert!(network.distribution.pools_fill_min);
     assert_eq!(network.distribution.weapons, 0.5);
@@ -95,10 +116,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .collect();
         println!(
             "{path:<60} {name:<40} EM {:>6} | {}",
-            online.em.map_or(0.0, |e| e.nominal),
+            online.em.as_ref().map_or(0.0, |e| e.nominal),
             deltas.join(" | ")
         );
-        if let Some(e) = online.em {
+        if let Some(e) = &online.em {
             em.insert(name.to_string(), e.nominal);
         }
         if let Some(ResourceUnits::Segments(units)) = online
@@ -202,7 +223,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for (p, t) in network.pools.iter().zip(&a.pool_targets) {
             println!("  pool {} target {t}", p.item_type.as_dcb_str());
         }
+        let readout = network.readout(&a, &mode);
+        for i in readout
+            .items
+            .iter()
+            .filter(|i| i.coolant_asked > 0.0 || i.coolant_made > 0.0)
+        {
+            println!(
+                "  {:<40} ratio {:.3}  coolant made {:>5.2} asked {:>5.2}  EM {:>7.1}",
+                i.path, i.ratio, i.coolant_made, i.coolant_asked, i.em
+            );
+        }
+        println!(
+            "  cooling {:.2} / {:.2} = {:.1} %, EM {:.0}, IR {:.0}",
+            readout.coolant_asked,
+            readout.coolant_made,
+            100.0 * readout.cooling().unwrap_or(0.0),
+            readout.em,
+            readout.ir
+        );
         assert_eq!(a.remaining, 0);
+        assert_eq!(readout.coolant_made, 82.0);
+        if mode == EMasterMode::SCM {
+            // Plants 12 + 12, radar 6 × 1, shields 2 × 4 × (0.5 × 0.7), life
+            // support 2 × (0.5 × 0.85); one cooler's IR carries it all.
+            assert!((readout.coolant_asked - 33.65).abs() < 1e-4);
+            assert!((readout.ir - 8710.0 * 33.65 / 41.0).abs() < 0.5);
+        }
         assert_eq!(by_type.get("Cooler"), Some(&8.0));
         assert_eq!(by_type.get("FlightController"), Some(&3.0));
         let radar_ls = by_type.get("Radar").unwrap_or(&0.0)

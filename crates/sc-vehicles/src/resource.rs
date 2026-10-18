@@ -163,12 +163,16 @@ pub enum DynamicAmount {
 }
 
 /// `ItemResourceSignatureEntry`.
-#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Signature {
     /// `nominalSignature`: the value at a power ratio of 1.
     pub nominal: f32,
     /// `decayRate`: how fast the live value follows the ideal one.
     pub decay_rate: f32,
+    /// `functionalityCurve.points`: maps the ratio before it scales the
+    /// nominal value (empty: linear).
+    #[serde(default)]
+    pub curve: Vec<[f32; 2]>,
 }
 
 /// `ResourceRangeParams`: a band of the item's segment count with its
@@ -263,6 +267,17 @@ fn state(h: Handle<ItemResourceState>, pools: &DataPools) -> Option<ResourceStat
         e.and_then(|h| h.get(pools)).map(|e| Signature {
             nominal: e.nominal_signature,
             decay_rate: e.decay_rate,
+            curve: e
+                .functionality_curve
+                .and_then(|c| c.get(pools))
+                .map(|c| {
+                    c.points
+                        .iter()
+                        .filter_map(|p| p.get(pools))
+                        .map(|p| [p.x, p.y])
+                        .collect()
+                })
+                .unwrap_or_default(),
         })
     };
     let range = |r: Option<Handle<ResourceRangeParams>>| {

@@ -53,8 +53,15 @@ pinned. Both tag kinds are monotonic and immutable.
     - the client walks a runtime hash map, so the last segments can land on a different item than in game;
   - `split_pools` shares a pool target out to its members, so a player-set target can be applied;
   - `ratios` gives each item's power ratio.
+  - `readout(allocation, mode)` gives what the engineering screen shows once temperatures settle (`Readout`, `ItemReadout`, from the client's `Signals`):
+    - each item's power ratio with its range modifier, and its EM;
+    - coolant made by the coolers, and coolant asked for by everything that heats (`P × ratio`);
+    - cooler IR, which follows what is drawn from each cooler;
+    - `Readout::cooling()` gives the cooling bar.
+  - `Signature::curve` holds the functionality curve; LIVE 4.10 has none.
   - `PortContainer::max_default_distribution`.
   - The probe reproduces the stock Centaurus at power-on in SCM and Navigation: coolers 4 + 4, flight controller 3 of 6, shields 2 + 2 (off in Navigation), guns 2 of 12.2, quantum drive off in SCM.
+  - At power-on in SCM the probe's cooling bar is 33.65 / 82 = 41 %. spviewer's 65.9 % uses its own static formula.
 - **`sc-items-ship-components`: per-kind sheets**, read through the typed surface:
   - `shield` (`ShieldGenerator`: HP, regen, delays, reserve pool, per-type resistance / absorption ranges);
   - `emitter` (`ShieldEmitter`: face layout, reallocation);

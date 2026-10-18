@@ -12,8 +12,8 @@ use serde::{Deserialize, Serialize};
 use crate::network::item_type_serde;
 use crate::resource::modes_list_serde;
 use crate::{
-    Mounted, NetworkParams, PoolSize, PortContainer, ResourceProfiles, ResourceUnits, Vehicles,
-    network_items, plant_output,
+    DynamicAmount, Mounted, NetworkParams, PoolSize, PortContainer, PowerRange, ResourceProfiles,
+    ResourceUnits, Vehicles, network_items, plant_output, signature_ratio,
 };
 
 /// Micro-units per segment.
@@ -45,6 +45,24 @@ pub struct Plant {
     /// Switched on (every item is, after [`PowerNetwork::build`]: a ship
     /// spawns with most items off and the crew powers it up).
     pub on: bool,
+    /// Its `Online` state's signatures, power ranges and heat.
+    pub signals: Signals,
+}
+
+/// What an item's `Online` state emits and how it heats, for the
+/// [`Readout`].
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub struct Signals {
+    /// `EMSignature.nominalSignature`.
+    pub em: f32,
+    /// `IRSignature.nominalSignature`.
+    pub ir: f32,
+    /// `powerRanges`.
+    pub ranges: Vec<PowerRange>,
+    /// It heats and draws coolant for it (a Coolant consumption with the
+    /// `ItemResourceDynamicAmountCoolant` override): power plants, shields,
+    /// radars, life support, quantum drives.
+    pub heats: bool,
 }
 
 /// An item that draws power.
@@ -59,8 +77,8 @@ pub struct Consumer {
     /// `request × minimumConsumptionFraction`, micro-units (truncated, as
     /// the client does).
     pub minimum: i64,
-    /// It makes coolant: power-on tops coolers up first.
-    pub cooler: bool,
+    /// Coolant it makes per second at full power (coolers; 0 for the rest).
+    pub coolant: f64,
     /// The pool it draws from, an index into [`PowerNetwork::pools`].
     pub pool: Option<usize>,
     /// Switched on (every item is, after [`PowerNetwork::build`]: a ship
@@ -69,6 +87,8 @@ pub struct Consumer {
     /// The master modes it is switched off in.
     #[serde(with = "modes_list_serde")]
     pub excluded_in: Vec<EMasterMode>,
+    /// Its `Online` state's signatures, power ranges and heat.
+    pub signals: Signals,
 }
 
 impl Consumer {
@@ -81,6 +101,11 @@ impl Consumer {
     /// It may run in `mode` at all (slot +0x730: not excluded).
     pub fn allowed(&self, mode: &EMasterMode) -> bool {
         !self.excluded_in.contains(mode)
+    }
+
+    /// It is a cooler: power-on tops coolers up first.
+    pub fn is_cooler(&self) -> bool {
+        self.coolant > 0.0
     }
 
     fn request_segments(&self) -> f64 {
@@ -115,6 +140,44 @@ pub struct Allocation {
     pub remaining: i64,
 }
 
+/// [`PowerNetwork::readout`]: the network's state as the engineering
+/// screen shows it.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Readout {
+    /// Plants first, then consumers, in network order.
+    pub items: Vec<ItemReadout>,
+    /// Coolant the coolers make, per second.
+    pub coolant_made: f64,
+    /// Coolant the items ask for, per second.
+    pub coolant_asked: f64,
+    /// The items' EM and IR, summed.
+    pub em: f64,
+    pub ir: f64,
+}
+
+impl Readout {
+    /// The cooling bar: coolant asked for over coolant made (above 1 the
+    /// items heat up); `None` without coolers.
+    pub fn cooling(&self) -> Option<f64> {
+        (self.coolant_made > 0.0).then(|| self.coolant_asked / self.coolant_made)
+    }
+}
+
+/// One item of a [`Readout`].
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ItemReadout {
+    pub path: String,
+    pub item: Guid,
+    /// Its power ratio with its range modifier.
+    pub ratio: f32,
+    pub em: f32,
+    pub ir: f32,
+    /// Coolant it makes per second (coolers).
+    pub coolant_made: f64,
+    /// Coolant it asks for per second at equilibrium.
+    pub coolant_asked: f64,
+}
+
 impl PowerNetwork {
     /// The network of `loadout` (a vehicle's [`stock`](crate::Vehicle::stock)
     /// tree or an edited one) on the vehicle whose port container is
@@ -137,6 +200,14 @@ impl PowerNetwork {
             let Some(state) = profile.online() else {
                 continue;
             };
+            let signals = Signals {
+                em: state.em.as_ref().map_or(0.0, |e| e.nominal),
+                ir: state.ir.as_ref().map_or(0.0, |e| e.nominal),
+                ranges: state.power_ranges.clone(),
+                heats: state
+                    .consumption(&ResourceNetworkResource::Coolant)
+                    .is_some_and(|d| d.dynamic == Some(DynamicAmount::Coolant)),
+            };
             if let Some(ResourceUnits::Segments(units)) = state
                 .generation(&ResourceNetworkResource::Power)
                 .and_then(|d| d.generates.as_ref())
@@ -148,6 +219,7 @@ impl PowerNetwork {
                     units,
                     modifier: params.plant_modifier(info.size, profile.plant_modifier),
                     on: true,
+                    signals: signals.clone(),
                 });
             }
             let Some(delta) = state.consumption(&ResourceNetworkResource::Power) else {
@@ -172,13 +244,14 @@ impl PowerNetwork {
                 item_type: info.item_type.clone(),
                 request,
                 minimum: (request as f32 * delta.minimum_fraction) as i64,
-                cooler: state
+                coolant: state
                     .generation(&ResourceNetworkResource::Coolant)
                     .and_then(|d| d.generates.as_ref())
-                    .is_some_and(|a| a.per_second.standard() > 0.0),
+                    .map_or(0.0, |a| a.per_second.standard()),
                 pool: None,
                 on: true,
                 excluded_in,
+                signals,
             });
         }
 
@@ -317,7 +390,7 @@ impl PowerNetwork {
         if self.defaults.cooler_min > 0.0 {
             for &i in &loose {
                 let c = &self.consumers[i];
-                if !c.cooler {
+                if !c.is_cooler() {
                     continue;
                 }
                 let target = ((c.request / SEGMENT) as f32 * self.defaults.cooler_min.min(1.0))
@@ -478,6 +551,103 @@ impl PowerNetwork {
             .collect()
     }
 
+    /// What the ship's engineering screen shows under `allocation` in
+    /// `mode`, once temperatures have settled.
+    ///
+    /// Each item's power ratio is granted over requested (a plant's, what
+    /// is drawn from it over its output; consumers drain the plants in
+    /// network order), times the modifier of its power range
+    /// ([`signature_ratio`]); its EM settles at nominal × that ratio
+    /// (`UpdatePowerRatio`, `UpdateIdealSignature`). A cooler makes its
+    /// coolant × that ratio (`GetGenerationFromDelta`); its IR is nominal ×
+    /// what is drawn from it over its full output, the coolers drained in
+    /// network order (other items emit no IR below 323 K). Signature
+    /// functionality curves are not applied (none in LIVE 4.10). An item that heats
+    /// asks for coolant to carry its heat away; the client requests
+    /// `min(cap, 2.5 × P × dt)` each step, where `cap` is what returns it to
+    /// its minimum cooling temperature (`ItemResourceDynamicAmountCoolant`,
+    /// `FUN_1428ac000`), so at equilibrium it asks `P × ratio` per second
+    /// with `P` its power segments (a plant's, its share of the output). The
+    /// cooling bar is requested over generated (the UI's
+    /// `coolantIndicator`, smoothed by a tenth per update).
+    ///
+    /// Thrusters heat with thrust and ask nothing at rest; they are not
+    /// counted.
+    pub fn readout(&self, allocation: &Allocation, mode: &EMasterMode) -> Readout {
+        let ratios = self.ratios(allocation, mode);
+        let online = self.plants.iter().filter(|p| p.on).count() as i32;
+        // Consumers drain the plants in network order (UpdateConsumeFromPool).
+        let mut power_left: f64 = self
+            .consumers
+            .iter()
+            .zip(&allocation.granted)
+            .filter(|(c, _)| c.draws(mode))
+            .map(|(_, g)| g)
+            .sum();
+        let mut items = Vec::new();
+        for p in self.plants.iter().filter(|p| p.on) {
+            let output = plant_output(p.units, online, p.modifier);
+            let drawn = power_left.min(f64::from(output)).max(0.0);
+            power_left -= drawn;
+            let load = if output > 0 {
+                (drawn / f64::from(output)) as f32
+            } else {
+                0.0
+            };
+            let ratio = signature_ratio(&p.signals.ranges, output, load);
+            items.push(ItemReadout {
+                path: p.path.clone(),
+                item: p.item,
+                ratio,
+                em: p.signals.em * ratio,
+                ir: 0.0,
+                coolant_made: 0.0,
+                coolant_asked: if p.signals.heats {
+                    f64::from(output) * f64::from(ratio)
+                } else {
+                    0.0
+                },
+            });
+        }
+        let mut coolers = Vec::new();
+        for (c, &raw) in self.consumers.iter().zip(&ratios) {
+            let units = (c.request / SEGMENT) as i32;
+            let ratio = signature_ratio(&c.signals.ranges, units, raw);
+            if c.is_cooler() {
+                coolers.push((items.len(), c));
+            }
+            items.push(ItemReadout {
+                path: c.path.clone(),
+                item: c.item,
+                ratio,
+                em: c.signals.em * ratio,
+                ir: 0.0,
+                coolant_made: c.coolant * f64::from(ratio),
+                coolant_asked: if c.signals.heats {
+                    c.request_segments() * f64::from(ratio)
+                } else {
+                    0.0
+                },
+            });
+        }
+        // The coolant asked for drains the coolers in network order; a
+        // cooler's IR follows what is drawn from it over its full output.
+        let coolant_asked: f64 = items.iter().map(|i| i.coolant_asked).sum();
+        let mut coolant_left = coolant_asked;
+        for (i, c) in coolers {
+            let drawn = coolant_left.min(items[i].coolant_made).max(0.0);
+            coolant_left -= drawn;
+            items[i].ir = c.signals.ir * (drawn / c.coolant) as f32;
+        }
+        Readout {
+            coolant_made: items.iter().map(|i| i.coolant_made).sum(),
+            coolant_asked,
+            em: items.iter().map(|i| f64::from(i.em)).sum(),
+            ir: items.iter().map(|i| f64::from(i.ir)).sum(),
+            items,
+        }
+    }
+
     fn default_share(&self, pool: usize) -> f32 {
         let d = &self.defaults;
         let typed = match self.pools[pool].item_type {
@@ -585,10 +755,11 @@ mod tests {
             item_type,
             request,
             minimum: (request as f32 * fraction) as i64,
-            cooler: false,
+            coolant: 0.0,
             pool: None,
             on: true,
             excluded_in: Vec::new(),
+            signals: Signals::default(),
         }
     }
 
@@ -600,7 +771,7 @@ mod tests {
         let mut consumers = Vec::new();
         for _ in 0..2 {
             let mut c = consumer(EItemType::Cooler, 4 * SEGMENT, 0.75);
-            c.cooler = true;
+            c.coolant = 41.0;
             consumers.push(c);
         }
         consumers.push(consumer(EItemType::Radar, 8 * SEGMENT, 0.25));
@@ -650,6 +821,7 @@ mod tests {
             units: 19,
             modifier: 2,
             on: true,
+            signals: Signals::default(),
         };
         PowerNetwork {
             plants: vec![plant.clone(), plant],
