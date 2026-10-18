@@ -6,6 +6,7 @@ use std::collections::BTreeMap;
 use sc_items_mining::{FloatModifier, MiningGadget, MiningModifiers, MiningModule, ModifierKind};
 use sc_items_ship_weapons::{MiningBeam, MiningLaserStats};
 use serde::{Deserialize, Serialize};
+use tracing::warn;
 
 use crate::rock::volume_scale;
 use crate::{Rock, Ruleset, Window};
@@ -20,8 +21,9 @@ const EXTRACTION_PER_ENERGY: f32 = 0.013;
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Laser {
     pub stats: MiningLaserStats,
-    /// The modules whose effect is on: passive ones always, active ones only
-    /// while activated.
+    /// The modules whose effect is on for the whole attempt: passive ones,
+    /// and active ones taken as switched on throughout. Activations at given
+    /// times go in [`Setup::activations`].
     pub modules: Vec<MiningModule>,
     /// Distance from the beam's start to the rock surface, m. Inside the
     /// beam's optimal range it makes no difference.
@@ -68,12 +70,30 @@ impl Laser {
     }
 
     fn beam_power(&self, beam: &MiningBeam) -> f32 {
+        self.beam_power_in_range(beam) * beam.falloff(self.distance_m)
+    }
+
+    /// The beam's energy times every module's multiplier, before falloff.
+    fn beam_power_in_range(&self, beam: &MiningBeam) -> f32 {
         let modules: f32 = self
             .modules
             .iter()
             .map(|m| m.damage_multiplier(beam.fire_action))
             .product();
-        beam.energy_per_second * modules * beam.falloff(self.distance_m)
+        beam.energy_per_second * modules
+    }
+
+    fn laser_power(&self) -> LaserPower {
+        let beam = self.stats.fracture_beam();
+        LaserPower {
+            power: self.fracture_power(),
+            throttle_minimum: self.stats.throttle_minimum,
+            throttle_lerp_speed: self.stats.throttle_lerp_speed,
+            distance_m: self.distance_m,
+            power_in_range: beam.map_or(0.0, |b| self.beam_power_in_range(b)),
+            full_damage_range_m: beam.map_or(0.0, |b| b.full_damage_range),
+            zero_damage_range_m: beam.map_or(0.0, |b| b.zero_damage_range),
+        }
     }
 
     /// Every modifier block this laser puts on the rock: its own and its
@@ -89,6 +109,22 @@ pub struct Setup {
     pub lasers: Vec<Laser>,
     /// Gadgets attached to the rock.
     pub gadgets: Vec<MiningGadget>,
+    /// Active modules switched on during the attempt. Only [`Timeline`]
+    /// (and so [`simulate_timeline`](crate::simulate_timeline)) applies
+    /// them; [`ModifiedRock::new`] takes the setup as fitted.
+    #[serde(default)]
+    pub activations: Vec<ModuleActivation>,
+}
+
+/// An active module switched on at `start_s` on one laser: its modifiers
+/// (power multiplier included) work for its lifetime from then.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ModuleActivation {
+    /// Index into [`Setup::lasers`].
+    pub laser: usize,
+    pub module: MiningModule,
+    /// Seconds into the attempt.
+    pub start_s: f32,
 }
 
 /// How the setup's modifiers on one stat combine: `value * factor + add`.
@@ -162,8 +198,70 @@ pub struct ModifiedRock {
 /// One laser's contribution to [`ModifiedRock`].
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct LaserPower {
+    /// Fracturing energy per second at full throttle, at
+    /// [`distance_m`](Self::distance_m).
     pub power: f32,
     pub throttle_minimum: f32,
+    /// `throttleLerpSpeed`, per second: how fast the throttle follows its
+    /// setting (see [`next_throttle`](Self::next_throttle)).
+    pub throttle_lerp_speed: f32,
+    /// The [`Laser::distance_m`] the power is taken at.
+    pub distance_m: f32,
+    /// Fracturing energy per second at full throttle inside the optimal
+    /// range (the beam's energy times the modules' multipliers).
+    pub power_in_range: f32,
+    /// The fracturing beam's `fullDamageRange` / `zeroDamageRange`, m.
+    pub full_damage_range_m: f32,
+    pub zero_damage_range_m: f32,
+}
+
+impl LaserPower {
+    /// Fracturing energy per second at full throttle with the beam's start
+    /// `distance_m` from the rock surface: full power inside the optimal
+    /// range, falling linearly to 0 at the maximum range (the falloff of
+    /// [`MiningBeam::falloff`]).
+    pub fn power_at(&self, distance_m: f32) -> f32 {
+        if distance_m == self.distance_m {
+            return self.power;
+        }
+        let falloff = if self.full_damage_range_m >= self.zero_damage_range_m {
+            1.0
+        } else {
+            (1.0 - (distance_m - self.full_damage_range_m)
+                / (self.zero_damage_range_m - self.full_damage_range_m))
+                .clamp(0.0, 1.0)
+        };
+        self.power_in_range * falloff
+    }
+
+    /// The throttle one update of `dt` seconds later, moving from `current`
+    /// toward the setting `desired`.
+    ///
+    /// Client code (LIVE 4.10.197, `CEntityComponentMiningLaser`): `current
+    /// += clamp(throttleLerpSpeed * dt, throttleMinimum, 1) * (desired -
+    /// current)`, snapping to `desired` within 1e-5. At 30 updates a second
+    /// a lerp speed of 10 follows a step with a time constant of about
+    /// 0.08 s, 6.5 with about 0.14 s.
+    pub fn next_throttle(&self, current: f32, desired: f32, dt: f32) -> f32 {
+        let step = self.throttle_lerp_speed * dt;
+        let alpha = if self.throttle_minimum <= step {
+            step.min(1.0)
+        } else {
+            self.throttle_minimum
+        };
+        let next = current + alpha * (desired - current);
+        if (next - desired).abs() < 1e-5 {
+            desired
+        } else {
+            next
+        }
+    }
+
+    /// The throttle the rock works with: held between the laser's minimum
+    /// and 1.
+    pub(crate) fn effective(&self, throttle: f32) -> f32 {
+        throttle.max(self.throttle_minimum).min(1.0)
+    }
 }
 
 impl ModifiedRock {
@@ -193,14 +291,7 @@ impl ModifiedRock {
             window: rock
                 .window
                 .scaled(window.factor + window.add, ruleset.optimal_window_max_size),
-            lasers: setup
-                .lasers
-                .iter()
-                .map(|l| LaserPower {
-                    power: l.fracture_power(),
-                    throttle_minimum: l.stats.throttle_minimum,
-                })
-                .collect(),
+            lasers: setup.lasers.iter().map(Laser::laser_power).collect(),
             optimal_rate: combine(|m| m.optimal_charge_window_rate.as_ref()),
             catastrophic_rate: combine(|m| m.catastrophic_charge_window_rate.as_ref()),
             cluster_factor: combine(|m| m.cluster_factor.as_ref()),
@@ -270,17 +361,126 @@ impl ModifiedRock {
 
     /// Charge-bar gain per second at `throttle`, before decay and the wave.
     pub fn gain_rate(&self, ruleset: &Ruleset, throttle: f32) -> f32 {
+        let energy: f32 = self
+            .lasers
+            .iter()
+            .map(|l| l.power * l.effective(throttle))
+            .sum();
+        self.gain_per_energy(ruleset) * energy
+    }
+
+    /// Charge-bar gain per second per unit of fracturing energy per second:
+    /// `(1 - R) / (mass * powerCapacityPerMass)`.
+    pub(crate) fn gain_per_energy(&self, ruleset: &Ruleset) -> f32 {
         let capacity = self.mass * ruleset.power_capacity_per_mass;
         if capacity <= 0.0 {
             return 0.0;
         }
-        let energy: f32 = self
-            .lasers
-            .iter()
-            .map(|l| l.power * throttle.max(l.throttle_minimum).min(1.0))
-            .sum();
-        (1.0 - self.resistance) * energy / capacity
+        (1.0 - self.resistance) / capacity
     }
+}
+
+/// The rock as a [`Setup`] works on it over an attempt: one [`ModifiedRock`]
+/// per stretch between [`Setup::activations`] switching on and off.
+///
+/// An activation works over `[start, start + lifetime)`; a module without a
+/// lifetime stays on from its start. Client code (LIVE 4.10.197,
+/// `CEntityComponentAttachableModifier`): every modifier of an active module
+/// carries the same `ItemModifierTimedLife`, power multiplier included, and
+/// is removed at the first check after it runs out, so within a frame; the
+/// rock takes the new laser values with the next hit. Activations of one
+/// module on one laser beyond its [`charges`](MiningModule::charges) are
+/// ignored (no charge count, or 0, means unlimited), and so is one starting
+/// while the same module is still on: whether the client refuses, restarts
+/// or stacks a second activation is not read.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Timeline {
+    /// `(start_s, rock)`, by start; the first starts at 0.
+    pub spans: Vec<(f32, ModifiedRock)>,
+}
+
+impl Timeline {
+    pub fn new(ruleset: &Ruleset, rock: &Rock, setup: &Setup) -> Self {
+        let windows = activation_windows(setup);
+        let mut edges: Vec<f32> = windows
+            .iter()
+            .flat_map(|w| [w.start, w.end])
+            .filter(|t| t.is_finite() && *t > 0.0)
+            .collect();
+        edges.push(0.0);
+        edges.sort_by(f32::total_cmp);
+        edges.dedup();
+        let spans = edges
+            .into_iter()
+            .map(|t| {
+                let mut live = setup.clone();
+                live.activations.clear();
+                for w in windows.iter().filter(|w| w.start <= t && t < w.end) {
+                    live.lasers[w.laser].modules.push(w.module.clone());
+                }
+                (t, ModifiedRock::new(ruleset, rock, &live))
+            })
+            .collect();
+        Self { spans }
+    }
+
+    /// The rock at `time_s` into the attempt.
+    pub fn at(&self, time_s: f32) -> &ModifiedRock {
+        let i = self.spans.partition_point(|(start, _)| *start <= time_s);
+        &self.spans[i.saturating_sub(1)].1
+    }
+}
+
+impl From<ModifiedRock> for Timeline {
+    /// A setup with nothing switching: the same rock throughout.
+    fn from(rock: ModifiedRock) -> Self {
+        Self {
+            spans: vec![(0.0, rock)],
+        }
+    }
+}
+
+/// One accepted activation.
+struct Live {
+    laser: usize,
+    module: MiningModule,
+    start: f32,
+    end: f32,
+}
+
+/// The activations that take effect, with their end times.
+fn activation_windows(setup: &Setup) -> Vec<Live> {
+    let mut sorted: Vec<&ModuleActivation> = setup.activations.iter().collect();
+    sorted.sort_by(|a, b| a.start_s.total_cmp(&b.start_s));
+    let mut windows: Vec<Live> = Vec::new();
+    for a in sorted {
+        if a.laser >= setup.lasers.len() {
+            warn!(
+                laser = a.laser,
+                "module activation on a laser the setup lacks"
+            );
+            continue;
+        }
+        let same: Vec<&Live> = windows
+            .iter()
+            .filter(|w| w.laser == a.laser && w.module.guid == a.module.guid)
+            .collect();
+        let used_up = a
+            .module
+            .charges()
+            .is_some_and(|c| c > 0 && same.len() >= c as usize);
+        if used_up || same.iter().any(|w| a.start_s < w.end) {
+            continue;
+        }
+        let start = a.start_s.max(0.0);
+        windows.push(Live {
+            laser: a.laser,
+            module: a.module.clone(),
+            start,
+            end: a.module.lifetime_s().map_or(f32::INFINITY, |l| start + l),
+        });
+    }
+    windows
 }
 
 /// Bar lost per second (mass cancels out).

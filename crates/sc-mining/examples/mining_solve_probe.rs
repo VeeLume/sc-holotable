@@ -108,6 +108,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             })
             .collect(),
         gadgets: gadget.map(|g| gadgets[g].1.clone()).into_iter().collect(),
+        activations: vec![],
     };
     let report = |label: String, s: &Setup| {
         let m = ModifiedRock::new(ship, &rock, s);
@@ -169,6 +170,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Setup {
                 lasers: (0..3).map(|_| laser(&helix, &ff, 0)).collect(),
                 gadgets: sabir_on(),
+                activations: vec![],
             },
         ),
         (
@@ -176,6 +178,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Setup {
                 lasers: (0..3).map(|_| laser(&helix, &ff, 0)).collect(),
                 gadgets: vec![],
+                activations: vec![],
             },
         ),
         (
@@ -185,6 +188,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .map(|_| laser(&helix, &[rieger, rieger, focus], 0))
                     .collect(),
                 gadgets: sabir_on(),
+                activations: vec![],
             },
         ),
         (
@@ -192,6 +196,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Setup {
                 lasers: (0..3).map(|_| laser(&helix, &rr, 0)).collect(),
                 gadgets: sabir_on(),
+                activations: vec![],
             },
         ),
         (
@@ -203,6 +208,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     laser(&helix, &rr, 0),
                 ],
                 gadgets: sabir.map(|g| gadgets[g].1.clone()).into_iter().collect(),
+                activations: vec![],
             },
         ),
         (
@@ -212,6 +218,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .map(|_| laser(&helix, &[surge, rieger, rieger], 0))
                     .collect(),
                 gadgets: sabir.map(|g| gadgets[g].1.clone()).into_iter().collect(),
+                activations: vec![],
             },
         ),
         (
@@ -219,6 +226,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Setup {
                 lasers: (0..6).map(|i| laser(&helix, &rr, (i / 3) as u32)).collect(),
                 gadgets: sabir.map(|g| gadgets[g].1.clone()).into_iter().collect(),
+                activations: vec![],
             },
         ),
         (
@@ -229,6 +237,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .chain(std::iter::once(laser(&helix_s1, &[rieger, rieger], 1)))
                     .collect(),
                 gadgets: sabir.map(|g| gadgets[g].1.clone()).into_iter().collect(),
+                activations: vec![],
             },
         ),
     ];
@@ -309,6 +318,7 @@ Arbor S1 slots {}, Helix S1 slots {}",
                         .chain([laser(&arbor, &am, 1), laser(&helix_s1, &hm, 2)])
                         .collect(),
                     gadgets: sabir_on(),
+                    activations: vec![],
                 };
                 let active = is_active(&am) || is_active(&hm);
                 let label = format!(
@@ -381,6 +391,7 @@ best fleet ({mole_label}, Prospectors {title}):"
                                 .chain([laser(&arbor, &am, 1), laser(&helix_s1, &hm, 2)])
                                 .collect(),
                             gadgets: sabir_on(),
+                            activations: vec![],
                         };
                         let m = ModifiedRock::new(ship, &rock, &s);
                         if !m.is_breakable(ship) {
@@ -489,6 +500,7 @@ widest window at a margin of at least 125 % / 150 %:"
             laser(&helix_s1, &[stampede, rieger2], 2),
         ],
         gadgets: sabir_on(),
+        activations: vec![],
     };
     let (_, line) = report("FLEET NOW".into(), &now);
     println!(
@@ -549,6 +561,7 @@ widest window at a margin of at least 125 % / 150 %:"
             laser(&helix_s1, &[stampede, rieger2], 2),
         ],
         gadgets: sabir_on(),
+        activations: vec![],
     };
     println!(
         "{}",
@@ -563,6 +576,7 @@ widest window at a margin of at least 125 % / 150 %:"
             laser(&helix_s1, &[rieger2], 2),
         ],
         gadgets: sabir_on(),
+        activations: vec![],
     };
     println!(
         "{}",
@@ -576,6 +590,7 @@ widest window at a margin of at least 125 % / 150 %:"
             .chain([laser(&arbor, &[], 1), laser(&helix_s1, &[], 2)])
             .collect(),
         gadgets: sabir_on(),
+        activations: vec![],
     };
     println!(
         "

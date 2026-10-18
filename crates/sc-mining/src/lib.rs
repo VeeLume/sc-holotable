@@ -12,15 +12,19 @@
 //!   to a rock: the values once the beams land, breakability
 //!   ([`ModifiedRock::max_mass`]), the balance throttle, timings.
 //! - [`simulate`] — the charge bar tick by tick, instability wave and breaking
-//!   pools included; [`difficulty`] runs it many times with a [`Player`] model
-//!   for our own difficulty (overcharges, danger at fracture, time).
+//!   pools included, each laser's throttle following its own setting and its
+//!   distance settable per tick; [`simulate_timeline`] adds active modules
+//!   switching on and off ([`Timeline`]); [`difficulty`] runs it many times
+//!   with a [`Player`] model for our own difficulty (overcharges, danger at
+//!   fracture, time).
 //! - [`FractureBlast`] — the explosion every fracture makes: radius (what the
 //!   HUD's striped distance zone shows), damage and push, growing with the
 //!   danger pool.
 //! - [`Laser::extraction_scu_per_s`] — extraction speed.
 //! - [`RockTypes`] / [`Compositions`] / [`Shapes`] — what spawns: each
 //!   `HarvestablePreset` rock's scale range, meshes and composition parts,
-//!   and each mesh's fracture tree ([`Shape`]: the pieces it breaks into).
+//!   and each mesh's fracture tree ([`Shape`]: the pieces it breaks into, and
+//!   how many an overcharge keeps).
 //!   [`Spawner`] rolls rocks as the client does and [`Survey`]s how a setup
 //!   fares on them (breakable share, mass, SCU, cracks until collectable).
 //!
@@ -48,7 +52,7 @@
 //! let items = sc_items::Items::build(datacore.records());
 //! let weapons = sc_items_ship_weapons::ShipWeapons::build(&datacore, &items);
 //! let laser = weapons.values().find_map(|w| w.mining.clone()).ok_or("no mining laser")?;
-//! let setup = Setup { lasers: vec![Laser::new(laser)], gadgets: vec![] };
+//! let setup = Setup { lasers: vec![Laser::new(laser)], ..Default::default() };
 //! let mined = ModifiedRock::new(ruleset, &rock, &setup);
 //! println!(
 //!     "breakable up to {:.0} t, balance throttle {:?}",
@@ -81,11 +85,12 @@ pub use quality::QualityRoll;
 pub use rock::{Entry, Rock, Window};
 pub use rock_type::{Geometry, RockType, RockTypes};
 pub use ruleset::{HitConsistency, Ruleset, Rulesets};
-pub use setup::{Combined, Laser, LaserPower, ModifiedRock, Setup};
+pub use setup::{Combined, Laser, LaserPower, ModifiedRock, ModuleActivation, Setup, Timeline};
 pub use shape::{Piece, Shape};
 pub use sim::{
-    Difficulty, Fixed, HIT_DRAIN, HIT_QUEUE_CAP_S, Outcome, Player, Pool, Sample, SimConfig,
-    Throttle, Trace, View, difficulty, hit_consistency, simulate,
+    Difficulty, Fixed, HIT_DRAIN, HIT_QUEUE_CAP_S, LaserControl, LaserSample, Outcome, Player,
+    Pool, Sample, SimConfig, Throttle, Trace, View, difficulty, hit_consistency, simulate,
+    simulate_timeline,
 };
 pub use spawn::{Quantiles, Shapes, Spawn, Spawner, Survey};
 

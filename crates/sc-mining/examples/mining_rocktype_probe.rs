@@ -315,6 +315,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     let setup = Setup {
                         lasers: vec![laser],
                         gadgets: g.map(|g| gadgets[g].1.clone()).into_iter().collect(),
+                        activations: vec![],
                     };
                     let kit_names: Vec<&str> = kit.iter().map(|&i| modules[i].0.as_str()).collect();
                     rows.push(Row {
@@ -457,7 +458,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .take(1)
             .cloned()
             .collect();
-        Setup { lasers, gadgets }
+        Setup {
+            lasers,
+            gadgets,
+            activations: vec![],
+        }
     };
     println!(
         "\ncrews, each ship on its best passive kit, one gadget on the rock:\n  Golem: {}\n  Prospector: {}",

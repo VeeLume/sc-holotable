@@ -133,7 +133,7 @@ pub struct Survey {
     pub balance_throttle: Quantiles,
     /// Over the pieces a fracture of a breakable rock leaves that are still
     /// too big to collect: the share the setup can break in turn (pieces get
-    /// their composition by [`Spawn::fracture`]).
+    /// their composition by [`Spawn::fracture`], from a clean fracture).
     pub pieces_breakable: f32,
 }
 
@@ -177,7 +177,7 @@ impl Survey {
             if !m.is_breakable(ruleset) || spawn.rock.is_absorbable(ruleset) {
                 continue;
             }
-            for piece in spawn.fracture(ruleset, elements, m.cluster_factor, i as u64) {
+            for piece in spawn.fracture(ruleset, elements, m.cluster_factor, 0.0, i as u64) {
                 if piece.rock.is_absorbable(ruleset) {
                     continue;
                 }

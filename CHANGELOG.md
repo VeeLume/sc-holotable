@@ -13,6 +13,46 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-mining`: what an overcharge keeps** (client 4.10.197). The danger
+  pool at fracture drops pieces. A fracture keeps every `base` piece plus
+  the first `round(n * (1 - danger))` of the others in mesh order, and the
+  dropped pieces' ore is lost. `Shape::kept_pieces(danger)` and
+  `Shape::yield_fraction(danger)` give the count and the share of the ore
+  left; `Piece` gains `base`. Probe: `mining_overcharge_probe`.
+- **`sc-mining`: per-laser throttle with the client's lerp.** Each laser's
+  throttle follows its own setting by `clamp(throttleLerpSpeed * dt,
+  throttleMinimum, 1)` per tick (`LaserPower::next_throttle`).
+- **`sc-mining`: distance per tick.** A controller can move each laser
+  (`LaserControl::distance_m`), and the beam's range falloff is taken there
+  each tick (`LaserPower::power_at`).
+- **`sc-mining`: active modules over time.** `Setup::activations` lists
+  `ModuleActivation { laser, module, start_s }`. `Timeline::new(ruleset,
+  rock, setup)` turns them into a rock per stretch: modifiers and power
+  multiplier apply over `[start, start + lifetime)`, with uses capped by
+  charges. `simulate_timeline` runs an attempt over a `Timeline`.
+  `Trace::lasers` records each laser per tick, and `Sample` gains `energy`.
+- **`sc-items-mining`: `MiningModule::lifetime_s()` / `charges()`**.
+
+### Changed
+
+- **`sc-mining`: `Spawn::fracture` and `Spawn::fracture_odds` take
+  `danger_pool`** (before the seed / run count). Only the kept pieces spawn,
+  and each element fills them at its parent share. Pass `0.0` for the old
+  clean-fracture result.
+- **`sc-mining`: `Throttle` sets every laser.** The trait is now `fn
+  throttle(&mut self, view, lasers: &mut [LaserControl])`: set each laser's
+  `throttle` (and optionally its `distance_m`). `View` gains `throttles`,
+  each laser's throttle now. `Fixed` and `Player` set every laser alike.
+  With the lerp a `Player`'s results shift slightly; `Fixed` results are
+  unchanged up to float rounding.
+- **`sc-mining`: `Setup` gains `activations`** and **`LaserPower` gains
+  `throttle_lerp_speed`, `distance_m`, `power_in_range` and the beam's
+  `full_damage_range_m` / `zero_damage_range_m`.** Struct literals need the
+  new fields (`..Default::default()` works for `Setup`).
+  `ModifiedRock::new` still takes the setup as fitted, without activations.
+
 ## [v0.24.0] - 2026-10-17
 
 ### Added
