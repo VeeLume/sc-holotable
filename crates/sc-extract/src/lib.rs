@@ -90,7 +90,7 @@ pub use graph::ReferenceGraph;
 pub use locale::{LocaleKey, LocaleMap, is_placeholder, strip_locale_metadata};
 pub use material::{Material, MaterialLayer, MaterialTexture, SubMaterial};
 pub use mesh::{BoneWeights, Mesh, MeshGeometry, MeshNode, Submesh};
-pub use object_container::{Socpak, XmlNode};
+pub use object_container::{IncludedObject, IncludedObjects, Socpak, XmlNode};
 pub use physics::{PhysicsProxies, PhysicsProxy, ProxyKind, ProxyShape};
 pub use processed_snapshot::ProcessedSnapshot;
 pub use record_collection::RecordCollection;

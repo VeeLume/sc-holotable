@@ -44,6 +44,7 @@ mod defense;
 mod distribution;
 mod flight;
 mod geometry;
+mod interior;
 mod loadout;
 mod modifiers;
 mod network;
@@ -66,6 +67,7 @@ pub use distribution::{
 };
 pub use flight::{Accelerations, Burn, Flight, port_axes};
 pub use geometry::{Aabb, GeometryPaths, HullGeometry, PartMesh, Placement, Transform, apply, mul};
+pub use interior::{Brush, Interior, ObjectContainer};
 pub use loadout::{Loadout, Refusal};
 pub use modifiers::{ItemportModifier, ItemportModifiers, RegenModifier, weapon_power};
 pub use network::{DistributionDefaults, NetworkParams, PoolSize, PowerPool};

@@ -159,6 +159,13 @@ impl AssetSource {
         }
     }
 
+    /// Read a file by the path DataCore records write (`objects/…`,
+    /// `ObjectContainers/…`), with or without a `Data/` prefix and with
+    /// either slash.
+    pub fn read_data(&self, path: &str) -> Result<Vec<u8>> {
+        crate::mesh::read_data(self, path)
+    }
+
     /// Same as [`read`](Self::read) but returns `Ok(None)` for a miss
     /// instead of [`Error::FileNotInP4k`]. Useful when presence is optional.
     pub fn try_read(&self, path: &str) -> Result<Option<Vec<u8>>> {

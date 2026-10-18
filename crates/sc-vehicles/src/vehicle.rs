@@ -43,6 +43,10 @@ pub struct Vehicle {
     /// geometry (`.cga`), whose helper nodes place the item ports.
     #[serde(default)]
     pub geometry: Option<String>,
+    /// `VehicleComponentParams.objectContainers`: the interior and other
+    /// object containers placed in the ship (see [`crate::Interior`]).
+    #[serde(default)]
+    pub object_containers: Vec<crate::ObjectContainer>,
     /// `SEntityInsuranceProperties.shipInsuranceParams`: what an insurance
     /// claim costs in time and money; `None` for vehicles that cannot be
     /// insured.
@@ -296,6 +300,27 @@ impl Vehicles {
                         .map(|v| [v.x, v.y, v.z]),
                     cross_section: cross_section(ecd, pools),
                     geometry: geometry(ecd, pools),
+                    object_containers: params
+                        .object_containers
+                        .iter()
+                        .filter_map(|h| h.get(pools))
+                        .filter(|oc| !oc.file_name.is_empty())
+                        .map(|oc| {
+                            let offset = oc.offset.and_then(|h| h.get(pools));
+                            crate::ObjectContainer {
+                                file: oc.file_name.clone(),
+                                position: offset
+                                    .and_then(|q| q.position)
+                                    .and_then(|h| h.get(pools))
+                                    .map_or([0.0; 3], |v| [v.x, v.y, v.z]),
+                                rotation: offset
+                                    .and_then(|q| q.rotation)
+                                    .and_then(|h| h.get(pools))
+                                    .map_or([0.0; 3], |a| [a.x, a.y, a.z]),
+                                bone: (!oc.bone_name.is_empty()).then(|| oc.bone_name.clone()),
+                            }
+                        })
+                        .collect(),
                     insurance: insurance(ecd, pools),
                     insured_as: insured_class(ecd, pools)
                         .filter(|n| !n.is_empty())

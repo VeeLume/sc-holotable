@@ -4,7 +4,9 @@
 
 use std::collections::{BTreeMap, HashMap};
 
-use sc_extract::{AssetSource, Datacore, Guid, MeshGeometry, PhysicsProxies, RecordCollection};
+use sc_extract::{
+    AssetSource, Datacore, Guid, MeshGeometry, MeshNode, PhysicsProxies, RecordCollection,
+};
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
 
@@ -160,7 +162,7 @@ impl HullGeometry {
                 return None;
             }
         };
-        let world = world_transforms(&hull);
+        let world = world_transforms(&hull.nodes);
         let damage_parts: std::collections::HashSet<String> = vehicle
             .hull
             .iter()
@@ -327,7 +329,7 @@ fn place(
 
 fn read_item(assets: &AssetSource, path: &str) -> Option<ItemMesh> {
     let g = MeshGeometry::read(assets, path).ok()?;
-    let world = world_transforms(&g);
+    let world = world_transforms(&g.nodes);
     let mut bounds: Option<Aabb> = None;
     for s in &g.submeshes {
         let m = s.node.map_or(&IDENTITY, |n| &world[n]);
@@ -347,12 +349,12 @@ fn read_item(assets: &AssetSource, path: &str) -> Option<ItemMesh> {
 }
 
 /// Every node's transform relative to the file's root.
-fn world_transforms(g: &MeshGeometry) -> Vec<Transform> {
-    let mut out: Vec<Option<Transform>> = vec![None; g.nodes.len()];
-    for i in 0..g.nodes.len() {
+fn world_transforms(nodes: &[MeshNode]) -> Vec<Transform> {
+    let mut out: Vec<Option<Transform>> = vec![None; nodes.len()];
+    for i in 0..nodes.len() {
         let mut chain = vec![i];
         let mut n = i;
-        while let Some(p) = g.nodes[n].parent {
+        while let Some(p) = nodes[n].parent {
             if out[p].is_some() {
                 break;
             }
@@ -360,8 +362,8 @@ fn world_transforms(g: &MeshGeometry) -> Vec<Transform> {
             n = p;
         }
         for &c in chain.iter().rev() {
-            let local = g.nodes[c].transform;
-            out[c] = Some(match g.nodes[c].parent {
+            let local = nodes[c].transform;
+            out[c] = Some(match nodes[c].parent {
                 Some(p) => mul(out[p].as_ref().unwrap_or(&IDENTITY), &local),
                 None => local,
             });

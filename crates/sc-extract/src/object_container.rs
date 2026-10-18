@@ -160,6 +160,15 @@ fn decode_cryxml(bytes: &[u8]) -> Result<XmlNode> {
 /// Chunks are matched by **payload magic**, not by trusting `type == 0x0004`,
 /// so a chunk-type-id variant across game versions can't cause a misparse.
 fn cryxml_chunks(bytes: &[u8]) -> Result<Vec<&[u8]>> {
+    Ok(crch_chunks(bytes)?
+        .into_iter()
+        .map(|(_, payload)| payload)
+        .filter(|p| p.len() >= CRYXML_MAGIC.len() && &p[..CRYXML_MAGIC.len()] == CRYXML_MAGIC)
+        .collect())
+}
+
+/// Every chunk of a CrCh container as `(type, payload)` (layout above).
+fn crch_chunks(bytes: &[u8]) -> Result<Vec<(u16, &[u8])>> {
     let rd_u32 = |off: usize| -> Result<usize> {
         bytes
             .get(off..off + 4)
@@ -186,6 +195,7 @@ fn cryxml_chunks(bytes: &[u8]) -> Result<Vec<&[u8]>> {
     for i in 0..count {
         let base = table + i * ENTRY;
         // type:u16 @+0, version:u16 @+2, id:u32 @+4, size:u32 @+8, offset:u32 @+12
+        let ty = u16::from_le_bytes(bytes[base..base + 2].try_into().unwrap());
         let size = u32::from_le_bytes(bytes[base + 8..base + 12].try_into().unwrap()) as usize;
         let offset = u32::from_le_bytes(bytes[base + 12..base + 16].try_into().unwrap()) as usize;
         let end = offset
@@ -197,11 +207,153 @@ fn cryxml_chunks(bytes: &[u8]) -> Result<Vec<&[u8]>> {
                 bytes.len()
             ))
         })?;
-        if payload.len() >= CRYXML_MAGIC.len() && &payload[..CRYXML_MAGIC.len()] == CRYXML_MAGIC {
-            out.push(payload);
-        }
+        out.push((ty, payload));
     }
     Ok(out)
+}
+
+/// CrCh chunk type of the static geometry an object container places.
+const INCLUDED_OBJECTS: u16 = 0x0010;
+
+/// The static geometry (brushes) one `.soc` places: geometry files with a
+/// transform each, from its `IncludedObjects` chunks (type `0x0010`).
+///
+/// Layout (StarBreaker's reader, MIT, after scdatatools; checked on the
+/// Constellation Mk V interiors by `sc-vehicles`' `interior_probe`): 4 bytes
+/// padding, `u32` geometry count and that many 256-byte NUL-padded paths,
+/// `u16` material and `u16` palette counts and their 256-byte paths, 28
+/// bytes, then a `u32` byte length of the object records. A record starts
+/// with its `u32` type: type 1 is a placement (168 bytes, 184 when the `u64`
+/// at +160 is 0) with the geometry index `u16` at +60 and a row-major 3 × 4
+/// `f64` transform at +64 (container frame), its tint-palette index the
+/// `u16` at +172 of the long form (`0xFFFF`: none); type 7 is 152 bytes and
+/// type `0x10` 136 (meaning not read); zero words between records are
+/// padding; an unknown type is skipped 4 bytes at a time.
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct IncludedObjects {
+    /// Geometry paths (`.cgf` / `.cga`), as written.
+    pub geometry: Vec<String>,
+    /// Material paths.
+    pub materials: Vec<String>,
+    /// Tint palette paths.
+    pub palettes: Vec<String>,
+    pub objects: Vec<IncludedObject>,
+}
+
+/// One placed geometry of [`IncludedObjects`].
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct IncludedObject {
+    /// Index into [`IncludedObjects::geometry`].
+    pub geometry: usize,
+    /// Placement in the container's frame, 3 × 4 row-major.
+    pub transform: [[f32; 4]; 3],
+    /// Index into [`IncludedObjects::palettes`].
+    pub palette: Option<usize>,
+}
+
+/// The `IncludedObjects` of a `.soc` (CrCh) file, one per chunk; empty for
+/// a container without static geometry.
+pub fn included_objects(soc: &[u8]) -> Result<Vec<IncludedObjects>> {
+    if soc.get(..4) != Some(CRCH_MAGIC.as_slice()) {
+        return Ok(Vec::new());
+    }
+    crch_chunks(soc)?
+        .into_iter()
+        .filter(|(ty, _)| *ty == INCLUDED_OBJECTS)
+        .map(|(_, payload)| IncludedObjects::parse(payload))
+        .collect()
+}
+
+impl IncludedObjects {
+    /// Parse one `IncludedObjects` chunk payload.
+    pub fn parse(d: &[u8]) -> Result<Self> {
+        const PATH: usize = 256;
+        let bad = |what: &str| Error::ChunkContainer(format!("IncludedObjects: {what}"));
+        let u16_at = |p: usize| -> Result<u16> {
+            d.get(p..p + 2)
+                .map(|b| u16::from_le_bytes([b[0], b[1]]))
+                .ok_or_else(|| bad("truncated"))
+        };
+        let u32_at = |p: usize| -> Result<u32> {
+            d.get(p..p + 4)
+                .map(|b| u32::from_le_bytes([b[0], b[1], b[2], b[3]]))
+                .ok_or_else(|| bad("truncated"))
+        };
+        let u64_at = |p: usize| -> Result<u64> {
+            d.get(p..p + 8)
+                .map(|b| u64::from_le_bytes(b.try_into().expect("8 bytes")))
+                .ok_or_else(|| bad("truncated"))
+        };
+        let f64_at = |p: usize| -> Result<f64> { u64_at(p).map(f64::from_bits) };
+        let paths = |at: &mut usize, n: usize| -> Result<Vec<String>> {
+            (0..n)
+                .map(|_| {
+                    let b = d
+                        .get(*at..*at + PATH)
+                        .ok_or_else(|| bad("truncated path"))?;
+                    *at += PATH;
+                    let end = b.iter().position(|&c| c == 0).unwrap_or(PATH);
+                    Ok(String::from_utf8_lossy(&b[..end]).into_owned())
+                })
+                .collect()
+        };
+
+        let mut at = 4;
+        let n_geometry = u32_at(at)? as usize;
+        at += 4;
+        let geometry = paths(&mut at, n_geometry)?;
+        let n_materials = u16_at(at)? as usize;
+        let n_palettes = u16_at(at + 2)? as usize;
+        at += 4;
+        let materials = paths(&mut at, n_materials)?;
+        let palettes = paths(&mut at, n_palettes)?;
+        at += 28;
+        let len = u32_at(at)? as usize;
+        at += 4;
+        let end = at.checked_add(len).ok_or_else(|| bad("overflow"))?;
+        if end > d.len() {
+            return Err(bad("objects past chunk end"));
+        }
+
+        let mut objects = Vec::new();
+        while at + 4 <= end {
+            match u32_at(at)? {
+                1 => {
+                    let short = u64_at(at + 160)? != 0;
+                    let size = if short { 168 } else { 184 };
+                    if at + size > end {
+                        break;
+                    }
+                    let mut transform = [[0.0f32; 4]; 3];
+                    for (r, row) in transform.iter_mut().enumerate() {
+                        for (c, v) in row.iter_mut().enumerate() {
+                            *v = f64_at(at + 64 + (r * 4 + c) * 8)? as f32;
+                        }
+                    }
+                    let palette = if short {
+                        None
+                    } else {
+                        Some(u16_at(at + 172)?).filter(|&i| i != 0xFFFF)
+                    };
+                    objects.push(IncludedObject {
+                        geometry: u16_at(at + 60)? as usize,
+                        transform,
+                        palette: palette.map(usize::from),
+                    });
+                    at += size;
+                }
+                7 => at += 152,
+                0x10 => at += 136,
+                _ => at += 4,
+            }
+        }
+        Ok(Self {
+            geometry,
+            materials,
+            palettes,
+            objects,
+        })
+    }
 }
 
 /// Parse XML text into an [`XmlNode`] tree (quick-xml event reader + a stack).
@@ -322,6 +474,44 @@ mod tests {
             .filter_map(|n| n.attr("preset"))
             .collect();
         assert_eq!(presets, ["abc-123"]);
+    }
+
+    /// One geometry path, no materials or palettes, one long-form placement
+    /// (a 90 degree turn about z, moved to (5, 10, 15), palette 4) and a
+    /// zero padding word.
+    #[test]
+    fn reads_an_included_objects_chunk() {
+        let mut d = vec![0u8; 4];
+        d.extend(1u32.to_le_bytes());
+        let mut path = b"objects/test.cgf".to_vec();
+        path.resize(256, 0);
+        d.extend(path);
+        d.extend([0u8; 4]);
+        d.extend([0u8; 28]);
+        let mut obj = Vec::new();
+        obj.extend(1u32.to_le_bytes());
+        obj.extend([0u8; 56]);
+        obj.extend(0u16.to_le_bytes());
+        obj.extend(0u16.to_le_bytes());
+        for v in [
+            0.0, -1.0, 0.0, 5.0, 1.0, 0.0, 0.0, 10.0, 0.0, 0.0, 1.0, 15.0f64,
+        ] {
+            obj.extend(v.to_le_bytes());
+        }
+        obj.extend(0u64.to_le_bytes());
+        let mut tail = [0u8; 16];
+        tail[4..6].copy_from_slice(&4u16.to_le_bytes());
+        obj.extend(tail);
+        obj.extend([0u8; 4]);
+        d.extend((obj.len() as u32).to_le_bytes());
+        d.extend(obj);
+        let io = IncludedObjects::parse(&d).unwrap();
+        assert_eq!(io.geometry, ["objects/test.cgf"]);
+        assert_eq!(io.objects.len(), 1);
+        let o = io.objects[0];
+        assert_eq!((o.geometry, o.palette), (0, Some(4)));
+        assert_eq!(o.transform[0], [0.0, -1.0, 0.0, 5.0]);
+        assert_eq!(o.transform[2][3], 15.0);
     }
 
     #[test]
