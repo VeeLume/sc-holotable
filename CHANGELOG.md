@@ -13,6 +13,23 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-mining`: beam cuts in the simulation.**
+  - `LaserControl` gains `firing` (on before the first tick). A cut beam sends no new hits, but the hit time already queued on the rock keeps draining at the laser's current throttle and distance (client 4.10.197: the drain has no firing check).
+  - Hit queues are per laser.
+  - A laser's modifiers stay on the rock until `modifier_persistence_time` (0.25 s) after its last hit drains, then come off until the next hit.
+  - `ModifiedRock::with_lasers(ruleset, rock, setup, contributing)` gives the rock with only some lasers' modifiers on.
+  - The simulation caches these rocks per timeline span and hitting set.
+  - Each laser has its own hit consistency, and the wave's damping is the mean over the lasers that delivered hit time that tick.
+  - `LaserSample` gains `firing`, `queued_s` and `contributing`.
+  - With every beam always on, results are bit-identical to v0.25.0, checked by trace fingerprints over solo and crew setups, three tick / hit-interval pairs and three controllers.
+
+### Changed
+
+- **`sc-mining`: `ModifiedRock` carries a private field** (its modifier sources), so it can no longer be built as a struct literal. Build it with `ModifiedRock::new` or `with_lasers`. A deserialized `ModifiedRock` has no sources and ignores beam cuts.
+- **`sc-mining`: `LaserControl` and `LaserSample` gain fields** (`firing`; `firing`, `queued_s`, `contributing`). Struct literals need them.
+
 ## [v0.25.0] - 2026-10-18
 
 ### Added
