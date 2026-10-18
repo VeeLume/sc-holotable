@@ -78,6 +78,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let golem = Setup {
         lasers: vec![pitman],
         gadgets: vec![],
+        activations: vec![],
     };
     let el = |n: &str| find(&elements, &name, n).map(|e| e.guid);
     let entries = |parts: &[(&str, f32)]| -> Result<Vec<Entry>, String> {
@@ -201,6 +202,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let helix = Setup {
         lasers: vec![helix],
         gadgets: vec![],
+        activations: vec![],
     };
     let bare = |resistance| Rock {
         entries: vec![],

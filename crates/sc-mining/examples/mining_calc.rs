@@ -617,7 +617,11 @@ fn report(catalog: &Catalog, state: &State) {
         println!("(no rock yet: `rock <mass>, <element> <pct> [quality], ...`)");
         return;
     };
-    let on = |lasers: Vec<Laser>, gadgets: Vec<MiningGadget>| Setup { lasers, gadgets };
+    let on = |lasers: Vec<Laser>, gadgets: Vec<MiningGadget>| Setup {
+        lasers,
+        gadgets,
+        activations: vec![],
+    };
     let gadget_only = ModifiedRock::new(rs, rock, &on(vec![], gadgets.clone()));
     println!(
         "rock: {:.0} t, {:.2} SCU | bare R {:.1} % I {:.2} W {:.3} | gadget only R {:.1} % I {:.2} | window {:.3}..{:.3}",

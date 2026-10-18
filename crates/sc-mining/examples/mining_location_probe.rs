@@ -72,6 +72,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let golem = Setup {
         lasers: vec![pitman],
         gadgets: vec![],
+        activations: vec![],
     };
 
     if filter == "--density" {

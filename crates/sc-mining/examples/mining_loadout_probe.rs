@@ -124,6 +124,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let setup = Setup {
                 lasers: vec![l],
                 gadgets: vec![],
+                activations: vec![],
             };
             let names: Vec<&str> = combo
                 .iter()
@@ -137,6 +138,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let bare = Setup {
             lasers: vec![laser.clone()],
             gadgets: vec![],
+            activations: vec![],
         };
         results.push((score(&bare), format!("{laser_name} (no modules)")));
     }

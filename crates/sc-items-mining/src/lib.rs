@@ -203,6 +203,24 @@ pub struct BeamMultiplier {
 }
 
 impl MiningModule {
+    /// How long one activation lasts, s (`modifierLifetime`); `None` for a
+    /// passive module or an active one without a timed life.
+    pub fn lifetime_s(&self) -> Option<f32> {
+        match self.activation {
+            Activation::Active { duration_s, .. } => duration_s,
+            Activation::Passive => None,
+        }
+    }
+
+    /// How many times it can be activated (`charges`); `None` for a passive
+    /// module. Some always-on vehicle modules list 0.
+    pub fn charges(&self) -> Option<i32> {
+        match self.activation {
+            Activation::Active { uses, .. } => uses,
+            Activation::Passive => None,
+        }
+    }
+
     /// The power multiplier this module applies to the laser's fire action
     /// `fire_action`; `1.0` when it leaves that beam alone.
     pub fn damage_multiplier(&self, fire_action: i32) -> f32 {

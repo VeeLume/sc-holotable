@@ -64,7 +64,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let runs = 20_000;
     let (mut pure_inert, mut all_near_pure) = (0u32, 0u32);
     for seed in 0..runs {
-        let pieces = parent.fracture(ship, &elements, Combined::NONE, seed);
+        let pieces = parent.fracture(ship, &elements, Combined::NONE, 0.0, seed);
         assert_eq!(pieces.len(), 6);
         let total: f32 = pieces.iter().map(|p| p.rock.volume).sum();
         for (k, e) in entries.iter().enumerate() {

@@ -165,6 +165,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let golem = Setup {
         lasers: vec![pitman],
         gadgets: vec![],
+        activations: vec![],
     };
     for (label, (guid, rock_type), geometry_tags) in [
         (

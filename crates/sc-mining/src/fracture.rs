@@ -4,7 +4,7 @@ use sc_extract::{Guid, RecordCollection};
 use serde::{Deserialize, Serialize};
 
 use crate::sim::Rng;
-use crate::{Combined, Elements, Entry, Rock, Ruleset, Shape, Spawn};
+use crate::{Combined, Elements, Entry, Piece, Rock, Ruleset, Shape, Spawn};
 
 /// One piece's odds after a fracture (see [`Spawn::fracture_odds`]).
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -34,19 +34,23 @@ pub struct EntryOdds {
 const MIN_FRACTION: f32 = 1e-6;
 
 impl Spawn {
-    /// Each piece's odds over `runs` fractures (see [`fracture`](Self::fracture)).
+    /// Each spawned piece's odds over `runs` fractures at `danger_pool` (see
+    /// [`fracture`](Self::fracture)).
     pub fn fracture_odds(
         &self,
         ruleset: &Ruleset,
         elements: &Elements,
         cluster: Combined,
+        danger_pool: f32,
         runs: u32,
     ) -> Vec<PieceOdds> {
         let mut odds: Vec<PieceOdds> = self
             .shape
             .pieces
             .iter()
-            .map(|p| PieceOdds {
+            .zip(self.shape.kept(danger_pool))
+            .filter(|&(_, kept)| kept)
+            .map(|(p, _)| PieceOdds {
                 volume: p.volume,
                 collectable: ruleset.is_absorbable(p.volume),
                 entries: self
@@ -65,7 +69,7 @@ impl Spawn {
             .collect();
         let step = 1.0 / runs.max(1) as f32;
         for seed in 0..u64::from(runs) {
-            let pieces = self.fracture(ruleset, elements, cluster, seed);
+            let pieces = self.fracture(ruleset, elements, cluster, danger_pool, seed);
             for (o, piece) in odds.iter_mut().zip(&pieces) {
                 let mut filled = 0.0;
                 for (k, parent) in self.rock.entries.iter().enumerate() {
@@ -106,16 +110,28 @@ impl Spawn {
     /// left; qualities stay with their entries. The client draws from a
     /// process-wide random stream, so a given fracture cannot be predicted,
     /// only its odds: `seed` picks one possible outcome; see
-    /// [`fracture_odds`](Self::fracture_odds). An overcharged fracture (fewer
-    /// pieces) is not modelled.
+    /// [`fracture_odds`](Self::fracture_odds).
+    ///
+    /// `danger_pool` is the danger pool when the rock breaks (0 for a clean
+    /// fracture): only the pieces [`Shape::kept_pieces`] keeps spawn, and
+    /// the elements are poured into them alone, each element's total being
+    /// its share of their volume. The ore of the dropped pieces is lost.
     pub fn fracture(
         &self,
         ruleset: &Ruleset,
         elements: &Elements,
         cluster: Combined,
+        danger_pool: f32,
         seed: u64,
     ) -> Vec<Spawn> {
-        let pieces = &self.shape.pieces;
+        let pieces: Vec<&Piece> = self
+            .shape
+            .pieces
+            .iter()
+            .zip(self.shape.kept(danger_pool))
+            .filter(|&(_, kept)| kept)
+            .map(|(p, _)| p)
+            .collect();
         if pieces.is_empty() {
             return Vec::new();
         }

@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::ruleset::HitConsistency;
 use crate::setup::{breaking_scale, decay_rate};
-use crate::{ModifiedRock, Ruleset};
+use crate::{ModifiedRock, Ruleset, Timeline};
 
 /// The laser's hit consistency `c` (0..1) after `firing_s` seconds of
 /// unbroken hits whose hit points scatter by `scatter_m` (standard deviation,
@@ -79,22 +79,44 @@ pub struct View<'a> {
     pub time_s: f32,
     /// The charge bar now, 0..1.
     pub power: f32,
+    /// The rock as the setup works on it now (it changes while an active
+    /// module is on; see [`Timeline`]).
     pub rock: &'a ModifiedRock,
     pub ruleset: &'a Ruleset,
+    /// Each laser's throttle now, as it follows its setting (see
+    /// [`LaserPower::next_throttle`](crate::LaserPower::next_throttle));
+    /// empty before the first tick.
+    pub throttles: &'a [f32],
 }
 
-/// Chooses the throttle (0..1, every laser at the same setting) each tick.
+/// What a controller sets for one laser.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct LaserControl {
+    /// The throttle setting, 0..1; the laser's throttle follows it.
+    pub throttle: f32,
+    /// Distance from the beam's start to the rock surface, m: the beam's
+    /// range falloff is taken at it each tick (ship drift, a turning rock).
+    pub distance_m: f32,
+}
+
+/// Sets each laser's throttle (and, optionally, its distance) each tick.
 pub trait Throttle {
-    fn throttle(&mut self, view: &View<'_>) -> f32;
+    /// `lasers` holds last tick's settings, one per laser in setup order;
+    /// before the first tick every throttle is 1 and every distance the
+    /// setup's [`Laser::distance_m`](crate::Laser::distance_m). Leave a
+    /// distance alone to keep that laser's power as the setup has it.
+    fn throttle(&mut self, view: &View<'_>, lasers: &mut [LaserControl]);
 }
 
-/// One throttle, held.
+/// One setting for every laser, held.
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Fixed(pub f32);
 
 impl Throttle for Fixed {
-    fn throttle(&mut self, _: &View<'_>) -> f32 {
-        self.0
+    fn throttle(&mut self, _: &View<'_>, lasers: &mut [LaserControl]) {
+        for l in lasers {
+            l.throttle = self.0;
+        }
     }
 }
 
@@ -128,7 +150,17 @@ impl Default for Player {
 }
 
 impl Throttle for Player {
-    fn throttle(&mut self, view: &View<'_>) -> f32 {
+    fn throttle(&mut self, view: &View<'_>, lasers: &mut [LaserControl]) {
+        let setting = self.setting(view);
+        for l in lasers {
+            l.throttle = setting;
+        }
+    }
+}
+
+impl Player {
+    /// The one setting this player gives every laser.
+    fn setting(&mut self, view: &View<'_>) -> f32 {
         self.seen.push_back((view.time_s, view.power));
         while self
             .seen
@@ -161,7 +193,9 @@ pub enum Pool {
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum Outcome {
     /// A pool reached 1 and the rock fractured. `danger` is the danger pool
-    /// then (the client spawns fewer, and more explosive, pieces the fuller it is).
+    /// then: the fuller it is, the fewer pieces spawn (see
+    /// [`Shape::kept_pieces`](crate::Shape::kept_pieces)) and the bigger the
+    /// blast.
     Fractured {
         time_s: f32,
         pool: Pool,
@@ -175,7 +209,12 @@ pub enum Outcome {
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Sample {
     pub time_s: f32,
+    /// The first laser's throttle this tick (0 without lasers); every
+    /// laser's is in [`Trace::lasers`].
     pub throttle: f32,
+    /// Fracturing energy per second the lasers delivered this tick, at
+    /// their throttles and distances.
+    pub energy: f32,
     /// The charge bar after the tick.
     pub power: f32,
     /// The wave's factor this tick: a rising bar was multiplied by `1 + wave`
@@ -185,20 +224,37 @@ pub struct Sample {
     pub danger: f32,
 }
 
+/// One laser in one tick.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct LaserSample {
+    /// Its throttle, following the setting.
+    pub throttle: f32,
+    /// Its setting.
+    pub setting: f32,
+    pub distance_m: f32,
+    /// Fracturing energy per second at full throttle at that distance.
+    pub power: f32,
+}
+
 /// A simulated attempt.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Trace {
     pub samples: Vec<Sample>,
+    /// Per tick (as [`samples`](Self::samples)), each laser in setup order.
+    pub lasers: Vec<Vec<LaserSample>>,
     pub outcome: Outcome,
     pub time_in_window_s: f32,
 }
 
-/// Run one attempt on `rock` with `throttle` choosing the setting.
+/// Run one attempt on `rock` with `throttle` choosing the settings.
 ///
 /// Per tick, as the client does (LIVE 4.10): the wave `w = sin(2π t / T) *
-/// amp` (each period draws `T = period ± variance` and `amp` in 0..1); the
-/// hits that arrived join the queue, and up to [`HIT_DRAIN`] ticks of hit
-/// time leave it, at the throttle set now; their gain minus the decay; if
+/// amp` (each period draws `T = period ± variance` and `amp` in 0..1); each
+/// laser's throttle moves toward its setting
+/// ([`LaserPower::next_throttle`](crate::LaserPower::next_throttle); on the
+/// first tick it starts at the setting, a modelling choice); the hits that
+/// arrived join the queue, and up to [`HIT_DRAIN`] ticks of hit time leave
+/// it, at the throttles and distances now; their gain minus the decay; if
 /// that is a gain, it is multiplied by `1 + f` (or divided by `1 - f`) with
 /// `f = instability * w * (1 - min(c, maxEffectOnInstability))`; then the
 /// bar, then the breaking pools.
@@ -207,10 +263,21 @@ pub struct Trace {
 /// [`SimConfig::tick_s`], the default) every tick drains exactly one hit and
 /// the gain is even. Otherwise ticks alternate between more and less than
 /// the mean, and the wave amplifies the surplus of the strong ones even at
-/// the balance throttle. Every laser hits in step. Not modelled: the
-/// throttle's lerp toward the setting, and rotation changing the distance.
+/// the balance throttle. Every laser hits in step.
 pub fn simulate(
     rock: &ModifiedRock,
+    ruleset: &Ruleset,
+    throttle: &mut impl Throttle,
+    config: &SimConfig,
+) -> Trace {
+    simulate_timeline(&Timeline::from(rock.clone()), ruleset, throttle, config)
+}
+
+/// [`simulate`] with the rock changing over the attempt as
+/// [`Setup::activations`](crate::Setup::activations) switch modules on and
+/// off (see [`Timeline`]).
+pub fn simulate_timeline(
+    timeline: &Timeline,
     ruleset: &Ruleset,
     throttle: &mut impl Throttle,
     config: &SimConfig,
@@ -218,11 +285,22 @@ pub fn simulate(
     let dt = config.tick_s.max(1e-4);
     let interval = config.hit_interval_s.max(1e-4);
     let decay = decay_rate(ruleset) * dt;
-    let scale = breaking_scale(ruleset, rock.mass);
     let mut rng = Rng::new(config.seed);
     let mut wave = Wave::new(ruleset, &mut rng);
 
+    let mut controls: Vec<LaserControl> = timeline
+        .at(0.0)
+        .lasers
+        .iter()
+        .map(|l| LaserControl {
+            throttle: 1.0,
+            distance_m: l.distance_m,
+        })
+        .collect();
+    let mut current: Vec<f32> = Vec::new();
+
     let mut samples = Vec::new();
+    let mut laser_samples = Vec::new();
     let (mut power, mut controlled, mut danger) = (0.0f32, 0.0f32, 0.0f32);
     let mut time_in_window = 0.0;
     let mut time = 0.0f32;
@@ -233,14 +311,33 @@ pub fn simulate(
         if time >= config.max_time_s {
             break Outcome::TimedOut;
         }
+        let rock = timeline.at(time);
         let w = wave.advance(ruleset, &mut rng, dt);
         let view = View {
             time_s: time,
             power,
             rock,
             ruleset,
+            throttles: &current,
         };
-        let setting = throttle.throttle(&view).clamp(0.0, 1.0);
+        throttle.throttle(&view, &mut controls);
+        for c in &mut controls {
+            c.throttle = c.throttle.clamp(0.0, 1.0);
+        }
+        if current.is_empty() {
+            current = controls.iter().map(|c| c.throttle).collect();
+        } else {
+            for ((t, c), l) in current.iter_mut().zip(&controls).zip(&rock.lasers) {
+                *t = l.next_throttle(*t, c.throttle, dt);
+            }
+        }
+        let energy: f32 = rock
+            .lasers
+            .iter()
+            .zip(&controls)
+            .zip(&current)
+            .map(|((l, c), &t)| l.power_at(c.distance_m) * l.effective(t))
+            .sum();
 
         ticks += 1;
         let end = ticks as f64 * f64::from(dt);
@@ -253,7 +350,7 @@ pub fn simulate(
         let drained = queued.min(HIT_DRAIN * dt);
         queued -= drained;
 
-        let mut change = rock.gain_rate(ruleset, setting) * drained - decay;
+        let mut change = rock.gain_per_energy(ruleset) * energy * drained - decay;
         let consistency =
             hit_consistency(&ruleset.hit_consistency, time + dt, config.aim_scatter_m);
         let damping = 1.0 - consistency.min(ruleset.hit_consistency.max_effect_on_instability);
@@ -268,6 +365,7 @@ pub fn simulate(
         power = (power + change).clamp(0.0, 1.0);
         time += dt;
 
+        let scale = breaking_scale(ruleset, rock.mass);
         let window = rock.window;
         if window.contains(power) {
             time_in_window += dt;
@@ -305,12 +403,26 @@ pub fn simulate(
         if config.record {
             samples.push(Sample {
                 time_s: time,
-                throttle: setting,
+                throttle: current.first().copied().unwrap_or(0.0),
+                energy,
                 power,
                 wave: f,
                 controlled,
                 danger,
             });
+            laser_samples.push(
+                rock.lasers
+                    .iter()
+                    .zip(&controls)
+                    .zip(&current)
+                    .map(|((l, c), &t)| LaserSample {
+                        throttle: t,
+                        setting: c.throttle,
+                        distance_m: c.distance_m,
+                        power: l.power_at(c.distance_m),
+                    })
+                    .collect(),
+            );
         }
         if controlled >= 1.0 || danger >= 1.0 {
             break Outcome::Fractured {
@@ -326,6 +438,7 @@ pub fn simulate(
     };
     Trace {
         samples,
+        lasers: laser_samples,
         outcome,
         time_in_window_s: time_in_window,
     }
@@ -348,7 +461,7 @@ pub struct Difficulty {
     pub median_time_s: Option<f32>,
     /// Mean danger pool at fracture, over the attempts that fractured: 0 is a
     /// clean fracture, and the fuller it is the fewer (and more explosive)
-    /// the pieces.
+    /// the pieces (see [`Shape::kept_pieces`](crate::Shape::kept_pieces)).
     pub mean_danger: f32,
     /// Mean share of the attempt spent inside the window.
     pub in_window: f32,
