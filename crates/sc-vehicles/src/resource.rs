@@ -4,9 +4,10 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::{
-    DataForgeComponentParamsPtr, Handle, ItemResourceComponentParams, ItemResourceDeltaAmount,
-    ItemResourceDeltaBasePtr, ItemResourceDynamicAmountBasePtr, ItemResourceSignatureEntry,
-    ItemResourceState, ResourceNetworkResource, ResourceRangeParams, SBaseResourceUnitPtr,
+    DataForgeComponentParamsPtr, EMasterMode, Handle, ItemResourceComponentParams,
+    ItemResourceDeltaAmount, ItemResourceDeltaBasePtr, ItemResourceDynamicAmountBasePtr,
+    ItemResourceSignatureEntry, ItemResourceState, ResourceNetworkResource, ResourceRangeParams,
+    SBaseResourceUnitPtr,
 };
 use sc_extract::{DataPools, Datacore, Guid, RecordCollection};
 use serde::{Deserialize, Serialize};
@@ -24,6 +25,19 @@ pub struct ResourceProfile {
     /// per-size modifier when several power plants share the output (see
     /// [`NetworkParams::plant_modifier`](crate::NetworkParams::plant_modifier)).
     pub plant_modifier: Option<i32>,
+    /// `ItemControlComponentParams.turnedOnByDefault` (true without the
+    /// component).
+    #[serde(default = "yes")]
+    pub on_by_default: bool,
+    /// `ItemControlComponentParams.masterModeExclusionsOverride`: the master
+    /// modes it is switched off in, replacing the network's table for its
+    /// type ([`NetworkParams::mode_exclusions`](crate::NetworkParams::mode_exclusions)).
+    #[serde(default, with = "modes_serde")]
+    pub mode_exclusions: Option<Vec<EMasterMode>>,
+}
+
+fn yes() -> bool {
+    true
 }
 
 impl ResourceProfile {
@@ -186,15 +200,26 @@ impl ResourceProfiles {
         let pools = &store.pools;
         let mut by_guid = HashMap::new();
         for (&guid, &handle) in &store.records.multi_feature.entity_class_definition {
-            let Some(params) = handle.get(pools).and_then(|ecd| {
-                ecd.components.iter().find_map(|c| match c {
-                    DataForgeComponentParamsPtr::ItemResourceComponentParams(h) => h.get(pools),
-                    _ => None,
-                })
+            let Some(ecd) = handle.get(pools) else {
+                continue;
+            };
+            let Some(params) = ecd.components.iter().find_map(|c| match c {
+                DataForgeComponentParamsPtr::ItemResourceComponentParams(h) => h.get(pools),
+                _ => None,
             }) else {
                 continue;
             };
-            let profile = profile(params, pools);
+            let mut profile = profile(params, pools);
+            if let Some(control) = ecd.components.iter().find_map(|c| match c {
+                DataForgeComponentParamsPtr::ItemControlComponentParams(h) => h.get(pools),
+                _ => None,
+            }) {
+                profile.on_by_default = control.turned_on_by_default;
+                profile.mode_exclusions = control
+                    .master_mode_exclusions_override
+                    .and_then(|h| h.get(pools))
+                    .map(|o| o.master_mode_exclusions.clone());
+            }
             debug!(%guid, states = profile.states.len(), "resource profile");
             by_guid.insert(guid, profile);
         }
@@ -226,6 +251,8 @@ fn profile(p: &ItemResourceComponentParams, pools: &DataPools) -> ResourceProfil
             .power_plant_override
             .and_then(|h| h.get(pools))
             .map(|m| m.additive_modifier),
+        on_by_default: true,
+        mode_exclusions: None,
     }
 }
 
@@ -383,5 +410,40 @@ pub(crate) mod resource_serde {
         Ok(ResourceNetworkResource::from_dcb_str(&String::deserialize(
             d,
         )?))
+    }
+}
+
+/// `serde` adapter for an optional list of the generated `EMasterMode`.
+pub(crate) mod modes_serde {
+    use sc_extract::generated::EMasterMode;
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    pub fn serialize<S: Serializer>(v: &Option<Vec<EMasterMode>>, s: S) -> Result<S::Ok, S::Error> {
+        match v {
+            Some(v) => s.collect_seq(v.iter().map(EMasterMode::as_dcb_str)),
+            None => s.serialize_none(),
+        }
+    }
+    pub fn deserialize<'de, D: Deserializer<'de>>(
+        d: D,
+    ) -> Result<Option<Vec<EMasterMode>>, D::Error> {
+        Ok(Option::<Vec<String>>::deserialize(d)?
+            .map(|v| v.iter().map(|s| EMasterMode::from_dcb_str(s)).collect()))
+    }
+}
+
+/// `serde` adapter for a list of the generated `EMasterMode`.
+pub(crate) mod modes_list_serde {
+    use sc_extract::generated::EMasterMode;
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    pub fn serialize<S: Serializer>(v: &[EMasterMode], s: S) -> Result<S::Ok, S::Error> {
+        s.collect_seq(v.iter().map(EMasterMode::as_dcb_str))
+    }
+    pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<EMasterMode>, D::Error> {
+        Ok(Vec::<String>::deserialize(d)?
+            .iter()
+            .map(|s| EMasterMode::from_dcb_str(s))
+            .collect())
     }
 }

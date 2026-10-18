@@ -7,6 +7,7 @@ use sc_extract::generated::{
     SCItemQuantumDriveParams, SCItemShieldGeneratorParams, SCItemThrusterParams,
     SCItemVehicleArmorParams, SHealthComponentParams, SQuantumDriveParams,
 };
+use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
 
 /// One value per damage type, in the data's order.
@@ -184,6 +185,7 @@ pub(crate) struct Sheets {
     pub armor: Option<VehicleArmor>,
     pub quantum: Option<QuantumDrive>,
     pub thruster: Option<Thruster>,
+    pub capacity: Option<CargoQuantity>,
 }
 
 pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
@@ -208,6 +210,12 @@ pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
                 out.quantum = h.get(pools).and_then(|q| quantum(q, pools));
             }
             C::SCItemThrusterParams(h) => out.thruster = h.get(pools).map(thruster),
+            C::ResourceContainer(h) => {
+                out.capacity = h
+                    .get(pools)
+                    .and_then(|r| r.capacity.as_ref())
+                    .map(|c| CargoQuantity::from_ptr(c, pools));
+            }
             _ => {}
         }
     }

@@ -27,6 +27,7 @@ use std::collections::HashMap;
 use sc_extract::generated::EItemType;
 use sc_extract::{DataCoreDatabase, Datacore, Guid, Instance, LocaleKey, Value};
 use sc_items::Items;
+use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
 
 /// Re-export the canonical accessor trait so consumers can bring the
@@ -128,6 +129,9 @@ pub struct ShipComponentStats {
     /// Main and maneuvering thrusters.
     #[serde(default)]
     pub thruster: Option<Thruster>,
+    /// `ResourceContainer.capacity`: what a fuel or quantum fuel tank holds.
+    #[serde(default)]
+    pub capacity: Option<CargoQuantity>,
 }
 
 /// Index of every ship component's [`ShipComponentStats`], keyed by GUID.
@@ -213,6 +217,7 @@ impl ShipComponents {
                     armor: sheets.armor,
                     quantum: sheets.quantum,
                     thruster: sheets.thruster,
+                    capacity: sheets.capacity,
                 },
             );
         }

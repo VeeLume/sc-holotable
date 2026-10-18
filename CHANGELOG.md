@@ -43,15 +43,28 @@ pinned. Both tag kinds are monotonic and immutable.
   - `PortContainer::power_pools` lists the vehicle's `FixedPowerPool` / `DynamicPowerPool`s.
   - `network_items(loadout, vehicles)` lists the items on a vehicle's own network; a docked vehicle runs its own.
   - `plant_output` gives the client's share of several online plants. `signature_ratio` / `em_signature` give the power ratio with its range modifier and the EM it settles at.
+  - `NetworkParams::mode_exclusions` / `excluded` give the master modes each item type is off in (quantum drives in SCM, shields in Navigation). `ResourceProfile` gains the item's own override and `on_by_default`.
   - Probe `ship_systems_probe`: the stock Centaurus gets 24 power from two Sedulity plants, as spviewer shows, and its nominal EMs and pools match.
+- **`sc-vehicles`: `PowerNetwork`**, a loadout's power network as the client runs it (LIVE 4.10.197):
+  - plants, consumers (request and minimum in micro-units, master-mode exclusions) and pools (members sorted as the client sorts them);
+  - `supply`, `pool_size`, `pool_minimum`;
+  - `power_on(mode)` gives the client's power-on distribution:
+    - minimums, pool minimums, coolers, pool shares of half for weapons / engines / shields, then a top-up;
+    - the client walks a runtime hash map, so the last segments can land on a different item than in game;
+  - `split_pools` shares a pool target out to its members, so a player-set target can be applied;
+  - `ratios` gives each item's power ratio.
+  - `PortContainer::max_default_distribution`.
+  - The probe reproduces the stock Centaurus at power-on in SCM and Navigation: coolers 4 + 4, flight controller 3 of 6, shields 2 + 2 (off in Navigation), guns 2 of 12.2, quantum drive off in SCM.
 - **`sc-items-ship-components`: per-kind sheets**, read through the typed surface:
   - `shield` (`ShieldGenerator`: HP, regen, delays, reserve pool, per-type resistance / absorption ranges);
   - `emitter` (`ShieldEmitter`: face layout, reallocation);
   - `armor` (`VehicleArmor`: damage multiplier, deflection, penetration, signal multipliers);
   - `quantum` (`QuantumDrive`: travel and spline-jump parameters, fuel, ranges);
   - `thruster` (`Thruster`: thrust, type, fuel burn);
-  - `health` (`ComponentHealth`: HP and per-type damage multipliers).
+  - `health` (`ComponentHealth`: HP and per-type damage multipliers);
+  - `capacity` (`ResourceContainer.capacity` of fuel and quantum fuel tanks).
   - Probe `component_sheets_probe` re-proves them on the Centaurus's components.
+- **`sc-resources`: `CargoQuantity::from_ptr`** projects a `SBaseCargoUnitPtr`. `sc_crafting::cargo_quantity_from_ptr` now delegates to it.
 
 ### Changed
 

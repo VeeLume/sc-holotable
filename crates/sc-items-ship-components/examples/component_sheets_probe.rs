@@ -2,8 +2,9 @@
 //! Centaurus's components (LIVE 4.10.197): the 5CA shield generator, the
 //! ship's shield emitter (quadrant faces), its hull armour (damage
 //! multiplier physical 0.7 / energy 0.5, deflection 531 / 380, 25,740 HP
-//! taking physical × 0.81 and energy × 1.21), the Khaos quantum drive and a
-//! main thruster. Prints each sheet.
+//! taking physical × 0.81 and energy × 1.21), the Khaos quantum drive, a
+//! main thruster and its tanks (46.8 SCU hydrogen, 8.6 SCU quantum). Prints
+//! each sheet.
 //!
 //! ```bash
 //! cargo run -p sc-items-ship-components --release --example component_sheets_probe
@@ -85,6 +86,41 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(t.thruster_type, EThrusterType::Main);
     assert!(t.thrust_capacity > 0.0);
 
-    println!("\nasserts passed: shield, emitter, armour, quantum drive, thruster sheets");
+    // Tank capacities; the tanks without one are outpost props and
+    // refinery parts (8 in LIVE 4.10), listed below.
+    let tanks: Vec<&ShipComponentStats> = components
+        .values()
+        .filter(|c| {
+            matches!(
+                c.kind,
+                ShipComponentKind::FuelTank | ShipComponentKind::QuantumFuelTank
+            )
+        })
+        .collect();
+    let empty = tanks
+        .iter()
+        .filter(|c| c.capacity.as_ref().and_then(|q| q.to_scu()).unwrap_or(0.0) <= 0.0)
+        .count();
+    println!("\n{} tanks, {empty} without a capacity", tanks.len());
+    for (name, guid) in &by_name {
+        let Some(c) = components.get(guid) else {
+            continue;
+        };
+        let scu = c.capacity.as_ref().and_then(|q| q.to_scu());
+        let tank = matches!(
+            c.kind,
+            ShipComponentKind::FuelTank | ShipComponentKind::QuantumFuelTank
+        );
+        if (name.contains("Constellation_Mk5") && scu.is_some())
+            || (tank && scu.unwrap_or(0.0) <= 0.0)
+        {
+            println!("  {name}: {scu:?} SCU");
+        }
+    }
+    let scu = |name: &str| get(name).map(|c| c.capacity.as_ref().and_then(|q| q.to_scu()));
+    assert_eq!(scu("HTNK_RSI_Constellation_Mk5_Centaurus")?, Some(46.8));
+    assert_eq!(scu("QTNK_RSI_Constellation_Mk5_Centaurus")?, Some(8.6));
+
+    println!("\nasserts passed: shield, emitter, armour, quantum drive, thruster, tank sheets");
     Ok(())
 }

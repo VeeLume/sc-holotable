@@ -23,6 +23,10 @@ pub struct PortContainer {
     /// power budget on this entity's network (vehicles only).
     #[serde(default)]
     pub power_pools: Vec<PowerPool>,
+    /// `resourceNetworkPowerPools.maxDefaultDistribution`: at power-on every
+    /// pool gets its whole size rather than its default share.
+    #[serde(default)]
+    pub max_default_distribution: bool,
 }
 
 impl PortContainer {
@@ -111,6 +115,10 @@ fn container(
                     out.ports
                         .extend(pc.ports.iter().filter_map(|p| entity_port(*p, pools)));
                     out.power_pools = power_pools(pc.resource_network_power_pools, pools);
+                    out.max_default_distribution = pc
+                        .resource_network_power_pools
+                        .and_then(|h| h.get(pools))
+                        .is_some_and(|s| s.max_default_distribution);
                 }
             }
             DataForgeComponentParamsPtr::SEntityComponentDefaultLoadoutParams(h) => {

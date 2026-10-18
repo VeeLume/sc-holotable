@@ -2,7 +2,7 @@
 //! pools.
 
 use sc_extract::Datacore;
-use sc_extract::generated::{EItemType, PowerPoolPtr, ResourceNetworkPowerPoolSetup};
+use sc_extract::generated::{EItemType, EMasterMode, PowerPoolPtr, ResourceNetworkPowerPoolSetup};
 use sc_extract::{DataPools, generated::Handle};
 use serde::{Deserialize, Serialize};
 
@@ -21,6 +21,15 @@ pub struct NetworkParams {
     /// `defaultPowerDistributionParams`: how power is shared out when the
     /// ship powers on.
     pub distribution: DistributionDefaults,
+    /// `MasterModeExclusionGlobalParams.exclusions`: the master modes each
+    /// item type is switched off in (LIVE 4.10: shields in Navigation,
+    /// quantum drives in SCM). An item's own override replaces its type's
+    /// entry ([`ResourceProfile::mode_exclusions`](crate::ResourceProfile::mode_exclusions)).
+    #[serde(with = "exclusions_serde")]
+    pub mode_exclusions: Vec<(EItemType, Vec<EMasterMode>)>,
+    /// The `EItemType` values in their DCB definition order: the client
+    /// keys power pools by that ordinal.
+    pub item_type_order: Vec<String>,
 }
 
 /// `ItemResourceNetworkDefaultPowerDistributionParams`. The client turns
@@ -67,6 +76,26 @@ impl NetworkParams {
         let d = g
             .default_power_distribution_params
             .and_then(|h| h.get(pools));
+        let mode_exclusions = store
+            .records
+            .entities_scitem_mastermodeexclusionglobalparams
+            .master_mode_exclusion_global_params
+            .values()
+            .filter_map(|h| h.get(pools))
+            .flat_map(|g| &g.exclusions)
+            .filter_map(|e| e.get(pools))
+            .map(|e| (e.item_type.clone(), e.master_mode_exclusions.clone()))
+            .collect();
+        // The enum's own definition order: the generated enum carries no
+        // ordinal, and the client sorts pools by it.
+        let db = datacore.db();
+        let item_type_order = db
+            .enum_definitions()
+            .iter()
+            .enumerate()
+            .find(|(i, _)| db.enum_name(*i) == Some("EItemType"))
+            .map(|(_, e)| db.enum_options(e).into_iter().map(str::to_string).collect())
+            .unwrap_or_default();
         Some(Self {
             plant_modifiers,
             max_power_to_coolant_ratio: g.max_power_to_coolant_ratio,
@@ -80,7 +109,35 @@ impl NetworkParams {
                 engines: d.map_or(0.0, |d| d.pool_default_engines),
                 shields: d.map_or(0.0, |d| d.pool_default_shields),
             },
+            mode_exclusions,
+            item_type_order,
         })
+    }
+
+    /// Whether an item of `item_type` (with its own `override_modes`) is
+    /// switched off in `mode`.
+    pub fn excluded(
+        &self,
+        item_type: &EItemType,
+        override_modes: Option<&[EMasterMode]>,
+        mode: &EMasterMode,
+    ) -> bool {
+        let modes = override_modes.or_else(|| {
+            self.mode_exclusions
+                .iter()
+                .find(|(t, _)| t == item_type)
+                .map(|(_, m)| m.as_slice())
+        });
+        modes.is_some_and(|m| m.contains(mode))
+    }
+
+    /// `item_type`'s ordinal in [`item_type_order`](Self::item_type_order)
+    /// (last when unknown).
+    pub fn item_type_rank(&self, item_type: &EItemType) -> usize {
+        self.item_type_order
+            .iter()
+            .position(|t| t == item_type.as_dcb_str())
+            .unwrap_or(usize::MAX)
     }
 
     /// What each extra online power plant adds to every plant's share: the
@@ -149,7 +206,7 @@ pub(crate) fn power_pools(
 }
 
 /// `serde` adapter for the generated `EItemType`.
-mod item_type_serde {
+pub(crate) mod item_type_serde {
     use sc_extract::generated::EItemType;
     use serde::{Deserialize, Deserializer, Serializer};
 
@@ -158,5 +215,36 @@ mod item_type_serde {
     }
     pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<EItemType, D::Error> {
         Ok(EItemType::from_dcb_str(&String::deserialize(d)?))
+    }
+}
+
+/// `serde` adapter for the per-type exclusion table.
+mod exclusions_serde {
+    use sc_extract::generated::{EItemType, EMasterMode};
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    pub fn serialize<S: Serializer>(
+        v: &[(EItemType, Vec<EMasterMode>)],
+        s: S,
+    ) -> Result<S::Ok, S::Error> {
+        s.collect_seq(v.iter().map(|(t, m)| {
+            (
+                t.as_dcb_str(),
+                m.iter().map(EMasterMode::as_dcb_str).collect::<Vec<_>>(),
+            )
+        }))
+    }
+    pub fn deserialize<'de, D: Deserializer<'de>>(
+        d: D,
+    ) -> Result<Vec<(EItemType, Vec<EMasterMode>)>, D::Error> {
+        Ok(Vec::<(String, Vec<String>)>::deserialize(d)?
+            .into_iter()
+            .map(|(t, m)| {
+                (
+                    EItemType::from_dcb_str(&t),
+                    m.iter().map(|s| EMasterMode::from_dcb_str(s)).collect(),
+                )
+            })
+            .collect())
     }
 }

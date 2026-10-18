@@ -39,7 +39,7 @@
 
 use std::collections::HashMap;
 
-use sc_extract::generated::{RecordLookup, ResourceType};
+use sc_extract::generated::{RecordLookup, ResourceType, SBaseCargoUnitPtr};
 use sc_extract::{DataPools, Guid, LocaleKey, RecordStore};
 use serde::{Deserialize, Serialize};
 
@@ -68,10 +68,7 @@ pub use quality::{
 /// variants are preserved so a consumer can show the original unit; use
 /// [`CargoQuantity::to_scu`] to normalize.
 ///
-/// The projection from the raw `SBaseCargoUnitPtr` is in sc-crafting
-/// (which enables the `crafting` feature that gates the Centi/Micro
-/// pool types — under sc-resources's `resourcetypedatabase` alone, only
-/// `SStandardCargoUnit` would be reachable).
+/// [`CargoQuantity::from_ptr`] projects the raw `SBaseCargoUnitPtr`.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum CargoQuantity {
     Standard(f32),
@@ -86,6 +83,28 @@ pub enum CargoQuantity {
 }
 
 impl CargoQuantity {
+    /// Project a `SBaseCargoUnitPtr` (the Centi / Micro pool types are
+    /// reachable through this crate's `crafting` feature). An empty base or
+    /// an unresolved handle reads as zero of its unit.
+    pub fn from_ptr(ptr: &SBaseCargoUnitPtr, pools: &DataPools) -> Self {
+        match ptr {
+            SBaseCargoUnitPtr::SStandardCargoUnit(h) => {
+                Self::Standard(h.get(pools).map_or(0.0, |u| u.standard_cargo_units))
+            }
+            SBaseCargoUnitPtr::SCentiCargoUnit(h) => {
+                Self::Centi(h.get(pools).map_or(0, |u| u.centi_scu))
+            }
+            SBaseCargoUnitPtr::SMicroCargoUnit(h) => {
+                Self::Micro(h.get(pools).map_or(0, |u| u.micro_scu))
+            }
+            SBaseCargoUnitPtr::SBaseCargoUnit(_) => Self::Standard(0.0),
+            SBaseCargoUnitPtr::Unknown { struct_index, .. } => Self::Other {
+                type_name: format!("struct#{struct_index}"),
+                struct_index: *struct_index,
+            },
+        }
+    }
+
     /// Normalize to SCU. `Centi` and `Micro` scale by 1/100 and 1/1_000_000.
     /// `Other` returns `None` — the unit shape isn't known.
     pub fn to_scu(&self) -> Option<f32> {

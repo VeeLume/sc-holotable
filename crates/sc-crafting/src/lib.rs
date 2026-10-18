@@ -644,34 +644,10 @@ impl Duration {
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// Cargo quantity projection (lives here because the `crafting` feature
-// gates SCenti/SMicro pool types; sc-resources can't reach them).
-// ─────────────────────────────────────────────────────────────────────
-
-/// Project a `SBaseCargoUnitPtr` polymorphic pointer into a [`CargoQuantity`].
-/// Defined here (not in sc-resources) because the Centi/Micro variants
-/// are gated under the `crafting` feature.
+/// Project a `SBaseCargoUnitPtr` polymorphic pointer into a [`CargoQuantity`]
+/// ([`CargoQuantity::from_ptr`]).
 pub fn cargo_quantity_from_ptr(ptr: &SBaseCargoUnitPtr, pools: &DataPools) -> CargoQuantity {
-    match ptr {
-        SBaseCargoUnitPtr::SStandardCargoUnit(h) => h
-            .get(pools)
-            .map(|u| CargoQuantity::Standard(u.standard_cargo_units))
-            .unwrap_or(CargoQuantity::Standard(0.0)),
-        SBaseCargoUnitPtr::SCentiCargoUnit(h) => h
-            .get(pools)
-            .map(|u| CargoQuantity::Centi(u.centi_scu))
-            .unwrap_or(CargoQuantity::Centi(0)),
-        SBaseCargoUnitPtr::SMicroCargoUnit(h) => h
-            .get(pools)
-            .map(|u| CargoQuantity::Micro(u.micro_scu))
-            .unwrap_or(CargoQuantity::Micro(0)),
-        SBaseCargoUnitPtr::SBaseCargoUnit(_) => CargoQuantity::Standard(0.0),
-        SBaseCargoUnitPtr::Unknown { struct_index, .. } => CargoQuantity::Other {
-            type_name: format!("struct#{struct_index}"),
-            struct_index: *struct_index,
-        },
-    }
+    CargoQuantity::from_ptr(ptr, pools)
 }
 
 // ─────────────────────────────────────────────────────────────────────

@@ -3,8 +3,11 @@
 //! (19 segments each) share 24, the coolers convert 4 segments into 41
 //! coolant, the nominal EM per component (plant 9,410, cooler 1,980,
 //! shield 1,800, radar 3,200, life support 625), and the ship's power pools
-//! (weapons fixed at 4, shields dynamic for 2 generators). Prints each
-//! mounted item's online deltas.
+//! (weapons fixed at 4, shields dynamic for 2 generators). Then the
+//! client's power-on distribution in SCM and Navigation: coolers 4 each,
+//! flight controller 3 of 6, shields 2 + 2 (off in Navigation), guns 2 of
+//! 12.2, the quantum drive off in SCM, the rest to radar and life support.
+//! Prints each mounted item's online deltas and both allocations.
 //!
 //! ```bash
 //! cargo run -p sc-vehicles --release --example ship_systems_probe
@@ -12,12 +15,12 @@
 
 use std::collections::HashMap;
 
-use sc_extract::generated::{EItemType, ResourceNetworkResource};
+use sc_extract::generated::{EItemType, EMasterMode, ResourceNetworkResource};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, RecordCollection};
 use sc_items::Items;
 use sc_vehicles::{
-    NetworkParams, PoolSize, PortContainers, ResourceProfiles, ResourceUnits, Vehicles,
-    network_items, plant_output,
+    NetworkParams, PoolSize, PortContainers, PowerNetwork, ResourceProfiles, ResourceUnits,
+    Vehicles, network_items, plant_output,
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -139,7 +142,87 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ] {
         assert_eq!(em.get(name), Some(&want), "{name}");
     }
-    println!("asserts passed: Centaurus supply, cooler conversion, nominal EM, pools");
+    // The power-on distribution in both modes.
+    let network = PowerNetwork::build(
+        &ship.stock,
+        containers.get(guid),
+        &vehicles,
+        &items,
+        &profiles,
+        &network,
+    );
+    assert_eq!(network.supply(), 24);
+    let pool = |t: EItemType| {
+        network
+            .pools
+            .iter()
+            .position(|p| p.item_type == t)
+            .ok_or("pool")
+    };
+    let (fc, shields, weapons) = (
+        pool(EItemType::FlightController)?,
+        pool(EItemType::Shield)?,
+        pool(EItemType::WeaponGun)?,
+    );
+    assert_eq!((network.pool_size(fc), network.pool_minimum(fc)), (6, 1));
+    assert_eq!(
+        (network.pool_size(shields), network.pool_minimum(shields)),
+        (8, 2)
+    );
+    assert_eq!(
+        (network.pool_size(weapons), network.pool_minimum(weapons)),
+        (4, 1)
+    );
+    for mode in [EMasterMode::SCM, EMasterMode::Navigation] {
+        let a = network.power_on(&mode);
+        let ratios = network.ratios(&a, &mode);
+        println!(
+            "\npower-on {} (supply {}, left {}):",
+            mode.as_dcb_str(),
+            a.supply,
+            a.remaining
+        );
+        let mut by_type: HashMap<&str, f64> = HashMap::new();
+        for ((c, g), r) in network.consumers.iter().zip(&a.granted).zip(&ratios) {
+            println!(
+                "  {:<60} {:<22} {g:>6.3} / {:>5.2}  ratio {r:.3}{}",
+                c.path,
+                c.item_type.as_dcb_str(),
+                c.request as f64 / 1e6,
+                if c.draws(&mode) {
+                    ""
+                } else {
+                    "  (off in this mode)"
+                }
+            );
+            if c.draws(&mode) {
+                *by_type.entry(c.item_type.as_dcb_str()).or_default() += g;
+            }
+        }
+        for (p, t) in network.pools.iter().zip(&a.pool_targets) {
+            println!("  pool {} target {t}", p.item_type.as_dcb_str());
+        }
+        assert_eq!(a.remaining, 0);
+        assert_eq!(by_type.get("Cooler"), Some(&8.0));
+        assert_eq!(by_type.get("FlightController"), Some(&3.0));
+        let radar_ls = by_type.get("Radar").unwrap_or(&0.0)
+            + by_type.get("LifeSupportGenerator").unwrap_or(&0.0);
+        match mode {
+            EMasterMode::SCM => {
+                assert_eq!(a.pool_targets[shields], 4);
+                assert_eq!(by_type.get("Shield"), Some(&4.0));
+                assert_eq!(by_type.get("QuantumDrive"), None);
+                assert_eq!(radar_ls, 7.0);
+            }
+            _ => {
+                assert_eq!(by_type.get("Shield"), None);
+                assert_eq!(by_type.get("QuantumDrive"), Some(&3.0));
+                assert_eq!(radar_ls, 8.0);
+            }
+        }
+    }
+
+    println!("asserts passed: Centaurus supply, cooler conversion, nominal EM, pools, power-on");
     Ok(())
 }
 

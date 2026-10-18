@@ -38,6 +38,7 @@
 //! ```
 
 mod container;
+mod distribution;
 mod network;
 mod port;
 mod power;
@@ -45,6 +46,7 @@ mod resource;
 mod vehicle;
 
 pub use container::{LoadoutEntry, PortContainer, PortContainers};
+pub use distribution::{Allocation, Consumer, Plant, Pool, PowerNetwork};
 pub use network::{DistributionDefaults, NetworkParams, PoolSize, PowerPool};
 pub use port::{Misfit, Port, PortSource, fits, has_flag, is_editable};
 pub use power::{em_signature, plant_output, signature_ratio};
