@@ -80,6 +80,12 @@ pinned. Both tag kinds are monotonic and immutable.
   - `candidates(path)` lists every item that fits;
   - `equip(path, item)` puts the item in with its own default loadout, dropping what the old one carried.
   - Probe `loadout_probe`: the Centaurus's gimbals are locked while their guns take the 11 S5 weapons. Two QuadraCell MT plants give 26, as erkul shows.
+- **`sc-vehicles`: `Defense`** sums up a loadout's protection:
+  - hull HP;
+  - the armour sheet and its own HP;
+  - the shield generators combined as the client combines them (`Shield::combine`: HP and regen add, delays averaged, resistance and absorption weighted by HP);
+  - the emitter's face layout.
+  - `flight_probe` re-proves it on the Centaurus: hull 170,500, armour 25,740 HP at 0.7 / 0.5, 2 × 5CA = 200,000 HP and 38,000/s, quadrant faces.
 - **`sc-vehicles`: `Flight`**, a loadout's flight figures under the legacy IFCS the PU runs:
   - speeds and angular velocity (boosted × the afterburner multipliers);
   - mass: hull, everything mounted and docked vehicles;

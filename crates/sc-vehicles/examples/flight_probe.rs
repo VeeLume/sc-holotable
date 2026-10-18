@@ -4,7 +4,8 @@
 //! panels included, and 4,349 loadout), SCM 170 / boost 365 /
 //! NAV 1075, pitch / roll / yaw 22 / 35 / 18 (boosted 33 / 70 / 27), and
 //! the accelerations spviewer rounds to forward 4.9, back 2.0, strafe 2.5
-//! G (boosted forward 7.4).
+//! G (boosted forward 7.4); and its defences: hull 170,500, armour 25,740
+//! HP at 0.7 / 0.5, 2 x 5CA = 200,000 HP and 38,000/s, quadrant faces.
 //!
 //! ```bash
 //! cargo run -p sc-vehicles --release --example flight_probe
@@ -12,10 +13,11 @@
 
 use std::collections::HashMap;
 
+use sc_extract::generated::EFaceType;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, RecordCollection};
 use sc_items::Items;
 use sc_items_ship_components::ShipComponents;
-use sc_vehicles::{Flight, PortContainers, Vehicles, port_axes};
+use sc_vehicles::{Defense, Flight, PortContainers, Vehicles, port_axes};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_discovery::discover_primary()?;
@@ -106,6 +108,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ] {
         assert!(near(got, want, 0.005), "boosted {got} vs {want}");
     }
-    println!("asserts passed: Centaurus mass, speeds, rotation, accelerations");
+    // Defences: hull, armour, 2 x 5CA combined, quadrant faces.
+    let d = Defense::compute(ship, &ship.stock, &vehicles, &components);
+    println!("{d:#?}");
+    assert_eq!(d.hull_health, 170_500.0);
+    assert_eq!(d.armor_health, Some(25_740.0));
+    let m = d
+        .armor
+        .as_ref()
+        .and_then(|a| a.damage_multiplier)
+        .ok_or("armour")?;
+    assert_eq!((m.physical, m.energy), (0.7, 0.5));
+    let s = d.shield.as_ref().ok_or("shield")?;
+    assert_eq!(
+        (s.generators, s.max_health, s.max_regen),
+        (2, 200_000.0, 38_000.0)
+    );
+    assert_eq!((s.damaged_regen_delay, s.downed_regen_delay), (6.05, 12.1));
+    assert_eq!(
+        d.emitter.as_ref().map(|e| &e.face_type),
+        Some(&EFaceType::Quadrant)
+    );
+    println!("asserts passed: Centaurus mass, speeds, rotation, accelerations, defences");
     Ok(())
 }

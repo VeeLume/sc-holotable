@@ -38,6 +38,7 @@
 //! ```
 
 mod container;
+mod defense;
 mod distribution;
 mod flight;
 mod loadout;
@@ -48,6 +49,7 @@ mod resource;
 mod vehicle;
 
 pub use container::{LoadoutEntry, PortContainer, PortContainers};
+pub use defense::{Defense, Shield};
 pub use distribution::{
     Allocation, Consumer, ItemReadout, Plant, Pool, PowerNetwork, Readout, Signals,
 };
