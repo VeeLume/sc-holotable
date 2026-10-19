@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.27.0] - 2026-10-19
+
 ### Added
 
 - **`sc-extract`: vehicle XML reader** (`VehicleDefinition`), the first piece of the ship model for Starlume's loadout calculator.
