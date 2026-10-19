@@ -229,6 +229,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_launch_marker() {
         let line = r#"{ "t":"...", "[main][info] ": "[Launcher::launch] Launching Star Citizen LIVE from (C:\\Games\\StarCitizen\\LIVE)" },"#;
         let entry = parse(line).unwrap();
@@ -238,6 +239,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_installer_at_appends_channel_dir() {
         // The "at <library>" shape gives a parent directory; channel must
         // be appended to reach the install root.
@@ -249,6 +251,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_installer_at_verifying() {
         let line = r#"{ "t":"...", "[main][info] ": "[Installer] Verifying Star Citizen LIVE 4.7.1-live.11592622 at C:\\Program Files\\Roberts Space Industries\\StarCitizen (force DP: false)" },"#;
         let entry = parse(line).unwrap();
@@ -260,6 +263,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_installer_in_root_already_includes_channel() {
         // "in <root>" shape where the path is already a full channel root.
         let line = r#"{ "t":"...", "[main][info] ": "[Installer] Delta update applied (SC LIVE 4.7.1-live.11592622) in C:\\Games\\StarCitizen\\LIVE" },"#;
@@ -270,6 +274,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_installer_in_with_stray_paren() {
         // The launcher emits a malformed "(SC (LIVE 4.7.0-live.123) in ..."
         // for delta-update-start lines. The regex tolerates the optional `(`.
@@ -280,6 +285,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_pipeline_start_line() {
         // Launcher 2.14+ shape, from a real 2.18.1 log.
         let line = r#"{ "t":"2026-10-13 17:47:20.295", "[main][info] ": "[Pipeline] Installing Star Citizen LIVE 4.10.2-live.12913470 at C:\\Games\\StarCitizen (type: update, forceDP: false)"  },"#;
@@ -290,6 +296,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_patcher_phase_lines() {
         let start = r#"{ "t":"2026-10-08 23:34:45.443", "[main][info] ": "[PatcherPhase] Starting delta update (SC PTU 4.10.2-ptu.12878398) in C:\\Games\\StarCitizen (statistics enabled: false)"  },"#;
         let entry = parse(start).unwrap();
@@ -302,6 +309,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_tech_preview_uses_dashed_dirname() {
         // TECH-PREVIEW is the on-disk dir name; display_name() is "TECH".
         let line = r#"{ "t":"...", "[main][info] ": "[Installer] Installing Star Citizen TECH-PREVIEW 4.7-tp.11650317 at C:\\Games\\StarCitizen (force DP: false)" },"#;
@@ -314,6 +322,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_tech_preview_root_in_marker() {
         let line = r#"{ "t":"...", "[main][info] ": "[Installer] Initial pack installed (SC TECH-PREVIEW 4.7-tp.11650317) in C:\\Games\\StarCitizen\\TECH-PREVIEW" },"#;
         let entry = parse(line).unwrap();
@@ -325,6 +334,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_delete_login_data_marker() {
         let line = r#"{ "t":"...", "[main][info] ": "[Launcher::launch] Deleting C:\\Games\\StarCitizen\\LIVE\\loginData.json for LIVE" },"#;
         let entry = parse(line).unwrap();

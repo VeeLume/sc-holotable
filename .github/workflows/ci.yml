@@ -5,4 +5,6 @@ on:
   pull_request:
 jobs:
   ci:
-    uses: VeeLume/ci/.github/workflows/rust-ci.yml@main
+    uses: VeeLume/ci/.github/workflows/rust-ci.yml@ci/windows-test
+    with:
+      windows-test: -p sc-discovery  # path tests assert Windows separators

@@ -387,6 +387,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn completed_update_is_one_closed_run() {
         let runs = runs(COMPLETED_UPDATE);
         assert_eq!(runs.len(), 1);
