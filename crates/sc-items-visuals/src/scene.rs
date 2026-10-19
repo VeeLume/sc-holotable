@@ -112,6 +112,11 @@ pub struct Attachment {
     /// The child's own helper (bone or node) that meets the bone instead of
     /// its origin (`ItemOffsetHelperName`).
     pub item_helper: Option<String>,
+    /// The parent's port the child is attached to, as the loadout names it;
+    /// `None` for a `.cdf` part. Joined with `/` from the root, this is the
+    /// port path loadout data uses (`turret/gimbal/gun`).
+    #[serde(default)]
+    pub port: Option<String>,
     pub part: Part,
 }
 
@@ -344,6 +349,7 @@ impl<F: FnMut(&str) -> Result<CharacterDefinition, String>> Assembly<'_, F> {
                         rotation: ang3_quaternion(port.offset.rotation),
                     },
                     item_helper: port.item_offset_helper.clone(),
+                    port: Some(c.port.clone()),
                     part: p,
                 });
             }
@@ -396,6 +402,7 @@ impl<F: FnMut(&str) -> Result<CharacterDefinition, String>> Assembly<'_, F> {
                         rotation: [a.rotation[1], a.rotation[2], a.rotation[3], a.rotation[0]],
                     },
                     item_helper: None,
+                    port: None,
                     part: Part {
                         item: None,
                         cdf_attachment: Some(a.name.clone()),
@@ -540,6 +547,7 @@ mod tests {
             bone: bone.map(Into::into),
             offset: Offset::default(),
             item_helper: None,
+            port: None,
             part,
         }
     }
