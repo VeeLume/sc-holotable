@@ -43,6 +43,10 @@ pub struct Vehicle {
     /// geometry (`.cga`), whose helper nodes place the item ports.
     #[serde(default)]
     pub geometry: Option<String>,
+    /// `VehicleComponentParams.objectContainers`: the interior and other
+    /// object containers placed in the ship (see [`crate::Interior`]).
+    #[serde(default)]
+    pub object_containers: Vec<crate::ObjectContainer>,
     /// `SEntityInsuranceProperties.shipInsuranceParams`: what an insurance
     /// claim costs in time and money; `None` for vehicles that cannot be
     /// insured.
@@ -85,6 +89,9 @@ pub struct Vehicle {
     /// What a calculator should list it as.
     #[serde(default)]
     pub listing: Listing,
+    /// How penetrating hits treat its components.
+    #[serde(default)]
+    pub penetration: PenetrationRules,
     /// The hull's parts (vehicle XML), each with its HP and mass.
     pub hull: Vec<VehiclePart>,
     /// The vehicle XML's `itemPortTags`.
@@ -128,6 +135,30 @@ pub enum Listing {
     /// An AI, mission, display or same-named variant.
     #[default]
     Variant,
+}
+
+/// `VehicleComponentParams` penetration multipliers (client `CVehicle::
+/// OnHit`, LIVE 4.10).
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct PenetrationRules {
+    /// `fusePenetrationDamageMultiplier`: on a relay, the damage goes to
+    /// its first live fuse times this.
+    pub fuse_multiplier: f32,
+    /// `componentPenetrationDamageMultiplier`: every other component.
+    pub component_multiplier: f32,
+    /// `aiEngineeringOptions.penetrationCanDamagePowerPlants`: only matters
+    /// when an AI flies the ship (players' plants are always hit).
+    pub ai_power_plants: bool,
+}
+
+impl Default for PenetrationRules {
+    fn default() -> Self {
+        Self {
+            fuse_multiplier: 1.0,
+            component_multiplier: 1.0,
+            ai_power_plants: true,
+        }
+    }
 }
 
 /// `ShipInsuranceParams`.
@@ -269,6 +300,27 @@ impl Vehicles {
                         .map(|v| [v.x, v.y, v.z]),
                     cross_section: cross_section(ecd, pools),
                     geometry: geometry(ecd, pools),
+                    object_containers: params
+                        .object_containers
+                        .iter()
+                        .filter_map(|h| h.get(pools))
+                        .filter(|oc| !oc.file_name.is_empty())
+                        .map(|oc| {
+                            let offset = oc.offset.and_then(|h| h.get(pools));
+                            crate::ObjectContainer {
+                                file: oc.file_name.clone(),
+                                position: offset
+                                    .and_then(|q| q.position)
+                                    .and_then(|h| h.get(pools))
+                                    .map_or([0.0; 3], |v| [v.x, v.y, v.z]),
+                                rotation: offset
+                                    .and_then(|q| q.rotation)
+                                    .and_then(|h| h.get(pools))
+                                    .map_or([0.0; 3], |a| [a.x, a.y, a.z]),
+                                bone: (!oc.bone_name.is_empty()).then(|| oc.bone_name.clone()),
+                            }
+                        })
+                        .collect(),
                     insurance: insurance(ecd, pools),
                     insured_as: insured_class(ecd, pools)
                         .filter(|n| !n.is_empty())
@@ -309,6 +361,14 @@ impl Vehicles {
                         .get(&guid)
                         .is_some_and(|i| i.item_sub_type == EItemSubType::Vehicle_GroundVehicle),
                     gravlev: params.is_gravlev_vehicle,
+                    penetration: PenetrationRules {
+                        fuse_multiplier: params.fuse_penetration_damage_multiplier,
+                        component_multiplier: params.component_penetration_damage_multiplier,
+                        ai_power_plants: params
+                            .ai_engineering_options
+                            .and_then(|h| h.get(pools))
+                            .is_none_or(|o| o.penetration_can_damage_power_plants),
+                    },
                     listing: Listing::Variant,
                     hull: hull.as_ref().map(|h| h.parts.clone()).unwrap_or_default(),
                     item_port_tags: hull
@@ -488,7 +548,7 @@ fn insurance(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Insurance
 }
 
 /// The entity's root geometry path.
-fn geometry(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<String> {
+pub(crate) fn geometry(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<String> {
     let g = ecd.components.iter().find_map(|c| match c {
         DataForgeComponentParamsPtr::SGeometryResourceParams(h) => h.get(pools),
         _ => None,

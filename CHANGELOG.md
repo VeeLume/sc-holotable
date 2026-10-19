@@ -100,6 +100,26 @@ pinned. Both tag kinds are monotonic and immutable.
   - editions have their own name, no AI crew, are EA-ready and are not AI templates.
   - LIVE 4.10 lists 246 records with 240 names: all 222 of erkul's (GUID-joined) plus 24 event and special editions the data cannot tell apart. 27 are ground vehicles, 11 gravlev; there are 52 reward ships.
   - Also new: `Vehicle::insured_as`, `ai_crew`, `ea_ready`, `reward`, `scenario`, `display`, `explodes_from_hull_damage`, `ground`, `gravlev`.
+- **`sc-vehicles`: projectile hits** (`Target::hit`) follow the client's `CVehicle::OnHit` (LIVE 4.10.197):
+  - shield face: `D(1−R)A` taken, `D(1−R)(1−A)` passed on;
+  - armour deflection, damage multiplier and wear;
+  - the hull part a ray cast reaches (`Raycaster`, a BVH over the hull's collision shell) takes × (1 − 0.75 h);
+  - the penetration cylinder reaches components with health (`ComponentHealths`), with per-type depth falloff, the fuse / component multipliers (`Vehicle::penetration`) and item resistances;
+  - `Target::exposure` sweeps attack directions per component.
+  - Probe `hits_probe` reproduces the hand-worked Centaurus cases: CF-557 taken by the shield, BEHR 15.19 / 18.56, both deflected by intact armour, ESPR S5 armour 665 / wear 538.65 / hull 176.69 / depth 0.036 m. With the armour gone, its 1.7 m reaches the radar (1.39 m deep) but no power plant (1.73 m at best).
+- **`sc-weapons`: `ShipWeapon::penetration_radius_m`** (near / far radius). **`sc-items-ship-components`: `component_health()`**.
+- **`sc-vehicles`: `Interior`**, the static geometry (walls, floors, ceilings, fixtures) a vehicle's object containers place, in the ship frame; `Vehicle::object_containers` lists them (`VehicleComponentParams.objectContainers`, offsets in the ship frame). Probe `interior_probe`: the Centaurus's two interior containers place 455 brushes from 155 files, all inside the hull. Entities the containers spawn and nested containers are not read yet.
+- **`sc-extract`: `MeshGeometry::read` reads a helpers-only geometry file** (no companion streams, no `IvoSkin2`: seat-access points, button dummies) as its nodes without vertices instead of failing; `MeshGeometry` is `Default`.
+- **`sc-extract`: `IncludedObjects`** (`object_container::included_objects`) reads the static geometry a `.soc` places; **`AssetSource::read_data`** reads a file by the path DataCore records write.
+- **`sc-vehicles`: `scene()`** assembles a loadout for drawing as an `sc_items_visuals::Scene`: the hull and every installed item on its port's helper; vehicle ports without a helper (hull-XML hardpoints, entity ports like the Mk V's `hardpoint_tail`) sit on the hull node of the same name. Probe `ship_scene_probe`: the stock Centaurus draws 139 items on 65 hull hardpoints. `HullGeometry::node_parts` maps each hull mesh node to its damage part.
+- **`sc-items-visuals`: `Attachment::port`**: the parent's port an attached item sits in, so a scene joins loadout data by port path.
+- **`sc-items-visuals`: `Visuals` covers vehicle entities** as well as items, and **`Visuals::mounted_scene`** assembles an entity with what is installed on it (no stored-prop variants), taking attach points the record lacks from the caller.
+- **`sc-extract`: `PhysicsProxies`** reads a geometry file's collision shapes (`STATOBJ_PHYSICS`, slots 0–3): boxes and closed trimeshes per node, with the slot's `ProxyKind` (`hits_rays`). Probe `physics_proxies_probe`: the Constellation Mk V hull has 36 (22 meshes, 14 boxes), each closed and enclosing its stated volume.
+- **`sc-vehicles`: `HullGeometry`**: a loadout in 3D, in the ship frame.
+  - The hull's render mesh (`parts`, to draw) and its closed collision shell (`collision`, what shots hit: the ray-colliding physics proxies) grouped by damage part. Each mesh node is named after its vehicle-XML `Part`.
+  - Each mounted item's `Placement` on its port's helper node (hull, then the holding item's mesh), with its mesh bounds.
+  - `GeometryPaths` gives every entity's geometry path.
+  - The Centaurus has 31 parts, 1.16 M triangles and 192 placements.
 - **`sc-vehicles`: `Armament`** lists a loadout's guns, missiles and countermeasure launchers with their port paths, for joining to their stats. The Centaurus has 12 guns, 32 StrikeForce II and 2 launchers.
 - **`sc-items-ship-components`: `radar` and `ammo` sheets, and `ShipComponentKind::CountermeasureLauncher`.**
   - `Radar`: detection per signature type (sensitivity, piercing, passive / active), aim-assist distances, ping cooldown.

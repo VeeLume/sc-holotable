@@ -8,7 +8,8 @@
 //! - [`InventoryView`]: how the inventory presents an item (orientation
 //!   offset, light rig) and the size of its grid cell.
 //! - [`Visuals::scene`]: an item assembled for drawing, with what is
-//!   attached to it ([`Scene`]).
+//!   attached to it ([`Scene`]); [`Visuals::mounted_scene`]: an entity with
+//!   what is installed on it (a vehicle and its loadout).
 //!
 //! Geometry files are paths into `Data.p4k`; reading them is
 //! `sc_extract::{MeshGeometry, Material, CharacterDefinition, Skeleton}`.
@@ -229,8 +230,9 @@ impl Visual {
     }
 }
 
-/// Every item's [`Visual`], keyed by `EntityClassDefinition` GUID. Covers the
-/// [`Items`] that carry `SGeometryResourceParams`.
+/// Every item's and vehicle's [`Visual`], keyed by `EntityClassDefinition`
+/// GUID. Covers the [`Items`] and the vehicle entities
+/// (`VehicleComponentParams`) that carry `SGeometryResourceParams`.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Visuals {
     by_guid: HashMap<Guid, Visual>,
@@ -249,12 +251,12 @@ impl Visuals {
         let names = class_names(datacore);
         let mut by_guid = HashMap::new();
         for (&guid, &handle) in ecds {
-            if items.get(&guid).is_none() {
-                continue;
-            }
             let Some(ecd) = handle.get(pools) else {
                 continue;
             };
+            if items.get(&guid).is_none() && !is_vehicle(ecd) {
+                continue;
+            }
             if let Some(v) = visual(ecd, pools, &names) {
                 debug!(%guid, "visual");
                 by_guid.insert(guid, v);
@@ -494,6 +496,12 @@ fn loadout_entry(
 
 /// Lower-cased `EntityClassDefinition` record name → GUID, for the loadout
 /// entries that name their class instead of referencing it.
+fn is_vehicle(ecd: &EntityClassDefinition) -> bool {
+    ecd.components
+        .iter()
+        .any(|c| matches!(c, DataForgeComponentParamsPtr::VehicleComponentParams(_)))
+}
+
 fn class_names(datacore: &Datacore) -> HashMap<String, Guid> {
     datacore
         .db()

@@ -112,6 +112,11 @@ pub struct Attachment {
     /// The child's own helper (bone or node) that meets the bone instead of
     /// its origin (`ItemOffsetHelperName`).
     pub item_helper: Option<String>,
+    /// The parent's port the child is attached to, as the loadout names it;
+    /// `None` for a `.cdf` part. Joined with `/` from the root, this is the
+    /// port path loadout data uses (`turret/gimbal/gun`).
+    #[serde(default)]
+    pub port: Option<String>,
     pub part: Part,
 }
 
@@ -221,7 +226,40 @@ impl Visuals {
             read_cdf: &mut read_cdf,
             notes: &mut notes,
         };
-        let mut root = b.part(item, attached, fit, 0)?;
+        let mut root = b.part(item, attached, fit, 0, &[])?;
+        share_skeleton(&mut root, None);
+        Some(Scene { root, notes })
+    }
+
+    /// The entity `item` with what is installed on it, as installed: a
+    /// vehicle and its loadout. Unlike [`Visuals::scene`] nothing is the
+    /// stored prop (no `inventoryStoredEntity` variants). `extra_ports` are
+    /// attach points the record does not give, used for a port it lacks or
+    /// whose definition names no helper (a vehicle's hull-XML hardpoints,
+    /// built by the caller);
+    /// `attached` is what sits in its ports, recursively (`None` children
+    /// take the item's default loadout).
+    pub fn mounted_scene(
+        &self,
+        palettes: &Palettes,
+        item: &Guid,
+        extra_ports: &[crate::Port],
+        attached: &[Attached],
+        mut read_cdf: impl FnMut(&str) -> Result<CharacterDefinition, String>,
+    ) -> Option<Scene> {
+        let mut notes = Vec::new();
+        let fit = Fit {
+            body: Body::default(),
+            worn: true,
+            port_flags: "",
+        };
+        let mut b = Assembly {
+            visuals: self,
+            palettes,
+            read_cdf: &mut read_cdf,
+            notes: &mut notes,
+        };
+        let mut root = b.part(item, Some(attached), fit, 0, extra_ports)?;
         share_skeleton(&mut root, None);
         Some(Scene { root, notes })
     }
@@ -241,6 +279,7 @@ impl<F: FnMut(&str) -> Result<CharacterDefinition, String>> Assembly<'_, F> {
         attached: Option<&[Attached]>,
         fit: Fit,
         depth: usize,
+        extra_ports: &[crate::Port],
     ) -> Option<Part> {
         let visual = self.visuals.get(guid)?;
         let Some(look) = visual.look(&fit.tags()) else {
@@ -290,7 +329,7 @@ impl<F: FnMut(&str) -> Result<CharacterDefinition, String>> Assembly<'_, F> {
             if self.visuals.get(&c.item).is_none() {
                 continue;
             }
-            let Some((port, bone)) = attach_point(visual, &c.port) else {
+            let Some((port, bone)) = attach_point(visual, extra_ports, &c.port) else {
                 self.notes.push(SceneNote::NoPort {
                     item: *guid,
                     port: c.port.clone(),
@@ -302,7 +341,7 @@ impl<F: FnMut(&str) -> Result<CharacterDefinition, String>> Assembly<'_, F> {
                 port_flags: &port.flags,
                 ..fit
             };
-            if let Some(p) = self.part(&c.item, c.children.as_deref(), child_fit, depth + 1) {
+            if let Some(p) = self.part(&c.item, c.children.as_deref(), child_fit, depth + 1, &[]) {
                 part.attachments.push(Attachment {
                     bone,
                     offset: Offset {
@@ -310,6 +349,7 @@ impl<F: FnMut(&str) -> Result<CharacterDefinition, String>> Assembly<'_, F> {
                         rotation: ang3_quaternion(port.offset.rotation),
                     },
                     item_helper: port.item_offset_helper.clone(),
+                    port: Some(c.port.clone()),
                     part: p,
                 });
             }
@@ -362,6 +402,7 @@ impl<F: FnMut(&str) -> Result<CharacterDefinition, String>> Assembly<'_, F> {
                         rotation: [a.rotation[1], a.rotation[2], a.rotation[3], a.rotation[0]],
                     },
                     item_helper: None,
+                    port: None,
                     part: Part {
                         item: None,
                         cdf_attachment: Some(a.name.clone()),
@@ -382,8 +423,15 @@ impl<F: FnMut(&str) -> Result<CharacterDefinition, String>> Assembly<'_, F> {
 
 /// The port named `name` and the bone its child goes on: `None` for a
 /// skinned port; a non-skinned port without a helper has no attach point.
-fn attach_point<'v>(visual: &'v Visual, name: &str) -> Option<(&'v crate::Port, Option<String>)> {
-    let port = visual.port(name)?;
+fn attach_point<'v>(
+    visual: &'v Visual,
+    extra: &'v [crate::Port],
+    name: &str,
+) -> Option<(&'v crate::Port, Option<String>)> {
+    let port = visual
+        .port(name)
+        .filter(|p| p.skinned || p.helper.is_some())
+        .or_else(|| extra.iter().find(|p| p.name.eq_ignore_ascii_case(name)))?;
     if port.skinned {
         return Some((port, None));
     }
@@ -499,6 +547,7 @@ mod tests {
             bone: bone.map(Into::into),
             offset: Offset::default(),
             item_helper: None,
+            port: None,
             part,
         }
     }

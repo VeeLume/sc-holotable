@@ -48,6 +48,10 @@ pub struct ShipWeapon {
     /// `None` for energy / tachyon weapons and for projectile families
     /// without modeled penetration data.
     pub penetration_m: Option<f32>,
+    /// `penetrationParams.nearRadius` / `farRadius`, m: the radius of the
+    /// penetration cone at its start and at full depth (equal on every
+    /// ship ammo in LIVE 4.10: a cylinder).
+    pub penetration_radius_m: Option<[f32; 2]>,
     /// Pellet count from `SProjectileLauncher` (scatter guns: 8 or 12).
     /// `None` for single-projectile weapons.
     pub pellet_count: Option<i32>,
@@ -157,6 +161,7 @@ impl ShipWeapon {
             ammo_speed: ammo.as_ref().map(|a| a.speed),
             ammo_lifetime: ammo.as_ref().map(|a| a.lifetime),
             penetration_m: ammo.as_ref().and_then(|a| a.penetration_m),
+            penetration_radius_m: ammo.as_ref().and_then(|a| a.penetration_radius_m),
             pellet_count,
             total_ammo,
             power_draw,
