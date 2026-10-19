@@ -99,7 +99,7 @@ pub struct MeshNode {
 /// println!("{} vertices, material {:?}", g.positions.len(), g.material);
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Default, PartialEq)]
 pub struct MeshGeometry {
     pub nodes: Vec<MeshNode>,
     /// The `.mtl` the submeshes index into, as the `MtlName` chunk writes
@@ -210,6 +210,9 @@ impl MeshGeometry {
     }
 
     /// Parse a geometry file and, if it has one, its companion streams file.
+    /// A file with neither a companion nor its own `IvoSkin2` chunk is
+    /// helpers only (a seat-access point, a `$proxy_dummy`): its nodes, no
+    /// vertices.
     pub fn parse(geometry: &[u8], streams: Option<&[u8]>) -> Result<Self> {
         let nodes = match parse_nodes(geometry) {
             Ok(nodes) => nodes,
@@ -221,7 +224,10 @@ impl MeshGeometry {
             let name = String::from_utf8_lossy(name).trim().to_string();
             (!name.is_empty()).then_some(name)
         });
-        let mut g = parse_render_streams(streams.unwrap_or(geometry))?;
+        let mut g = match streams {
+            None if chunk(geometry, IVO_SKIN2).is_err() => MeshGeometry::default(),
+            _ => parse_render_streams(streams.unwrap_or(geometry))?,
+        };
         g.nodes = nodes;
         g.material = material;
         for s in &mut g.submeshes {
