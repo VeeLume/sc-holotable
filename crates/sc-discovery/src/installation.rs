@@ -324,6 +324,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn data_p4k_path() {
         let inst = make_install(Channel::Live, "4.6.1.0", None);
         assert_eq!(inst.data_p4k(), PathBuf::from("C:\\SC\\LIVE\\Data.p4k"));

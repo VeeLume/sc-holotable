@@ -477,6 +477,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[cfg_attr(not(windows), ignore = "asserts Windows path separators")]
     fn parse_store_json_extracts_installed_channels() {
         let json = br#"{
             "library": {
