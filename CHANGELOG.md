@@ -13,8 +13,6 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
-## [v0.33.0] - 2026-10-21
-
 ### Added
 
 - **`sc-locations`: `Waypoints::build(&Universe)`**: every positioned star-map object with quantum travel data. Each `Waypoint` has its GUID, name key, `LocationKind`, system (the star the star map roots it at), system-global position and `QuantumTravel` radii.
@@ -25,6 +23,8 @@ pinned. Both tag kinds are monotonic and immutable.
   - The kinds are the star map's own: Lagrange points are `Asteroid`, and the Pyro and Nyx gateways are `Anomaly`.
 - **`sc-locations`: `ObjectContainers::systems(assets, depth)`**: the `*system.socpak` files and `depth` levels below them. Depth 1, the bodies plus their stations and outposts, reads in about 1 s instead of a full cook.
 - **`sc-locations`: `Location::quantum`**: `StarMapObject.quantumTravelData`'s arrival, obstruction and adoption radii. Hurston arrives at 1,050,000 m. `HOLOTABLE_COOK_VERSION` is now 7.
+
+## [v0.33.0] - 2026-10-21
 
 ### Added
 
