@@ -13,6 +13,23 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-vehicles`: `Storage::compute`**: what a vehicle stores, from a loadout plus the entities its interior places.
+  - Cargo grids (open containers) with their SCU, dimensions, and an `external` flag for the Hull C's struts.
+  - Storage lockers (closed containers: personal storage, seat and bed storage) with their capacity.
+  - Suit lockers and weapon racks with their slots. Each `Slot` lists what it `accepts`: the item types and sub-types of real items that match its port's types and size range. Weapon racks show `WeaponPersonal` `Small` (sidearm), `Medium` (primary) and `Large` (heavy) slots; `Rack::takes` and `Slot::takes` ask for one.
+  - Docked vehicles are left out, as they are from the power network. `Place` says where each thing sits: a loadout port path, or an interior entity with its frame.
+  - Probe `storage_probe` reproduces erkul's cargo SCU for the Constellation Mk V Centaurus (240), Freelancer (66) and Cutlass Black (46). It finds the Hammerhead's 40 SCU grid behind its cargo door's XML loadout, the Centaurus's 5 suit lockers and the Corsair's 8. All 246 listed vehicles read in about 17 s. The other totals match the published figures: Taurus 174, Andromeda 96, Freelancer MAX 120, Carrack 456, Starlifter C2 696, Caterpillar 576, Reclaimer 420, Polaris 576, Hull C 4,608.
+- **`sc-items`: `Item::inventory`** (`Inventory`, `InventoryKind`): the `InventoryContainer` an item's `SCItemInventoryContainerComponentParams` names. It covers open (grid, `external`), open-always and closed containers, with dimensions and a closed container's capacity. `Inventory::scu` counts whole 1.25 m cells for a grid and returns the capacity for a closed container.
+- **`sc-vehicles`: `Vehicle::inventory`**: the ship's own inventory (`VehicleComponentParams.inventoryContainerParams`, 1.5 SCU on the Centaurus, 432 on the Polaris).
+- **`sc-vehicles`: `Interior::entities`** (`PlacedEntity`): the entities an interior's containers place, each with its class (`EntityClassGUID`), instance name and frame in the ship.
+
+### Changed
+
+- **`sc-vehicles`: `PortContainers::build(&Datacore, &AssetSource)`** now reads XML loadout files (`SItemPortLoadoutXMLParams.loadoutPath`), which 1,060 LIVE 4.10 entities use (doors, beds, lockers). The Hammerhead's main cargo grid hangs off its cargo-bay door that way, so stock trees, the power network and mass all see items they missed before. Entries name their class by record name, matched as manual entries' `entityClassName` is.
+- **`sc-holotable`: `HOLOTABLE_COOK_VERSION` 5 → 6**, because `Item` gained `inventory`.
+
 ## [v0.29.0] - 2026-10-21
 
 ### Added

@@ -59,10 +59,12 @@ pub use sc_extract::RecordCollection;
 
 pub mod catalog;
 mod class;
+mod inventory;
 pub mod variants;
 
 pub use catalog::{Collection, CollectionId, ItemCatalog, Model, ModelId};
 pub use class::ItemClass;
+pub use inventory::{Inventory, InventoryKind};
 
 /// serde adapters for the generated item enums. They carry no serde of their
 /// own (the generated crate stays serde-free to avoid the monomorphization
@@ -133,6 +135,11 @@ pub struct Item {
     /// physics component.
     #[serde(default)]
     pub mass: Option<f32>,
+    /// What it holds: the `InventoryContainer` its
+    /// `SCItemInventoryContainerComponentParams` names (cargo grids,
+    /// lockers, personal storage, backpacks).
+    #[serde(default)]
+    pub inventory: Option<Inventory>,
 }
 
 impl Item {
@@ -231,7 +238,7 @@ impl Items {
             let Some(ecd) = handle.get(pools) else {
                 continue;
             };
-            if let Some(item) = item_for(ecd, pools) {
+            if let Some(item) = item_for(ecd, store) {
                 cache.insert(guid, item);
             }
         }
@@ -325,7 +332,8 @@ impl sc_extract::RecordCollection for Items {
 /// Extract the [`Item`] metadata for one `EntityClassDefinition`, or `None`
 /// if it exposes no `AttachDef`. Shared by [`Items::build`] and
 /// [`ItemsBuilder`].
-fn item_for(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Item> {
+fn item_for(ecd: &EntityClassDefinition, store: &RecordStore) -> Option<Item> {
+    let pools = &store.pools;
     let attachable = find_attachable(ecd, pools)?;
     let item_def = attachable.attach_def.and_then(|h| h.get(pools))?;
     let loc = item_def.localization.and_then(|h| h.get(pools));
@@ -340,7 +348,20 @@ fn item_for(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Item> {
         tags: words(&item_def.tags),
         required_tags: words(&item_def.required_tags),
         mass: mass(ecd, pools),
+        inventory: inventory(ecd, store),
     })
+}
+
+/// The `InventoryContainer` its `SCItemInventoryContainerComponentParams`
+/// names.
+fn inventory(ecd: &EntityClassDefinition, store: &RecordStore) -> Option<Inventory> {
+    let guid = ecd.components.iter().find_map(|c| match c {
+        DataForgeComponentParamsPtr::SCItemInventoryContainerComponentParams(h) => {
+            h.get(&store.pools)?.container_params
+        }
+        _ => None,
+    })?;
+    Inventory::from_record(&guid, store)
 }
 
 /// The entity's `SEntityPhysicsControllerParams.PhysType.Mass`, whatever
@@ -394,7 +415,7 @@ impl sc_extract::RecordVisitor for ItemsBuilder {
         let Some(ecd) = handle.get(pools) else {
             return;
         };
-        if let Some(cached) = item_for(ecd, pools) {
+        if let Some(cached) = item_for(ecd, store) {
             self.inner.insert(item.guid, cached);
         }
     }
@@ -439,6 +460,7 @@ mod tests {
             tags: Vec::new(),
             required_tags: Vec::new(),
             mass: None,
+            inventory: None,
         }
     }
 

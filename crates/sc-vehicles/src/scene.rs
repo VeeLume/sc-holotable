@@ -26,7 +26,7 @@ use crate::{Mounted, Vehicle};
 /// let data = AssetData::extract(&assets, &AssetConfig::standard())?;
 /// let datacore = Datacore::parse(&assets, &data)?;
 /// let items = Items::build(datacore.records());
-/// let containers = PortContainers::build(&datacore);
+/// let containers = PortContainers::build(&datacore, &assets);
 /// let vehicles = Vehicles::build(&datacore, &items, &containers, &assets);
 /// let (visuals, palettes) = (Visuals::build(&datacore, &items), Palettes::build(&datacore));
 /// let (guid, ship) = vehicles.iter().next().ok_or("no vehicles")?;

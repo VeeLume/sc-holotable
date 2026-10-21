@@ -37,7 +37,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &data)?;
     let items = Items::build(datacore.records());
-    let containers = PortContainers::build(&datacore);
+    let containers = PortContainers::build(&datacore, &assets);
     let vehicles = Vehicles::build(&datacore, &items, &containers, &assets);
     let components = ShipComponents::build(&datacore, &items);
     let healths = ComponentHealths::build(&datacore);
