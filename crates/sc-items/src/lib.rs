@@ -58,9 +58,11 @@ use tracing::warn;
 pub use sc_extract::RecordCollection;
 
 pub mod catalog;
+mod class;
 pub mod variants;
 
 pub use catalog::{Collection, CollectionId, ItemCatalog, Model, ModelId};
+pub use class::ItemClass;
 
 /// serde adapters for the generated item enums. They carry no serde of their
 /// own (the generated crate stays serde-free to avoid the monomorphization
@@ -140,6 +142,15 @@ impl Item {
         let key = self.name_key.as_ref()?;
         let name = locale.resolve(key)?;
         (!name.is_empty()).then_some(name)
+    }
+
+    /// Its class from the `Class:` line of its description, resolved
+    /// through `locale`: the `global.ini` the game ships (see
+    /// [`ItemClass::from_description`]). `None` without a description or
+    /// such a line.
+    pub fn class(&self, locale: &LocaleMap) -> Option<ItemClass> {
+        let key = self.desc_key.as_ref()?;
+        ItemClass::from_description(locale.resolve(key)?)
     }
 
     /// Whether this is a real **inventory item** (not a non-item attachable

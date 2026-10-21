@@ -13,6 +13,14 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-items`: `ItemClass` and `Item::class(&LocaleMap)`**: an item's class from the `Class:` line of its description, the only place the game keeps it (LIVE 4.10; no DCB field).
+  - Ship components carry `Military` / `Civilian` / `Industrial` / `Stealth` / `Competition`.
+  - On personal weapons and tools the same line names the weapon class (`Ballistic`, `Energy (Laser)`); those come back as `Other(text)`.
+  - The parser splits on the literal `\n` `global.ini` uses and treats non-breaking spaces as spaces, so it reads `Class:\u{a0}Competition`, which the copies in Starlume and sc-langpatch missed.
+  - Probe `item_class_probe`: 336 components classed, all in the five classes. 14 named components have no `Class:` line in the game's data (the Mauler set, Holdstrong, Frontline, Exotherm, "Main Powerplant").
+
 ## [v0.28.0] - 2026-10-21
 
 ### Added
