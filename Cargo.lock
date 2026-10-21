@@ -3397,6 +3397,7 @@ dependencies = [
  "sc-extract",
  "sc-items",
  "sc-manufacturers",
+ "serde",
  "superlighttui",
  "svarog-common",
  "thiserror 2.0.18",
