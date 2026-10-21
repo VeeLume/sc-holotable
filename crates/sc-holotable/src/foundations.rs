@@ -68,7 +68,9 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
 /// v2 (2026-05-31): added optional `resources: Resources` field.
 /// v3 (2026-06-03): added optional `locations: Locations` field.
 /// v4 (2026-06-18): added optional `gathering: Providers` field.
-pub const HOLOTABLE_COOK_VERSION: u32 = 4;
+/// v5 (2026-10-21): `Item` gained `tags`, `required_tags` and `mass` (in
+/// v0.27.0; `#[serde(default)]` would let a v4 snapshot load with them empty).
+pub const HOLOTABLE_COOK_VERSION: u32 = 5;
 
 /// A batteries-included bundle of cooked indices, serializable for fast load.
 ///

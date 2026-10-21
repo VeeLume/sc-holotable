@@ -13,6 +13,10 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`sc-holotable`: `HOLOTABLE_COOK_VERSION` 4 → 5.** v0.27.0 added `tags`, `required_tags` and `mass` to `sc_items::Item` without bumping it. Because the fields are `#[serde(default)]`, a `HolotableSnapshot` cooked before v0.27.0 loaded without error but with those fields empty until the next game patch forced a re-cook. Snapshots saved with version 4 are now rejected on load, so consumers rebuild once.
+
 ### Performance
 
 - **`sc-mining`: `simulate_timeline` no longer allocates per tick.** The drained-hit and energy buffers are reused, and the cache of rocks with only some lasers' modifiers on is keyed by a bitmask instead of a copied `Vec<bool>`. `hit_consistency` skips `powf` once the history window is full, and lasers that have fired without a break share one `c` per tick. Output is bit-identical (54 recorded runs with beam cuts, module activations, three tick/hit timings and six seeds hash the same before and after), so cached results stay valid.
