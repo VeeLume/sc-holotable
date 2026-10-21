@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.28.0] - 2026-10-21
+
 ### Added
 
 - **`sc-vehicles`: `PowerNetwork::set_on(path, on)`** switches a plant or consumer on or off and sorts its pool again: switched-on members first. Grants stay as they are; call `power_on` or `split_pools` for the new allocation.
