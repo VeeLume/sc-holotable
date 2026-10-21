@@ -302,6 +302,12 @@ impl Vehicles {
             if let Some(c) = containers.get(&guid) {
                 ports.extend(c.ports.iter().cloned());
             }
+            // A port defined twice (LIVE 4.10: 14 ships, in the hull and the
+            // entity like the Caterpillar's docking module, or twice in one
+            // like the Idris-P's `engineeringBuff`) is one port; the first
+            // definition is the one `Vehicle::port` reads.
+            let mut seen = HashSet::new();
+            ports.retain(|p| seen.insert(p.name.to_ascii_lowercase()));
             debug!(%guid, ports = ports.len(), "vehicle");
             by_guid.insert(
                 guid,

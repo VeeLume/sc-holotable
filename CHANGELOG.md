@@ -13,6 +13,22 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-vehicles`: `Crew::compute(vehicle, loadout, vehicles, items, containers)`**: a vehicle's seats (`Station`s) and what each one does (`Role`: `Pilot`, `Copilot`, `MannedTurret`, `RemoteTurret { turrets }`, `Mining`, `Salvage`). `Crew::size()` counts the seats that have a role; a seat without one is a passenger.
+  - Read from the control priorities on each seat's port, not from names. Of the seats claiming an item, the highest priority controls it. Controllers pass control on: the Mk5's gunner seat claims the weapon controller tagged `gunnerSeatLeft`, which claims the lower turret.
+  - The pilot holds the highest claim on the flight controller. A copilot claims it below the pilot.
+  - On LIVE 4.10 the crew count matches the crew size in the ship record for 196 of 246 listed vehicles.
+  - Docked vehicles are left out unless the host has no pilot: the Caterpillar's command module seats are listed below its docking port.
+- **`sc-extract`: controller definitions on vehicle ports.** `VehiclePort` gains `controllable_tags`, `user_control` and `usable_control` (`PriorityGroup`s with a `ControlPriority`).
+  - `sc-vehicles`: `Port` carries the same three fields, from the vehicle XML's `ControllerDef` and from the entity's `SItemPortDef.control` (the Paladin's ports are defined there).
+- **`sc-extract`: `VehiclePart::destroys_vehicle`**: losing the part destroys the vehicle. Set when its damage behaviours fire a damage group that contains `Destroy`. Examples: the Mk5's `geo_body`; the Freelancer's nose, body and tail.
+- **`sc-items-ship-components`: `MissileController`**: max armed missiles, launch cooldown and lock angles (`SCItemMissileControllerParams`), on `ShipComponentStats::missiles`. The common `Controller_Missile` arms 4 and waits 4 s between launches. There is a new `ShipComponentKind::MissileController`.
+
+### Fixed
+
+- **`sc-vehicles`: a port defined twice is mounted once.** On 14 ships, `Vehicles::build` listed a port twice, so the stock tree held its item twice, counting its power draw and storage twice. Some were defined in both the hull XML and the entity (the Caterpillar's docking module), others twice in one source (the 100i's life support). The first definition is kept, the one `Vehicle::port` already read.
+
 ## [v0.31.0] - 2026-10-21
 
 ### Added

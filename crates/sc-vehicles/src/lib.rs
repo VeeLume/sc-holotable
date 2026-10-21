@@ -39,6 +39,7 @@
 
 mod armament;
 mod container;
+mod crew;
 mod damage;
 mod defense;
 mod distribution;
@@ -59,6 +60,7 @@ mod vehicle;
 
 pub use armament::Armament;
 pub use container::{LoadoutEntry, PortContainer, PortContainers};
+pub use crew::{Crew, Role, Station};
 pub use damage::{
     ComponentHealths, ComponentHit, Condition, DamageRules, Exposure, HitReport, Shot, Target,
 };

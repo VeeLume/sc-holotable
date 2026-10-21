@@ -69,6 +69,12 @@ pub struct VehiclePart {
     pub detach_ratio: Option<f32>,
     /// `detachProbability`.
     pub detach_probability: Option<f32>,
+    /// Losing it destroys the vehicle: a `DamageBehavior class="Group"`
+    /// fires a `DamagesGroup` whose behaviours include `Destroy` (the
+    /// Gladius's `Body`, the Freelancer's nose, body and tail). Such parts
+    /// can still set `detachRatio`.
+    #[serde(default)]
+    pub destroys_vehicle: bool,
     /// The hardpoint, for `class="ItemPort"` parts.
     pub port: Option<VehiclePort>,
 }
@@ -94,6 +100,106 @@ pub struct VehiclePort {
     pub pitch: Option<[f32; 2]>,
     /// `Yaw` limits, degrees.
     pub yaw: Option<[f32; 2]>,
+    /// `ControllerDef@controllableTags` (comma-separated): the tags a
+    /// [`PriorityGroup`] names to claim the item at this port.
+    #[serde(default)]
+    pub controllable_tags: Vec<String>,
+    /// `ControllerDef/UserDef`: what the occupant of a seat at this port
+    /// controls.
+    #[serde(default)]
+    pub user_control: Vec<PriorityGroup>,
+    /// `ControllerDef/UsableDef`: what the item at this port controls (a
+    /// weapon controller its turrets; a seat, who may sit in it).
+    #[serde(default)]
+    pub usable_control: Vec<PriorityGroup>,
+}
+
+/// One `<PriorityGroup>` of a `ControllerDef` (the DCB's
+/// `SCItemPriorityGroupParam`): how strongly it claims the items of
+/// `item_type`, by default and for an item whose port carries one of the
+/// tags as a controllable tag.
+///
+/// The chain from seat to turret runs through controller items: on the
+/// Reclaimer the seat at `hardpoint_turret_console_01` claims the weapon
+/// controller tagged `TurretConsole01`, which claims the turret tagged
+/// `TurretConsole01_turret`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct PriorityGroup {
+    #[serde(with = "enum_serde::item_type")]
+    pub item_type: EItemType,
+    pub default: ControlPriority,
+    pub tags: Vec<(String, ControlPriority)>,
+}
+
+impl PriorityGroup {
+    /// The claim on an item of [`item_type`](Self::item_type) whose port
+    /// carries `tags`: a tag's priority where one matches, else the default.
+    pub fn claim(&self, tags: &[String]) -> ControlPriority {
+        self.tags
+            .iter()
+            .filter(|(t, _)| tags.iter().any(|x| x.eq_ignore_ascii_case(t)))
+            .map(|(_, p)| *p)
+            .max_by_key(|p| p.rank())
+            .unwrap_or(self.default)
+    }
+}
+
+/// A control priority. Of two claims on one item the higher level wins: on
+/// the Constellation Mk5 the pilot seat claims the flight controller at
+/// 100, the copilot at 75; on the Idris 3 against 2.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ControlPriority {
+    /// `no_control` (DCB 255).
+    None,
+    /// `observe_only` (DCB 254): on a screen, without control.
+    Observe,
+    /// No priority authored (vehicle XML only): a claim below every level.
+    Unset,
+    Level(u32),
+    /// `exclusive_control` (DCB 253).
+    Exclusive,
+}
+
+impl ControlPriority {
+    /// A DCB `defaultPriority` / `priority`.
+    pub fn from_dcb(v: u32) -> Self {
+        match v {
+            255 => Self::None,
+            254 => Self::Observe,
+            253 => Self::Exclusive,
+            n => Self::Level(n),
+        }
+    }
+
+    /// A vehicle XML `defaultPriority` / `Priority@value`. LIVE 4.10 ships
+    /// three misspellings (`exlusive_control`, `nobserve_only`,
+    /// `observe_onlyl`); what the game makes of them is not known, so they
+    /// and any other unknown value claim nothing.
+    pub fn from_xml(v: Option<&str>) -> Self {
+        let Some(v) = v.map(str::trim) else {
+            return Self::Unset;
+        };
+        match v {
+            "no_control" => Self::None,
+            "observe_only" => Self::Observe,
+            "exclusive_control" => Self::Exclusive,
+            _ => v.parse().map(Self::Level).unwrap_or_else(|_| {
+                tracing::debug!(value = v, "unknown control priority");
+                Self::None
+            }),
+        }
+    }
+
+    /// Its rank among claims that control; `None` for no claim and
+    /// observing.
+    pub fn rank(self) -> Option<u64> {
+        match self {
+            Self::None | Self::Observe => None,
+            Self::Unset => Some(0),
+            Self::Level(n) => Some(u64::from(n) + 1),
+            Self::Exclusive => Some(u64::MAX),
+        }
+    }
 }
 
 /// One `<Type type subtypes>` of a port.
@@ -142,9 +248,20 @@ impl VehicleDefinition {
         if root.tag != "Vehicle" {
             return Err(bad(&format!("root <{}>, not <Vehicle>", root.tag)));
         }
+        // The damage groups that destroy the vehicle.
+        let destroy: Vec<&str> = root
+            .children_named("Damages")
+            .flat_map(|d| d.children_named("DamagesGroups"))
+            .flat_map(|g| g.children_named("DamagesGroup"))
+            .filter(|g| {
+                g.descendants()
+                    .any(|b| b.tag == "DamageBehavior" && attr(b, "class") == Some("Destroy"))
+            })
+            .filter_map(|g| attr(g, "name"))
+            .collect();
         let mut parts = Vec::new();
         for part_list in root.children_named("Parts") {
-            collect_parts(part_list, None, &mut parts);
+            collect_parts(part_list, None, &destroy, &mut parts);
         }
         let damage_multipliers = root
             .children_named("Damages")
@@ -192,18 +309,23 @@ impl VehicleDefinition {
     }
 }
 
-fn collect_parts(list: &XmlNode, parent: Option<usize>, out: &mut Vec<VehiclePart>) {
+fn collect_parts(
+    list: &XmlNode,
+    parent: Option<usize>,
+    destroy: &[&str],
+    out: &mut Vec<VehiclePart>,
+) {
     for node in list.children_named("Part") {
         let index = out.len();
-        out.push(VehiclePart::from_xml(node, parent));
+        out.push(VehiclePart::from_xml(node, parent, destroy));
         for sub in node.children_named("Parts") {
-            collect_parts(sub, Some(index), out);
+            collect_parts(sub, Some(index), destroy, out);
         }
     }
 }
 
 impl VehiclePart {
-    fn from_xml(n: &XmlNode, parent: Option<usize>) -> Self {
+    fn from_xml(n: &XmlNode, parent: Option<usize>, destroy: &[&str]) -> Self {
         let class = attr(n, "class").unwrap_or_default().to_string();
         let port = class
             .eq_ignore_ascii_case("ItemPort")
@@ -218,6 +340,12 @@ impl VehiclePart {
             damage_max: float(n, "damageMax").unwrap_or(0.0),
             detach_ratio: float(n, "detachRatio"),
             detach_probability: float(n, "detachProbability"),
+            destroys_vehicle: n
+                .children_named("DamageBehaviors")
+                .flat_map(|b| b.children_named("DamageBehavior"))
+                .filter(|b| attr(b, "class") == Some("Group"))
+                .flat_map(|b| b.children_named("Group"))
+                .any(|g| attr(g, "name").is_some_and(|name| destroy.contains(&name))),
             port,
         }
     }
@@ -250,6 +378,16 @@ impl VehiclePort {
             })
             .collect();
         let text = |k: &str| attr(n, k).filter(|s| !s.is_empty()).map(str::to_string);
+        let controller = n.children_named("ControllerDef").next();
+        let groups = |def: &str| {
+            controller
+                .into_iter()
+                .flat_map(|c| c.children_named(def))
+                .flat_map(|d| d.children_named("PriorityGroups"))
+                .flat_map(|g| g.children_named("PriorityGroup"))
+                .filter_map(PriorityGroup::from_xml)
+                .collect::<Vec<_>>()
+        };
         Self {
             min_size: float(n, "minSize").map_or(0, |v| v as i32),
             max_size: float(n, "maxSize").map_or(0, |v| v as i32),
@@ -261,8 +399,44 @@ impl VehiclePort {
             types,
             pitch: limits("Pitch"),
             yaw: limits("Yaw"),
+            controllable_tags: controller
+                .and_then(|c| attr(c, "controllableTags"))
+                .map(tag_list)
+                .unwrap_or_default(),
+            user_control: groups("UserDef"),
+            usable_control: groups("UsableDef"),
         }
     }
+}
+
+impl PriorityGroup {
+    fn from_xml(n: &XmlNode) -> Option<Self> {
+        let item_type = attr(n, "itemType").filter(|s| !s.is_empty())?;
+        Some(Self {
+            item_type: EItemType::from_dcb_str(item_type),
+            default: ControlPriority::from_xml(attr(n, "defaultPriority")),
+            tags: n
+                .children_named("tags")
+                .filter_map(|t| {
+                    let tag = attr(t, "tag").filter(|s| !s.is_empty())?;
+                    let value = t.children_named("Priority").next()?;
+                    Some((
+                        tag.to_string(),
+                        ControlPriority::from_xml(attr(value, "value")),
+                    ))
+                })
+                .collect(),
+        })
+    }
+}
+
+/// A comma-separated tag list (`controllableTags="copilotSeat, pilotSeat"`).
+fn tag_list(s: &str) -> Vec<String> {
+    s.split(',')
+        .map(str::trim)
+        .filter(|t| !t.is_empty())
+        .map(str::to_string)
+        .collect()
 }
 
 fn decode(bytes: &[u8]) -> Result<XmlNode> {
@@ -464,6 +638,81 @@ mod tests {
         assert_eq!(port.types[0].item_type, EItemType::WeaponGun);
         assert_eq!(port.types[0].sub_types.len(), 2);
         assert!(port.types[1].sub_types.is_empty());
+        assert!(port.controllable_tags.is_empty() && port.user_control.is_empty());
+    }
+
+    #[test]
+    fn vital_parts() {
+        let xml = r#"<Vehicle name="V">
+  <Damages><DamagesGroups>
+    <DamagesGroup name="Destroy"><DamagesSubGroups><DamagesSubGroup><DamageBehaviors>
+      <DamageBehavior class="Destroy"/>
+    </DamageBehaviors></DamagesSubGroup></DamagesSubGroups></DamagesGroup>
+    <DamagesGroup name="Smoke"><DamagesSubGroups><DamagesSubGroup><DamageBehaviors>
+      <DamageBehavior class="Effect"/>
+    </DamageBehaviors></DamagesSubGroup></DamagesSubGroups></DamagesGroup>
+  </DamagesGroups></Damages>
+  <Parts>
+    <Part name="hull" class="Animated"><Parts>
+      <Part name="body" class="AnimatedJoint" damageMax="100" detachRatio="1">
+        <DamageBehaviors><DamageBehavior class="Group" damageRatioMin="1"><Group name="Destroy"/></DamageBehavior></DamageBehaviors>
+      </Part>
+      <Part name="wing" class="AnimatedJoint" damageMax="50">
+        <DamageBehaviors><DamageBehavior class="Group" damageRatioMin="1"><Group name="Smoke"/></DamageBehavior></DamageBehaviors>
+      </Part>
+    </Parts></Part>
+  </Parts>
+</Vehicle>"#;
+        let def = VehicleDefinition::parse(xml.as_bytes()).expect("vehicle");
+        let vital: Vec<&str> = def
+            .parts
+            .iter()
+            .filter(|p| p.destroys_vehicle)
+            .map(|p| p.name.as_str())
+            .collect();
+        assert_eq!(vital, ["body"]);
+    }
+
+    #[test]
+    fn controller_def() {
+        let xml = r#"<ItemPort minSize="1" maxSize="1">
+  <Types><Type type="Seat"/></Types>
+  <ControllerDef controllableTags="copilotSeat, pilotSeat">
+    <UserDef><PriorityGroups>
+      <PriorityGroup itemType="FlightController" defaultPriority="75"/>
+      <PriorityGroup itemType="Radar" defaultPriority="observe_only"/>
+      <PriorityGroup itemType="WeaponController" defaultPriority="no_control">
+        <tags tag="copilotSeat"><Priority value="exclusive_control"/></tags>
+      </PriorityGroup>
+      <PriorityGroup itemType="CapacitorAssignmentController"/>
+    </PriorityGroups></UserDef>
+    <UsableDef><PriorityGroups>
+      <PriorityGroup itemType="Seat" defaultPriority="no_control"/>
+    </PriorityGroups></UsableDef>
+  </ControllerDef>
+</ItemPort>"#;
+        let port = VehiclePort::from_xml(&decode(xml.as_bytes()).expect("xml"));
+        assert_eq!(port.controllable_tags, ["copilotSeat", "pilotSeat"]);
+        let [flight, radar, weapons, capacitors] = &port.user_control[..] else {
+            panic!("{:?}", port.user_control);
+        };
+        assert_eq!(flight.item_type, EItemType::FlightController);
+        assert_eq!(flight.default, ControlPriority::Level(75));
+        assert_eq!(radar.default.rank(), None);
+        assert_eq!(capacitors.default, ControlPriority::Unset);
+        assert_eq!(weapons.claim(&[]), ControlPriority::None);
+        assert_eq!(
+            weapons.claim(&["COPILOTSEAT".to_string()]),
+            ControlPriority::Exclusive
+        );
+        assert_eq!(port.usable_control.len(), 1);
+        assert!(ControlPriority::Exclusive.rank() > ControlPriority::Level(100).rank());
+        assert!(ControlPriority::Level(0).rank() > ControlPriority::Unset.rank());
+        assert_eq!(ControlPriority::from_dcb(254), ControlPriority::Observe);
+        assert_eq!(
+            ControlPriority::from_xml(Some("exlusive_control")),
+            ControlPriority::None
+        );
     }
 
     #[test]

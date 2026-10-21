@@ -3,11 +3,15 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::{
-    DataForgeComponentParamsPtr, EntityClassDefinition, Handle, SItemPortDef,
-    SItemPortLoadoutBaseParamsPtr, SItemPortLoadoutEntryParams,
+    DataForgeComponentParamsPtr, EntityClassDefinition, Handle, SCItemControlBaseParamsPtr,
+    SCItemControllableParamsPtr, SItemPortDef, SItemPortLoadoutBaseParamsPtr,
+    SItemPortLoadoutEntryParams,
 };
 use sc_extract::object_container::{self, XmlNode};
-use sc_extract::{AssetSource, DataPools, Datacore, Guid, PortType, RecordCollection};
+use sc_extract::{
+    AssetSource, ControlPriority, DataPools, Datacore, Guid, PortType, PriorityGroup,
+    RecordCollection,
+};
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
 
@@ -153,6 +157,16 @@ fn container(ecd: &EntityClassDefinition, ctx: &mut Ctx) -> PortContainer {
 fn entity_port(h: Handle<SItemPortDef>, pools: &DataPools) -> Option<Port> {
     let p = h.get(pools)?;
     let words = |s: &str| s.split_whitespace().map(str::to_string).collect::<Vec<_>>();
+    let (user, usable) = match &p.control {
+        Some(SCItemControlBaseParamsPtr::SCItemControlSeatParams(h)) => h
+            .get(pools)
+            .map(|c| (c.user_control.as_ref(), c.usable_control.as_ref()))
+            .unwrap_or_default(),
+        Some(SCItemControlBaseParamsPtr::SCItemControlUsableParams(h)) => {
+            (None, h.get(pools).and_then(|c| c.usable_control.as_ref()))
+        }
+        _ => (None, None),
+    };
     Some(Port {
         name: p.name.clone(),
         display_name: (!p.display_name.is_empty()).then(|| p.display_name.clone()),
@@ -175,7 +189,42 @@ fn entity_port(h: Handle<SItemPortDef>, pools: &DataPools) -> Option<Port> {
             .default_item
             .and_then(|d| d.get(pools))
             .and_then(|d| d.entity_class),
+        controllable_tags: p
+            .controllable_tag
+            .split(',')
+            .map(str::trim)
+            .filter(|t| !t.is_empty())
+            .map(str::to_string)
+            .collect(),
+        user_control: priority_groups(user, pools),
+        usable_control: priority_groups(usable, pools),
     })
+}
+
+fn priority_groups(
+    c: Option<&SCItemControllableParamsPtr>,
+    pools: &DataPools,
+) -> Vec<PriorityGroup> {
+    let Some(SCItemControllableParamsPtr::SCItemControllableGroupParams(h)) = c else {
+        return Vec::new();
+    };
+    let Some(g) = h.get(pools) else {
+        return Vec::new();
+    };
+    g.priority_groups
+        .iter()
+        .filter_map(|h| h.get(pools))
+        .map(|g| PriorityGroup {
+            item_type: g.item_type.clone(),
+            default: ControlPriority::from_dcb(g.default_priority),
+            tags: g
+                .tags
+                .iter()
+                .filter_map(|t| t.get(pools))
+                .map(|t| (t.tag.clone(), ControlPriority::from_dcb(t.priority)))
+                .collect(),
+        })
+        .collect()
 }
 
 fn loadout(l: Option<&SItemPortLoadoutBaseParamsPtr>, ctx: &mut Ctx) -> Vec<LoadoutEntry> {

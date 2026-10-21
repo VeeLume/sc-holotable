@@ -7,7 +7,9 @@
 //! locked while their guns can be swapped, and its thrusters are locked.
 //! Then it checks [`fits`] on every stock attachment of the non-AI vehicles
 //! and counts the misfits by kind. Every listed vehicle has a manufacturer
-//! (an `SCItemManufacturer` record), career, role and description.
+//! (an `SCItemManufacturer` record), career, role and description. The
+//! parts whose loss destroys the ship: the Centaurus's body, the
+//! Freelancer's nose, body and tail.
 //!
 //! ```bash
 //! cargo run -p sc-vehicles --release --example vehicles_probe
@@ -53,6 +55,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!((ins.base_wait_minutes, ins.expediting_fee), (13.5, 6750));
     // erkul's 25.4k cross-section is the largest axis.
     assert_eq!(ship.cross_section, Some([8350.0, 11320.0, 25430.0]));
+    // Losing `geo_body` (45,000 HP) destroys the ship; the Freelancer has
+    // three such parts.
+    let vital = |v: &Vehicle| -> Vec<(String, f32)> {
+        v.hull
+            .iter()
+            .filter(|p| p.destroys_vehicle)
+            .map(|p| (p.name.clone(), p.damage_max))
+            .collect()
+    };
+    assert_eq!(vital(ship), [("geo_body".to_string(), 45_000.0)]);
+    let freelancer = vehicles
+        .iter()
+        .find(|(g, _)| names.get(g).map(String::as_str) == Some("MISC_Freelancer"))
+        .ok_or("no Freelancer")?
+        .1;
+    println!("Freelancer vital parts {:?}", vital(freelancer));
+    assert_eq!(vital(freelancer).len(), 3);
     let at = |path: &[&str]| -> Option<&Mounted> {
         let mut level = &ship.stock;
         let mut found = None;

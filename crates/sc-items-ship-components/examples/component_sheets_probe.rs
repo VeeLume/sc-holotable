@@ -3,8 +3,9 @@
 //! ship's shield emitter (quadrant faces), its hull armour (damage
 //! multiplier physical 0.7 / energy 0.5, deflection 531 / 380, 25,740 HP
 //! taking physical × 0.81 and energy × 1.21), the Khaos quantum drive, a
-//! main thruster and its tanks (46.8 SCU hydrogen, 8.6 SCU quantum). Prints
-//! each sheet.
+//! main thruster and its tanks (46.8 SCU hydrogen, 8.6 SCU quantum), and
+//! the common missile controller (4 armed, 4 s between launches, spviewer's
+//! "Max Armed / Rearm CD 4 / 4 s"). Prints each sheet.
 //!
 //! ```bash
 //! cargo run -p sc-items-ship-components --release --example component_sheets_probe
@@ -160,8 +161,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(scu("HTNK_RSI_Constellation_Mk5_Centaurus")?, Some(46.8));
     assert_eq!(scu("QTNK_RSI_Constellation_Mk5_Centaurus")?, Some(8.6));
 
+    let controller = get("Controller_Missile")?;
+    assert_eq!(controller.kind, ShipComponentKind::MissileController);
+    let m = controller.missiles.as_ref().ok_or("no missile sheet")?;
+    println!("Controller_Missile {m:?}");
+    assert_eq!((m.max_armed, m.launch_cooldown), (4, 4.0));
+
     println!(
-        "\nasserts passed: shield, emitter, armour, quantum drive, thruster, flight, tank sheets"
+        "\nasserts passed: shield, emitter, armour, quantum drive, thruster, flight, tank, missile sheets"
     );
     Ok(())
 }
