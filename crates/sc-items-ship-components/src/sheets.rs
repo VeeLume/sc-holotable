@@ -347,7 +347,7 @@ impl Curve {
             .filter_map(|h| h.get(pools))
             .map(|v| [v.x, v.y])
             .collect();
-        let keys: Vec<[[f32; 2]; 3]> = points.chunks_exact(3).map(|k| [k[0], k[1], k[2]]).collect();
+        let keys: Vec<[[f32; 2]; 3]> = points.as_chunks::<3>().0.to_vec();
         (!keys.is_empty()).then_some(Self { keys })
     }
 }
