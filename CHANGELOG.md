@@ -21,6 +21,12 @@ pinned. Both tag kinds are monotonic and immutable.
   - The parser splits on the literal `\n` `global.ini` uses and treats non-breaking spaces as spaces, so it reads `Class:\u{a0}Competition`, which the copies in Starlume and sc-langpatch missed.
   - Probe `item_class_probe`: 336 components classed, all in the five classes. 14 named components have no `Class:` line in the game's data (the Mauler set, Holdstrong, Frontline, Exotherm, "Main Powerplant").
 
+### Fixed
+
+- **`sc-vehicles`: a port that lists no types is locked.** `is_editable` now also requires a type, so `Loadout::candidates` offers nothing and `Loadout::check` refuses such ports as locked.
+  - Before, the Centaurus's `hardpoint_life_support` (no types, flagged `editable`) offered every item in the game.
+  - On the listed vehicles, such ports hold fixed systems: life support, relays, fuel controllers, the Skylark's lockers. erkul shows them locked, and the game doesn't let the player swap them.
+
 ## [v0.28.0] - 2026-10-21
 
 ### Added

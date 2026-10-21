@@ -134,6 +134,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .find(|p| p.name.starts_with("hardpoint_thruster_main"))
     });
     assert!(!is_editable(&[thruster.ok_or("thruster port")?]));
+    // Life support lists no types (flagged `editable`): nothing to choose,
+    // as erkul and the game show it.
+    assert!(!is_editable(&[ship
+        .port("hardpoint_life_support")
+        .ok_or("life support port")?]));
     // Listing: rewards, base hulls (named by some insurance), editions
     // (own name, no AI crew, ready for inclusion), variants.
     let mut listing: BTreeMap<String, u32> = BTreeMap::new();
