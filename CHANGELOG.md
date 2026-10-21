@@ -13,6 +13,10 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`sc-holotable`: `HOLOTABLE_COOK_VERSION` 4 → 5.** v0.27.0 added `tags`, `required_tags` and `mass` to `sc_items::Item` without bumping it. Because the fields are `#[serde(default)]`, a `HolotableSnapshot` cooked before v0.27.0 loaded without error but with those fields empty until the next game patch forced a re-cook. Snapshots saved with version 4 are now rejected on load, so consumers rebuild once.
+
 ## [v0.27.1] - 2026-10-21
 
 ### Performance
