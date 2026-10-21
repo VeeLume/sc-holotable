@@ -5,7 +5,7 @@
 use std::collections::{BTreeMap, HashMap};
 
 use sc_extract::{
-    AssetSource, Datacore, Guid, MeshGeometry, MeshNode, PhysicsProxies, RecordCollection,
+    AssetSource, Datacore, Guid, Mesh, MeshGeometry, MeshNode, PhysicsProxies, RecordCollection,
 };
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
@@ -346,6 +346,36 @@ fn read_item(assets: &AssetSource, path: &str) -> Option<ItemMesh> {
         bounds,
         helpers: helper_map(&g, &world),
     })
+}
+
+/// The frame of each of a hull's item-port helper nodes (`hardpoint_*`) in
+/// the ship's frame, keyed by lower-case port name: where the port sits
+/// (the translation column) and how it faces (its +Y axis is the way a
+/// thruster on it pushes, see [`port_axes`](crate::port_axes)). Empty
+/// without hull geometry or when the `.cga` cannot be read (with a
+/// warning).
+///
+/// One `.cga` read per call; vehicles sharing [`Vehicle::geometry`] share
+/// the result. The engine attaches an item port to the hull helper node
+/// of the same name; no typed link exists, so this joins on the name
+/// (scoped to one hull's nodes).
+pub fn port_frames(assets: &AssetSource, vehicle: &Vehicle) -> HashMap<String, Transform> {
+    let Some(path) = vehicle.geometry.as_deref() else {
+        return HashMap::new();
+    };
+    let mesh = match Mesh::read(assets, path) {
+        Ok(m) => m,
+        Err(error) => {
+            warn!(path, %error, "hull geometry unreadable; no port frames");
+            return HashMap::new();
+        }
+    };
+    mesh.nodes
+        .iter()
+        .zip(world_transforms(&mesh.nodes))
+        .filter(|(n, _)| n.name.starts_with("hardpoint_"))
+        .map(|(n, w)| (n.name.to_ascii_lowercase(), w))
+        .collect()
 }
 
 /// Every node's transform relative to the file's root.

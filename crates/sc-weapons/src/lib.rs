@@ -55,6 +55,7 @@
 
 mod classify;
 mod damage;
+mod enum_serde;
 mod fire_action;
 mod fps;
 mod missile;

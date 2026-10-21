@@ -4,7 +4,9 @@
 //! buff (guns' `maxAmmoLoad` × 9). CF-557 (S5): 221 shots, 4.918/s regen,
 //! sustained 341.7; CF-337 (S3): sustained 152.3. Prints the power-on state
 //! (2 of 12.2) too, and the armament: 12 guns, 32 missiles, 2
-//! countermeasure launchers.
+//! countermeasure launchers. The guns go through a `ProcessedSnapshot` and
+//! back first, so the figures come from deserialized weapons, as a consumer
+//! that cooks them sees them.
 //!
 //! ```bash
 //! cargo run -p sc-vehicles --release --example weapons_probe
@@ -13,7 +15,10 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::EMasterMode;
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, RecordCollection};
+use sc_extract::{
+    AssetConfig, AssetData, AssetSource, Datacore, Guid, ProcessedSnapshot, RecordCollection,
+    SnapshotMeta,
+};
 use sc_items::Items;
 use sc_items_ship_components::ShipComponents;
 use sc_vehicles::{
@@ -35,7 +40,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let params = NetworkParams::build(&datacore).ok_or("no network params")?;
     let modifiers = ItemportModifiers::build(&datacore);
     let weapons = Weapons::build(&datacore, &items);
-    let by_guid: HashMap<Guid, &ShipWeapon> = weapons.ships.iter().map(|w| (w.guid, w)).collect();
+    let cook = std::env::temp_dir().join("weapons_probe.cook");
+    ProcessedSnapshot::new(SnapshotMeta::default(), 1, weapons.ships.clone()).save(&cook)?;
+    let ships: Vec<ShipWeapon> = ProcessedSnapshot::load(&cook, 1)?.into_index();
+    std::fs::remove_file(&cook)?;
+    assert_eq!(ships.len(), weapons.ships.len());
+    assert!(ships.iter().all(|w| w.entity_handle.is_none()));
+    let by_guid: HashMap<Guid, &ShipWeapon> = ships.iter().map(|w| (w.guid, w)).collect();
     let names: HashMap<Guid, String> = datacore
         .db()
         .all_records()
@@ -154,8 +165,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // A sequence gun: the BEHR ballistic repeater fires 2 entries at 750
     // over inner Singles at 500, so 750 rpm, and heats 0.8 per shot:
     // 10/s, overheating after 10 s (erkul: 125 shots).
-    let behr = weapons
-        .ships
+    let behr = ships
         .iter()
         .find(|w| w.record_name.ends_with("BEHR_BallisticRepeater_S3"))
         .ok_or("no BEHR repeater")?;

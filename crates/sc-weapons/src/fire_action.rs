@@ -1,5 +1,6 @@
 use sc_extract::DataPools;
 use sc_extract::generated::*;
+use serde::{Deserialize, Serialize};
 
 use crate::damage::DamageSummary;
 
@@ -7,7 +8,7 @@ use crate::damage::DamageSummary;
 ///
 /// Covers all 9 `SWeaponActionParamsPtr` variants. Combat-irrelevant types
 /// (HealingBeam, Parallel) map to [`Unknown`](FireActionKind::Unknown).
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum FireActionKind {
     /// Continuous automatic fire (gatlings, LMGs).
     Rapid {
@@ -60,7 +61,7 @@ pub enum FireActionKind {
 /// (a `SWeaponStats` instance). Multipliers are unitless factors over the
 /// base ammo / fire-action stats; absolute fields (`pellets`, `burst_shots`)
 /// override their counterparts when non-zero.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct ChargeModifier {
     pub damage_multiplier: f32,
     pub projectile_speed_multiplier: f32,

@@ -3,9 +3,11 @@ use std::collections::HashMap;
 use sc_extract::generated::*;
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap};
 use sc_items::{Items, RecordCollection};
+use serde::{Deserialize, Serialize};
 
 use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
+use crate::enum_serde;
 use crate::fire_action::{self, FireActionKind};
 use crate::sustain::{self, SustainKind};
 
@@ -13,7 +15,7 @@ use crate::sustain::{self, SustainKind};
 ///
 /// Constructed via [`ShipWeapon::try_new`] which resolves all handles from
 /// the flat pool. After construction every accessor is a plain field read.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShipWeapon {
     /// Record GUID — stable across game patches.
     pub guid: Guid,
@@ -24,8 +26,10 @@ pub struct ShipWeapon {
     /// Weapon grade (always 1 in 4.7).
     pub grade: i32,
     /// Item type enum.
+    #[serde(with = "enum_serde::item_type")]
     pub item_type: EItemType,
     /// Item subtype enum (`Gun`, `Rocket`, `NoseMounted`).
+    #[serde(with = "enum_serde::item_sub_type")]
     pub item_sub_type: EItemSubType,
     /// Manufacturer GUID — look up via `Manufacturers::get`.
     pub manufacturer_guid: Option<Guid>,
@@ -76,7 +80,11 @@ pub struct ShipWeapon {
     /// [`Self::name_key`]; resolve via [`Self::description`].
     pub desc_key: Option<LocaleKey>,
     /// Raw entity handle — escape hatch for consumers with `&DataPools`.
-    pub entity_handle: Handle<EntityClassDefinition>,
+    /// `None` on a deserialized weapon: a handle indexes the pools of the
+    /// parse that built it, so it is not serialized; re-resolve by
+    /// [`guid`](Self::guid).
+    #[serde(skip)]
+    pub entity_handle: Option<Handle<EntityClassDefinition>>,
 }
 
 impl ShipWeapon {
@@ -168,7 +176,7 @@ impl ShipWeapon {
             health,
             name_key,
             desc_key,
-            entity_handle: handle,
+            entity_handle: Some(handle),
         })
     }
 
@@ -559,7 +567,7 @@ impl ShipWeapon {
 /// fields are caller-provided with no baked-in defaults — consumer apps
 /// wire them to runtime state (UI engagement-window slider, ship power
 /// allocation).
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct LoadoutContext {
     /// Engagement window in seconds. Typical values: 10-15s for dogfight,
     /// 30-60s for typical skirmish, 120s+ for capital-ship engagements.
@@ -573,7 +581,7 @@ pub struct LoadoutContext {
 /// `SRegenConsumerModifier` (`weaponStats.regenModifier`), e.g. the
 /// Constellation Mk V's engineering buff that multiplies `maxAmmoLoad` by
 /// 9.
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct WeaponPower {
     /// Granted over requested power (a fixed weapon pool gives every gun
     /// the same share: pool target / sum of requests).

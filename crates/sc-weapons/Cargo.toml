@@ -20,6 +20,7 @@ rust-version.workspace = true
 #                            silently see nothing.
 sc-extract = { workspace = true, features = ["entities-scitem-weapons", "ammoparams", ] }
 sc-items = { workspace = true }
+serde = { workspace = true }
 svarog-common = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }

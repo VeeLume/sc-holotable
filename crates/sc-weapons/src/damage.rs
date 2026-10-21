@@ -2,12 +2,13 @@ use std::collections::HashMap;
 
 use sc_extract::generated::*;
 use sc_extract::{DataPools, Guid};
+use serde::{Deserialize, Serialize};
 
 /// Per-shot damage summed across direct hit and explosion, all 6 types.
 ///
 /// Always sum both sources — distortion weapons have near-zero direct damage
 /// and deliver all meaningful damage through explosion.
-#[derive(Debug, Clone, Copy, Default)]
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
 pub struct DamageSummary {
     pub physical: f32,
     pub energy: f32,

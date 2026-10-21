@@ -4,53 +4,26 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::EThrusterType;
-use sc_extract::{AssetSource, Mesh, RecordCollection};
+use sc_extract::{AssetSource, RecordCollection};
 use sc_items::Items;
 use sc_items_ship_components::{ShipComponentKind, ShipComponents};
 use serde::{Deserialize, Serialize};
 use tracing::warn;
 
-use crate::{Mounted, Vehicle, Vehicles};
+use crate::{Mounted, Vehicle, Vehicles, port_frames};
 
 /// Standard gravity, m/s², for accelerations in G.
 const G: f64 = 9.80665;
 
 /// Where each of a hull's item ports pushes: the +Y axis of the helper node
 /// the port sits on, in the ship's frame (x right, y forward, z up), keyed
-/// by lower-case port name.
-///
-/// The engine attaches an item port to the hull helper bone of the same
-/// name; no typed link exists, so this joins on the name (scoped to one
-/// hull's nodes).
+/// by lower-case port name: the axes of [`port_frames`].
 pub fn port_axes(assets: &AssetSource, vehicle: &Vehicle) -> HashMap<String, [f64; 3]> {
-    let Some(path) = vehicle.geometry.as_deref() else {
-        return HashMap::new();
-    };
-    let mesh = match Mesh::read(assets, path) {
-        Ok(m) => m,
-        Err(error) => {
-            warn!(path, %error, "hull geometry unreadable; no thruster axes");
-            return HashMap::new();
-        }
-    };
-    // World transforms: parents come before children in the node table,
-    // but resolve by walking up to be safe.
-    let world = |mut i: usize| {
-        let mut m = mesh.nodes[i].transform;
-        while let Some(p) = mesh.nodes[i].parent {
-            m = mul(&mesh.nodes[p].transform, &m);
-            i = p;
-        }
-        m
-    };
-    mesh.nodes
-        .iter()
-        .enumerate()
-        .filter(|(_, n)| n.name.starts_with("hardpoint_"))
-        .map(|(i, n)| {
-            let w = world(i);
+    port_frames(assets, vehicle)
+        .into_iter()
+        .map(|(name, w)| {
             let y = [f64::from(w[0][1]), f64::from(w[1][1]), f64::from(w[2][1])];
-            (n.name.to_ascii_lowercase(), normalize(y))
+            (name, normalize(y))
         })
         .collect()
 }
@@ -244,17 +217,6 @@ fn push(thrust: &mut [f64; 6], axis: &[f64; 3], capacity: f64) {
     } else {
         thrust[2 * i + 1] -= capacity * c;
     }
-}
-
-fn mul(a: &[[f32; 4]; 3], b: &[[f32; 4]; 3]) -> [[f32; 4]; 3] {
-    let mut o = [[0.0; 4]; 3];
-    for r in 0..3 {
-        for c in 0..3 {
-            o[r][c] = a[r][0] * b[0][c] + a[r][1] * b[1][c] + a[r][2] * b[2][c];
-        }
-        o[r][3] = a[r][0] * b[0][3] + a[r][1] * b[1][3] + a[r][2] * b[2][3] + a[r][3];
-    }
-    o
 }
 
 fn normalize(v: [f64; 3]) -> [f64; 3] {

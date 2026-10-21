@@ -13,6 +13,18 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-vehicles`: `PowerNetwork::set_on(path, on)`** switches a plant or consumer on or off and sorts its pool again: switched-on members first. Grants stay as they are; call `power_on` or `split_pools` for the new allocation.
+- **`sc-vehicles`: `port_frames(assets, vehicle)`**: each `hardpoint_*` helper's full frame in the ship's frame, position and orientation, from one `.cga` read. `port_axes` is now built on it.
+- **`sc-vehicles`: the ship header on `Vehicle`.** New fields: `manufacturer` (the `SCItemManufacturer` GUID), `career_key`, `role_key` and `description_key` (from `VehicleComponentParams`). All are `#[serde(default)]`. `vehicles_probe`: all 246 listed vehicles have all four.
+- **`sc-weapons`: serde on `ShipWeapon`** and the types inside it (`FireActionKind`, `ChargeModifier`, `DamageSummary`, `SustainKind`, `HeatModel`, `EnergyModel`), plus `WeaponPower` and `LoadoutContext`. A consumer can cook its guns and compute `powered` / `burst_dps` / `sustained_dps` / `effective_dps` without the Datacore. `weapons_probe` now runs the erkul Centaurus figures on guns read back from a `ProcessedSnapshot`.
+
+### Changed
+
+- **`sc-weapons`: `ShipWeapon::entity_handle` is `Option<Handle<_>>`.** It is `Some` when built from a parse. It is not serialized, because a handle indexes the pools of the parse that built it, so a deserialized weapon has `None`; re-resolve it by `guid`.
+- **`sc-vehicles`: pool members with equal sort keys keep loadout order**, so switching an item off and on again restores the order `build` gave. The client's own tie order has not been read.
+
 ## [v0.27.2] - 2026-10-21
 
 ### Fixed

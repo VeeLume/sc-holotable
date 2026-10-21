@@ -66,7 +66,9 @@ pub use distribution::{
     Allocation, Consumer, ItemReadout, Plant, Pool, PowerNetwork, Readout, Signals,
 };
 pub use flight::{Accelerations, Burn, Flight, port_axes};
-pub use geometry::{Aabb, GeometryPaths, HullGeometry, PartMesh, Placement, Transform, apply, mul};
+pub use geometry::{
+    Aabb, GeometryPaths, HullGeometry, PartMesh, Placement, Transform, apply, mul, port_frames,
+};
 pub use interior::{Brush, Interior, ObjectContainer};
 pub use loadout::{Loadout, Refusal};
 pub use modifiers::{ItemportModifier, ItemportModifiers, RegenModifier, weapon_power};

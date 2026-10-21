@@ -1,5 +1,6 @@
 use sc_extract::DataPools;
 use sc_extract::generated::*;
+use serde::{Deserialize, Serialize};
 
 /// Ballistic heat model — extracted from `SWeaponSimplifiedHeatParams` +
 /// the weapon's primary fire action / `SWeaponConnectionParams`.
@@ -14,7 +15,7 @@ use sc_extract::generated::*;
 /// Weapons with no heat source at all (ship ballistic scatter guns in 4.7)
 /// have `heat_rate_per_second == 0.0` and never overheat — sustain methods
 /// return `None`.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct HeatModel {
     pub overheat_temperature: f32,
     pub cooling_per_second: f32,
@@ -135,7 +136,7 @@ impl HeatModel {
 /// The weapon-level cycle is therefore determined entirely by
 /// `max_ammo_load`, `max_regen_per_sec`, `regeneration_cooldown`, and the
 /// primary fire action's burst RPM.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct EnergyModel {
     pub max_ammo_load: f32,
     pub max_regen_per_sec: f32,
@@ -209,7 +210,7 @@ impl EnergyModel {
 ///
 /// Ship weapons have exactly one of Heat (65 weapons), Energy (108), or
 /// None (9 RPODs). No weapon has both in 4.7.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum SustainKind {
     Heat(HeatModel),
     Energy(EnergyModel),
