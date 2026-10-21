@@ -77,7 +77,7 @@ pub enum Misfit {
 /// [`Vehicle::offered_tags`](crate::Vehicle::offered_tags)).
 ///
 /// The rule is inferred from the data; the client check was not decompiled.
-/// On LIVE 4.10's non-AI vehicles it rejects 1.5 % of the 13,761 stock
+/// On LIVE 4.10's non-AI vehicles it rejects 1.3 % of the 13,493 stock
 /// attachments on ports the player can change ([`is_editable`]), and 3.5 %
 /// of all 49,495, the rest on locked ports, which the game fills by force
 /// (`vehicles_probe`). The rule:
@@ -146,9 +146,16 @@ pub fn has_flag(chain: &[&Port], flag: &str) -> bool {
 }
 
 /// Whether the last port of `chain` can be changed by the player: it is not
-/// [`has_flag`] `uneditable`.
+/// [`has_flag`] `uneditable`, and it lists at least one type.
+///
+/// A port that lists no types offers the player nothing to choose: on LIVE
+/// 4.10's listed vehicles such ports hold fixed systems (life support,
+/// relays, fuel controllers, the Skylark's lockers), erkul shows them
+/// locked and the game does not let the player swap them, though some
+/// carry an `editable` flag. Inferred from the data; the client's loadout
+/// screen was not decompiled.
 pub fn is_editable(chain: &[&Port]) -> bool {
-    !has_flag(chain, "uneditable")
+    chain.last().is_some_and(|p| !p.types.is_empty()) && !has_flag(chain, "uneditable")
 }
 
 #[cfg(test)]
@@ -242,5 +249,14 @@ mod tests {
         // Case and the `$` do not matter on the port itself.
         assert!(has_flag(&[&port(&["$UnEditable"])], "uneditable"));
         assert!(!has_flag(&[], "uneditable"));
+    }
+
+    #[test]
+    fn typeless_port_is_locked() {
+        // Centaurus `hardpoint_life_support`: no types, flagged `editable`.
+        let mut life_support = port(&["editable"]);
+        life_support.types.clear();
+        assert!(!is_editable(&[&life_support]));
+        assert!(!is_editable(&[]));
     }
 }
