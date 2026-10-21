@@ -13,10 +13,15 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
-## [v0.32.0] - 2026-10-21
-
 ### Added
 
+- **`sc-items-ship-components`: `Afterburner::at(level)`**: boost at capacitor assignment level 0–6 (client 4.10.197). It returns a `Boost`:
+  - `regen_s`: empty to full, including the regen delay.
+  - `deplete_s`: full to empty at rest.
+  - `angular_velocity_multiplier`: the boosted pitch / roll / yaw multipliers.
+  - The Constellation Mk5 refills in 26.7 s (+1.1) at 6/6 and drains in 20 s, as spviewer shows.
+  - `Afterburner` gains the curves the client reads (`regen_curve`, `nav_regen_curve`, `usage_curve`, `angular_scaling`) as a `Curve` (`BezierCurve`, keys of in-handle / point / out-handle).
+  - `DEFAULT_CAPACITOR_LEVEL` = 2, the client's 1/1/1 split, which is in client code, not the data.
 - **`sc-missions`: reputation joins for the gRPC `ReputationService`.**
   - Org `geid` → `FactionReputations::by_geid(u64)` / `guid_by_geid`, plus a new `FactionRep::geid` field.
   - `standings_id` → `ReputationScopes` (on `Missions::rep_scopes`). Each `ReputationScope` has its record and scope names, display key, ceiling, initial value and `ranks` (standing GUIDs sorted by `minReputation`, lowest first).
@@ -29,6 +34,8 @@ pinned. Both tag kinds are monotonic and immutable.
 ### Fixed
 
 - **`sc-missions`: `FactionRep::record_name` is the record's name.** It read the `name` field, which is `(Default)` on all 39 factions in LIVE 4.10.
+
+## [v0.32.0] - 2026-10-21
 
 ### Added
 

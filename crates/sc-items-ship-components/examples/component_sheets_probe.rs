@@ -5,7 +5,9 @@
 //! taking physical × 0.81 and energy × 1.21), the Khaos quantum drive, a
 //! main thruster and its tanks (46.8 SCU hydrogen, 8.6 SCU quantum), and
 //! the common missile controller (4 armed, 4 s between launches, spviewer's
-//! "Max Armed / Rearm CD 4 / 4 s"). Prints each sheet.
+//! "Max Armed / Rearm CD 4 / 4 s"), and the flight blade's boost by
+//! capacitor level (spviewer's 26.7 s regen, 20 s deplete). Prints each
+//! sheet.
 //!
 //! ```bash
 //! cargo run -p sc-items-ship-components --release --example component_sheets_probe
@@ -98,6 +100,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ab = f.afterburner.as_ref().ok_or("afterburner")?;
     assert_eq!(ab.accel_multiplier_positive, [1.35, 1.5, 1.3]);
     assert_eq!(ab.capacitor_max, 20.0);
+    // Boost by capacitor level, spviewer's "Regen 26.7 s (+1.1) / Deplete
+    // 20.0 s" at 6/6; the angular S-curve at the 2/6 default.
+    for level in 0..=6 {
+        println!("boost {level}/6 {:?}", ab.at(level));
+    }
+    let full = ab.at(6);
+    assert!((full.regen_s - 27.767).abs() < 0.01, "{full:?}");
+    assert_eq!(full.deplete_s, Some(20.0));
+    let default = ab.at(sc_items_ship_components::DEFAULT_CAPACITOR_LEVEL);
+    assert!((default.angular_velocity_multiplier[0] - 1.162).abs() < 0.01);
 
     // The Lephari radar: IR / EM / CS detection, and the Centaurus's
     // countermeasure launchers.
