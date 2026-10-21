@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.32.0] - 2026-10-21
+
 ### Added
 
 - **`sc-vehicles`: `Crew::compute(vehicle, loadout, vehicles, items, containers)`**: a vehicle's seats (`Station`s) and what each one does (`Role`: `Pilot`, `Copilot`, `MannedTurret`, `RemoteTurret { turrets }`, `Mining`, `Salvage`). `Crew::size()` counts the seats that have a role; a seat without one is a passenger.
