@@ -1,13 +1,13 @@
 //! Per-kind stat sheets, read through the typed generated surface.
 
 use sc_extract::generated::{
-    DamageBasePtr, DamageInfo, DamageResistanceBasePtr, DamageResistanceEntry,
+    BezierCurve, DamageBasePtr, DamageInfo, DamageResistanceBasePtr, DamageResistanceEntry,
     DataForgeComponentParamsPtr, EFaceType, ESignatureType, EThrusterType, EntityClassDefinition,
     Handle, IFCSParams, SBaseResourceUnitPtr, SCItemQuantumDriveParams, SCItemRadarComponentParams,
     SCItemShieldGeneratorParams, SCItemThrusterParams, SCItemVehicleArmorParams,
     SHealthComponentParams, SQuantumDriveParams, Vec3,
 };
-use sc_extract::{DataPools, Guid};
+use sc_extract::{DataPools, Guid, RecordStore};
 use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
 
@@ -228,6 +228,128 @@ pub struct Afterburner {
     pub regen_per_sec: f32,
     /// `afterburnerCapacitorThresholdRatio`.
     pub threshold_ratio: f32,
+    /// `capacitorAssignmentInputOutputRegen` / `...RegenNavMode` /
+    /// `...Usage`: regeneration and drain against the capacitor assignment
+    /// (`CapacitorAssignmentInputOutput_Linear_50_100`: 0.5 + 0.5x).
+    #[serde(default)]
+    pub regen_curve: Option<Curve>,
+    #[serde(default)]
+    pub nav_regen_curve: Option<Curve>,
+    #[serde(default)]
+    pub usage_curve: Option<Curve>,
+    /// `afterburnerAngCapacitorScalingCurve`, when
+    /// `afterburnerAngCapacitorScaling` is set: how much of the angular
+    /// multipliers the assignment grants.
+    #[serde(default)]
+    pub angular_scaling: Option<Curve>,
+}
+
+/// The capacitor assignment level boost starts at: 2 of 6, the client's
+/// 1/1/1 split of the three capacitors (client 4.10.197, `FUN_143de8180`;
+/// not in the data).
+pub const DEFAULT_CAPACITOR_LEVEL: u8 = 2;
+
+/// [`Afterburner::at`]: boost at one capacitor assignment level.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct Boost {
+    /// From empty to full, s, including the regen delay after use.
+    pub regen_s: f32,
+    /// From full to empty at rest, s (the idle cost; moving adds the linear
+    /// and angular costs). `None` when nothing drains at rest.
+    pub deplete_s: Option<f32>,
+    /// The boosted angular velocity multipliers at full ramp (x pitch, y
+    /// roll, z yaw, as [`Afterburner::angular_velocity_multiplier`]).
+    pub angular_velocity_multiplier: [f32; 3],
+}
+
+impl Afterburner {
+    /// Boost at capacitor assignment `level` of 6 (clamped): the client
+    /// gives the flight controller `x = level / 6`
+    /// ([`DEFAULT_CAPACITOR_LEVEL`] at spawn). Client 4.10.197
+    /// (`FUN_145b4dd60`, `sub_145b32710`):
+    ///
+    /// - regen: `capacitorMax / (capacitorRegenPerSec × regen(x))` plus
+    ///   `capacitorRegenDelayAfterUse`;
+    /// - drain at rest: `capacitorMax / (idleCost × usage(x))`;
+    /// - angular velocity: `1 + (multiplier − 1) × scaling(x)`.
+    ///
+    /// A missing curve counts as 1. The Constellation Mk5 refills in 26.7 s
+    /// (+1.1) at 6/6 and drains in 20 s, as spviewer shows.
+    pub fn at(&self, level: u8) -> Boost {
+        let x = f32::from(level.min(6)) / 6.0;
+        let curve = |c: &Option<Curve>| c.as_ref().map_or(1.0, |c| c.at(x));
+        let regen = self.regen_per_sec * curve(&self.regen_curve);
+        let drain = self.idle_cost * curve(&self.usage_curve);
+        let scaling = curve(&self.angular_scaling);
+        Boost {
+            regen_s: self.capacitor_max / regen + self.regen_delay,
+            deplete_s: (drain > 0.0).then(|| self.capacitor_max / drain),
+            angular_velocity_multiplier: self
+                .angular_velocity_multiplier
+                .map(|m| 1.0 + (m - 1.0) * scaling),
+        }
+    }
+}
+
+/// A `BezierCurve`: cubic segments between keys, `y` as a function of `x`.
+/// The data stores each key as three points, in-handle, point, out-handle,
+/// all in absolute coordinates.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Curve {
+    /// `[in_handle, point, out_handle]` per key, in `x` order.
+    pub keys: Vec<[[f32; 2]; 3]>,
+}
+
+impl Curve {
+    /// `y` at `x`, clamped to the first and last key; each segment is solved
+    /// for `x(t)` by bisection (the curves are monotonic in `x`).
+    pub fn at(&self, x: f32) -> f32 {
+        let (Some(first), Some(last)) = (self.keys.first(), self.keys.last()) else {
+            return 1.0;
+        };
+        if x <= first[1][0] {
+            return first[1][1];
+        }
+        if x >= last[1][0] {
+            return last[1][1];
+        }
+        let Some(w) = self
+            .keys
+            .windows(2)
+            .find(|w| x >= w[0][1][0] && x <= w[1][1][0])
+        else {
+            return last[1][1];
+        };
+        let p = [w[0][1], w[0][2], w[1][0], w[1][1]];
+        let bezier = |t: f32, i: usize| {
+            let u = 1.0 - t;
+            u * u * u * p[0][i]
+                + 3.0 * u * u * t * p[1][i]
+                + 3.0 * u * t * t * p[2][i]
+                + t * t * t * p[3][i]
+        };
+        let (mut lo, mut hi) = (0.0_f32, 1.0_f32);
+        for _ in 0..40 {
+            let mid = 0.5 * (lo + hi);
+            if bezier(mid, 0) < x {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+        bezier(0.5 * (lo + hi), 1)
+    }
+
+    fn from_dcb(c: &BezierCurve, pools: &DataPools) -> Option<Self> {
+        let points: Vec<[f32; 2]> = c
+            .points
+            .iter()
+            .filter_map(|h| h.get(pools))
+            .map(|v| [v.x, v.y])
+            .collect();
+        let keys: Vec<[[f32; 2]; 3]> = points.chunks_exact(3).map(|k| [k[0], k[1], k[2]]).collect();
+        (!keys.is_empty()).then_some(Self { keys })
+    }
 }
 
 /// `SCItemRadarComponentParams`.
@@ -327,8 +449,9 @@ pub(crate) struct Sheets {
     pub missiles: Option<MissileController>,
 }
 
-pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
+pub(crate) fn sheets(ecd: &EntityClassDefinition, store: &RecordStore) -> Sheets {
     use DataForgeComponentParamsPtr as C;
+    let pools = &store.pools;
     let mut out = Sheets::default();
     for c in &ecd.components {
         match c {
@@ -349,7 +472,7 @@ pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
                 out.quantum = h.get(pools).and_then(|q| quantum(q, pools));
             }
             C::SCItemThrusterParams(h) => out.thruster = h.get(pools).map(|t| thruster(t, pools)),
-            C::IFCSParams(h) => out.flight = h.get(pools).map(|f| flight(f, pools)),
+            C::IFCSParams(h) => out.flight = h.get(pools).map(|f| flight(f, store)),
             C::SCItemRadarComponentParams(h) => out.radar = h.get(pools).map(|r| radar(r, pools)),
             C::SAmmoContainerComponentParams(h) => {
                 out.ammo = h.get(pools).map(|a| Ammo {
@@ -504,7 +627,17 @@ fn quantum(q: &SCItemQuantumDriveParams, pools: &DataPools) -> Option<QuantumDri
     })
 }
 
-fn flight(f: &IFCSParams, pools: &DataPools) -> FlightControl {
+fn flight(f: &IFCSParams, store: &RecordStore) -> FlightControl {
+    let pools = &store.pools;
+    let assignment = |g: Option<sc_extract::Guid>| {
+        let def = store
+            .records
+            .multi_feature
+            .capacitor_assignment_input_output_def
+            .get(&g?)?
+            .get(pools)?;
+        Curve::from_dcb(def.input_output_mapping?.get(pools)?, pools)
+    };
     let v = |h: Option<Handle<Vec3>>| {
         h.and_then(|h| h.get(pools))
             .map_or([0.0; 3], |v| [v.x, v.y, v.z])
@@ -536,6 +669,14 @@ fn flight(f: &IFCSParams, pools: &DataPools) -> FlightControl {
                 regen_delay: a.capacitor_regen_delay_after_use,
                 regen_per_sec: a.capacitor_regen_per_sec,
                 threshold_ratio: a.afterburner_capacitor_threshold_ratio,
+                regen_curve: assignment(a.capacitor_assignment_input_output_regen),
+                nav_regen_curve: assignment(a.capacitor_assignment_input_output_regen_nav_mode),
+                usage_curve: assignment(a.capacitor_assignment_input_output_usage),
+                angular_scaling: a
+                    .afterburner_ang_capacitor_scaling
+                    .then(|| a.afterburner_ang_capacitor_scaling_curve?.get(pools))
+                    .flatten()
+                    .and_then(|c| Curve::from_dcb(c, pools)),
             }),
     }
 }
@@ -650,6 +791,60 @@ mod thruster_type_serde {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn centaurus_boost() {
+        // Controller_Flight_RSI_Constellation_Mk5, legacy `afterburner`.
+        let linear_50_100 = Curve {
+            keys: vec![
+                [[-0.1, 1.0], [0.0, 0.5], [0.0, 0.5]],
+                [[1.0, 1.0], [1.0, 1.0], [0.0, 0.0]],
+            ],
+        };
+        let s_curve = Curve {
+            keys: vec![
+                [[-0.4583936, -0.1252766], [0.0, 0.0], [0.4583936, 0.1252766]],
+                [[0.3870683, 0.9817872], [1.0, 1.0], [1.612932, 1.018213]],
+            ],
+        };
+        let a = Afterburner {
+            accel_multiplier_positive: [1.0; 3],
+            accel_multiplier_negative: [1.0; 3],
+            angular_velocity_multiplier: [1.5, 2.0, 1.5],
+            angular_accel_multiplier: [1.0; 3],
+            ramp_up_time: 2.0,
+            ramp_down_time: 0.2,
+            capacitor_max: 20.0,
+            idle_cost: 1.0,
+            linear_cost: 0.0,
+            angular_cost: 0.0,
+            regen_delay: 1.1,
+            regen_per_sec: 0.75,
+            threshold_ratio: 0.25,
+            regen_curve: Some(linear_50_100.clone()),
+            nav_regen_curve: Some(linear_50_100),
+            usage_curve: None,
+            angular_scaling: Some(s_curve),
+        };
+        let close = |a: f32, b: f32| (a - b).abs() < 1e-2;
+        let full = a.at(6);
+        assert!(close(full.regen_s, 26.667 + 1.1), "{full:?}");
+        assert_eq!(full.deplete_s, Some(20.0));
+        assert!(close(full.angular_velocity_multiplier[1], 2.0));
+        let default = a.at(DEFAULT_CAPACITOR_LEVEL);
+        assert!(close(default.regen_s, 40.0 + 1.1), "{default:?}");
+        assert!(
+            close(default.angular_velocity_multiplier[0], 1.162),
+            "{default:?}"
+        );
+        assert!(
+            close(default.angular_velocity_multiplier[1], 1.323),
+            "{default:?}"
+        );
+        let off = a.at(0);
+        assert!(close(off.regen_s, 53.333 + 1.1));
+        assert_eq!(off.angular_velocity_multiplier, [1.0; 3]);
+    }
 
     #[test]
     fn lephari_aim_assist() {

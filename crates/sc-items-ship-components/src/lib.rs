@@ -37,9 +37,9 @@ pub use sc_extract::RecordCollection;
 mod sheets;
 
 pub use sheets::{
-    Afterburner, Ammo, ComponentHealth, FlightControl, MinMax, MissileController, PerDamageType,
-    QuantumDrive, QuantumTravel, Radar, ShieldEmitter, ShieldGenerator, SignatureDetection,
-    Thruster, VehicleArmor, component_health,
+    Afterburner, Ammo, Boost, ComponentHealth, Curve, DEFAULT_CAPACITOR_LEVEL, FlightControl,
+    MinMax, MissileController, PerDamageType, QuantumDrive, QuantumTravel, Radar, ShieldEmitter,
+    ShieldGenerator, SignatureDetection, Thruster, VehicleArmor, component_health,
 };
 
 /// Which ship-component family a piece belongs to.
@@ -208,7 +208,7 @@ impl ShipComponents {
             let sheets = entities
                 .get(&guid)
                 .and_then(|h| h.get(&store.pools))
-                .map(|ecd| sheets::sheets(ecd, &store.pools))
+                .map(|ecd| sheets::sheets(ecd, store))
                 .unwrap_or_default();
 
             by_guid.insert(
