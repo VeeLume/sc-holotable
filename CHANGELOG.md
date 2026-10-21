@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.31.0] - 2026-10-21
+
 ### Added
 
 - **`sc-items-ship-components`: `Radar::aim_assist(ratio)`**: the aim-assist distance at the radar's functionality ratio. It's `min + (max − min) × ratio`, continuous, with no aim assist at 0 (client LIVE 4.10.197, `FUN_1433e2750` on `SSCEvtNotify_FunctionalityRatioChanged`).
