@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.33.0] - 2026-10-21
+
 ### Added
 
 - **`sc-locations`: `Waypoints::build(&Universe)`**: every positioned star-map object with quantum travel data. Each `Waypoint` has its GUID, name key, `LocationKind`, system (the star the star map roots it at), system-global position and `QuantumTravel` radii.
