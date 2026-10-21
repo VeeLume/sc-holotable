@@ -429,6 +429,36 @@ impl ObjectContainers {
         T: Send,
         F: Fn(&str, &str, &XmlNode) -> Vec<T> + Sync,
     {
+        Self::walk_levels(assets, roots, usize::MAX, visit)
+    }
+
+    /// The star systems (every `*system.socpak`) and `depth` levels of the
+    /// socpaks they nest: depth 0 holds the planets, moons, Lagrange
+    /// points and jump points with their system-global `Pos`; depth 1 adds
+    /// what sits on them (Port Tressler in `stanton4`, the gateway
+    /// stations at the jump points). A fraction of [`cook`](Self::cook).
+    /// Empty for a snapshot-backed [`AssetSource`].
+    pub fn systems(assets: &AssetSource, depth: usize) -> Result<Self> {
+        let roots: Vec<String> = assets
+            .find(|n| is_object_container(n) && n.to_ascii_lowercase().ends_with("system.socpak"))
+            .map(|e| normalize_socpak_path(e.name))
+            .collect();
+        let (graph, _) = Self::walk_levels(assets, &roots, depth, |_, _, _| Vec::<()>::new())?;
+        Ok(graph)
+    }
+
+    /// [`walk`](Self::walk), descending at most `depth` levels below the
+    /// roots.
+    fn walk_levels<T, F>(
+        assets: &AssetSource,
+        roots: &[String],
+        depth: usize,
+        visit: F,
+    ) -> Result<(Self, HashMap<String, Vec<T>>)>
+    where
+        T: Send,
+        F: Fn(&str, &str, &XmlNode) -> Vec<T> + Sync,
+    {
         let entries: HashMap<String, _> = assets
             .find(is_object_container)
             .map(|e| (normalize_socpak_path(e.name), e))
@@ -445,6 +475,7 @@ impl ObjectContainers {
             .map(|r| normalize_socpak_path(r))
             .filter(|r| seen.insert(r.clone()))
             .collect();
+        let mut level = 0;
         while !frontier.is_empty() {
             let jobs: Vec<_> = frontier
                 .iter()
@@ -477,7 +508,8 @@ impl ObjectContainers {
                         .extend(harvested.found);
                 }
             }
-            frontier = next;
+            frontier = if level < depth { next } else { Vec::new() };
+            level += 1;
         }
         graph.rebuild_indices();
         Ok((graph, found))

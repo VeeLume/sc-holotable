@@ -52,6 +52,8 @@ pub use object_containers::{
 };
 mod universe;
 pub use universe::{Place, Universe};
+mod waypoints;
+pub use waypoints::{Waypoint, Waypoints};
 
 /// Typed location category, resolved from a `StarMapObjectType.name`. The known
 /// variants are the 21 type records observed in live DCB data; a value the
@@ -216,7 +218,26 @@ pub struct Location {
     /// `jurisdiction` — law-system record GUID (a bare reference, not followed
     /// onto the typed surface here).
     pub jurisdiction: Option<Guid>,
+    /// `quantumTravelData`: where quantum travel to it ends and what it
+    /// blocks.
+    #[serde(default)]
+    pub quantum: Option<QuantumTravel>,
 }
+
+/// `StarMapObject.quantumTravelData`, m. Hurston: arrival 1,050,000,
+/// obstruction 1,008,900.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct QuantumTravel {
+    /// `arrivalRadius`: quantum travel drops out this far from the centre.
+    pub arrival_radius: f32,
+    /// `obstructionRadius`: a route passing closer is blocked.
+    pub obstruction_radius: f32,
+    /// `adoptionRadius`.
+    pub adoption_radius: f32,
+}
+
+// `QuantumTravel` holds floats; equality on a location is still exact.
+impl Eq for QuantumTravel {}
 
 impl Location {
     /// Resolve the display name (`name` key) through a [`LocaleMap`]. Returns
@@ -417,6 +438,14 @@ fn location_for(guid: Guid, obj: &StarMapObject, store: &RecordStore) -> Locatio
         respawn: obj.respawn_location_type.clone(),
         parent: obj.parent,
         jurisdiction: obj.jurisdiction,
+        quantum: obj
+            .quantum_travel_data
+            .and_then(|h| h.get(pools))
+            .map(|q| QuantumTravel {
+                arrival_radius: q.arrival_radius,
+                obstruction_radius: q.obstruction_radius,
+                adoption_radius: q.adoption_radius,
+            }),
     }
 }
 
@@ -473,6 +502,7 @@ mod tests {
             respawn: ERespawnLocationType::from_dcb_str("Other"),
             parent,
             jurisdiction: None,
+            quantum: None,
         }
     }
 

@@ -71,7 +71,8 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
 /// v5 (2026-10-21): `Item` gained `tags`, `required_tags` and `mass` (in
 /// v0.27.0; `#[serde(default)]` would let a v4 snapshot load with them empty).
 /// v6 (2026-10-21): `Item` gained `inventory`.
-pub const HOLOTABLE_COOK_VERSION: u32 = 6;
+/// v7 (2026-10-21): `Location` gained `quantum`.
+pub const HOLOTABLE_COOK_VERSION: u32 = 7;
 
 /// A batteries-included bundle of cooked indices, serializable for fast load.
 ///
