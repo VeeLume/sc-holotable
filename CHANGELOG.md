@@ -13,6 +13,12 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-items-ship-components`: `Radar::aim_assist(ratio)`**: the aim-assist distance at the radar's functionality ratio. It's `min + (max − min) × ratio`, continuous, with no aim assist at 0 (client LIVE 4.10.197, `FUN_1433e2750` on `SSCEvtNotify_FunctionalityRatioChanged`).
+  - The functionality ratio is supplied over requested for each resource the radar consumes, multiplied together. With its coolant met, that's the power ratio, so it moves one pip at a time: the Lephari at 6 of 8 reaches 2,707.5 m.
+  - `aim_assist_buffer` is hysteresis, not part of the distance.
+
 ## [v0.30.0] - 2026-10-21
 
 ### Added

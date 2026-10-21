@@ -244,6 +244,30 @@ pub struct Radar {
     pub ping_cooldown: Option<f32>,
 }
 
+impl Radar {
+    /// The aim-assist distance, m, at the radar's functionality ratio
+    /// (client LIVE 4.10.197, `FUN_1433e2750` on
+    /// `SSCEvtNotify_FunctionalityRatioChanged`): `min + (max − min) ×
+    /// ratio`, continuous; `None` (no aim assist) at a ratio of 0.
+    ///
+    /// The functionality ratio (`GetConsumptionFunctionalityRatio`) is
+    /// what each resource the radar consumes supplies over what it asks,
+    /// multiplied over its resources (power, coolant), then scaled by
+    /// health and temperature curves (1 for a sound, cool radar). With its
+    /// coolant met, it is the power ratio: granted over requested segments,
+    /// so it moves a pip at a time (the Constellation Mk V's Lephari at 6 of
+    /// 8 reaches 1,860 + 0.75 × 1,130 = 2,707.5 m).
+    ///
+    /// [`aim_assist_buffer`](Self::aim_assist_buffer) is no part of the
+    /// distance: assist starts within it and, once on, holds out to
+    /// distance + buffer. Crafting quality scales min and max first
+    /// (`GPP_Radar_Min/MaxAimAssistDistance`); not applied here.
+    pub fn aim_assist(&self, ratio: f32) -> Option<f32> {
+        (ratio > f32::EPSILON)
+            .then_some(self.aim_assist_min + (self.aim_assist_max - self.aim_assist_min) * ratio)
+    }
+}
+
 /// One `SCItemRadarSignatureDetection`.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SignatureDetection {
@@ -597,5 +621,25 @@ mod thruster_type_serde {
     }
     pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<EThrusterType, D::Error> {
         Ok(EThrusterType::from_dcb_str(&String::deserialize(d)?))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn lephari_aim_assist() {
+        let lephari = Radar {
+            detection: Vec::new(),
+            aim_assist_min: 1860.0,
+            aim_assist_max: 2990.0,
+            aim_assist_buffer: 120.0,
+            ping_cooldown: None,
+        };
+        // Centaurus power-on: 6 of 8 segments.
+        assert_eq!(lephari.aim_assist(0.75), Some(2707.5));
+        assert_eq!(lephari.aim_assist(1.0), Some(2990.0));
+        assert_eq!(lephari.aim_assist(0.0), None);
     }
 }
