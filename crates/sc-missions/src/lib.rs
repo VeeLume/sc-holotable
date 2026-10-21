@@ -220,7 +220,10 @@ pub use index::Missions;
 pub use locality::{Localities, LocalityView, LocationRef, Locations, SystemKey};
 #[cfg(feature = "payout")]
 pub use payout::UecCurve;
-pub use reputation::{FactionRep, FactionReputations, ReputationStandings, Standing};
+pub use reputation::{
+    FactionRep, FactionReputations, ReputationScope, ReputationScopes, ReputationStandings,
+    Standing,
+};
 pub use sc_extract::RecordCollection;
 // Re-exported so consumers can read `LocationRef::kind` without a direct
 // sc-locations dep. Type identity is preserved (same workspace `sc-extract`).

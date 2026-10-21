@@ -15,7 +15,7 @@
 //! standings, …), so the substitution API lives on [`Missions`], mirroring the
 //! locale-at-call-site convention of [`Mission::title`].
 
-use sc_extract::LocaleMap;
+use sc_extract::{LocaleMap, RecordCollection};
 
 use crate::{Mission, MissionVar, Missions, PrereqView};
 
