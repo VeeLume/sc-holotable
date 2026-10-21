@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.30.0] - 2026-10-21
+
 ### Added
 
 - **`sc-vehicles`: `Storage::compute`**: what a vehicle stores, from a loadout plus the entities its interior places.
