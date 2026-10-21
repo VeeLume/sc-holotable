@@ -38,7 +38,7 @@ use crate::events::Events;
 use crate::expand::{Mission, PrereqView, expand_all};
 use crate::locality::{Localities, Locations};
 use crate::pools::{self, MissionPools};
-use crate::reputation::{FactionReputations, ReputationStandings};
+use crate::reputation::{FactionReputations, ReputationScopes, ReputationStandings};
 use crate::ships::Ships;
 
 /// Bundled output of the four-stage contracts pipeline.
@@ -84,6 +84,10 @@ pub struct Missions {
     /// Reputation standing-tier catalog — resolves rep-prerequisite
     /// `min_standing` / `max_standing` GUIDs to their tier names + thresholds.
     pub rep_standings: ReputationStandings,
+
+    /// Reputation scope catalog — the rank ladders (`standings_id` in the
+    /// reputation service), ranks in ascending order.
+    pub rep_scopes: ReputationScopes,
 
     /// Event catalog — resolves [`crate::EventPoints::event`] to the event's
     /// ladders (overall + category) and their reward tiers.
@@ -170,6 +174,7 @@ impl Missions {
         let currency = RewardCurrencies::build(datacore);
         let factions = FactionReputations::build(datacore);
         let rep_standings = ReputationStandings::build(datacore);
+        let rep_scopes = ReputationScopes::build(datacore);
         let events = Events::build(datacore);
         let mission_types = MissionTypes::build(datacore);
         // The typed sc-locations index supplies each location's LocationKind
@@ -218,6 +223,7 @@ impl Missions {
             currency,
             factions,
             rep_standings,
+            rep_scopes,
             events,
             mission_types,
             locations,
@@ -452,6 +458,7 @@ mod tests {
             currency: RewardCurrencies::default(),
             factions: FactionReputations::default(),
             rep_standings: ReputationStandings::default(),
+            rep_scopes: ReputationScopes::default(),
             events: Events::default(),
             mission_types: MissionTypes::default(),
             locations: Locations::default(),

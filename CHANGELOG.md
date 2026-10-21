@@ -15,6 +15,21 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ### Added
 
+- **`sc-missions`: reputation joins for the gRPC `ReputationService`.**
+  - Org `geid` → `FactionReputations::by_geid(u64)` / `guid_by_geid`, plus a new `FactionRep::geid` field.
+  - `standings_id` → `ReputationScopes` (on `Missions::rep_scopes`). Each `ReputationScope` has its record and scope names, display key, ceiling, initial value and `ranks` (standing GUIDs sorted by `minReputation`, lowest first).
+  - `Standing` gains `drift_reputation` and `drift_time_hours`.
+
+### Changed
+
+- **`sc-missions`: `FactionReputations` and `ReputationStandings` implement `RecordCollection`.** Their inherent `get` / `len` / `is_empty` are gone, so bring the trait into scope (it is re-exported from `sc_missions`).
+
+### Fixed
+
+- **`sc-missions`: `FactionRep::record_name` is the record's name.** It read the `name` field, which is `(Default)` on all 39 factions in LIVE 4.10.
+
+### Added
+
 - **`sc-vehicles`: `Crew::compute(vehicle, loadout, vehicles, items, containers)`**: a vehicle's seats (`Station`s) and what each one does (`Role`: `Pilot`, `Copilot`, `MannedTurret`, `RemoteTurret { turrets }`, `Mining`, `Salvage`). `Crew::size()` counts the seats that have a role; a seat without one is a passenger.
   - Read from the control priorities on each seat's port, not from names. Of the seats claiming an item, the highest priority controls it. Controllers pass control on: the Mk5's gunner seat claims the weapon controller tagged `gunnerSeatLeft`, which claims the lower turret.
   - The pilot holds the highest claim on the flight controller. A copilot claims it below the pilot.
