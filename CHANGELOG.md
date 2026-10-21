@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.33.0] - 2026-10-21
+
 ### Added
 
 - **`sc-items-ship-components`: `Afterburner::at(level)`**: boost at capacitor assignment level 0–6 (client 4.10.197). It returns a `Boost`:
