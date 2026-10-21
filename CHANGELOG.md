@@ -15,6 +15,17 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ### Added
 
+- **`sc-locations`: `Waypoints::build(&Universe)`**: every positioned star-map object with quantum travel data. Each `Waypoint` has its GUID, name key, `LocationKind`, system (the star the star map roots it at), system-global position and `QuantumTravel` radii.
+  - `distance(a, b)`: centre to centre, `None` across systems.
+  - `travel(a, b)`: less the destination's arrival radius.
+  - `in_system(&star)`.
+  - On LIVE 4.10, Hurston–Crusader is 31.924 Gm, and Ariel sits its `OrbitalRadius` from Hurston to within 4 m.
+  - The kinds are the star map's own: Lagrange points are `Asteroid`, and the Pyro and Nyx gateways are `Anomaly`.
+- **`sc-locations`: `ObjectContainers::systems(assets, depth)`**: the `*system.socpak` files and `depth` levels below them. Depth 1, the bodies plus their stations and outposts, reads in about 1 s instead of a full cook.
+- **`sc-locations`: `Location::quantum`**: `StarMapObject.quantumTravelData`'s arrival, obstruction and adoption radii. Hurston arrives at 1,050,000 m. `HOLOTABLE_COOK_VERSION` is now 7.
+
+### Added
+
 - **`sc-items-ship-components`: `Afterburner::at(level)`**: boost at capacitor assignment level 0–6 (client 4.10.197). It returns a `Boost`:
   - `regen_s`: empty to full, including the regen delay.
   - `deplete_s`: full to empty at rest.
