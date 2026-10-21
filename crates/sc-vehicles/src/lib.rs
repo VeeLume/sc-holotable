@@ -29,7 +29,7 @@
 //! let data = AssetData::extract(&assets, &AssetConfig::standard())?;
 //! let datacore = Datacore::parse(&assets, &data)?;
 //! let items = Items::build(datacore.records());
-//! let containers = PortContainers::build(&datacore);
+//! let containers = PortContainers::build(&datacore, &assets);
 //! let vehicles = Vehicles::build(&datacore, &items, &containers, &assets);
 //! for (guid, v) in vehicles.iter().take(3) {
 //!     println!("{guid}: {} hull HP, {} ports", v.hull_health(), v.ports.len());
@@ -54,6 +54,7 @@ mod quantum;
 mod raycast;
 mod resource;
 mod scene;
+mod storage;
 mod vehicle;
 
 pub use armament::Armament;
@@ -69,7 +70,7 @@ pub use flight::{Accelerations, Burn, Flight, port_axes};
 pub use geometry::{
     Aabb, GeometryPaths, HullGeometry, PartMesh, Placement, Transform, apply, mul, port_frames,
 };
-pub use interior::{Brush, Interior, ObjectContainer};
+pub use interior::{Brush, Interior, ObjectContainer, PlacedEntity};
 pub use loadout::{Loadout, Refusal};
 pub use modifiers::{ItemportModifier, ItemportModifiers, RegenModifier, weapon_power};
 pub use network::{DistributionDefaults, NetworkParams, PoolSize, PowerPool};
@@ -82,6 +83,7 @@ pub use resource::{
     ResourceProfiles, ResourceState, ResourceUnits, Signature,
 };
 pub use scene::scene;
+pub use storage::{CargoGrid, Locker, Place, Rack, Slot, Storage};
 pub use vehicle::{
     Insurance, Listing, Mounted, PenetrationRules, Vehicle, Vehicles, network_items,
 };

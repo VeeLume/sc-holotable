@@ -70,7 +70,8 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
 /// v4 (2026-06-18): added optional `gathering: Providers` field.
 /// v5 (2026-10-21): `Item` gained `tags`, `required_tags` and `mass` (in
 /// v0.27.0; `#[serde(default)]` would let a v4 snapshot load with them empty).
-pub const HOLOTABLE_COOK_VERSION: u32 = 5;
+/// v6 (2026-10-21): `Item` gained `inventory`.
+pub const HOLOTABLE_COOK_VERSION: u32 = 6;
 
 /// A batteries-included bundle of cooked indices, serializable for fast load.
 ///

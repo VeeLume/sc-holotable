@@ -194,6 +194,7 @@ mod tests {
             tags: vec![],
             required_tags: vec![],
             mass: None,
+            inventory: None,
         }
     }
 

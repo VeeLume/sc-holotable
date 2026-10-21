@@ -10,7 +10,7 @@ rust-version.workspace = true
 # primitives. `entities-scitem` decodes the scitem item-entity family this
 # crate's typed walk reaches — sc-items owns its feature closure so consumers
 # depend on it alone and get a populated cache.
-sc-extract = { workspace = true, features = ["entities-scitem"] }
+sc-extract = { workspace = true, features = ["entities-scitem", "inventorycontainers"] }
 serde = { workspace = true }
 tracing = { workspace = true }
 

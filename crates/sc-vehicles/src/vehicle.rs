@@ -10,7 +10,7 @@ use sc_extract::{
     AssetSource, DataPools, Datacore, Guid, LocaleKey, RecordCollection, Value, VehicleDefinition,
     VehiclePart,
 };
-use sc_items::Items;
+use sc_items::{Inventory, Items};
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
 
@@ -38,6 +38,10 @@ pub struct Vehicle {
     /// record (`sc_manufacturers::Manufacturers`).
     #[serde(default)]
     pub manufacturer: Option<Guid>,
+    /// `VehicleComponentParams.inventoryContainerParams`: the ship's own
+    /// inventory, a closed container (the Centaurus's holds 1.5 SCU).
+    #[serde(default)]
+    pub inventory: Option<Inventory>,
     /// `VehicleComponentParams.vehicleDefinition`: the hull XML.
     pub definition: String,
     /// `VehicleComponentParams.modification` applied to it (empty: none).
@@ -311,6 +315,9 @@ impl Vehicles {
                     role_key: (!params.vehicle_role.is_empty())
                         .then(|| params.vehicle_role.clone()),
                     manufacturer: params.manufacturer,
+                    inventory: params
+                        .inventory_container_params
+                        .and_then(|g| Inventory::from_record(&g, store)),
                     definition: params.vehicle_definition.clone(),
                     modification: params.modification.clone(),
                     crew_size: params.crew_size,

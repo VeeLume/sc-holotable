@@ -6,7 +6,8 @@ use sc_extract::generated::{
     DataForgeComponentParamsPtr, EntityClassDefinition, Handle, SItemPortDef,
     SItemPortLoadoutBaseParamsPtr, SItemPortLoadoutEntryParams,
 };
-use sc_extract::{DataPools, Datacore, Guid, PortType, RecordCollection};
+use sc_extract::object_container::{self, XmlNode};
+use sc_extract::{AssetSource, DataPools, Datacore, Guid, PortType, RecordCollection};
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
 
@@ -14,7 +15,8 @@ use crate::network::power_pools;
 use crate::{Port, PortSource, PowerPool};
 
 /// An entity's `SItemPortContainerComponentParams.Ports` and its default
-/// loadout (`SEntityComponentDefaultLoadoutParams`).
+/// loadout (`SEntityComponentDefaultLoadoutParams`): a manual loadout in
+/// the DCB, or an XML loadout file it names (`loadoutPath`).
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct PortContainer {
     pub ports: Vec<Port>,
@@ -38,7 +40,8 @@ impl PortContainer {
     }
 }
 
-/// One `SItemPortLoadoutEntryParams` of a default loadout.
+/// One entry of a default loadout: an `SItemPortLoadoutEntryParams`, or an
+/// `<Item portName itemName>` of an XML loadout file.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct LoadoutEntry {
     pub port: String,
@@ -64,16 +67,24 @@ impl PortContainers {
         Self::default()
     }
 
-    pub fn build(datacore: &Datacore) -> Self {
+    /// Read every entity's ports and default loadout; XML loadout files
+    /// (doors that carry a cargo grid, beds, lockers) are read from
+    /// `assets`.
+    pub fn build(datacore: &Datacore, assets: &AssetSource) -> Self {
         let store = datacore.records();
         let pools = &store.pools;
-        let names = class_names(datacore);
+        let mut ctx = Ctx {
+            pools,
+            names: class_names(datacore),
+            assets,
+            files: HashMap::new(),
+        };
         let mut by_guid = HashMap::new();
         for (&guid, &handle) in &store.records.multi_feature.entity_class_definition {
             let Some(ecd) = handle.get(pools) else {
                 continue;
             };
-            let container = container(ecd, pools, &names);
+            let container = container(ecd, &mut ctx);
             if !container.ports.is_empty()
                 || !container.default_loadout.is_empty()
                 || !container.power_pools.is_empty()
@@ -102,11 +113,18 @@ impl RecordCollection for PortContainers {
     }
 }
 
-fn container(
-    ecd: &EntityClassDefinition,
-    pools: &DataPools,
-    names: &HashMap<String, Guid>,
-) -> PortContainer {
+/// What reading loadouts needs: the record pools, record names for the
+/// entries that name their class, and the XML loadout files read so far
+/// (by lower-cased path; many entities share one).
+struct Ctx<'a> {
+    pools: &'a DataPools,
+    names: HashMap<String, Guid>,
+    assets: &'a AssetSource,
+    files: HashMap<String, Vec<LoadoutEntry>>,
+}
+
+fn container(ecd: &EntityClassDefinition, ctx: &mut Ctx) -> PortContainer {
+    let pools = ctx.pools;
     let mut out = PortContainer::default();
     for c in &ecd.components {
         match c {
@@ -123,7 +141,7 @@ fn container(
             }
             DataForgeComponentParamsPtr::SEntityComponentDefaultLoadoutParams(h) => {
                 if let Some(l) = h.get(pools) {
-                    out.default_loadout = loadout(l.loadout.as_ref(), pools, names);
+                    out.default_loadout = loadout(l.loadout.as_ref(), ctx);
                 }
             }
             _ => {}
@@ -160,58 +178,99 @@ fn entity_port(h: Handle<SItemPortDef>, pools: &DataPools) -> Option<Port> {
     })
 }
 
-fn loadout(
-    l: Option<&SItemPortLoadoutBaseParamsPtr>,
-    pools: &DataPools,
-    names: &HashMap<String, Guid>,
-) -> Vec<LoadoutEntry> {
+fn loadout(l: Option<&SItemPortLoadoutBaseParamsPtr>, ctx: &mut Ctx) -> Vec<LoadoutEntry> {
+    let pools = ctx.pools;
     match l {
-        Some(SItemPortLoadoutBaseParamsPtr::SItemPortLoadoutManualParams(h)) => h
-            .get(pools)
-            .map(|m| {
-                m.entries
-                    .iter()
-                    .filter_map(|e| e.get(pools))
-                    .map(|e| loadout_entry(e, pools, names))
-                    .collect()
-            })
-            .unwrap_or_default(),
-        // No vehicle uses an XML or record loadout in LIVE 4.10 (8 empty-path
-        // XML templates).
+        Some(SItemPortLoadoutBaseParamsPtr::SItemPortLoadoutManualParams(h)) => {
+            let Some(m) = h.get(pools) else {
+                return Vec::new();
+            };
+            m.entries
+                .iter()
+                .filter_map(|e| e.get(pools))
+                .map(|e| loadout_entry(e, ctx))
+                .collect()
+        }
+        Some(SItemPortLoadoutBaseParamsPtr::SItemPortLoadoutXMLParams(h)) => {
+            match h.get(pools).map(|x| x.loadout_path.as_str()) {
+                Some(path) if !path.is_empty() => xml_loadout(path, ctx),
+                _ => Vec::new(),
+            }
+        }
+        // Outfits and random loadouts dress characters; LIVE 4.10 uses no
+        // record loadout.
         Some(_) | None => Vec::new(),
     }
 }
 
-fn loadout_entry(
-    e: &SItemPortLoadoutEntryParams,
-    pools: &DataPools,
-    names: &HashMap<String, Guid>,
-) -> LoadoutEntry {
+fn loadout_entry(e: &SItemPortLoadoutEntryParams, ctx: &mut Ctx) -> LoadoutEntry {
     // Typed reference first. Many entries name the class by record name
     // only (`entityClassName`, reference empty), so the name is the
-    // fallback: an EntityClassDefinition record name, matched
-    // case-insensitively as the game's class registry does.
-    let item = e.entity_class_reference.or_else(|| {
-        if e.entity_class_name.is_empty() {
-            return None;
-        }
-        let hit = names
-            .get(&e.entity_class_name.to_ascii_lowercase())
-            .copied();
-        if hit.is_none() {
-            warn!(
-                class = %e.entity_class_name,
-                port = %e.item_port_name,
-                "default loadout names a class with no EntityClassDefinition record"
-            );
-        }
-        hit
-    });
+    // fallback.
+    let item = e
+        .entity_class_reference
+        .or_else(|| class_by_name(&e.entity_class_name, &e.item_port_name, ctx));
     LoadoutEntry {
         port: e.item_port_name.clone(),
         item,
-        children: loadout(e.loadout.as_ref(), pools, names),
+        children: loadout(e.loadout.as_ref(), ctx),
     }
+}
+
+/// An EntityClassDefinition record by name, matched case-insensitively as
+/// the game's class registry does: loadout entries and XML loadout files
+/// name their classes, with no typed reference.
+fn class_by_name(name: &str, port: &str, ctx: &Ctx) -> Option<Guid> {
+    if name.is_empty() {
+        return None;
+    }
+    let hit = ctx.names.get(&name.to_ascii_lowercase()).copied();
+    if hit.is_none() {
+        warn!(
+            class = %name,
+            port,
+            "default loadout names a class with no EntityClassDefinition record"
+        );
+    }
+    hit
+}
+
+/// An XML loadout file (`<Loadout><Items><Item portName itemName>`, an
+/// item's own `<Items>` nested in it), read once per path.
+fn xml_loadout(path: &str, ctx: &mut Ctx) -> Vec<LoadoutEntry> {
+    let key = path.to_ascii_lowercase();
+    if let Some(entries) = ctx.files.get(&key) {
+        return entries.clone();
+    }
+    let root = ctx
+        .assets
+        .read_data(path)
+        .map_err(|e| e.to_string())
+        .and_then(|b| object_container::decode(&b).map_err(|e| e.to_string()));
+    let entries = match root {
+        Ok(Some(root)) => xml_items(&root, ctx),
+        Ok(None) => Vec::new(),
+        Err(error) => {
+            warn!(path, %error, "XML loadout unreadable");
+            Vec::new()
+        }
+    };
+    ctx.files.insert(key, entries.clone());
+    entries
+}
+
+fn xml_items(node: &XmlNode, ctx: &Ctx) -> Vec<LoadoutEntry> {
+    node.children_named("Items")
+        .flat_map(|items| items.children_named("Item"))
+        .filter_map(|item| {
+            let port = item.attr("portName")?.to_string();
+            Some(LoadoutEntry {
+                item: class_by_name(item.attr("itemName").unwrap_or(""), &port, ctx),
+                children: xml_items(item, ctx),
+                port,
+            })
+        })
+        .collect()
 }
 
 /// Lower-cased `EntityClassDefinition` record name → GUID, for the loadout
