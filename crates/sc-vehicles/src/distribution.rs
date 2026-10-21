@@ -125,7 +125,8 @@ pub struct Pool {
     pub size: PoolSize,
     /// Its members, indices into [`PowerNetwork::consumers`], sorted as the
     /// client sorts them: switched-on first, then by ascending minimum with
-    /// minimums of 0 last.
+    /// minimums of 0 last; ties in loadout order (the client's tie order is
+    /// not read).
     pub members: Vec<usize>,
 }
 
@@ -292,6 +293,32 @@ impl PowerNetwork {
             network.sort_members(p);
         }
         network
+    }
+
+    /// Switch the item at `path` on or off: its [`Plant`], its
+    /// [`Consumer`], or both when a plant also draws power. Its pool is
+    /// sorted again by the [`Pool::members`] rule, so switched-off members
+    /// move behind the switched-on ones. Grants are left as they are: call
+    /// [`power_on`](Self::power_on) or [`split_pools`](Self::split_pools)
+    /// for the new allocation. `false` when no item sits at `path`.
+    ///
+    /// When the client re-sorts a pool after a toggle is not read.
+    pub fn set_on(&mut self, path: &str, on: bool) -> bool {
+        let mut found = false;
+        for p in self.plants.iter_mut().filter(|p| p.path == path) {
+            p.on = on;
+            found = true;
+        }
+        let mut pools = Vec::new();
+        for c in self.consumers.iter_mut().filter(|c| c.path == path) {
+            c.on = on;
+            found = true;
+            pools.extend(c.pool);
+        }
+        for p in pools {
+            self.sort_members(p);
+        }
+        found
     }
 
     /// What the online plants make together, segments
@@ -732,9 +759,12 @@ impl PowerNetwork {
                 (!self.consumers[c].on, m <= 0.0, m)
             };
             let (ka, kb) = (key(a), key(b));
+            // Ties keep loadout order, so a re-sort after a toggle
+            // restores the order build gave.
             ka.0.cmp(&kb.0)
                 .then(ka.1.cmp(&kb.1))
                 .then(ka.2.total_cmp(&kb.2))
+                .then(a.cmp(&b))
         });
         self.pools[pool].members = members;
     }
@@ -902,6 +932,25 @@ mod tests {
         assert_eq!(a.remaining, 0);
         let ratios = n.ratios(&a, &EMasterMode::Navigation);
         assert_eq!((ratios[6], ratios[7]), (0.0, 0.0));
+    }
+
+    #[test]
+    fn switch_off_resorts_pool() {
+        let mut n = centaurus();
+        n.consumers[6].path = "hardpoint_shield_generator_left".into();
+        assert!(n.set_on("hardpoint_shield_generator_left", false));
+        assert_eq!(n.pools[1].members, [7, 6]);
+        // The shield left on is the whole pool (4) and gets half of it.
+        let a = n.power_on(&EMasterMode::SCM);
+        assert_eq!(n.pool_size(1), 4);
+        assert_eq!(&a.granted[6..8], &[0.0, 2.0][..]);
+        assert!(n.set_on("hardpoint_shield_generator_left", true));
+        assert_eq!(n.pools[1].members, [6, 7]);
+        // One plant off: the other makes its full 19, not 12.
+        n.plants[1].path = "hardpoint_power_plant_right".into();
+        assert!(n.set_on("hardpoint_power_plant_right", false));
+        assert_eq!(n.supply(), 19);
+        assert!(!n.set_on("no_such_port", false));
     }
 
     #[test]

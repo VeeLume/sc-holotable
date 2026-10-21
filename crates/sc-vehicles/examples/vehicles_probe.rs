@@ -6,7 +6,8 @@
 //! Lephari radar, ComfortAir Plus, the flight blade), its gimbals are
 //! locked while their guns can be swapped, and its thrusters are locked.
 //! Then it checks [`fits`] on every stock attachment of the non-AI vehicles
-//! and counts the misfits by kind.
+//! and counts the misfits by kind. Every listed vehicle has a manufacturer
+//! (an `SCItemManufacturer` record), career, role and description.
 //!
 //! ```bash
 //! cargo run -p sc-vehicles --release --example vehicles_probe
@@ -171,6 +172,41 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .filter(|n| n.contains("_AI"))
         .collect();
     println!("listed with _AI in the record name: {ai:?}");
+
+    // The ship header: manufacturer, career, role, description.
+    let makers: HashMap<Guid, String> = datacore
+        .db()
+        .all_records()
+        .filter(|r| r.type_name() == Some("SCItemManufacturer"))
+        .filter_map(|r| Some((r.id(), short(r.name()?))))
+        .collect();
+    let maker = ship.manufacturer.and_then(|g| makers.get(&g));
+    println!(
+        "Centaurus header: {maker:?}, career {:?}, role {:?}, description {:?}",
+        ship.career_key, ship.role_key, ship.description_key
+    );
+    let header = |f: fn(&sc_vehicles::Vehicle) -> bool| listed.iter().filter(|v| f(v)).count();
+    let with_maker = header(|v| v.manufacturer.is_some());
+    let with_career = header(|v| v.career_key.is_some());
+    let with_role = header(|v| v.role_key.is_some());
+    let with_description = header(|v| v.description_key.is_some());
+    println!(
+        "listed with manufacturer {with_maker}, career {with_career}, role {with_role}, description {with_description}"
+    );
+    let unresolved: Vec<&str> = vehicles
+        .listed()
+        .filter(|(_, v)| v.manufacturer.is_some_and(|g| !makers.contains_key(&g)))
+        .filter_map(|(g, _)| names.get(g).map(String::as_str))
+        .collect();
+    println!("listed with a manufacturer that is no SCItemManufacturer: {unresolved:?}");
+    // LIVE 4.10: every listed vehicle has all four (the Centaurus carries
+    // the Andromeda's description key, as the data ships it).
+    assert!(maker.is_some_and(|m| m.starts_with("RSI")), "{maker:?}");
+    assert!(unresolved.is_empty());
+    assert_eq!(
+        (with_maker, with_career, with_role, with_description),
+        (246, 246, 246, 246)
+    );
 
     println!("asserts passed: Centaurus stock tree and locks ({guid})");
 

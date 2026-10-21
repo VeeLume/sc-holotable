@@ -25,6 +25,19 @@ const MAX_DEPTH: usize = 8;
 pub struct Vehicle {
     /// `VehicleComponentParams.vehicleName`.
     pub name_key: Option<LocaleKey>,
+    /// `VehicleComponentParams.vehicleDescription`.
+    #[serde(default)]
+    pub description_key: Option<LocaleKey>,
+    /// `VehicleComponentParams.vehicleCareer` / `vehicleRole`: the career
+    /// and role the game shows (e.g. Multi-Role / Heavy Freight).
+    #[serde(default)]
+    pub career_key: Option<LocaleKey>,
+    #[serde(default)]
+    pub role_key: Option<LocaleKey>,
+    /// `VehicleComponentParams.manufacturer`: the `SCItemManufacturer`
+    /// record (`sc_manufacturers::Manufacturers`).
+    #[serde(default)]
+    pub manufacturer: Option<Guid>,
     /// `VehicleComponentParams.vehicleDefinition`: the hull XML.
     pub definition: String,
     /// `VehicleComponentParams.modification` applied to it (empty: none).
@@ -291,6 +304,13 @@ impl Vehicles {
                 Vehicle {
                     name_key: (!params.vehicle_name.is_empty())
                         .then(|| params.vehicle_name.clone()),
+                    description_key: (!params.vehicle_description.is_empty())
+                        .then(|| params.vehicle_description.clone()),
+                    career_key: (!params.vehicle_career.is_empty())
+                        .then(|| params.vehicle_career.clone()),
+                    role_key: (!params.vehicle_role.is_empty())
+                        .then(|| params.vehicle_role.clone()),
+                    manufacturer: params.manufacturer,
                     definition: params.vehicle_definition.clone(),
                     modification: params.modification.clone(),
                     crew_size: params.crew_size,
