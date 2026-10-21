@@ -297,6 +297,20 @@ pub struct Ammo {
     pub ammo_params: Option<Guid>,
 }
 
+/// `SCItemMissileControllerParams`: how a missile controller fires. On
+/// LIVE 4.10 the common `Controller_Missile` arms 4 at once and waits 4 s
+/// between launches.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct MissileController {
+    /// `maxArmedMissiles`: missiles armed at once.
+    pub max_armed: i32,
+    /// `launchCooldownTime`, s.
+    pub launch_cooldown: f32,
+    /// `lockAngleAtMin` / `lockAngleAtMax`, degrees.
+    pub lock_angle_min: f32,
+    pub lock_angle_max: f32,
+}
+
 /// The typed sheets of one entity, each `None` when it lacks the component.
 #[derive(Debug, Default)]
 pub(crate) struct Sheets {
@@ -310,6 +324,7 @@ pub(crate) struct Sheets {
     pub flight: Option<FlightControl>,
     pub radar: Option<Radar>,
     pub ammo: Option<Ammo>,
+    pub missiles: Option<MissileController>,
 }
 
 pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
@@ -342,6 +357,14 @@ pub(crate) fn sheets(ecd: &EntityClassDefinition, pools: &DataPools) -> Sheets {
                     max: a.max_ammo_count,
                     max_restock: a.max_restock_count,
                     ammo_params: a.ammo_params_record,
+                });
+            }
+            C::SCItemMissileControllerParams(h) => {
+                out.missiles = h.get(pools).map(|m| MissileController {
+                    max_armed: m.max_armed_missiles,
+                    launch_cooldown: m.launch_cooldown_time,
+                    lock_angle_min: m.lock_angle_at_min,
+                    lock_angle_max: m.lock_angle_at_max,
                 });
             }
             C::ResourceContainer(h) => {

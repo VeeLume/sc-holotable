@@ -102,7 +102,9 @@ pub use sc_extract_generated::{
 pub use skeleton::{Bone, Skeleton};
 pub use snapshot::{ExtractSnapshot, SnapshotCaptureConfig, SnapshotMeta};
 pub use texture::{Texture, TextureFormat};
-pub use vehicle::{PortType, VehicleDefinition, VehiclePart, VehiclePort};
+pub use vehicle::{
+    ControlPriority, PortType, PriorityGroup, VehicleDefinition, VehiclePart, VehiclePort,
+};
 
 // ── svarog re-exports ──────────────────────────────────────────────────────
 

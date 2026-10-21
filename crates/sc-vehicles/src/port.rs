@@ -1,7 +1,7 @@
 //! Item ports: what a port takes and whether it can be changed.
 
 use sc_extract::generated::EItemSubType;
-use sc_extract::{Guid, LocaleKey, PortType, VehiclePort};
+use sc_extract::{Guid, LocaleKey, PortType, PriorityGroup, VehiclePort};
 use sc_items::Item;
 use serde::{Deserialize, Serialize};
 
@@ -27,6 +27,17 @@ pub struct Port {
     /// `SItemPortDef.defaultItem`: the item it holds when a loadout names
     /// none (DCB ports only).
     pub default_item: Option<Guid>,
+    /// The tags a [`PriorityGroup`] names to claim the item here
+    /// (`controllableTags`, `SItemPortDef.controllableTag`).
+    #[serde(default)]
+    pub controllable_tags: Vec<String>,
+    /// What the occupant of a seat here controls (`UserDef`,
+    /// `SCItemControlSeatParams.userControl`); see [`Crew`](crate::Crew).
+    #[serde(default)]
+    pub user_control: Vec<PriorityGroup>,
+    /// What the item here controls (`UsableDef`, `usableControl`).
+    #[serde(default)]
+    pub usable_control: Vec<PriorityGroup>,
 }
 
 /// Where a [`Port`] is defined.
@@ -54,6 +65,9 @@ impl Port {
             port_tags: p.port_tags.clone(),
             required_tags: p.required_tags.clone(),
             default_item: None,
+            controllable_tags: p.controllable_tags.clone(),
+            user_control: p.user_control.clone(),
+            usable_control: p.usable_control.clone(),
         }
     }
 }
@@ -179,6 +193,9 @@ mod tests {
             port_tags: vec![],
             required_tags: vec![],
             default_item: None,
+            controllable_tags: vec![],
+            user_control: vec![],
+            usable_control: vec![],
         }
     }
 

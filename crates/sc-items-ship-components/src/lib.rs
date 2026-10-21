@@ -37,9 +37,9 @@ pub use sc_extract::RecordCollection;
 mod sheets;
 
 pub use sheets::{
-    Afterburner, Ammo, ComponentHealth, FlightControl, MinMax, PerDamageType, QuantumDrive,
-    QuantumTravel, Radar, ShieldEmitter, ShieldGenerator, SignatureDetection, Thruster,
-    VehicleArmor, component_health,
+    Afterburner, Ammo, ComponentHealth, FlightControl, MinMax, MissileController, PerDamageType,
+    QuantumDrive, QuantumTravel, Radar, ShieldEmitter, ShieldGenerator, SignatureDetection,
+    Thruster, VehicleArmor, component_health,
 };
 
 /// Which ship-component family a piece belongs to.
@@ -61,6 +61,7 @@ pub enum ShipComponentKind {
     QuantumFuelTank,
     JumpDrive,
     CountermeasureLauncher,
+    MissileController,
 }
 
 impl ShipComponentKind {
@@ -82,6 +83,7 @@ impl ShipComponentKind {
             EItemType::QuantumFuelTank => ShipComponentKind::QuantumFuelTank,
             EItemType::JumpDrive => ShipComponentKind::JumpDrive,
             EItemType::WeaponDefensive => ShipComponentKind::CountermeasureLauncher,
+            EItemType::MissileController => ShipComponentKind::MissileController,
             _ => return None,
         })
     }
@@ -144,6 +146,9 @@ pub struct ShipComponentStats {
     /// Countermeasure launchers' ammunition.
     #[serde(default)]
     pub ammo: Option<Ammo>,
+    /// Missile controllers (and the few turrets that carry the component).
+    #[serde(default)]
+    pub missiles: Option<MissileController>,
 }
 
 /// Index of every ship component's [`ShipComponentStats`], keyed by GUID.
@@ -233,6 +238,7 @@ impl ShipComponents {
                     flight: sheets.flight,
                     radar: sheets.radar,
                     ammo: sheets.ammo,
+                    missiles: sheets.missiles,
                 },
             );
         }
