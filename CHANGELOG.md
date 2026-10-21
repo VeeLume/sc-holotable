@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.29.0] - 2026-10-21
+
 ### Added
 
 - **`sc-items`: `ItemClass` and `Item::class(&LocaleMap)`**: an item's class from the `Class:` line of its description, the only place the game keeps it (LIVE 4.10; no DCB field).
