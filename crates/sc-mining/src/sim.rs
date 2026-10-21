@@ -23,7 +23,13 @@ use crate::{ModifiedRock, Ruleset, Timeline};
 /// space (which decides how much a spinning rock scatters them) is not read.
 pub fn hit_consistency(params: &HitConsistency, firing_s: f32, scatter_m: f32) -> f32 {
     let window = params.history_window.max(f32::EPSILON);
-    let covered = (firing_s.clamp(0.0, window) / window).powf(params.time_exponent);
+    let share = firing_s.clamp(0.0, window) / window;
+    // 1^x is exactly 1, so a full window skips the powf.
+    let covered = if share >= 1.0 {
+        1.0
+    } else {
+        share.powf(params.time_exponent)
+    };
     let spread = scatter_m.max(params.min_deviation) * params.standard_deviation_multiplier;
     if spread <= 0.0 {
         return 1.0;
@@ -325,9 +331,11 @@ pub fn simulate_timeline(
     let n = controls.len();
     let mut current: Vec<f32> = Vec::new();
     let mut lasers = vec![LaserState::default(); n];
-    // Rocks with only some lasers' modifiers on, by span and hitting set.
-    let mut subsets: HashMap<(usize, Vec<bool>), ModifiedRock> = HashMap::new();
+    let mut subsets = Subsets::default();
     let mut hitting = vec![true; n];
+    // Per-tick buffers, reused so the loop does not allocate.
+    let mut drained = vec![0.0f32; n];
+    let mut energies: Vec<f32> = Vec::with_capacity(n);
 
     let mut samples = Vec::new();
     let mut laser_samples = Vec::new();
@@ -379,7 +387,6 @@ pub fn simulate_timeline(
             }
         }
         let now = time + dt;
-        let mut drained = vec![0.0f32; n];
         for (i, (l, c)) in lasers.iter_mut().zip(&controls).enumerate() {
             if !c.firing {
                 l.unbroken = false;
@@ -399,13 +406,14 @@ pub fn simulate_timeline(
         }
         let rock = rock_for(timeline, ruleset, &mut subsets, span, &hitting);
 
-        let energies: Vec<f32> = rock
-            .lasers
-            .iter()
-            .zip(&controls)
-            .zip(&current)
-            .map(|((l, c), &t)| l.power_at(c.distance_m) * l.effective(t))
-            .collect();
+        energies.clear();
+        energies.extend(
+            rock.lasers
+                .iter()
+                .zip(&controls)
+                .zip(&current)
+                .map(|((l, c), &t)| l.power_at(c.distance_m) * l.effective(t)),
+        );
         // Every queue drains the same while all lasers fire in step: then the
         // gain is the old single-queue expression, bit for bit.
         let gain = if drained.iter().all(|&d| d == drained[0]) {
@@ -421,14 +429,18 @@ pub fn simulate_timeline(
         let mut change = gain - decay;
         let max_effect = ruleset.hit_consistency.max_effect_on_instability;
         let (mut damping_sum, mut delivering) = (0.0f64, 0u32);
+        // Every unbroken laser has covered `now`: one c serves them all.
+        let mut unbroken_c = None;
         for (l, &d) in lasers.iter().zip(&drained) {
             if d > 0.0 {
-                let covered = if l.unbroken {
-                    now
+                let c = if l.unbroken {
+                    *unbroken_c.get_or_insert_with(|| {
+                        hit_consistency(&ruleset.hit_consistency, now, config.aim_scatter_m)
+                    })
                 } else {
-                    l.history.iter().map(|&(_, a)| a).sum()
+                    let covered = l.history.iter().map(|&(_, a)| a).sum();
+                    hit_consistency(&ruleset.hit_consistency, covered, config.aim_scatter_m)
                 };
-                let c = hit_consistency(&ruleset.hit_consistency, covered, config.aim_scatter_m);
                 damping_sum += f64::from(1.0 - c.min(max_effect));
                 delivering += 1;
             }
@@ -563,12 +575,20 @@ impl Default for LaserState {
     }
 }
 
+/// Rocks with only some lasers' modifiers on, by span and hitting set. Up to
+/// 64 lasers the set is a bitmask, so a lookup allocates nothing.
+#[derive(Default)]
+struct Subsets {
+    by_mask: HashMap<(usize, u64), ModifiedRock>,
+    by_vec: HashMap<(usize, Vec<bool>), ModifiedRock>,
+}
+
 /// The span's rock with the `hitting` lasers' modifiers on, cached; the
 /// span's own rock when every laser hits.
 fn rock_for<'a>(
     timeline: &'a Timeline,
     ruleset: &Ruleset,
-    subsets: &'a mut HashMap<(usize, Vec<bool>), ModifiedRock>,
+    subsets: &'a mut Subsets,
     span: usize,
     hitting: &[bool],
 ) -> &'a ModifiedRock {
@@ -576,9 +596,21 @@ fn rock_for<'a>(
     if hitting.iter().all(|&h| h) {
         return full;
     }
-    subsets
-        .entry((span, hitting.to_vec()))
-        .or_insert_with(|| full.subset(ruleset, hitting))
+    if hitting.len() <= 64 {
+        let mask = hitting
+            .iter()
+            .enumerate()
+            .fold(0u64, |m, (i, &h)| m | (u64::from(h) << i));
+        subsets
+            .by_mask
+            .entry((span, mask))
+            .or_insert_with(|| full.subset(ruleset, hitting))
+    } else {
+        subsets
+            .by_vec
+            .entry((span, hitting.to_vec()))
+            .or_insert_with(|| full.subset(ruleset, hitting))
+    }
 }
 
 /// Our difficulty for one rock and setup: how a [`Player`] fares over many
