@@ -13,6 +13,12 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-items-ship-components`: `ShipComponentStats::distortion`**: the `SDistortionParams` sheet as a `Distortion`: `maximum` (the pool), `decay_delay` (s), `decay_rate` (points/s), `warning_ratio`, `recovery_ratio`, `power_ratio_at_max` and `power_change_only_at_max`.
+  - On LIVE 4.10 coolers, power plants, quantum drives, shields, radars, life support and jump drives carry it. The other component kinds do not.
+  - Outside radars and jump drives, a full pool decays in 15 s after a delay of 1.5 s × size (S0 as S1). The JS-400 holds 8,500 and the TurboDrive 6,500, as starcitizen.tools shows for 4.10.2.
+
 ## [v0.34.0] - 2026-10-21
 
 ### Added

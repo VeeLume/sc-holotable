@@ -433,10 +433,37 @@ pub struct MissileController {
     pub lock_angle_max: f32,
 }
 
+/// `SDistortionParams`: the distortion damage a component soaks and how it
+/// sheds it again.
+///
+/// On LIVE 4.10 coolers, power plants, quantum drives, shields, radars, life
+/// support and jump drives carry it. Except on radars and jump drives, a
+/// full pool decays in 15 s after a delay of 1.5 s × size (S0 as S1). The
+/// one exception is the Vanduul `POWR_VNCL_S04_Mauler`, at 1050 s.
+/// `examples/distortion_probe.rs` re-proves this.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Distortion {
+    /// `Maximum`: the pool.
+    pub maximum: f32,
+    /// `DecayDelay`, s: before the pool starts to decay.
+    pub decay_delay: f32,
+    /// `DecayRate`, points/s.
+    pub decay_rate: f32,
+    /// `WarningRatio`: 0.75 everywhere on LIVE 4.10.
+    pub warning_ratio: f32,
+    /// `RecoveryRatio`: 0 everywhere but jump drives (0.7).
+    pub recovery_ratio: f32,
+    /// `PowerRatioAtMaxDistortion`: 0 everywhere on LIVE 4.10.
+    pub power_ratio_at_max: f32,
+    /// `PowerChangeOnlyAtMaxDistortion`: set on power plants only.
+    pub power_change_only_at_max: bool,
+}
+
 /// The typed sheets of one entity, each `None` when it lacks the component.
 #[derive(Debug, Default)]
 pub(crate) struct Sheets {
     pub health: Option<ComponentHealth>,
+    pub distortion: Option<Distortion>,
     pub shield: Option<ShieldGenerator>,
     pub emitter: Option<ShieldEmitter>,
     pub armor: Option<VehicleArmor>,
@@ -456,6 +483,17 @@ pub(crate) fn sheets(ecd: &EntityClassDefinition, store: &RecordStore) -> Sheets
     for c in &ecd.components {
         match c {
             C::SHealthComponentParams(h) => out.health = h.get(pools).map(|h| health(h, pools)),
+            C::SDistortionParams(h) => {
+                out.distortion = h.get(pools).map(|d| Distortion {
+                    maximum: d.maximum,
+                    decay_delay: d.decay_delay,
+                    decay_rate: d.decay_rate,
+                    warning_ratio: d.warning_ratio,
+                    recovery_ratio: d.recovery_ratio,
+                    power_ratio_at_max: d.power_ratio_at_max_distortion,
+                    power_change_only_at_max: d.power_change_only_at_max_distortion,
+                });
+            }
             C::SCItemShieldGeneratorParams(h) => {
                 out.shield = h.get(pools).map(|s| shield(s, pools));
             }

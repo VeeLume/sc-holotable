@@ -37,9 +37,9 @@ pub use sc_extract::RecordCollection;
 mod sheets;
 
 pub use sheets::{
-    Afterburner, Ammo, Boost, ComponentHealth, Curve, DEFAULT_CAPACITOR_LEVEL, FlightControl,
-    MinMax, MissileController, PerDamageType, QuantumDrive, QuantumTravel, Radar, ShieldEmitter,
-    ShieldGenerator, SignatureDetection, Thruster, VehicleArmor, component_health,
+    Afterburner, Ammo, Boost, ComponentHealth, Curve, DEFAULT_CAPACITOR_LEVEL, Distortion,
+    FlightControl, MinMax, MissileController, PerDamageType, QuantumDrive, QuantumTravel, Radar,
+    ShieldEmitter, ShieldGenerator, SignatureDetection, Thruster, VehicleArmor, component_health,
 };
 
 /// Which ship-component family a piece belongs to.
@@ -119,6 +119,9 @@ pub struct ShipComponentStats {
     /// `SHealthComponentParams`: HP and damage taken per type.
     #[serde(default)]
     pub health: Option<ComponentHealth>,
+    /// `SDistortionParams`: the distortion pool and its decay.
+    #[serde(default)]
+    pub distortion: Option<Distortion>,
     /// Shield generators.
     #[serde(default)]
     pub shield: Option<ShieldGenerator>,
@@ -229,6 +232,7 @@ impl ShipComponents {
                     radar_aim_assist_min,
                     radar_aim_assist_max,
                     health: sheets.health,
+                    distortion: sheets.distortion,
                     shield: sheets.shield,
                     emitter: sheets.emitter,
                     armor: sheets.armor,
