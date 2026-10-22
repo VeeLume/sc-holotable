@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.35.0] - 2026-10-22
+
 ### Added
 
 - **`sc-items-ship-components`: `ShipComponentStats::distortion`**: the `SDistortionParams` sheet as a `Distortion`: `maximum` (the pool), `decay_delay` (s), `decay_rate` (points/s), `warning_ratio`, `recovery_ratio`, `power_ratio_at_max` and `power_change_only_at_max`.
