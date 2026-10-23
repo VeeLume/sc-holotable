@@ -33,7 +33,7 @@ impl DamageSummary {
         self.stun += d.damage_stun;
     }
 
-    fn add(&mut self, other: &DamageSummary) {
+    pub(crate) fn add(&mut self, other: &DamageSummary) {
         self.physical += other.physical;
         self.energy += other.energy;
         self.distortion += other.distortion;

@@ -13,6 +13,16 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-vehicles`: `quantum_trip(travel, distance)` → `QuantumTrip { travel, peak, cooldown }`**: a jump's travel time, its peak speed and the cooldown after it (client 4.10.197). `Quantum` gains `trip(d)`, `spline_trip(d)` (with `splineJumpParams`) and `cooldown(d)`.
+  - The cooldown scales with the peak speed: `cooldownTime` × clamp(peak / `driveSpeed`, 0, 1). A jump that reaches full speed gets the full `cooldownTime` (spviewer's "Max Cooldown"), a short hop less. The Khaos (13.5 s) cools for 3.96 s after 1 GM, 9.38 s after 5 GM and 13.5 s from 9.25 GM.
+  - `quantum_time` is unchanged and now returns `quantum_trip(..).travel`.
+- **`sc-weapons`: `Missile::cluster`**: a cluster missile's `Cluster` (release timing from `clusterParams` and its `Submunition`s, each with port, GUID and explosion damage), plus `Missile::total_damage()`, the body and every submunition together.
+  - The submunitions are the missile items in the missile's own default loadout, named by class name.
+  - On LIVE 4.10 the Rattler II carries 7 Venom rockets: 1,370 + 7 × 300 = 3,470, as spviewer shows. The Viper also has cluster params but is a `GroundVehicleMissile`, so not in `missiles`.
+  - Probe: `sc-weapons/examples/cluster_probe.rs`.
+
 ## [v0.35.0] - 2026-10-22
 
 ### Added

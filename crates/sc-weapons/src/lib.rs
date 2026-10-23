@@ -70,7 +70,7 @@ pub use classify::WeaponCategory;
 pub use damage::DamageSummary;
 pub use fire_action::{ChargeModifier, FireActionKind};
 pub use fps::FpsWeapon;
-pub use missile::{Missile, TrackingProfile};
+pub use missile::{Cluster, Missile, Submunition, TrackingProfile};
 pub use pools::WeaponPools;
 pub use ship::{LoadoutContext, ShipWeapon, WeaponPower};
 pub use sustain::{EnergyModel, HeatModel, SustainKind};
