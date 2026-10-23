@@ -515,12 +515,19 @@ impl PowerNetwork {
             for &c in &pool.members {
                 allocation.granted[c] = 0.0;
             }
-            let all_asked: i64 = pool.members.iter().fold(0.0, |sum, &c| {
+            // A dynamic pool's capacity: a running sum of its members'
+            // requests the client truncates after each member is added
+            // (FUN_1428469a0). It caps the target and is what a full share
+            // is measured against. A fixed pool keeps its poolSize there
+            // instead, so only the pool size caps it.
+            let capacity = pool.members.iter().fold(0.0, |sum, &c| {
                 (sum + self.consumers[c].request_segments()).trunc()
             }) as i64;
-            let target = allocation.pool_targets[p]
-                .min(self.pool_size(p))
-                .min(all_asked) as f64;
+            let mut target = allocation.pool_targets[p].min(self.pool_size(p));
+            if !matches!(pool.size, PoolSize::Fixed(_)) {
+                target = target.min(capacity);
+            }
+            let target = target as f64;
             match pool.size {
                 PoolSize::Fixed(_) => {
                     let asked: f64 = active
@@ -536,10 +543,10 @@ impl PowerNetwork {
                     }
                 }
                 _ => {
-                    if all_asked <= 0 {
+                    if capacity <= 0 {
                         continue;
                     }
-                    if target / all_asked as f64 >= 1.0 {
+                    if target / capacity as f64 >= 1.0 {
                         for &c in &active {
                             allocation.granted[c] = self.consumers[c].request_segments();
                         }
@@ -971,5 +978,21 @@ mod tests {
         n.split_pools(&mut a);
         let guns: f64 = a.granted[8..20].iter().sum();
         assert!((guns - 4.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn fixed_pool_of_small_requests() {
+        // Guns asking under one segment each: a fixed pool is capped by its
+        // size and the requests' total (6.24 segments), not by a running sum
+        // truncated after each member, which stays at 0 here.
+        let mut n = centaurus();
+        for c in &mut n.consumers[8..20] {
+            c.request = 520_000;
+        }
+        let mut a = n.power_on(&EMasterMode::SCM);
+        a.pool_targets[2] = 4;
+        n.split_pools(&mut a);
+        let guns: f64 = a.granted[8..20].iter().sum();
+        assert!((guns - 4.0).abs() < 1e-9, "{guns}");
     }
 }

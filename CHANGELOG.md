@@ -13,6 +13,13 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`sc-vehicles`: a fixed power pool is no longer capped by a running sum of its members' requests.** `PowerNetwork::split_pools` capped every pool's target by the members' requests summed and truncated after each member. In the client that running sum is the capacity of a *dynamic* pool only (`FUN_1428469a0`); a fixed pool is capped by its `poolSize` and its active members' total (client 4.10.197).
+  - Guns that each ask under one segment hit it: Valerie's F7C-M Super Hornet Mk II (Ardor-3 SA ×2 and Attrition-3 ×2 at 0.75, M6A ×2 at 1.6, 6.2 together) stopped at 2 weapon pips; the game allows 4, and so does `split_pools` now.
+  - Dynamic pools keep the running capacity, both as a cap and as what a full share is measured against.
+  - Probe: `sc-vehicles/examples/pool_dig.rs`.
+
 ## [v0.39.0] - 2026-10-23
 
 ### Added
