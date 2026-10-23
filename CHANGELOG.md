@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.37.0] - 2026-10-23
+
 ### Added
 
 - **New crate `sc-acquisitions`: `Acquisitions::build(&Vehicles, &PortContainers)`**: how a player comes by an item or a vehicle, as far as the client data shows. One `Acquisition` per vehicle and per item some vehicle's stock carries:
