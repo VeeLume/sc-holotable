@@ -3044,6 +3044,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "sc-acquisitions"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-items",
+ "sc-vehicles",
+ "serde",
+ "tracing",
+]
+
+[[package]]
 name = "sc-bench"
 version = "0.0.0"
 dependencies = [
@@ -3181,6 +3193,7 @@ dependencies = [
 name = "sc-holotable"
 version = "0.0.0"
 dependencies = [
+ "sc-acquisitions",
  "sc-crafting",
  "sc-discovery",
  "sc-extract",

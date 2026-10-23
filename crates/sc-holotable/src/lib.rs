@@ -38,6 +38,7 @@
 //! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
 //! | `visuals` | `visuals` | render recipes and inventory presentation (orientation, light rig, palettes) |
 //! | `vehicles` | `vehicles` | ships and ground vehicles as a loadout calculator sees them: hull, ports, editable loadouts with the fit rule and locks, the power network (power-on, pips, cooling, EM / IR), defence, flight, fuel, quantum travel, weapon power |
+//! | `acquisitions` | `acquisitions` | how a player comes by an item or vehicle: sources and mount evidence, obtainable / unobtainable / unknown (pulls `vehicles`) |
 //! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
 //! | `mining` | `mining` | rock properties, breakability, the charge simulation, rock spawns and fracture trees (pulls `resources`, `tags`, `ship-weapons`, `mining-items`) |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
@@ -154,6 +155,14 @@ pub mod vehicles {
     pub use sc_vehicles::*;
 }
 
+#[cfg(feature = "acquisitions")]
+pub mod acquisitions {
+    //! How a player comes by an item or a vehicle ([`sc_acquisitions`]):
+    //! the [`Source`]s that make it obtainable, where vehicles' stock mounts
+    //! it, and its [`Status`].
+    pub use sc_acquisitions::*;
+}
+
 #[cfg(feature = "mining-items")]
 pub mod mining_items {
     //! Mining modules and gadgets ([`sc_items_mining`]) — their mining
@@ -208,6 +217,8 @@ pub use foundations::{Foundations, HOLOTABLE_COOK_VERSION, HolotableSnapshot, bu
 
 /// The common types in one `use sc_holotable::prelude::*`.
 pub mod prelude {
+    #[cfg(feature = "acquisitions")]
+    pub use sc_acquisitions::{Acquisition, Acquisitions, Status as AcquisitionStatus};
     #[cfg(feature = "crafting")]
     pub use sc_crafting::{
         Blueprint, Blueprints, Categories, Category, CompositionInclusion, Cost, CostContext,

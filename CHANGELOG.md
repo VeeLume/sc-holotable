@@ -13,6 +13,18 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **New crate `sc-acquisitions`: `Acquisitions::build(&Vehicles, &PortContainers)`**: how a player comes by an item or a vehicle, as far as the client data shows. One `Acquisition` per vehicle and per item some vehicle's stock carries:
+  - `sources`: why it is obtainable. So far `Source::Listed(Listing)` (a player vehicle itself) and `Source::Stock { vehicle }` (carried by a player vehicle's stock loadout, at any depth).
+  - `mounts`: every place any vehicle's stock carries it, with port path and whether the port is editable; `locked_only()` when every mount is locked.
+  - `listing` for a vehicle.
+  - `status()` / `Acquisitions::status(&guid)`: `Obtainable` (any source), `Unobtainable` (an AI, mission or display variant), `Unknown` (no source; also any record the collection does not hold). Shop stock is server-side, so no part reads unobtainable.
+  - Locked-only mounts are a hint, not proof: the M4A (`BEHR_LaserCannon_S2`), which shops sell, sits only in locked sentry turret ports, just like the Bengal turret's Slayer cannon.
+  - On LIVE 4.10: 221 base, 25 edition and 52 reward vehicles are obtainable, 849 variants unobtainable. Probe: `sc-acquisitions/examples/acquisitions_probe.rs`.
+  - Crafting, rewards, loot and NPC spawns follow as further sources; each will add arguments to `build`.
+- **`sc-holotable`: `acquisitions` feature and module** (pulls `vehicles`; in `all-t1`); the prelude has `Acquisition`, `Acquisitions` and `AcquisitionStatus`.
+
 ## [v0.36.0] - 2026-10-23
 
 ### Added
