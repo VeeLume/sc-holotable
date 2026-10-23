@@ -78,7 +78,7 @@ pub use modifiers::{ItemportModifier, ItemportModifiers, RegenModifier, weapon_p
 pub use network::{DistributionDefaults, NetworkParams, PoolSize, PowerPool};
 pub use port::{Misfit, Port, PortSource, fits, has_flag, is_editable};
 pub use power::{em_signature, plant_output, signature_ratio};
-pub use quantum::{Quantum, quantum_time};
+pub use quantum::{Quantum, QuantumTrip, quantum_time, quantum_trip};
 pub use raycast::{RayHit, Raycaster};
 pub use resource::{
     DeltaKind, DynamicAmount, PowerRange, ResourceAmount, ResourceDelta, ResourceProfile,
