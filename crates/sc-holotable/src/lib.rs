@@ -38,7 +38,7 @@
 //! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
 //! | `visuals` | `visuals` | render recipes and inventory presentation (orientation, light rig, palettes) |
 //! | `vehicles` | `vehicles` | ships and ground vehicles as a loadout calculator sees them: hull, ports, editable loadouts with the fit rule and locks, the power network (power-on, pips, cooling, EM / IR), defence, flight, fuel, quantum travel, weapon power |
-//! | `acquisitions` | `acquisitions` | how a player comes by an item or vehicle: sources and mount evidence, obtainable / unobtainable / unknown (pulls `vehicles`) |
+//! | `acquisitions` | `acquisitions` | how a player comes by an item or vehicle: sources and mount evidence, obtainable / unobtainable / unknown (pulls `vehicles`, `crafting`, `missions`) |
 //! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
 //! | `mining` | `mining` | rock properties, breakability, the charge simulation, rock spawns and fracture trees (pulls `resources`, `tags`, `ship-weapons`, `mining-items`) |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |

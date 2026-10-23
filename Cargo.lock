@@ -3047,9 +3047,11 @@ dependencies = [
 name = "sc-acquisitions"
 version = "0.0.0"
 dependencies = [
+ "sc-crafting",
  "sc-discovery",
  "sc-extract",
  "sc-items",
+ "sc-missions",
  "sc-vehicles",
  "serde",
  "tracing",
