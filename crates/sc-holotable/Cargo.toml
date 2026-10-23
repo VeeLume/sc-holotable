@@ -30,6 +30,7 @@ sc-weapons = { workspace = true, optional = true }
 sc-crafting = { workspace = true, optional = true }
 sc-gathering = { workspace = true, optional = true }
 sc-missions = { workspace = true, optional = true }
+sc-acquisitions = { workspace = true, optional = true }
 serde = { workspace = true }
 
 [features]
@@ -60,6 +61,9 @@ visuals = ["dep:sc-items-visuals", "extract", "items"]
 # Ships and ground vehicles: hull parts and HP (vehicle XML), item ports,
 # stock loadout trees, the fit rule and port locks.
 vehicles = ["dep:sc-vehicles", "extract", "items"]
+# How a player comes by an item or vehicle: sources (stock on player ships so
+# far) and mount evidence, classified obtainable / unobtainable / unknown.
+acquisitions = ["dep:sc-acquisitions", "vehicles"]
 # Rock-side mining maths: rulesets, elements, rock properties, breakability,
 # the charge simulation, rock spawns and fracture trees; reads laser, module
 # and gadget stats.
@@ -81,7 +85,7 @@ missions-payout = ["missions", "sc-missions/payout"]
 foundations = ["extract", "items", "tags", "manufacturers", "resources", "locations", "gathering"]
 
 # ── Aggregators ──────────────────────────────────────────────────────────────
-all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "mining-items", "mining", "crafting", "gathering", "visuals", "vehicles", "foundations"]
+all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "mining-items", "mining", "crafting", "gathering", "visuals", "vehicles", "acquisitions", "foundations"]
 full = ["all-t1", "missions-payout"]
 
 [dev-dependencies]

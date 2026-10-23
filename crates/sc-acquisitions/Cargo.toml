@@ -1,0 +1,18 @@
+[package]
+name = "sc-acquisitions"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Domain crate: how a player comes by an item or a vehicle. It joins the
+# indices that hold the sources (vehicles today; crafting, rewards, loot and
+# NPC spawns as they land), so it needs no sc-extract leaf feature of its own.
+sc-extract = { workspace = true }
+sc-vehicles = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }
+sc-items = { workspace = true }

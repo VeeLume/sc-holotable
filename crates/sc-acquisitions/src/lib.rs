@@ -1,0 +1,287 @@
+//! How a player comes by an item or a vehicle, as far as the client data
+//! shows — a domain crate.
+//!
+//! [`Acquisitions`] holds one [`Acquisition`] per item or vehicle record:
+//! the [`Source`]s that make it obtainable, the [`Mount`]s where a vehicle's
+//! stock carries it, and for a vehicle its [`Listing`]. Nothing is filtered
+//! out; [`Acquisition::status`] classifies.
+//!
+//! # Why three states
+//!
+//! Shop stock never reaches the client data (kiosks get it from the game
+//! server), so a part sold only in shops shows no source here. No part can
+//! be proven unobtainable from the data: everything without a source is
+//! [`Status::Unknown`], so shop-only parts stay visible. Only a vehicle can
+//! read [`Status::Unobtainable`]: an AI, mission or display variant
+//! ([`Listing::Variant`]).
+//!
+//! Where a part is mounted is no proof either. [`Acquisition::locked_only`]
+//! (every stock mount a locked port) holds for the Bengal turret's Slayer
+//! cannon, but also for the M4A laser cannon (`BEHR_LaserCannon_S2`), which
+//! shops sell and whose only stock mounts are orbital sentry turrets. And
+//! `SCItemPurchasableParams` sits on NPC-only guns too (all 13 Bengal,
+//! Vanduul and sentry guns on LIVE 4.10), so it marks no shop item
+//! (`acquisitions_probe`).
+//!
+//! # Sources
+//!
+//! - [`Source::Listed`]: a player vehicle itself ([`Listing::Base`],
+//!   [`Listing::Edition`] or [`Listing::Reward`]; see [`Listing`] for how
+//!   the data tells them from AI variants).
+//! - [`Source::Stock`]: carried by a player vehicle's stock loadout, at any
+//!   depth (a gun on a gimbal on a turret, a docked snub).
+//!
+//! Crafting, rewards, loot and NPC spawns are not modelled yet; parts that
+//! only they supply read [`Status::Unknown`].
+//!
+//! LIVE 4.10: 298 vehicles are obtainable (221 base, 25 editions, 52
+//! rewards) and 849 variants unobtainable (`acquisitions_probe`).
+//!
+//! ```no_run
+//! use sc_acquisitions::{Acquisitions, RecordCollection, Status};
+//! use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
+//! use sc_items::Items;
+//! use sc_vehicles::{PortContainers, Vehicles};
+//!
+//! let install = sc_discovery::discover_primary()?;
+//! let assets = AssetSource::from_install(&install)?;
+//! let data = AssetData::extract(&assets, &AssetConfig::standard())?;
+//! let datacore = Datacore::parse(&assets, &data)?;
+//! let items = Items::build(datacore.records());
+//! let containers = PortContainers::build(&datacore, &assets);
+//! let vehicles = Vehicles::build(&datacore, &items, &containers, &assets);
+//! let acquisitions = Acquisitions::build(&vehicles, &containers);
+//! for guid in items.guids().take(5) {
+//!     if acquisitions.status(guid) == Status::Obtainable {
+//!         println!("{guid}: {:?}", acquisitions.get(guid).map(|a| &a.sources));
+//!     }
+//! }
+//! # Ok::<(), Box<dyn std::error::Error>>(())
+//! ```
+
+use std::collections::HashMap;
+
+use sc_extract::Guid;
+pub use sc_extract::RecordCollection;
+pub use sc_vehicles::Listing;
+use sc_vehicles::{Mounted, Port, PortContainers, Vehicles, is_editable};
+use serde::{Deserialize, Serialize};
+use tracing::{debug, info};
+
+/// Why a record is obtainable.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Source {
+    /// A player vehicle itself: [`Listing::Base`], [`Listing::Edition`] or
+    /// [`Listing::Reward`].
+    Listed(Listing),
+    /// Carried by the stock loadout of this player vehicle.
+    Stock { vehicle: Guid },
+}
+
+/// One place a vehicle's stock loadout carries a record.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Mount {
+    /// The vehicle whose stock it is.
+    pub vehicle: Guid,
+    /// The port path from the vehicle down, `turret/gimbal/gun`.
+    pub path: String,
+    /// Whether the player can change the port ([`is_editable`] on its port
+    /// chain). A port the data does not define counts as editable, so it
+    /// never makes a part [`locked_only`](Acquisition::locked_only).
+    pub editable: bool,
+}
+
+/// How a player comes by one record. See [`Acquisition::status`].
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub struct Acquisition {
+    /// Why it is obtainable; empty when no modelled source supplies it.
+    pub sources: Vec<Source>,
+    /// Every place a vehicle's stock carries it (any vehicle, AI variants
+    /// included).
+    pub mounts: Vec<Mount>,
+    /// The vehicle's [`Listing`]; `None` for an item.
+    pub listing: Option<Listing>,
+}
+
+/// What [`Acquisition::status`] concludes. See the crate docs for why there
+/// are three.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum Status {
+    /// At least one [`Source`].
+    Obtainable,
+    /// An AI, mission or display vehicle ([`Listing::Variant`]) that no
+    /// source supplies, such as a player ship's stock docking it.
+    Unobtainable,
+    /// No source: nothing known either way. Shop-only parts read this, and
+    /// so do parts only crafting, rewards, loot or NPC spawns supply, until
+    /// those are modelled. [`Acquisition::mounts`] is the evidence left.
+    Unknown,
+}
+
+impl Acquisition {
+    /// Classifies the record: see [`Status`].
+    pub fn status(&self) -> Status {
+        if !self.sources.is_empty() {
+            Status::Obtainable
+        } else if self.listing == Some(Listing::Variant) {
+            Status::Unobtainable
+        } else {
+            Status::Unknown
+        }
+    }
+
+    /// Whether some vehicle's stock carries it and every such mount is a
+    /// port the player cannot change: a hint for parts NPCs are built
+    /// with, not proof (see the crate docs for the M4A, which shops sell).
+    pub fn locked_only(&self) -> bool {
+        !self.mounts.is_empty() && self.mounts.iter().all(|m| !m.editable)
+    }
+}
+
+/// Every vehicle and every item some vehicle's stock carries, keyed by
+/// `EntityClassDefinition` GUID.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct Acquisitions {
+    by_guid: HashMap<Guid, Acquisition>,
+}
+
+impl Acquisitions {
+    /// The empty collection.
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Classify every vehicle by its [`Listing`] and walk every vehicle's
+    /// stock loadout: each item becomes a [`Mount`], and a
+    /// [`Source::Stock`] when the vehicle is a player one. `containers`
+    /// supplies the ports of the items below the hull, so each mount knows
+    /// whether its port can be changed.
+    pub fn build(vehicles: &Vehicles, containers: &PortContainers) -> Self {
+        let mut by_guid: HashMap<Guid, Acquisition> = HashMap::new();
+        let mut undefined_ports = 0usize;
+        for (&guid, vehicle) in vehicles.iter() {
+            let player = vehicle.listing != Listing::Variant;
+            let own = by_guid.entry(guid).or_default();
+            own.listing = Some(vehicle.listing);
+            if player {
+                own.sources.push(Source::Listed(vehicle.listing));
+            }
+            // Depth first: (mounted, path, port chain from the hull down).
+            let mut stack: Vec<(&Mounted, String, Vec<Option<&Port>>)> = vehicle
+                .stock
+                .iter()
+                .map(|m| (m, m.port.clone(), vec![vehicle.port(&m.port)]))
+                .collect();
+            while let Some((m, path, chain)) = stack.pop() {
+                let Some(item) = m.item else {
+                    continue;
+                };
+                let editable = match chain.iter().copied().collect::<Option<Vec<&Port>>>() {
+                    Some(ports) => is_editable(&ports),
+                    None => {
+                        undefined_ports += 1;
+                        true
+                    }
+                };
+                let entry = by_guid.entry(item).or_default();
+                entry.mounts.push(Mount {
+                    vehicle: guid,
+                    path: path.clone(),
+                    editable,
+                });
+                let source = Source::Stock { vehicle: guid };
+                if player && !entry.sources.contains(&source) {
+                    entry.sources.push(source);
+                }
+                let ports = ports_of(item, vehicles, containers);
+                for child in &m.children {
+                    let mut chain = chain.clone();
+                    chain.push(
+                        ports
+                            .iter()
+                            .find(|p| p.name.eq_ignore_ascii_case(&child.port)),
+                    );
+                    stack.push((child, format!("{path}/{}", child.port), chain));
+                }
+            }
+        }
+        debug!(
+            undefined_ports,
+            "stock mounts on ports the data does not define"
+        );
+        info!(records = by_guid.len(), "acquisitions built");
+        Self { by_guid }
+    }
+
+    /// The [`Status`] of any record: [`Status::Unknown`] for one the
+    /// collection does not hold (no vehicle, carried by no stock loadout).
+    pub fn status(&self, guid: &Guid) -> Status {
+        self.by_guid
+            .get(guid)
+            .map_or(Status::Unknown, Acquisition::status)
+    }
+}
+
+/// The ports `item` brings below it: a docked vehicle's hull ports, else
+/// its own.
+fn ports_of<'a>(item: Guid, vehicles: &'a Vehicles, containers: &'a PortContainers) -> &'a [Port] {
+    match vehicles.get(&item) {
+        Some(v) => &v.ports,
+        None => containers.get(&item).map_or(&[][..], |c| &c.ports[..]),
+    }
+}
+
+impl RecordCollection for Acquisitions {
+    type Item = Acquisition;
+
+    fn get(&self, guid: &Guid) -> Option<&Acquisition> {
+        self.by_guid.get(guid)
+    }
+
+    fn len(&self) -> usize {
+        self.by_guid.len()
+    }
+
+    fn iter(&self) -> impl Iterator<Item = (&Guid, &Acquisition)> + '_ {
+        self.by_guid.iter()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn mount(editable: bool) -> Mount {
+        Mount {
+            vehicle: Guid::default(),
+            path: "hardpoint".into(),
+            editable,
+        }
+    }
+
+    #[test]
+    fn status() {
+        let mut a = Acquisition::default();
+        assert_eq!(a.status(), Status::Unknown);
+        assert!(!a.locked_only());
+        // Locked mounts are a hint, not proof.
+        a.mounts.push(mount(false));
+        assert_eq!(a.status(), Status::Unknown);
+        assert!(a.locked_only());
+        a.mounts.push(mount(true));
+        assert!(!a.locked_only());
+        a.sources.push(Source::Stock {
+            vehicle: Guid::default(),
+        });
+        assert_eq!(a.status(), Status::Obtainable);
+
+        let ship = |listing| Acquisition {
+            listing: Some(listing),
+            ..Default::default()
+        };
+        assert_eq!(ship(Listing::Variant).status(), Status::Unobtainable);
+        // A listed ship always carries its Listed source; without one it is
+        // nothing known.
+        assert_eq!(ship(Listing::Base).status(), Status::Unknown);
+    }
+}
