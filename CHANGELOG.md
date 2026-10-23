@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.36.0] - 2026-10-23
+
 ### Added
 
 - **`sc-vehicles`: `quantum_trip(travel, distance)` → `QuantumTrip { travel, peak, cooldown }`**: a jump's travel time, its peak speed and the cooldown after it (client 4.10.197). `Quantum` gains `trip(d)`, `spline_trip(d)` (with `splineJumpParams`) and `cooldown(d)`.
