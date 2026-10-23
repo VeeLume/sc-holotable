@@ -1,17 +1,23 @@
-//! Re-proves the phase-1 acquisition rule on LIVE 4.10: stock on player
-//! vehicles, mount evidence and the vehicle listing.
+//! Re-proves the acquisition rules on LIVE 4.10: the vehicle listing, stock
+//! on player vehicles with mount evidence, crafting and rewards.
 //!
 //! - The Centaurus is listed, and its stock CF-557 guns are obtainable from it.
 //! - Vehicles: 221 base, 25 editions and 52 rewards obtainable, 849 variants
 //!   unobtainable.
 //! - Locked-only mounts are no proof: the Bengal turret's Slayer cannon (Size
 //!   5 despite "S8") and the M4A, which shops sell, both sit only in locked
-//!   ports and both read unknown.
+//!   ports; the Slayer reads unknown, the M4A obtainable by crafting.
 //! - `SCItemPurchasableParams` is on every NPC-only gun too, so it marks no
 //!   shop item.
 //! - The Tempest CitCon missile sits in no stock loadout at all: unknown.
 //! - Crafting: every item a starting blueprint makes reads Craft / Default;
 //!   mission blueprint pools add more.
+//! - Rewards: every record a reward struct anywhere in the DCB hands out
+//!   (`ContractResult_Item`, `ItemAwardEntityClass`, `SWeightedRewardEntry`,
+//!   walked on the raw layer) is counted, and those without a Reward source
+//!   must sit only in award records nothing references; `--find <text>`
+//!   lists items whose record or display name contains it, `--refs <record>`
+//!   what references a record.
 //!
 //! ```bash
 //! cargo run -p sc-acquisitions --release --example acquisitions_probe
@@ -20,7 +26,7 @@
 
 use std::collections::{BTreeMap, HashMap};
 
-use sc_acquisitions::{Acquisitions, Listing, RecordCollection, Source, Status, Unlock};
+use sc_acquisitions::{Acquisitions, Grant, Listing, RecordCollection, Source, Status, Unlock};
 use sc_crafting::{Blueprints, GlobalParams};
 use sc_extract::generated::{DataForgeComponentParamsPtr, EItemType};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
@@ -41,7 +47,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let crafting = GlobalParams::build(&datacore).ok_or("no CraftingGlobalParams")?;
     let missions = Missions::build(&datacore);
     let acquisitions =
-        Acquisitions::build(&vehicles, &containers, &blueprints, &crafting, &missions);
+        Acquisitions::build(&datacore, &vehicles, &containers, &blueprints, &missions);
     let names: HashMap<Guid, String> = datacore
         .db()
         .all_records()
@@ -216,6 +222,124 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         creating - unlocked
     );
     assert!(crafts.get("missions").is_some_and(|&n| n > 0));
+
+    // Rewards: what every reward struct instance hands out, raw layer.
+    let db = datacore.db();
+    let mut handed: HashMap<&str, Vec<Guid>> = HashMap::new();
+    for m in db.data_mappings() {
+        let Ok(index) = usize::try_from(m.struct_index) else {
+            continue;
+        };
+        let Some((name, field)) = db.struct_name(index).and_then(|n| {
+            [
+                ("ContractResult_Item", "entityClass"),
+                ("ItemAwardEntityClass", "entityClass"),
+                ("SWeightedRewardEntry", "rewardEntityRecord"),
+            ]
+            .into_iter()
+            .find(|(s, _)| *s == n)
+        }) else {
+            continue;
+        };
+        for i in 0..m.struct_count {
+            if let Some(sc_extract::Value::Reference(Some(r))) =
+                db.instance(index as u32, i).get(field)
+            {
+                handed.entry(name).or_default().push(r.guid);
+            }
+        }
+    }
+    let rewarded = |g: &Guid| {
+        acquisitions
+            .get(g)
+            .is_some_and(|a| a.sources.iter().any(|s| matches!(s, Source::Reward(_))))
+    };
+    // A miss is fine only when every award record holding it is one that no
+    // record references: then nothing in the data hands it out.
+    let graph = sc_extract::ReferenceGraph::from_database(db);
+    let award_records = &store.records.multi_feature.item_award_weightings_record;
+    let mut dead: Vec<String> = Vec::new();
+    for (kind, guids) in &handed {
+        let mut distinct: Vec<&Guid> = guids.iter().collect();
+        distinct.sort_by_key(|g| g.to_string());
+        distinct.dedup();
+        let missed: Vec<&&Guid> = distinct.iter().filter(|g| !rewarded(g)).collect();
+        println!(
+            "{kind}: {} handed out, {} without a Reward source",
+            distinct.len(),
+            missed.len()
+        );
+        for g in &missed {
+            let holders: Vec<&Guid> = graph
+                .incoming(g)
+                .iter()
+                .filter(|r| award_records.contains_key(r))
+                .collect();
+            assert!(
+                !holders.is_empty() && holders.iter().all(|r| graph.incoming(r).is_empty()),
+                "{} is handed out by something not modelled",
+                name(g)
+            );
+            for r in holders {
+                let n = db.record(r).and_then(|r| r.name().map(String::from));
+                dead.extend(n);
+            }
+        }
+    }
+    dead.sort();
+    dead.dedup();
+    println!("unreferenced award records holding the misses: {dead:?}");
+    // `--refs <record>`: what references it, two hops up.
+    if let Some(refs) = std::env::args().skip_while(|a| a != "--refs").nth(1)
+        && let Some(g) = by_name(&refs)
+    {
+        let record = |r: &Guid| {
+            db.record(r)
+                .and_then(|r| r.name().map(String::from))
+                .unwrap_or_else(|| "?".into())
+        };
+        for r in graph.incoming(&g) {
+            let up: Vec<String> = graph.incoming(r).iter().map(record).collect();
+            println!("  {refs} <- {} <- {up:?}", record(r));
+        }
+    }
+    let mut grants: BTreeMap<&str, usize> = BTreeMap::new();
+    for a in acquisitions.values() {
+        for s in &a.sources {
+            if let Source::Reward(g) = s {
+                let kind = match g {
+                    Grant::Missions(_) => "missions",
+                    Grant::Generator(_) => "generator",
+                };
+                *grants.entry(kind).or_default() += 1;
+            }
+        }
+    }
+    println!("reward sources by grant: {grants:?}");
+    assert!(grants.get("missions").is_some_and(|&n| n > 0));
+    assert!(grants.get("generator").is_some_and(|&n| n > 0));
+
+    // `--find <text>`: items whose record or display name contains it.
+    if let Some(find) = std::env::args().skip_while(|a| a != "--find").nth(1) {
+        let find = find.to_ascii_lowercase();
+        for (g, item) in items.iter() {
+            let display = item
+                .name_key
+                .as_ref()
+                .and_then(|k| data.locale.resolve(k.as_str()))
+                .unwrap_or("");
+            if name(g).to_ascii_lowercase().contains(&find)
+                || display.to_ascii_lowercase().contains(&find)
+            {
+                let sources = acquisitions.get(g).map(|a| &a.sources);
+                println!(
+                    "  {} \"{display}\": {:?} {sources:?}",
+                    name(g),
+                    acquisitions.status(g)
+                );
+            }
+        }
+    }
 
     // Every item record by status.
     let mut counts: BTreeMap<String, usize> = BTreeMap::new();

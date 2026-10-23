@@ -63,8 +63,8 @@ use sc_extract::generated::{
     ContractPrerequisite_LocationProperty, ContractPrerequisite_Reputation,
     ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, ContractTemplate,
     DataPools, ELocationTypeLevel, Handle, HaulingOrderBasePtr, HaulingOrderContentBasePtr,
-    MissionProperty, ObjectiveHandlerBasePtr, ObjectivePropertyBasePtr, ObjectiveToken,
-    RecordIndex, SubContract,
+    ItemAwardBasePtr, ItemAwardWeightings, ItemAwardWeightingsBasePtr, MissionProperty,
+    ObjectiveHandlerBasePtr, ObjectivePropertyBasePtr, ObjectiveToken, RecordIndex, SubContract,
 };
 use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap, RecordCollection};
 use sc_resources::{Resource, Resources};
@@ -508,6 +508,10 @@ pub struct MissionRewards {
     /// Item rewards — `ContractResult_Item` entries whose entity_class
     /// is **not** a currency (ship unlocks, collector items, …).
     pub items: Vec<ItemReward>,
+    /// Weighted item rewards (`ContractResult_ItemsWeighting`): each
+    /// awards one of its groups.
+    #[serde(default)]
+    pub weighted_items: Vec<WeightedItems>,
     /// Blueprint pool rewards attached to this contract. Each entry is
     /// a thin reference (`{ chance, pool_guid }`) — resolve the pool's
     /// name + items via [`crate::BlueprintPools::get`] at the
@@ -523,7 +527,7 @@ pub struct MissionRewards {
     #[serde(default)]
     pub event_points: Vec<EventPoints>,
     /// Other reward kinds (BadgeAward, JournalEntry, CompletionTag(s),
-    /// CompletionBounty, RefundBuyIn, ItemsWeighting, Reward). Detailed
+    /// CompletionBounty, RefundBuyIn, Reward, VehicleRental). Detailed
     /// field modelling deferred until a consumer needs them.
     pub other: Vec<OtherReward>,
 }
@@ -535,6 +539,7 @@ impl MissionRewards {
             && self.scrip.is_empty()
             && self.reputation.is_empty()
             && self.items.is_empty()
+            && self.weighted_items.is_empty()
             && self.blueprints.is_empty()
             && self.event_points.is_empty()
             && self.other.is_empty()
@@ -653,6 +658,28 @@ pub struct ItemReward {
     pub amount: i32,
 }
 
+/// A `ContractResult_ItemsWeighting`: one of its groups is awarded,
+/// picked by weight.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct WeightedItems {
+    /// The groups, as authored (inline `ItemAwardWeightings`, or the
+    /// groups of an `ItemAwardWeightingsRecord` named by
+    /// `ItemAwardWeightingsParams.awardsRecord`).
+    pub groups: Vec<ItemGroup>,
+}
+
+/// One weighted group of a [`WeightedItems`] reward.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ItemGroup {
+    /// `weighting`, relative to the other groups.
+    pub weight: f32,
+    /// The `ItemAwardWeightingsRecord` it comes from; `None` when inline.
+    pub record: Option<Guid>,
+    /// Its `ItemAwardEntityClass` awards. Tag-searched awards
+    /// (`ItemAwardTag`) are never used in the data and are skipped.
+    pub items: Vec<ItemReward>,
+}
+
 /// Other reward kinds classified but not yet fully modelled. Keeps
 /// the raw reward kind so stage-4 / consumer code can dispatch.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -661,7 +688,6 @@ pub enum OtherReward {
     JournalEntry,
     CompletionTags,
     CompletionBounty,
-    ItemsWeighting,
     /// Raw `ContractResult_Reward` — wraps an inline `MissionReward`.
     Reward,
     /// `ContractResult_VehicleRental` — a ship rental granted on completion
@@ -2093,6 +2119,7 @@ fn resolve_rewards(
     let mut scrip = Vec::new();
     let mut rep = Vec::new();
     let mut items = Vec::new();
+    let mut weighted_items = Vec::new();
     let mut event_points: Vec<EventPoints> = Vec::new();
     // (tag, count) of every granted completion tag — the event's category
     // ladders pick theirs out after the walk.
@@ -2205,7 +2232,13 @@ fn resolve_rewards(
                 other.push(OtherReward::CompletionTags);
             }
             R::ContractResult_CompletionBounty(_) => other.push(OtherReward::CompletionBounty),
-            R::ContractResult_ItemsWeighting(_) => other.push(OtherReward::ItemsWeighting),
+            R::ContractResult_ItemsWeighting(wh) => {
+                if let Some(w) = wh.get(pools) {
+                    weighted_items.push(WeightedItems {
+                        groups: item_groups(&w.item_award_structure, pools, records),
+                    });
+                }
+            }
             R::ContractResult_Reward(_) => other.push(OtherReward::Reward),
             R::ContractResult_VehicleRental(_) => other.push(OtherReward::VehicleRental),
             R::ContractResult_RefundBuyIn(rh) => {
@@ -2250,10 +2283,69 @@ fn resolve_rewards(
         scrip,
         reputation: rep,
         items,
+        weighted_items,
         blueprints: Vec::new(),
         event_points,
         other,
     }
+}
+
+/// The weighted groups of an `itemAwardStructure`: inline
+/// `ItemAwardWeightings`, or every group of the `ItemAwardWeightingsRecord`
+/// an `ItemAwardWeightingsParams` names.
+fn item_groups(
+    structure: &[ItemAwardWeightingsBasePtr],
+    pools: &DataPools,
+    records: &RecordIndex,
+) -> Vec<ItemGroup> {
+    let group = |w: &ItemAwardWeightings, record: Option<Guid>| ItemGroup {
+        weight: w.weighting,
+        record,
+        items: w
+            .awards
+            .iter()
+            .filter_map(|a| match a {
+                ItemAwardBasePtr::ItemAwardEntityClass(h) => {
+                    let award = h.get(pools)?;
+                    Some(ItemReward {
+                        entity_class: award.entity_class?,
+                        amount: award.amount_to_award,
+                    })
+                }
+                _ => None,
+            })
+            .collect(),
+    };
+    let mut out = Vec::new();
+    for s in structure {
+        match s {
+            ItemAwardWeightingsBasePtr::ItemAwardWeightings(h) => {
+                out.extend(h.get(pools).map(|w| group(w, None)));
+            }
+            ItemAwardWeightingsBasePtr::ItemAwardWeightingsParams(h) => {
+                let Some(guid) = h.get(pools).and_then(|p| p.awards_record) else {
+                    continue;
+                };
+                let Some(record) = records
+                    .multi_feature
+                    .item_award_weightings_record
+                    .get(&guid)
+                    .and_then(|r| r.get(pools))
+                else {
+                    continue;
+                };
+                out.extend(
+                    record
+                        .item_award_structure
+                        .iter()
+                        .filter_map(|h| h.get(pools))
+                        .map(|w| group(w, Some(guid))),
+                );
+            }
+            _ => {}
+        }
+    }
+    out
 }
 
 /// Flatten every `ContractPrerequisiteBasePtr` reachable from this

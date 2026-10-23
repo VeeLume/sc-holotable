@@ -13,6 +13,21 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-missions`: `MissionRewards::weighted_items`**: each `ContractResult_ItemsWeighting` as a `WeightedItems`, whose `ItemGroup`s (`weight`, the `ItemAwardWeightingsRecord` it comes from or `None` when inline, `items`) are one-of-by-weight. Tag-searched awards (`ItemAwardTag`) are never used in the data and are skipped.
+- **`sc-acquisitions`: `Source::Reward(Grant)`**: an item a reward hands out. `Grant::Missions(ids)` lists the missions whose item rewards (scrip included) or weighted item groups (weight above 0) hold it; `Grant::Generator(entity)` is a reward terminal whose `SRewardGeneratorComponentParams.rewardPool` holds it.
+  - On LIVE 4.10 that covers every record a reward struct anywhere in the DCB hands out, except 15 in two `ItemAwardWeightingsRecord`s no record references (`IAWR_hangerFlairs`, `IAWR_HighTierShips`). The probe walks every reward struct on the raw layer and asserts this.
+  - Event ladders grant badges, and `AwardService_Award` holds no item, so items an event grants for badges (the Iasi event's Helios IP-20) stay `Unknown`.
+
+### Changed
+
+- **`sc-acquisitions`: `Acquisitions::build(&Datacore, &Vehicles, &PortContainers, &Blueprints, &Missions)`**: it takes the `Datacore` (reward terminals) and reads the crafting whitelist from it, so the `&GlobalParams` argument is gone.
+
+### Removed
+
+- **`sc-missions`: `OtherReward::ItemsWeighting`**: the reward is modelled as `MissionRewards::weighted_items`.
+
 ## [v0.38.0] - 2026-10-23
 
 ### Added
