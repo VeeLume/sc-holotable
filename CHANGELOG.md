@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.39.0] - 2026-10-23
+
 ### Added
 
 - **`sc-missions`: `MissionRewards::weighted_items`**: each `ContractResult_ItemsWeighting` as a `WeightedItems`, whose `ItemGroup`s (`weight`, the `ItemAwardWeightingsRecord` it comes from or `None` when inline, `items`) are one-of-by-weight. Tag-searched awards (`ItemAwardTag`) are never used in the data and are skipped.
