@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.39.1] - 2026-10-23
+
 ### Fixed
 
 - **`sc-vehicles`: a fixed power pool is no longer capped by a running sum of its members' requests.** `PowerNetwork::split_pools` capped every pool's target by the members' requests summed and truncated after each member. In the client that running sum is the capacity of a *dynamic* pool only (`FUN_1428469a0`); a fixed pool is capped by its `poolSize` and its active members' total (client 4.10.197).
