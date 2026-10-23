@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.38.0] - 2026-10-23
+
 ### Added
 
 - **`sc-acquisitions`: `Source::Craft { blueprint, unlock }`**: an item a blueprint makes that a character can unlock. `Unlock::Default` means every character starts with it (`CraftingGlobalParams`' whitelist; the P4-AR and P4-AR magazine, the S-38 pistol and its magazine, and four light armor pieces). `Unlock::Missions(ids)` means the missions whose blueprint reward (chance above 0) has a pool holding it. The data does not say which missions the servers run, so this counts every one.
