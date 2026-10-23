@@ -61,9 +61,10 @@ visuals = ["dep:sc-items-visuals", "extract", "items"]
 # Ships and ground vehicles: hull parts and HP (vehicle XML), item ports,
 # stock loadout trees, the fit rule and port locks.
 vehicles = ["dep:sc-vehicles", "extract", "items"]
-# How a player comes by an item or vehicle: sources (stock on player ships so
-# far) and mount evidence, classified obtainable / unobtainable / unknown.
-acquisitions = ["dep:sc-acquisitions", "vehicles"]
+# How a player comes by an item or vehicle: sources (stock on player ships and
+# unlockable blueprints so far) and mount evidence, classified obtainable /
+# unobtainable / unknown.
+acquisitions = ["dep:sc-acquisitions", "vehicles", "crafting", "missions"]
 # Rock-side mining maths: rulesets, elements, rock properties, breakability,
 # the charge simulation, rock spawns and fracture trees; reads laser, module
 # and gadget stats.

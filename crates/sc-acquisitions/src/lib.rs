@@ -30,17 +30,24 @@
 //!   the data tells them from AI variants).
 //! - [`Source::Stock`]: carried by a player vehicle's stock loadout, at any
 //!   depth (a gun on a gimbal on a turret, a docked snub).
+//! - [`Source::Craft`]: made by a blueprint a character starts with
+//!   ([`Unlock::Default`], `CraftingGlobalParams`' whitelist) or one a
+//!   mission's reward pool can grant ([`Unlock::Missions`], any mission
+//!   whose blueprint reward has a chance above 0; the data does not say
+//!   which missions the servers run).
 //!
-//! Crafting, rewards, loot and NPC spawns are not modelled yet; parts that
-//! only they supply read [`Status::Unknown`].
+//! Item rewards, loot and NPC spawns are not modelled yet; parts that only
+//! they supply read [`Status::Unknown`].
 //!
 //! LIVE 4.10: 298 vehicles are obtainable (221 base, 25 editions, 52
 //! rewards) and 849 variants unobtainable (`acquisitions_probe`).
 //!
 //! ```no_run
 //! use sc_acquisitions::{Acquisitions, RecordCollection, Status};
+//! use sc_crafting::{Blueprints, GlobalParams};
 //! use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 //! use sc_items::Items;
+//! use sc_missions::Missions;
 //! use sc_vehicles::{PortContainers, Vehicles};
 //!
 //! let install = sc_discovery::discover_primary()?;
@@ -50,7 +57,11 @@
 //! let items = Items::build(datacore.records());
 //! let containers = PortContainers::build(&datacore, &assets);
 //! let vehicles = Vehicles::build(&datacore, &items, &containers, &assets);
-//! let acquisitions = Acquisitions::build(&vehicles, &containers);
+//! let blueprints = Blueprints::build(&datacore, &items);
+//! let crafting = GlobalParams::build(&datacore).unwrap_or_default();
+//! let missions = Missions::build(&datacore);
+//! let acquisitions =
+//!     Acquisitions::build(&vehicles, &containers, &blueprints, &crafting, &missions);
 //! for guid in items.guids().take(5) {
 //!     if acquisitions.status(guid) == Status::Obtainable {
 //!         println!("{guid}: {:?}", acquisitions.get(guid).map(|a| &a.sources));
@@ -59,10 +70,12 @@
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
+use sc_crafting::{Blueprints, GlobalParams};
 use sc_extract::Guid;
 pub use sc_extract::RecordCollection;
+use sc_missions::Missions;
 pub use sc_vehicles::Listing;
 use sc_vehicles::{Mounted, Port, PortContainers, Vehicles, is_editable};
 use serde::{Deserialize, Serialize};
@@ -76,6 +89,19 @@ pub enum Source {
     Listed(Listing),
     /// Carried by the stock loadout of this player vehicle.
     Stock { vehicle: Guid },
+    /// Made by this `CraftingBlueprintRecord`, unlocked as `unlock` says.
+    Craft { blueprint: Guid, unlock: Unlock },
+}
+
+/// How a character gets a blueprint.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Unlock {
+    /// Every character starts with it (`CraftingGlobalParams`'
+    /// `defaultBlueprintSelection` whitelist).
+    Default,
+    /// These missions' rewards can grant it: a blueprint reward with a
+    /// chance above 0 whose pool holds it. In contract order.
+    Missions(Vec<Guid>),
 }
 
 /// One place a vehicle's stock loadout carries a record.
@@ -113,8 +139,8 @@ pub enum Status {
     /// source supplies, such as a player ship's stock docking it.
     Unobtainable,
     /// No source: nothing known either way. Shop-only parts read this, and
-    /// so do parts only crafting, rewards, loot or NPC spawns supply, until
-    /// those are modelled. [`Acquisition::mounts`] is the evidence left.
+    /// so do parts only item rewards, loot or NPC spawns supply, until those
+    /// are modelled. [`Acquisition::mounts`] is the evidence left.
     Unknown,
 }
 
@@ -138,8 +164,8 @@ impl Acquisition {
     }
 }
 
-/// Every vehicle and every item some vehicle's stock carries, keyed by
-/// `EntityClassDefinition` GUID.
+/// Every vehicle, every item some vehicle's stock carries and every item an
+/// unlockable blueprint makes, keyed by `EntityClassDefinition` GUID.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Acquisitions {
     by_guid: HashMap<Guid, Acquisition>,
@@ -155,8 +181,16 @@ impl Acquisitions {
     /// stock loadout: each item becomes a [`Mount`], and a
     /// [`Source::Stock`] when the vehicle is a player one. `containers`
     /// supplies the ports of the items below the hull, so each mount knows
-    /// whether its port can be changed.
-    pub fn build(vehicles: &Vehicles, containers: &PortContainers) -> Self {
+    /// whether its port can be changed. Then every blueprint a character
+    /// starts with (`crafting`'s whitelist) or a mission's reward can grant
+    /// (`missions`) gives what it makes a [`Source::Craft`].
+    pub fn build(
+        vehicles: &Vehicles,
+        containers: &PortContainers,
+        blueprints: &Blueprints,
+        crafting: &GlobalParams,
+        missions: &Missions,
+    ) -> Self {
         let mut by_guid: HashMap<Guid, Acquisition> = HashMap::new();
         let mut undefined_ports = 0usize;
         for (&guid, vehicle) in vehicles.iter() {
@@ -209,6 +243,7 @@ impl Acquisitions {
             undefined_ports,
             "stock mounts on ports the data does not define"
         );
+        add_crafts(&mut by_guid, blueprints, crafting, missions);
         info!(records = by_guid.len(), "acquisitions built");
         Self { by_guid }
     }
@@ -219,6 +254,59 @@ impl Acquisitions {
         self.by_guid
             .get(guid)
             .map_or(Status::Unknown, Acquisition::status)
+    }
+}
+
+/// A [`Source::Craft`] for what every unlockable blueprint makes.
+fn add_crafts(
+    by_guid: &mut HashMap<Guid, Acquisition>,
+    blueprints: &Blueprints,
+    crafting: &GlobalParams,
+    missions: &Missions,
+) {
+    // Blueprint → the missions whose rewards can grant it.
+    let mut granted: HashMap<Guid, Vec<Guid>> = HashMap::new();
+    for mission in &missions.contracts {
+        for reward in mission.rewards.blueprints.iter().filter(|r| r.chance > 0.0) {
+            let Some(pool) = missions.blueprints.get(&reward.pool_guid) else {
+                continue;
+            };
+            for entry in &pool.items {
+                let ids = granted
+                    .entry(entry.blueprint.blueprint_record_guid)
+                    .or_default();
+                if !ids.contains(&mission.id) {
+                    ids.push(mission.id);
+                }
+            }
+        }
+    }
+    let defaults: HashSet<&Guid> = crafting.default_blueprint_whitelist.iter().collect();
+    // Blueprint GUID order, so an item's sources do not depend on map order.
+    let mut crafts: Vec<(Guid, Guid, Unlock)> = blueprints
+        .iter()
+        .filter_map(|(guid, blueprint)| {
+            let made = blueprint.crafted_entity_guid()?;
+            let unlock = if defaults.contains(guid) {
+                Unlock::Default
+            } else {
+                Unlock::Missions(granted.get(guid)?.clone())
+            };
+            Some((made, *guid, unlock))
+        })
+        .collect();
+    crafts.sort_by_key(|(_, blueprint, _)| blueprint.to_string());
+    debug!(
+        crafts = crafts.len(),
+        blueprints = blueprints.len(),
+        "unlockable blueprints"
+    );
+    for (made, blueprint, unlock) in crafts {
+        by_guid
+            .entry(made)
+            .or_default()
+            .sources
+            .push(Source::Craft { blueprint, unlock });
     }
 }
 
