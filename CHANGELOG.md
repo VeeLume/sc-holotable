@@ -13,6 +13,20 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **New crate `sc-loot`: loot tables and what carries them.**
+  - `LootTables::build(&Datacore, &Items, &Tags)`: every loot table of both generations (161 v2 `LootTable`s, 59 `LootTableV3Record`s on LIVE 4.10, both still in use), normalised into one model: weighted `TableArchetype`s, `Archetype`s of weighted `LootEntry`s with a `Selector` (`Tags(TagTerm)` / `Entities` / `Other`) and the items it picks resolved, stack sizes, v3 spawn-withs and table options (chance to exist, choice / dupe limits, priority count). `LootTable::items()`, `LootTables::by_item(&guid)`, `selects(&TagTerm, &guid)`, `admits(&PoolFilter, &guid)`.
+  - `Lootables::build(&Datacore, &LootTables)`: every record a table is attached to, by `LootableKind`: 140 entities (NPC actors and corpses with a `LootGenerationComponentParams`) and 136 harvestable configs (`SubHarvestableConfigRecord`, `SubHarvestableMultiConfigRecord`) with 2,088 slot configs, each a `LootConfig` (v2 / v3 table, resolved `PoolFilter`, chance to generate, results limit, secondary choices, container entity). `Lootables::by_table(&guid)`.
+  - Read from the client (4.10.197): only entity classes tagged `LootGeneration.CanGenerateAsLoot` can be picked; a tag selector matches through the tag tree (each positive tag's subtree, intersected, the negative tags' subtracted); a v2 entry's term is its tag plus `additionalTags`, less the archetype's `excludedTags`; a v2 archetype's secondary groups (rarity bands) narrow its picks to items in one band of each. Inferred, not read: what pool filter `Cumulative` / `Additive` steps do, and how v3 secondary choice layers act (taken as weights).
+  - Probes: `sc-loot/examples/loot_probe.rs`, `tag_match_dig.rs`.
+- **`sc-acquisitions`: `Source::Loot { table }`**: an item a lootable's table can drop and that lootable's pool filter admits. On LIVE 4.10, 3,746 items drop as loot; every item only loot supplies is FPS gear, clothing, consumables or attachments.
+- **`sc-holotable`: `loot` feature and module** (pulls `items`, `tags`; in `all-t1`); the prelude has `LootTable`, `LootTables`, `Lootable`, `Lootables`. The `acquisitions` feature pulls `loot`.
+
+### Changed
+
+- **`sc-acquisitions`: `Acquisitions::build` takes `&LootTables` and `&Lootables`** (sc-loot) after `&Missions`.
+
 ## [v0.39.1] - 2026-10-23
 
 ### Fixed

@@ -37,7 +37,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Every selector term: (generation, name, positive, negative).
     let mut terms: Vec<(&str, String, Vec<Guid>, Vec<Guid>)> = Vec::new();
-    for (_, h) in &store.records.multi_feature.loot_archetype_v3_record {
+    for h in store
+        .records
+        .multi_feature
+        .loot_archetype_v3_record
+        .values()
+    {
         let Some(LootArchetypeV3_NoRefPtr::LootArchetypeV3(a)) =
             h.get(pools).and_then(|r| r.loot_archetype.as_ref())
         else {
@@ -62,7 +67,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
-    for (_, h) in &store.records.multi_feature.loot_archetype {
+    for h in store.records.multi_feature.loot_archetype.values() {
         let Some(a) = h.get(pools) else { continue };
         let excluded: Vec<Guid> = a
             .excluded_tags
