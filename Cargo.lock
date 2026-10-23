@@ -3051,7 +3051,9 @@ dependencies = [
  "sc-discovery",
  "sc-extract",
  "sc-items",
+ "sc-loot",
  "sc-missions",
+ "sc-tags",
  "sc-vehicles",
  "serde",
  "tracing",
@@ -3208,6 +3210,7 @@ dependencies = [
  "sc-items-ship-weapons",
  "sc-items-visuals",
  "sc-locations",
+ "sc-loot",
  "sc-manufacturers",
  "sc-mining",
  "sc-missions",
@@ -3310,6 +3313,18 @@ dependencies = [
  "serde_json",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-loot"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-items",
+ "sc-tags",
+ "serde",
+ "tracing",
 ]
 
 [[package]]

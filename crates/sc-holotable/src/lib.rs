@@ -38,7 +38,8 @@
 //! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
 //! | `visuals` | `visuals` | render recipes and inventory presentation (orientation, light rig, palettes) |
 //! | `vehicles` | `vehicles` | ships and ground vehicles as a loadout calculator sees them: hull, ports, editable loadouts with the fit rule and locks, the power network (power-on, pips, cooling, EM / IR), defence, flight, fuel, quantum travel, weapon power |
-//! | `acquisitions` | `acquisitions` | how a player comes by an item or vehicle: sources and mount evidence, obtainable / unobtainable / unknown (pulls `vehicles`, `crafting`, `missions`) |
+//! | `acquisitions` | `acquisitions` | how a player comes by an item or vehicle: sources and mount evidence, obtainable / unobtainable / unknown (pulls `vehicles`, `crafting`, `missions`, `loot`) |
+//! | `loot` | `loot` | loot tables of both generations, what their entries pick, and the corpses, actors and world containers carrying them (pulls `items`, `tags`) |
 //! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
 //! | `mining` | `mining` | rock properties, breakability, the charge simulation, rock spawns and fracture trees (pulls `resources`, `tags`, `ship-weapons`, `mining-items`) |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
@@ -155,6 +156,13 @@ pub mod vehicles {
     pub use sc_vehicles::*;
 }
 
+#[cfg(feature = "loot")]
+pub mod loot {
+    //! Loot tables ([`sc_loot`]): [`LootTables`] of both generations with
+    //! each entry's picks resolved, and the [`Lootables`] that carry them.
+    pub use sc_loot::*;
+}
+
 #[cfg(feature = "acquisitions")]
 pub mod acquisitions {
     //! How a player comes by an item or a vehicle ([`sc_acquisitions`]):
@@ -256,6 +264,8 @@ pub mod prelude {
         Location, LocationKind, Locations, ObjectContainers, Place, Placement, PlacementId,
         Universe,
     };
+    #[cfg(feature = "loot")]
+    pub use sc_loot::{LootTable, LootTables, Lootable, Lootables};
     #[cfg(feature = "manufacturers")]
     pub use sc_manufacturers::{Manufacturer, Manufacturers};
     #[cfg(feature = "mining")]
