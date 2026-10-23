@@ -35,16 +35,27 @@
 //!   mission's reward pool can grant ([`Unlock::Missions`], any mission
 //!   whose blueprint reward has a chance above 0; the data does not say
 //!   which missions the servers run).
+//! - [`Source::Reward`]: handed out by missions ([`Grant::Missions`]: a
+//!   `ContractResult_Item`, scrip included, or a group of a
+//!   `ContractResult_ItemsWeighting` with a weight above 0) or by a reward
+//!   terminal ([`Grant::Generator`]: an entity whose
+//!   `SRewardGeneratorComponentParams.rewardPool` holds it with a weight
+//!   above 0). On LIVE 4.10 that covers every record a reward struct hands
+//!   out, except the 15 of two `ItemAwardWeightingsRecord`s no record
+//!   references (`IAWR_hangerFlairs`, `IAWR_HighTierShips`). Event ladder
+//!   tiers grant badges (`AwardService_Award` holds no item), so items an
+//!   event hands out for its badges, such as the Iasi event's Helios
+//!   IP-20, are granted server-side and read [`Status::Unknown`].
 //!
-//! Item rewards, loot and NPC spawns are not modelled yet; parts that only
-//! they supply read [`Status::Unknown`].
+//! Loot and NPC spawns are not modelled yet; parts that only they supply
+//! read [`Status::Unknown`].
 //!
 //! LIVE 4.10: 298 vehicles are obtainable (221 base, 25 editions, 52
 //! rewards) and 849 variants unobtainable (`acquisitions_probe`).
 //!
 //! ```no_run
 //! use sc_acquisitions::{Acquisitions, RecordCollection, Status};
-//! use sc_crafting::{Blueprints, GlobalParams};
+//! use sc_crafting::Blueprints;
 //! use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 //! use sc_items::Items;
 //! use sc_missions::Missions;
@@ -58,10 +69,9 @@
 //! let containers = PortContainers::build(&datacore, &assets);
 //! let vehicles = Vehicles::build(&datacore, &items, &containers, &assets);
 //! let blueprints = Blueprints::build(&datacore, &items);
-//! let crafting = GlobalParams::build(&datacore).unwrap_or_default();
 //! let missions = Missions::build(&datacore);
 //! let acquisitions =
-//!     Acquisitions::build(&vehicles, &containers, &blueprints, &crafting, &missions);
+//!     Acquisitions::build(&datacore, &vehicles, &containers, &blueprints, &missions);
 //! for guid in items.guids().take(5) {
 //!     if acquisitions.status(guid) == Status::Obtainable {
 //!         println!("{guid}: {:?}", acquisitions.get(guid).map(|a| &a.sources));
@@ -73,8 +83,9 @@
 use std::collections::{HashMap, HashSet};
 
 use sc_crafting::{Blueprints, GlobalParams};
-use sc_extract::Guid;
 pub use sc_extract::RecordCollection;
+use sc_extract::generated::DataForgeComponentParamsPtr;
+use sc_extract::{Datacore, Guid};
 use sc_missions::Missions;
 pub use sc_vehicles::Listing;
 use sc_vehicles::{Mounted, Port, PortContainers, Vehicles, is_editable};
@@ -91,6 +102,19 @@ pub enum Source {
     Stock { vehicle: Guid },
     /// Made by this `CraftingBlueprintRecord`, unlocked as `unlock` says.
     Craft { blueprint: Guid, unlock: Unlock },
+    /// Handed out as a reward.
+    Reward(Grant),
+}
+
+/// What hands out a reward.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Grant {
+    /// These missions: an item reward, or a weighted item reward group
+    /// with a weight above 0. In contract order.
+    Missions(Vec<Guid>),
+    /// The reward terminal entity whose `SRewardGeneratorComponentParams`
+    /// reward pool holds it with a weight above 0.
+    Generator(Guid),
 }
 
 /// How a character gets a blueprint.
@@ -139,8 +163,8 @@ pub enum Status {
     /// source supplies, such as a player ship's stock docking it.
     Unobtainable,
     /// No source: nothing known either way. Shop-only parts read this, and
-    /// so do parts only item rewards, loot or NPC spawns supply, until those
-    /// are modelled. [`Acquisition::mounts`] is the evidence left.
+    /// so do parts only loot or NPC spawns supply, until those are
+    /// modelled. [`Acquisition::mounts`] is the evidence left.
     Unknown,
 }
 
@@ -164,8 +188,9 @@ impl Acquisition {
     }
 }
 
-/// Every vehicle, every item some vehicle's stock carries and every item an
-/// unlockable blueprint makes, keyed by `EntityClassDefinition` GUID.
+/// Every vehicle, and every item some vehicle's stock carries, an unlockable
+/// blueprint makes or a reward hands out, keyed by `EntityClassDefinition`
+/// GUID.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Acquisitions {
     by_guid: HashMap<Guid, Acquisition>,
@@ -182,13 +207,16 @@ impl Acquisitions {
     /// [`Source::Stock`] when the vehicle is a player one. `containers`
     /// supplies the ports of the items below the hull, so each mount knows
     /// whether its port can be changed. Then every blueprint a character
-    /// starts with (`crafting`'s whitelist) or a mission's reward can grant
-    /// (`missions`) gives what it makes a [`Source::Craft`].
+    /// starts with (`CraftingGlobalParams`' whitelist, read from
+    /// `datacore`) or a mission's reward can grant (`missions`) gives what
+    /// it makes a [`Source::Craft`]; and every item a mission's reward or a
+    /// reward terminal (`datacore`'s `SRewardGeneratorComponentParams`)
+    /// hands out gets a [`Source::Reward`].
     pub fn build(
+        datacore: &Datacore,
         vehicles: &Vehicles,
         containers: &PortContainers,
         blueprints: &Blueprints,
-        crafting: &GlobalParams,
         missions: &Missions,
     ) -> Self {
         let mut by_guid: HashMap<Guid, Acquisition> = HashMap::new();
@@ -243,7 +271,9 @@ impl Acquisitions {
             undefined_ports,
             "stock mounts on ports the data does not define"
         );
-        add_crafts(&mut by_guid, blueprints, crafting, missions);
+        let crafting = GlobalParams::build(datacore).unwrap_or_default();
+        add_crafts(&mut by_guid, blueprints, &crafting, missions);
+        add_rewards(&mut by_guid, datacore, missions);
         info!(records = by_guid.len(), "acquisitions built");
         Self { by_guid }
     }
@@ -254,6 +284,81 @@ impl Acquisitions {
         self.by_guid
             .get(guid)
             .map_or(Status::Unknown, Acquisition::status)
+    }
+}
+
+/// A [`Source::Reward`] for every item missions or reward terminals hand
+/// out.
+fn add_rewards(by_guid: &mut HashMap<Guid, Acquisition>, datacore: &Datacore, missions: &Missions) {
+    // Item → the missions that hand it out, in contract order.
+    let mut granted: Vec<(Guid, Vec<Guid>)> = Vec::new();
+    let mut index: HashMap<Guid, usize> = HashMap::new();
+    for mission in &missions.contracts {
+        let rewards = &mission.rewards;
+        let weighted = rewards
+            .weighted_items
+            .iter()
+            .flat_map(|w| &w.groups)
+            .filter(|g| g.weight > 0.0)
+            .flat_map(|g| &g.items)
+            .map(|r| r.entity_class);
+        let handed = (rewards.items.iter().map(|r| r.entity_class))
+            .chain(weighted)
+            .chain(rewards.scrip.iter().map(|s| s.currency_guid));
+        for item in handed {
+            let i = *index.entry(item).or_insert_with(|| {
+                granted.push((item, Vec::new()));
+                granted.len() - 1
+            });
+            let ids = &mut granted[i].1;
+            if !ids.contains(&mission.id) {
+                ids.push(mission.id);
+            }
+        }
+    }
+    debug!(items = granted.len(), "items missions hand out");
+    for (item, ids) in granted {
+        by_guid
+            .entry(item)
+            .or_default()
+            .sources
+            .push(Source::Reward(Grant::Missions(ids)));
+    }
+
+    // Reward terminals, in GUID order so sources do not follow map order.
+    let store = datacore.records();
+    let pools = &store.pools;
+    let mut generators: Vec<(Guid, Vec<Guid>)> = store
+        .records
+        .multi_feature
+        .entity_class_definition
+        .iter()
+        .filter_map(|(guid, handle)| {
+            let ecd = handle.get(pools)?;
+            let params = ecd.components.iter().find_map(|c| match c {
+                DataForgeComponentParamsPtr::SRewardGeneratorComponentParams(h) => h.get(pools),
+                _ => None,
+            })?;
+            let items = params
+                .reward_pool
+                .iter()
+                .filter_map(|h| h.get(pools))
+                .filter(|e| e.weight > 0.0)
+                .filter_map(|e| e.reward_entity_record)
+                .collect();
+            Some((*guid, items))
+        })
+        .collect();
+    generators.sort_by_key(|(guid, _)| guid.to_string());
+    debug!(generators = generators.len(), "reward terminals");
+    for (generator, items) in generators {
+        for item in items {
+            let source = Source::Reward(Grant::Generator(generator));
+            let entry = by_guid.entry(item).or_default();
+            if !entry.sources.contains(&source) {
+                entry.sources.push(source);
+            }
+        }
     }
 }
 
