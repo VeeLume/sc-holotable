@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.41.0] - 2026-10-24
+
 ### Added
 
 - **New crate `sc-loot`: loot tables and what carries them.**
