@@ -15,5 +15,12 @@
 # generated types). It's a "Windows main thread stack is smaller
 # than the rest of the world" problem. Needed on Windows, no-op
 # elsewhere.
+#
+# Linker: rust-lld (ships with the toolchain) instead of MSVC link.exe.
+# `cargo test --workspace` links every test and example binary, each
+# carrying most of the generated bindings; 16 parallel link.exe runs took
+# 2-5 GB each and filled 32 GB, rust-lld peaks at about 2 GB each and
+# links faster. It takes the same /STACK argument.
 [target.x86_64-pc-windows-msvc]
+linker = "rust-lld"
 rustflags = ["-C", "link-args=/STACK:8388608"]

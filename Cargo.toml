@@ -101,6 +101,12 @@ svarog-cryxml = { git = "https://github.com/19h/Svarog.git", rev = "7f06225" }
 #               no backtraces. Use for final shipped binaries or CI
 #               snapshot builds where parse speed matters.
 
+# Debug builds: no debug info for the generated bindings. Every test and
+# example binary links them; with it a debug link.exe run took up to 5.5 GB,
+# without it about 2 GB (see the linker note in .cargo/config.toml).
+[profile.dev.package.sc-extract-generated]
+debug = false
+
 [profile.release]
 lto = "thin"
 
