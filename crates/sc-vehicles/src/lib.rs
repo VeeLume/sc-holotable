@@ -55,6 +55,7 @@ mod quantum;
 mod raycast;
 mod resource;
 mod scene;
+mod signature;
 mod storage;
 mod vehicle;
 
@@ -85,6 +86,7 @@ pub use resource::{
     ResourceProfiles, ResourceState, ResourceUnits, Signature,
 };
 pub use scene::scene;
+pub use signature::ShipSignature;
 pub use storage::{CargoGrid, Locker, Place, Rack, Slot, Storage};
 pub use vehicle::{
     Insurance, Listing, Mounted, PenetrationRules, Vehicle, Vehicles, network_items,
