@@ -12,6 +12,8 @@
 //! - The Tempest CitCon missile sits in no stock loadout at all: unknown.
 //! - Crafting: every item a starting blueprint makes reads Craft / Default;
 //!   mission blueprint pools add more.
+//! - Loot: items only loot supplies, by type; the Bengal Slayer and the
+//!   Helios IP-20 are not loot.
 //! - Rewards: every record a reward struct anywhere in the DCB hands out
 //!   (`ContractResult_Item`, `ItemAwardEntityClass`, `SWeightedRewardEntry`,
 //!   walked on the raw layer) is counted, and those without a Reward source
@@ -31,7 +33,9 @@ use sc_crafting::{Blueprints, GlobalParams};
 use sc_extract::generated::{DataForgeComponentParamsPtr, EItemType};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
 use sc_items::Items;
+use sc_loot::{LootTables, Lootables};
 use sc_missions::Missions;
+use sc_tags::Tags;
 use sc_vehicles::{PortContainers, Vehicles};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -46,8 +50,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let blueprints = Blueprints::build(&datacore, &items);
     let crafting = GlobalParams::build(&datacore).ok_or("no CraftingGlobalParams")?;
     let missions = Missions::build(&datacore);
-    let acquisitions =
-        Acquisitions::build(&datacore, &vehicles, &containers, &blueprints, &missions);
+    let tables = LootTables::build(&datacore, &items, &Tags::build(datacore.records()));
+    let lootables = Lootables::build(&datacore, &tables);
+    let acquisitions = Acquisitions::build(
+        &datacore,
+        &vehicles,
+        &containers,
+        &blueprints,
+        &missions,
+        &tables,
+        &lootables,
+    );
     let names: HashMap<Guid, String> = datacore
         .db()
         .all_records()
@@ -97,6 +110,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .or_default() += 1;
     }
     println!("vehicles (listing, status): {ships:?}");
+    for (g, a) in acquisitions
+        .iter()
+        .filter(|(_, a)| a.listing == Some(Listing::Variant) && a.status() == Status::Obtainable)
+        .take(3)
+    {
+        println!(
+            "  variant {} obtainable by {:?}",
+            name(g),
+            &a.sources[..a.sources.len().min(3)]
+        );
+    }
     let count = |l: &str, s: &str| ships.get(&(l.into(), s.into())).copied();
     assert_eq!(count("Base", "Obtainable"), Some(221));
     assert_eq!(count("Edition", "Obtainable"), Some(25));
@@ -339,6 +363,43 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 );
             }
         }
+    }
+
+    // Loot: items obtainable only by loot, by item type. Ship parts would
+    // mean a tag selector reaches further than containers and bodies do.
+    let mut loot_only: BTreeMap<String, usize> = BTreeMap::new();
+    let mut with_loot = 0;
+    for (guid, item) in items.iter() {
+        let Some(a) = acquisitions.get(guid) else {
+            continue;
+        };
+        let loot = a
+            .sources
+            .iter()
+            .filter(|s| matches!(s, Source::Loot { .. }))
+            .count();
+        if loot > 0 {
+            with_loot += 1;
+        }
+        if loot > 0 && loot == a.sources.len() {
+            *loot_only
+                .entry(format!("{:?}", item.item_type))
+                .or_default() += 1;
+        }
+    }
+    println!("{with_loot} items drop as loot; loot-only by type: {loot_only:?}");
+    for n in [
+        "Bengal_Turret_BallisticCannon_S8",
+        "POWR_S02_IASI_NameA_SCItem",
+    ] {
+        let g = by_name(n).ok_or(n)?;
+        println!("{n}: {:?}", acquisitions.status(&g));
+        assert!(
+            !acquisitions
+                .get(&g)
+                .is_some_and(|a| a.sources.iter().any(|s| matches!(s, Source::Loot { .. }))),
+            "{n} drops as loot"
+        );
     }
 
     // Every item record by status.

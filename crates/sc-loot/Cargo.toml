@@ -1,0 +1,31 @@
+[package]
+name = "sc-loot"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Domain crate: loot tables (both generations), what their entries select,
+# and where they are attached.
+#   lootgeneration                  loot tables, archetypes, pool filters,
+#                                   secondary choices
+#   harvestable                     SubHarvestableConfigRecord slots (world
+#                                   containers with a loot config)
+#   actor-actors                    NPC actors with a loot component
+#   entities-scitem-mission_entities corpses with a loot component
+#   entities-scitem                 the items selectors pick (their tags)
+sc-extract = { workspace = true, features = [
+    "lootgeneration",
+    "harvestable",
+    "actor-actors",
+    "entities-scitem-mission_entities",
+    "entities-scitem",
+] }
+# The items selectors pick from.
+sc-items = { workspace = true }
+sc-tags = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }

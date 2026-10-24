@@ -47,8 +47,14 @@
 //!   event hands out for its badges, such as the Iasi event's Helios
 //!   IP-20, are granted server-side and read [`Status::Unknown`].
 //!
-//! Loot and NPC spawns are not modelled yet; parts that only they supply
-//! read [`Status::Unknown`].
+//! - [`Source::Loot`]: a loot table some lootable carries can drop it
+//!   ([`sc_loot`]: corpses, NPC actors, world containers), and that
+//!   lootable's pool filter admits it. Spawn-with picks count; secondary
+//!   choices only weight the picks. Weights and chances are not weighed: a
+//!   pick of weight 0.001 counts.
+//!
+//! NPC spawns are not modelled yet; parts that only they supply read
+//! [`Status::Unknown`].
 //!
 //! LIVE 4.10: 298 vehicles are obtainable (221 base, 25 editions, 52
 //! rewards) and 849 variants unobtainable (`acquisitions_probe`).
@@ -58,7 +64,9 @@
 //! use sc_crafting::Blueprints;
 //! use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 //! use sc_items::Items;
+//! use sc_loot::{LootTables, Lootables};
 //! use sc_missions::Missions;
+//! use sc_tags::Tags;
 //! use sc_vehicles::{PortContainers, Vehicles};
 //!
 //! let install = sc_discovery::discover_primary()?;
@@ -70,8 +78,11 @@
 //! let vehicles = Vehicles::build(&datacore, &items, &containers, &assets);
 //! let blueprints = Blueprints::build(&datacore, &items);
 //! let missions = Missions::build(&datacore);
-//! let acquisitions =
-//!     Acquisitions::build(&datacore, &vehicles, &containers, &blueprints, &missions);
+//! let tables = LootTables::build(&datacore, &items, &Tags::build(datacore.records()));
+//! let lootables = Lootables::build(&datacore, &tables);
+//! let acquisitions = Acquisitions::build(
+//!     &datacore, &vehicles, &containers, &blueprints, &missions, &tables, &lootables,
+//! );
 //! for guid in items.guids().take(5) {
 //!     if acquisitions.status(guid) == Status::Obtainable {
 //!         println!("{guid}: {:?}", acquisitions.get(guid).map(|a| &a.sources));
@@ -86,6 +97,7 @@ use sc_crafting::{Blueprints, GlobalParams};
 pub use sc_extract::RecordCollection;
 use sc_extract::generated::DataForgeComponentParamsPtr;
 use sc_extract::{Datacore, Guid};
+use sc_loot::{LootConfig, LootTables, Lootables};
 use sc_missions::Missions;
 pub use sc_vehicles::Listing;
 use sc_vehicles::{Mounted, Port, PortContainers, Vehicles, is_editable};
@@ -104,6 +116,9 @@ pub enum Source {
     Craft { blueprint: Guid, unlock: Unlock },
     /// Handed out as a reward.
     Reward(Grant),
+    /// Dropped by this loot table (a `LootTable` or `LootTableV3Record`,
+    /// [`sc_loot::LootTables`]) of some lootable.
+    Loot { table: Guid },
 }
 
 /// What hands out a reward.
@@ -163,8 +178,8 @@ pub enum Status {
     /// source supplies, such as a player ship's stock docking it.
     Unobtainable,
     /// No source: nothing known either way. Shop-only parts read this, and
-    /// so do parts only loot or NPC spawns supply, until those are
-    /// modelled. [`Acquisition::mounts`] is the evidence left.
+    /// so do parts only NPC spawns supply, until those are modelled.
+    /// [`Acquisition::mounts`] is the evidence left.
     Unknown,
 }
 
@@ -189,8 +204,8 @@ impl Acquisition {
 }
 
 /// Every vehicle, and every item some vehicle's stock carries, an unlockable
-/// blueprint makes or a reward hands out, keyed by `EntityClassDefinition`
-/// GUID.
+/// blueprint makes, a reward hands out or a loot table drops, keyed by
+/// `EntityClassDefinition` GUID.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Acquisitions {
     by_guid: HashMap<Guid, Acquisition>,
@@ -211,13 +226,17 @@ impl Acquisitions {
     /// `datacore`) or a mission's reward can grant (`missions`) gives what
     /// it makes a [`Source::Craft`]; and every item a mission's reward or a
     /// reward terminal (`datacore`'s `SRewardGeneratorComponentParams`)
-    /// hands out gets a [`Source::Reward`].
+    /// hands out gets a [`Source::Reward`]; every item a lootable's table
+    /// can drop past its pool filter (`tables`, `lootables`) a
+    /// [`Source::Loot`].
     pub fn build(
         datacore: &Datacore,
         vehicles: &Vehicles,
         containers: &PortContainers,
         blueprints: &Blueprints,
         missions: &Missions,
+        tables: &LootTables,
+        lootables: &Lootables,
     ) -> Self {
         let mut by_guid: HashMap<Guid, Acquisition> = HashMap::new();
         let mut undefined_ports = 0usize;
@@ -274,6 +293,7 @@ impl Acquisitions {
         let crafting = GlobalParams::build(datacore).unwrap_or_default();
         add_crafts(&mut by_guid, blueprints, &crafting, missions);
         add_rewards(&mut by_guid, datacore, missions);
+        add_loot(&mut by_guid, tables, lootables);
         info!(records = by_guid.len(), "acquisitions built");
         Self { by_guid }
     }
@@ -284,6 +304,40 @@ impl Acquisitions {
         self.by_guid
             .get(guid)
             .map_or(Status::Unknown, Acquisition::status)
+    }
+}
+
+/// A [`Source::Loot`] for every item a lootable's table can drop that its
+/// pool filter admits.
+fn add_loot(by_guid: &mut HashMap<Guid, Acquisition>, tables: &LootTables, lootables: &Lootables) {
+    let admitted = |config: &LootConfig, item: &Guid| {
+        config
+            .pool_filter
+            .as_ref()
+            .is_none_or(|f| tables.admits(f, item))
+    };
+    let mut drops: HashSet<(Guid, Guid)> = HashSet::new();
+    for lootable in lootables.values() {
+        for config in &lootable.configs {
+            for table in config.tables() {
+                let Some(t) = tables.get(&table) else {
+                    continue;
+                };
+                for item in t.items().filter(|i| admitted(config, i)) {
+                    drops.insert((*item, table));
+                }
+            }
+        }
+    }
+    let mut drops: Vec<(Guid, Guid)> = drops.into_iter().collect();
+    drops.sort_by_key(|(item, table)| (item.to_string(), table.to_string()));
+    debug!(drops = drops.len(), "item / loot table pairs");
+    for (item, table) in drops {
+        by_guid
+            .entry(item)
+            .or_default()
+            .sources
+            .push(Source::Loot { table });
     }
 }
 

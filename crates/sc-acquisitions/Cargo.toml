@@ -6,12 +6,13 @@ rust-version.workspace = true
 
 [dependencies]
 # Domain crate: how a player comes by an item or a vehicle. It joins the
-# indices that hold the sources (vehicles, crafting and mission rewards today;
-# loot and NPC spawns as they land) and reads reward terminals itself.
+# indices that hold the sources (vehicles, crafting, mission rewards, loot;
+# NPC spawns when they land) and reads reward terminals itself.
 sc-crafting = { workspace = true }
 #   entities-scitem-gameplayinteractables  reward terminals
 #                                          (SRewardGeneratorComponentParams)
 sc-extract = { workspace = true, features = ["entities-scitem-gameplayinteractables"] }
+sc-loot = { workspace = true }
 sc-missions = { workspace = true }
 sc-vehicles = { workspace = true }
 serde = { workspace = true }
@@ -20,3 +21,4 @@ tracing = { workspace = true }
 [dev-dependencies]
 sc-discovery = { workspace = true }
 sc-items = { workspace = true }
+sc-tags = { workspace = true }
