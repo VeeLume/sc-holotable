@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.40.0] - 2026-10-24
+
 ### Added
 
 - **`sc-vehicles`: `ShipSignature`**, a ship's EM, IR and cross-section as its power screen shows them. `ShipSignature::compute(&Readout, &Vehicle, Option<&VehicleArmor>)` multiplies the readout's EM and IR, and the hull's manual cross-section per axis, by the armour's `signalElectromagnetic` / `signalInfrared` / `signalCrossSection`. `cs()` is the largest axis, the figure the header shows.
