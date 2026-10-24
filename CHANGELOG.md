@@ -13,6 +13,13 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-vehicles`: `ShipSignature`**, a ship's EM, IR and cross-section as its power screen shows them. `ShipSignature::compute(&Readout, &Vehicle, Option<&VehicleArmor>)` multiplies the readout's EM and IR, and the hull's manual cross-section per axis, by the armour's `signalElectromagnetic` / `signalInfrared` / `signalCrossSection`. `cs()` is the largest axis, the figure the header shows.
+  - Client 4.10.197: the armour installs itself into the vehicle's signature system as a modifier on attach, and the header's CS is the largest axis. That the modifier multiplies the summed items is inferred, not read.
+  - Valerie's F7C-M Super Hornet Mk II (armour 1.13) with thrusters at 4: items 16,057 EM / 5,338 IR become 18,144 / 6,032, against the screen's 18.1K / 6.0K; CS 8,040 × 1.13 = 9,085, against 9.0K. With thrusters off, EM still reads 0.1K under the screen.
+  - Probe: `sc-vehicles/examples/signature_probe.rs`.
+
 ## [v0.39.1] - 2026-10-23
 
 ### Fixed
