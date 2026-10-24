@@ -148,9 +148,9 @@ pub mod ship_components {
 pub mod vehicles {
     //! Ships and ground vehicles ([`sc_vehicles`]) as a loadout calculator
     //! sees them: hull, ports and an editable [`Loadout`], its
-    //! [`PowerNetwork`] with the engineering [`Readout`], [`Defense`],
-    //! [`Flight`], [`Quantum`] and each gun's [`weapon_power`]. In 3D: the
-    //! [`HullGeometry`] (render mesh and collision shell by damage part, item
+    //! [`PowerNetwork`] with the engineering [`Readout`] and the
+    //! [`ShipSignature`], [`Defense`], [`Flight`], [`Quantum`] and each
+    //! gun's [`weapon_power`]. In 3D: the [`HullGeometry`] (render mesh and collision shell by damage part, item
     //! placements), the [`Interior`], a loadout assembled for drawing
     //! ([`scene()`]) and the projectile hit model ([`Target`]).
     pub use sc_vehicles::*;
@@ -286,7 +286,7 @@ pub mod prelude {
     #[cfg(feature = "vehicles")]
     pub use sc_vehicles::{
         Defense, Flight, ItemportModifiers, Loadout, NetworkParams, PortContainers, PowerNetwork,
-        Quantum, ResourceProfiles, Vehicle, Vehicles,
+        Quantum, ResourceProfiles, ShipSignature, Vehicle, Vehicles,
     };
     #[cfg(feature = "weapons")]
     pub use sc_weapons::{FpsWeapon, Missile, ShipWeapon, WeaponPools, Weapons};
