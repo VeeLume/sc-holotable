@@ -13,6 +13,10 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Windows builds of this workspace link with `rust-lld`, and debug builds carry no debug info for the generated bindings.** `cargo test --workspace` could fill 32 GB with parallel `link.exe` runs. Workspace build settings only; consumers are not affected.
+
 ## [v0.42.0] - 2026-11-08
 
 ### Added
