@@ -93,7 +93,7 @@ impl Inventory {
 /// A cargo amount in SCU (`SStandardCargoUnit`, `SCentiCargoUnit`,
 /// `SMicroCargoUnit`); standard units are `f32`, kept to the µSCU so 10.28
 /// reads as such.
-fn scu(p: &SBaseCargoUnitPtr, pools: &DataPools) -> Option<f64> {
+pub(crate) fn scu(p: &SBaseCargoUnitPtr, pools: &DataPools) -> Option<f64> {
     match p {
         SBaseCargoUnitPtr::SStandardCargoUnit(h) => h
             .get(pools)

@@ -24,8 +24,11 @@ sc-extract = { workspace = true, features = [
 # The items selectors pick from.
 sc-items = { workspace = true }
 sc-tags = { workspace = true }
+# Where lootables sit: the object-container placement graph (live p4k).
+sc-locations = { workspace = true }
 serde = { workspace = true }
 tracing = { workspace = true }
 
 [dev-dependencies]
 sc-discovery = { workspace = true }
+serde_json = { workspace = true }

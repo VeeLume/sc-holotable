@@ -316,18 +316,25 @@ fn harvest(root: &XmlNode, sp_norm: &str, out: &mut Vec<Placement>) {
         let has_mission = first_attr(e, "template").is_some()
             || e.find_all("MissionLocationParams").next().is_some();
 
-        // Selection: object-container placements + any nav/mission leaf. This
-        // is deliberately broad but excludes pure geometry (no OC, no facet).
-        if !(class.contains("ObjectContainer") || starmap.is_some() || has_mission) {
-            continue;
-        }
-
-        let parent = first_attr(e, "parentGUID").and_then(std_key);
         let nests = e
             .find_all("EntityComponentObjectContainer")
             .next()
             .and_then(|c| c.attr("objectContainer"))
             .map(normalize_socpak_path);
+
+        // Selection: object-container placements (by class or by an object
+        // container component: a Lorville building nests its interior so)
+        // + any nav/mission leaf. Deliberately broad but excludes pure
+        // geometry (no OC, no facet).
+        if !(class.contains("ObjectContainer")
+            || nests.is_some()
+            || starmap.is_some()
+            || has_mission)
+        {
+            continue;
+        }
+
+        let parent = first_attr(e, "parentGUID").and_then(std_key);
         let pos = e.attr("Pos").and_then(vec3);
         let orbit = e.find_all("EntityComponentOrbit").next().and_then(|o| {
             let r = o.attr("OrbitalRadius").and_then(|v| v.trim().parse().ok());
@@ -702,6 +709,38 @@ impl ObjectContainers {
     pub fn nesting(&self, socpak: &str) -> &[PlacementId] {
         self.by_nests.get(socpak).map(Vec::as_slice).unwrap_or(&[])
     }
+    /// The `StarMapObject`s the content of `socpak` (normalized) belongs to,
+    /// each with how many times the socpak is realized under it: from every
+    /// placement that includes it, up through `parentGUID` (else every
+    /// placement including the socpak it sits in) to the nearest placement
+    /// that names one. A socpak included twice on the way to a place counts
+    /// 2 there. Sorted by GUID; chains deeper than 64 hops are cut.
+    pub fn places_of(&self, socpak: &str) -> Vec<(Guid, usize)> {
+        let mut counts: HashMap<Guid, usize> = HashMap::new();
+        let mut stack: Vec<(PlacementId, usize)> =
+            self.nesting(socpak).iter().map(|&id| (id, 0)).collect();
+        while let Some((id, depth)) = stack.pop() {
+            if depth >= 64 {
+                continue;
+            }
+            let placement = self.get(id);
+            if let Some(place) = placement.starmap_guid() {
+                *counts.entry(place).or_default() += 1;
+                continue;
+            }
+            match self.parent_entity(id) {
+                Some(parent) => stack.push((parent, depth + 1)),
+                None => stack.extend(
+                    self.nesting(placement.socpak())
+                        .iter()
+                        .map(|&up| (up, depth + 1)),
+                ),
+            }
+        }
+        let mut out: Vec<(Guid, usize)> = counts.into_iter().collect();
+        out.sort_by_key(|(g, _)| g.to_string());
+        out
+    }
     /// The placement's `parentGUID` entity, preferring one in the same socpak;
     /// `None` without a `parentGUID` or when it names no harvested placement.
     pub fn parent_entity(&self, id: PlacementId) -> Option<PlacementId> {
@@ -782,5 +821,55 @@ mod tests {
     #[test]
     fn crc32_check_vector() {
         assert_eq!(crc32_ieee(b"123456789"), 0xCBF4_3926);
+    }
+
+    /// A placement graph as the cook would harvest it, built through serde.
+    fn graph(placements: serde_json::Value) -> ObjectContainers {
+        serde_json::from_value(serde_json::json!({ "placements": placements })).unwrap()
+    }
+
+    fn placement(
+        key: u8,
+        socpak: &str,
+        nests: &str,
+        starmap: Option<&str>,
+        parent: Option<u8>,
+    ) -> serde_json::Value {
+        let k = |b: u8| {
+            let mut a = [0u8; 16];
+            a[0] = b;
+            a
+        };
+        serde_json::json!({
+            "key": k(key),
+            "disp": format!("{key:08x}-0000-0000-0000-000000000000"),
+            "socpak": socpak,
+            "parent": parent.map(k),
+            "nests": nests,
+            "starmap": starmap,
+            "starmap_guid": starmap,
+            "name": "",
+            "pos": null,
+            "orbit": null,
+            "is_leaf": starmap.is_some(),
+        })
+    }
+
+    /// A crate socpak placed twice in an unnamed outpost on a named moon
+    /// counts 2 there; the outpost itself counts once; a socpak nobody
+    /// includes belongs nowhere.
+    #[test]
+    fn places_of_counts_each_realization() {
+        const MOON: &str = "11111111-1111-1111-1111-111111111111";
+        let g = graph(serde_json::json!([
+            placement(1, "sys.socpak", "moon.socpak", Some(MOON), None),
+            placement(2, "moon.socpak", "outpost.socpak", None, None),
+            placement(3, "outpost.socpak", "crate.socpak", None, None),
+            placement(4, "outpost.socpak", "crate.socpak", None, None),
+        ]));
+        let moon: Guid = MOON.parse().unwrap();
+        assert_eq!(g.places_of("crate.socpak"), [(moon, 2)]);
+        assert_eq!(g.places_of("outpost.socpak"), [(moon, 1)]);
+        assert!(g.places_of("lost.socpak").is_empty());
     }
 }

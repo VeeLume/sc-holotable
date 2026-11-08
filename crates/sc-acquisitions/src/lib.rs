@@ -97,7 +97,7 @@ use sc_crafting::{Blueprints, GlobalParams};
 pub use sc_extract::RecordCollection;
 use sc_extract::generated::DataForgeComponentParamsPtr;
 use sc_extract::{Datacore, Guid};
-use sc_loot::{LootConfig, LootTables, Lootables};
+use sc_loot::{LootTables, Lootables};
 use sc_missions::Missions;
 pub use sc_vehicles::Listing;
 use sc_vehicles::{Mounted, Port, PortContainers, Vehicles, is_editable};
@@ -117,7 +117,8 @@ pub enum Source {
     /// Handed out as a reward.
     Reward(Grant),
     /// Dropped by this loot table (a `LootTable` or `LootTableV3Record`,
-    /// [`sc_loot::LootTables`]) of some lootable.
+    /// [`sc_loot::LootTables`]) of some lootable: one of what a config
+    /// filling from it can yield ([`sc_loot::LootTables::drops`]).
     Loot { table: Guid },
 }
 
@@ -310,22 +311,14 @@ impl Acquisitions {
 /// A [`Source::Loot`] for every item a lootable's table can drop that its
 /// pool filter admits.
 fn add_loot(by_guid: &mut HashMap<Guid, Acquisition>, tables: &LootTables, lootables: &Lootables) {
-    let admitted = |config: &LootConfig, item: &Guid| {
-        config
-            .pool_filter
-            .as_ref()
-            .is_none_or(|f| tables.admits(f, item))
-    };
     let mut drops: HashSet<(Guid, Guid)> = HashSet::new();
     for lootable in lootables.values() {
         for config in &lootable.configs {
-            for table in config.tables() {
-                let Some(t) = tables.get(&table) else {
-                    continue;
-                };
-                for item in t.items().filter(|i| admitted(config, i)) {
-                    drops.insert((*item, table));
-                }
+            let Some(table) = config.table_used(tables) else {
+                continue;
+            };
+            for item in tables.drops(config) {
+                drops.insert((item, table));
             }
         }
     }

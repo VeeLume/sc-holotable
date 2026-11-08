@@ -212,6 +212,7 @@ mod tests {
             required_tags: vec![],
             mass: None,
             inventory: None,
+            occupancy: None,
         }
     }
 
