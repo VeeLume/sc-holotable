@@ -13,6 +13,10 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract`: `MeshGeometry::read_shape`** reads positions, normals, indices, submeshes, nodes and the material name, and leaves tangents, UVs, colours and bone weights empty, for drawing without textures. Probe: `mesh_shape_probe` asserts every kept field equals `read`'s on real files.
+
 ## [v0.41.0] - 2026-10-24
 
 ### Added

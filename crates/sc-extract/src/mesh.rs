@@ -209,11 +209,37 @@ impl MeshGeometry {
         Self::parse(&geometry, streams.as_deref())
     }
 
+    /// [`read`](Self::read) for drawing without textures: positions, normals,
+    /// indices, submeshes, nodes and the material name. `tangents`, `uvs`,
+    /// `colors` and `bone_weights` stay empty, which saves about a tenth of
+    /// the read on a capital ship's hull (most of it is decompression).
+    ///
+    /// ```no_run
+    /// let install = sc_discovery::discover_primary()?;
+    /// let assets = sc_extract::AssetSource::from_install(&install)?;
+    /// let g = sc_extract::MeshGeometry::read_shape(
+    ///     &assets,
+    ///     "objects/spaceships/power_plants/small_component/aegs/powr_aegs_s01_pl03.cga",
+    /// )?;
+    /// assert!(g.uvs.is_empty());
+    /// println!("{} vertices", g.positions.len());
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub fn read_shape(assets: &AssetSource, path: &str) -> Result<Self> {
+        let geometry = read_data(assets, path)?;
+        let streams = read_data(assets, &format!("{path}m")).ok();
+        Self::parse_detail(&geometry, streams.as_deref(), Detail::Shape)
+    }
+
     /// Parse a geometry file and, if it has one, its companion streams file.
     /// A file with neither a companion nor its own `IvoSkin2` chunk is
     /// helpers only (a seat-access point, a `$proxy_dummy`): its nodes, no
     /// vertices.
     pub fn parse(geometry: &[u8], streams: Option<&[u8]>) -> Result<Self> {
+        Self::parse_detail(geometry, streams, Detail::Full)
+    }
+
+    fn parse_detail(geometry: &[u8], streams: Option<&[u8]>, detail: Detail) -> Result<Self> {
         let nodes = match parse_nodes(geometry) {
             Ok(nodes) => nodes,
             Err(_) if chunk(geometry, NODE_MESH_COMBO).is_err() => Vec::new(),
@@ -226,7 +252,7 @@ impl MeshGeometry {
         });
         let mut g = match streams {
             None if chunk(geometry, IVO_SKIN2).is_err() => MeshGeometry::default(),
-            _ => parse_render_streams(streams.unwrap_or(geometry))?,
+            _ => parse_render_streams(streams.unwrap_or(geometry), detail)?,
         };
         g.nodes = nodes;
         g.material = material;
@@ -495,9 +521,18 @@ fn node_volumes(file: &[u8]) -> Result<Vec<(usize, f64)>> {
         .collect())
 }
 
+/// How much of the vertex streams to decode.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Detail {
+    Full,
+    /// Positions, normals and indices only.
+    Shape,
+}
+
 /// Vertex and index streams of an `IvoSkin2` chunk; `nodes` and `material`
 /// are left empty for the caller.
-fn parse_render_streams(file: &[u8]) -> Result<MeshGeometry> {
+fn parse_render_streams(file: &[u8], detail: Detail) -> Result<MeshGeometry> {
+    let full = detail == Detail::Full;
     let d = chunk(file, IVO_SKIN2)?;
     let g32 = |p: usize| -> Result<u32> { Reader { d, p }.u32() };
     let gf = |p: usize| -> Result<f32> { Ok(f32::from_bits(g32(p)?)) };
@@ -540,6 +575,9 @@ fn parse_render_streams(file: &[u8]) -> Result<MeshGeometry> {
     };
     let mut packed_normals: Option<Vec<[f32; 3]>> = None;
     let mut frames: Option<Vec<([f32; 3], [f32; 4])>> = None;
+    let mut frame_normals: Option<Vec<[f32; 3]>> = None;
+    let half: [f32; 3] = std::array::from_fn(|a| ((hi[a] - lo[a]) / 2.0).max(1.0));
+    let middle: [f32; 3] = std::array::from_fn(|a| (hi[a] + lo[a]) / 2.0);
 
     let mut p = 168 + submesh_count * 48 + extra * 4;
     while p + 8 <= d.len() {
@@ -564,22 +602,38 @@ fn parse_render_streams(file: &[u8]) -> Result<MeshGeometry> {
         };
         match (tag, elem) {
             (POSITIONS | POSITIONS2, 16) => {
-                for v in s.as_chunks::<16>().0 {
-                    g.positions.push(std::array::from_fn(|a| {
-                        let q = i16::from_le_bytes([v[a * 2], v[a * 2 + 1]]) as f32 / 32767.0;
-                        q * ((hi[a] - lo[a]) / 2.0).max(1.0) + (hi[a] + lo[a]) / 2.0
-                    }));
-                    g.colors.push([v[10], v[9], v[8], v[11]]);
-                    g.uvs.push(half2(&v[12..16]));
+                g.positions = s
+                    .as_chunks::<16>()
+                    .0
+                    .iter()
+                    .map(|v| {
+                        std::array::from_fn(|a| {
+                            let q = i16::from_le_bytes([v[a * 2], v[a * 2 + 1]]) as f32 / 32767.0;
+                            q * half[a] + middle[a]
+                        })
+                    })
+                    .collect();
+                if full {
+                    let vs = s.as_chunks::<16>().0;
+                    g.colors = vs.iter().map(|v| [v[10], v[9], v[8], v[11]]).collect();
+                    g.uvs = vs.iter().map(|v| half2(&v[12..16])).collect();
                 }
             }
             (POSITIONS | POSITIONS2, 20) => {
-                for v in s.as_chunks::<20>().0 {
-                    g.positions.push(std::array::from_fn(|a| {
-                        f32::from_le_bytes(v[a * 4..a * 4 + 4].try_into().expect("4 bytes"))
-                    }));
-                    g.colors.push([v[14], v[13], v[12], v[15]]);
-                    g.uvs.push(half2(&v[16..20]));
+                g.positions = s
+                    .as_chunks::<20>()
+                    .0
+                    .iter()
+                    .map(|v| {
+                        std::array::from_fn(|a| {
+                            f32::from_le_bytes(v[a * 4..a * 4 + 4].try_into().expect("4 bytes"))
+                        })
+                    })
+                    .collect();
+                if full {
+                    let vs = s.as_chunks::<20>().0;
+                    g.colors = vs.iter().map(|v| [v[14], v[13], v[12], v[15]]).collect();
+                    g.uvs = vs.iter().map(|v| half2(&v[16..20])).collect();
                 }
             }
             (POSITIONS | POSITIONS2, _) => return Err(bad("unknown position format")),
@@ -632,18 +686,20 @@ fn parse_render_streams(file: &[u8]) -> Result<MeshGeometry> {
                 )
             }
             (TANGENTS_QUAT, 8) => {
-                frames = Some(
-                    s.as_chunks::<8>()
-                        .0
-                        .iter()
-                        .map(|v| {
-                            qtangent(std::array::from_fn(|a| {
-                                i16::from_le_bytes([v[a * 2], v[a * 2 + 1]]) as f32 / 32767.0
-                            }))
-                        })
-                        .collect(),
-                )
+                let quaternion = |v: &[u8; 8]| -> [f32; 4] {
+                    std::array::from_fn(|a| {
+                        i16::from_le_bytes([v[a * 2], v[a * 2 + 1]]) as f32 / 32767.0
+                    })
+                };
+                let vs = s.as_chunks::<8>().0;
+                if full {
+                    frames = Some(vs.iter().map(|v| qtangent(quaternion(v))).collect());
+                } else {
+                    frame_normals =
+                        Some(vs.iter().map(|v| qtangent_normal(quaternion(v))).collect());
+                }
             }
+            (BONE_MAP | BONE_MAP_8, _) if !full => {}
             (BONE_MAP, 12) => {
                 g.bone_weights = s
                     .as_chunks::<12>()
@@ -675,17 +731,17 @@ fn parse_render_streams(file: &[u8]) -> Result<MeshGeometry> {
                     .collect()
             }
             (TANGENTS_PACKED, 8) => {
-                frames = Some(
-                    s.as_chunks::<8>()
-                        .0
-                        .iter()
-                        .map(|v| {
-                            let t = u32::from_le_bytes(v[0..4].try_into().expect("4 bytes"));
-                            let b = u32::from_le_bytes(v[4..8].try_into().expect("4 bytes"));
-                            packed_frame(t, b)
-                        })
-                        .collect(),
-                )
+                let vs = s.as_chunks::<8>().0;
+                let frame = |v: &[u8; 8]| {
+                    let t = u32::from_le_bytes(v[0..4].try_into().expect("4 bytes"));
+                    let b = u32::from_le_bytes(v[4..8].try_into().expect("4 bytes"));
+                    packed_frame(t, b)
+                };
+                if full {
+                    frames = Some(vs.iter().map(frame).collect());
+                } else {
+                    frame_normals = Some(vs.iter().map(|v| frame(v).0).collect());
+                }
             }
             _ => {}
         }
@@ -702,6 +758,8 @@ fn parse_render_streams(file: &[u8]) -> Result<MeshGeometry> {
             g.normals = n;
         } else if let Some(f) = &frames {
             g.normals = f.iter().map(|(n, _)| *n).collect();
+        } else if let Some(n) = frame_normals {
+            g.normals = n;
         }
     }
     if let Some(f) = frames {
@@ -768,18 +826,24 @@ fn packed_frame(t: u32, b: u32) -> ([f32; 3], [f32; 4]) {
 /// normal = column 2, negated when `w < 0`; tangent = column 0.
 fn qtangent([x, y, z, w]: [f32; 4]) -> ([f32; 3], [f32; 4]) {
     let flip = if w < 0.0 { -1.0 } else { 1.0 };
-    let n = [
-        2.0 * (x * z + w * y),
-        2.0 * (y * z - w * x),
-        1.0 - 2.0 * (x * x + y * y),
-    ]
-    .map(|c| c * flip);
     let t = normalize([
         1.0 - 2.0 * (y * y + z * z),
         2.0 * (x * y + w * z),
         2.0 * (x * z - w * y),
     ]);
-    (normalize(n), [t[0], t[1], t[2], flip])
+    (qtangent_normal([x, y, z, w]), [t[0], t[1], t[2], flip])
+}
+
+fn qtangent_normal([x, y, z, w]: [f32; 4]) -> [f32; 3] {
+    let flip = if w < 0.0 { -1.0 } else { 1.0 };
+    normalize(
+        [
+            2.0 * (x * z + w * y),
+            2.0 * (y * z - w * x),
+            1.0 - 2.0 * (x * x + y * y),
+        ]
+        .map(|c| c * flip),
+    )
 }
 
 /// Volume enclosed by triangles (divergence theorem); triangles with an
