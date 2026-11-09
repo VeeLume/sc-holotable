@@ -242,6 +242,98 @@ fn check_reference(rows: &[Row]) -> usize {
     failures
 }
 
+/// The client's rule (`CItemPort::RefreshMeshChunkVisibility`): per zone, walk
+/// the layers from highest to lowest. The first layer stays; each lower layer
+/// stays only if a layer above listed it in `VisibleLayers`. Conditions are
+/// not evaluated here, so a conditional chunk counts as passing.
+fn hidden_zones<'a>(outfit: &[&'a Row]) -> Vec<(&'a str, &'a str)> {
+    type Layers<'a> = BTreeMap<i32, Vec<(&'a str, &'a Chunk)>>;
+    let mut zones: BTreeMap<&str, Layers> = BTreeMap::new();
+    for row in outfit {
+        for chunk in row.chunks.iter().filter(|c| !c.zone.is_empty()) {
+            zones
+                .entry(&chunk.zone)
+                .or_default()
+                .entry(chunk.layer)
+                .or_default()
+                .push((&row.name, chunk));
+        }
+    }
+    let mut hidden = Vec::new();
+    for (zone, layers) in zones {
+        let mut visible = BTreeSet::new();
+        for (depth, (layer, entries)) in layers.iter().rev().enumerate() {
+            if depth > 0 && !visible.contains(layer) {
+                hidden.extend(entries.iter().map(|(item, _)| (*item, zone)));
+                continue;
+            }
+            for (_, chunk) in entries {
+                visible.extend(chunk.visible_layers.iter().copied());
+            }
+        }
+    }
+    hidden
+}
+
+fn report_layer_rule(rows: &[Row]) -> usize {
+    let mut usage: BTreeMap<(i32, Vec<i32>), usize> = BTreeMap::new();
+    for chunk in rows.iter().flat_map(|r| &r.chunks) {
+        let mut listed = chunk.visible_layers.clone();
+        listed.sort_unstable();
+        *usage.entry((chunk.layer, listed)).or_default() += 1;
+    }
+    println!();
+    println!("layer and VisibleLayers: chunk rows");
+    for ((layer, listed), count) in &usage {
+        println!("  layer {layer}, shows {listed:?}: {count}");
+    }
+
+    let mut failures = 0;
+    for outfit in [
+        vec!["m_body_01", "rsi_odyssey_undersuit_01_01_01"],
+        vec![
+            "m_body_01",
+            "rsi_odyssey_undersuit_01_01_01",
+            "cds_legacy_armor_medium_core_01_01_03",
+            "outlaw_legacy_armor_light_legs_01_05_18",
+            "fta_medium_helmet_01_01_12",
+        ],
+        vec![
+            "m_body_01",
+            "eld_shirt_04_drake_04",
+            "987_jacket_01_01_01",
+            "dmc_pants_04_01_19",
+        ],
+    ] {
+        let worn: Vec<&Row> = outfit
+            .iter()
+            .filter_map(|name| rows.iter().find(|r| r.name == *name))
+            .collect();
+        println!();
+        println!("outfit: {}", outfit.join(" + "));
+        if worn.len() != outfit.len() {
+            println!("  an item has no record");
+            failures += 1;
+            continue;
+        }
+        let hidden = hidden_zones(&worn);
+        for row in &worn {
+            let lost: Vec<&str> = hidden
+                .iter()
+                .filter(|(item, _)| *item == row.name)
+                .map(|(_, zone)| *zone)
+                .collect();
+            println!(
+                "  {}: {} of {} zones hidden {lost:?}",
+                row.name,
+                lost.len(),
+                row.chunks.len()
+            );
+        }
+    }
+    failures
+}
+
 /// Zone names join mesh pieces through `zone_hash`: the site's table for nine
 /// zones (its `hips_zone` entry disagrees with the client's function and is
 /// left out), then every piece of the male body.
@@ -298,7 +390,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let dc = Datacore::parse(&assets, &data)?;
     let rows = collect(&dc);
     census(&rows);
-    let failures = check_reference(&rows) + check_mesh_zones(&assets, &rows)?;
+    let hide_failures = report_layer_rule(&rows);
+    let failures = check_reference(&rows) + check_mesh_zones(&assets, &rows)? + hide_failures;
     if dump {
         println!("\nname|type|g|hides|zone:layer...");
         for row in &rows {
