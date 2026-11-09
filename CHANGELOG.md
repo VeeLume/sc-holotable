@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.45.0] - 2026-11-09
+
 ### Added
 
 - **`sc-extract`: `AnimationClips`** reads `.dba` and `.caf` files into per-bone rotation and position keys (`AnimationClip`, `BoneChannel`, `Keyframe`). An unknown key format is an error for the file rather than a guess. Probe: `animation_clips_probe` reproduces a published standing pose to the digit and decodes every human clip.
