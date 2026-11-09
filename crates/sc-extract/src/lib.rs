@@ -51,6 +51,7 @@
 //! use sc_extract::{Guid, Value, Instance, DataCoreDatabase};
 //! ```
 
+mod animation;
 mod asset_data;
 mod asset_index;
 mod assets;
@@ -79,6 +80,7 @@ mod vehicle;
 /// implements [`Extract`] for parsing from svarog `Instance` values.
 pub use sc_extract_generated as generated;
 
+pub use animation::{AnimationClip, AnimationClips, BoneChannel, Keyframe};
 pub use asset_data::{AssetConfig, AssetData};
 pub use asset_index::{AssetIndex, AssetIndexBuilder};
 pub use assets::AssetSource;

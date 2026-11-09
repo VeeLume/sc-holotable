@@ -432,6 +432,15 @@ pub(crate) fn chunk(file: &[u8], ty: u32) -> Result<&[u8]> {
     file.get(off..end).ok_or_else(|| bad("chunk out of range"))
 }
 
+/// The chunk of `ty` and everything after it in the file.
+pub(crate) fn chunk_to_end(file: &[u8], ty: u32) -> Result<&[u8]> {
+    let (_, off) = chunks(file)?
+        .into_iter()
+        .find(|(t, _)| *t == ty)
+        .ok_or_else(|| bad("chunk missing"))?;
+    file.get(off..).ok_or_else(|| bad("chunk out of range"))
+}
+
 /// Names, parents and properties from the `NodeMeshCombo` chunk.
 pub(crate) fn parse_nodes(file: &[u8]) -> Result<Vec<MeshNode>> {
     let d = chunk(file, NODE_MESH_COMBO)?;

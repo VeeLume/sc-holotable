@@ -36,12 +36,19 @@ pub struct Skeleton {
 #[derive(Debug, Clone, PartialEq)]
 pub struct Bone {
     pub name: String,
+    /// What an animation channel names this bone by
+    /// ([`BoneChannel::bone_hash`](crate::BoneChannel::bone_hash)).
+    pub controller_id: u32,
     /// Index into [`Skeleton::bones`].
     pub parent: Option<usize>,
     /// Model-space position.
     pub position: [f32; 3],
     /// Model-space rotation, quaternion `(x, y, z, w)`.
     pub rotation: [f32; 4],
+    /// Position relative to the parent.
+    pub local_position: [f32; 3],
+    /// Rotation relative to the parent, quaternion `(x, y, z, w)`.
+    pub local_rotation: [f32; 4],
 }
 
 impl Skeleton {
@@ -113,12 +120,16 @@ fn parse_v900(d: &[u8]) -> Result<Skeleton> {
         .zip(names)
         .map(|(i, name)| {
             let e = 4 + i * 68;
+            let (local_rotation, local_position) = quat_t(d, e + 12)?;
             let (rotation, position) = quat_t(d, e + 12 + 28)?;
             Ok(Bone {
                 name,
+                controller_id: u32_at(d, e)?,
                 parent: parent(u32_at(d, e + 8)? as i32 as i64, n),
                 position,
                 rotation,
+                local_position,
+                local_rotation,
             })
         })
         .collect::<Result<_>>()?;
@@ -138,7 +149,8 @@ fn parse_v901(d: &[u8]) -> Result<Skeleton> {
             .ok_or_else(|| bad("truncated"))?,
         n,
     )?;
-    let world_at = names_at + table + n * 28;
+    let local_at = names_at + table;
+    let world_at = local_at + n * 28;
     let bones = (0..n)
         .zip(names)
         .map(|(i, name)| {
@@ -149,12 +161,16 @@ fn parse_v901(d: &[u8]) -> Result<Skeleton> {
                     .try_into()
                     .expect("2 bytes"),
             );
+            let (local_rotation, local_position) = quat_t(d, local_at + i * 28)?;
             let (rotation, position) = quat_t(d, world_at + i * 28)?;
             Ok(Bone {
                 name,
+                controller_id: u32_at(d, e)?,
                 parent: parent(p as i64, n),
                 position,
                 rotation,
+                local_position,
+                local_rotation,
             })
         })
         .collect::<Result<_>>()?;
