@@ -145,9 +145,23 @@ pub struct Submesh {
     pub material: u16,
     /// Index into [`MeshGeometry::nodes`].
     pub node: Option<usize>,
+    /// The body zone a character mesh's piece belongs to, as [`zone_hash`] of
+    /// the zone's name; `None` where the file lists no zones.
+    pub zone: Option<u32>,
     /// First entry in [`MeshGeometry::indices`].
     pub first_index: u32,
     pub index_count: u32,
+}
+
+/// The hash a mesh names a body zone by: FNV-1a over the uppercased name and
+/// its terminating NUL, as the game client computes it.
+pub fn zone_hash(name: &str) -> u32 {
+    name.bytes()
+        .map(|b| b.to_ascii_uppercase())
+        .chain(std::iter::once(0))
+        .fold(0x811C_9DC5, |hash, byte| {
+            (hash ^ u32::from(byte)).wrapping_mul(0x0100_0193)
+        })
 }
 
 impl Mesh {
@@ -640,6 +654,11 @@ fn parse_render_streams(file: &[u8], detail: Detail) -> Result<MeshGeometry> {
     }
     let extra = g32(76)? as usize;
 
+    let zones_at = 168 + submesh_count * 48;
+    let zones = (0..extra)
+        .map(|i| g32(zones_at + i * 4))
+        .collect::<Result<Vec<u32>>>()?;
+
     let mut submeshes = Vec::with_capacity(submesh_count);
     let mut page_bases = Vec::with_capacity(submesh_count);
     for i in 0..submesh_count {
@@ -648,6 +667,7 @@ fn parse_render_streams(file: &[u8], detail: Detail) -> Result<MeshGeometry> {
         submeshes.push(Submesh {
             material: (w & 0xFFFF) as u16,
             node: Some((w >> 16) as usize),
+            zone: zones.get((w >> 16) as usize).copied(),
             first_index: g32(b + 4)?,
             index_count: g32(b + 8)?,
         });
@@ -960,6 +980,12 @@ fn enclosed_volume(positions: &[[f32; 3]], indices: &[u32]) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn zone_hash_uppercases_and_includes_the_terminator() {
+        assert_eq!(zone_hash("vneck_zone"), 2_432_608_691);
+        assert_eq!(zone_hash("VNECK_ZONE"), 2_432_608_691);
+    }
 
     #[test]
     fn unit_cube_volume() {

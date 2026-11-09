@@ -3,8 +3,11 @@
 //! The base standing pose must reproduce the clip style-citizen.com plays as
 //! its idle (`anim/stand_male.json`) to the digit, and the male skeleton its
 //! bind pose. Then every human `.dba` and `.caf` is decoded: what the reader
-//! refuses is listed (5 files use rotation format 0x83, which no reference
-//! documents; they are refused rather than guessed).
+//! refuses is listed and must be nothing.
+//!
+//! Rotation format 0x83 has no reference, so it is checked against itself: the
+//! female `zero_gravity.dba` stores a clip in it that the male pack stores in
+//! the 48-bit format, and only the right component order lines the two up.
 //!
 //! ```bash
 //! cargo run -p sc-extract --release --example animation_clips_probe
@@ -41,6 +44,51 @@ struct Census {
     joined: usize,
     past_declared: usize,
     refused: BTreeMap<String, Vec<String>>,
+}
+
+fn angle(a: [f32; 4], b: [f32; 4]) -> f64 {
+    let dot: f32 = a.iter().zip(&b).map(|(x, y)| x * y).sum();
+    2.0 * f64::from(dot.abs().min(1.0)).acos().to_degrees()
+}
+
+/// The quaternion with its first two stored components exchanged.
+fn swapped(mut q: [f32; 4]) -> [f32; 4] {
+    let largest = (0..4)
+        .max_by(|&a, &b| q[a].abs().total_cmp(&q[b].abs()))
+        .expect("four components");
+    let stored: Vec<usize> = (0..4).filter(|&i| i != largest).collect();
+    q.swap(stored[0], stored[1]);
+    q
+}
+
+/// Per clip block of a `.dba`, the bones whose rotations use format 0x83. The
+/// reader does not expose key formats, so this walks the block headers itself.
+fn channels_in_format_83(file: &[u8]) -> Vec<HashSet<u32>> {
+    let word16 = |d: &[u8], at: usize| u16::from_le_bytes([d[at], d[at + 1]]);
+    let word32 = |d: &[u8], at: usize| u32::from_le_bytes([d[at], d[at + 1], d[at + 2], d[at + 3]]);
+    let (count, table) = (word32(file, 8) as usize, word32(file, 12) as usize);
+    let data = (0..count)
+        .map(|i| table + i * 16)
+        .find(|&entry| word32(file, entry) == 0x194F_BC50)
+        .map_or(0, |entry| word32(file, entry + 8) as usize);
+    let d = &file[data..];
+    let mut blocks = Vec::new();
+    let mut at = 4;
+    while d.get(at..at + 4) == Some(b"#dba".as_slice()) {
+        let bones = usize::from(word16(d, at + 4));
+        let controllers = at + 12 + bones * 4;
+        blocks.push(
+            (0..bones)
+                .filter(|i| {
+                    let controller = controllers + i * 24;
+                    word16(d, controller) > 0 && word16(d, controller + 2) >> 8 == 0x83
+                })
+                .map(|i| word32(d, at + 12 + i * 4))
+                .collect(),
+        );
+        at = controllers + bones * 24;
+    }
+    blocks
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -172,9 +220,54 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     check("no key past its declared frames", census.past_declared == 0);
+    check("nothing is refused", census.refused.is_empty());
+
+    println!();
+    println!("rotation format 0x83 against the male pack's 48-bit clip");
+    let female = assets.read_data("animations/characters/human/female_v2/zero_gravity.dba")?;
+    let stored = AnimationClips::parse(&female)?;
+    let male = AnimationClips::read(
+        &assets,
+        "animations/characters/human/male_v7/zero_gravity.dba",
+    )?;
+    let (mut same, mut swap, mut keys) = (0f64, 0f64, 0u64);
+    for (clip, hashes) in stored.clips.iter().zip(channels_in_format_83(&female)) {
+        let stem = clip
+            .name
+            .rsplit('/')
+            .next()
+            .and_then(|f| f.strip_suffix(".caf"));
+        let Some(twin) = stem.and_then(|s| male.clip(s)) else {
+            continue;
+        };
+        for channel in clip
+            .channels
+            .iter()
+            .filter(|c| hashes.contains(&c.bone_hash))
+        {
+            let Some(other) = twin
+                .channels
+                .iter()
+                .find(|c| c.bone_hash == channel.bone_hash)
+            else {
+                continue;
+            };
+            for key in &channel.rotations {
+                if let Some(q) = other.rotation_at(f32::from(key.frame)) {
+                    same += angle(key.value, q);
+                    swap += angle(swapped(key.value), q);
+                    keys += 1;
+                }
+            }
+        }
+    }
+    let (same, swap) = (same / keys.max(1) as f64, swap / keys.max(1) as f64);
+    println!(
+        "  {keys} keys; mean angle to the twin {same:.3} deg, first two components swapped {swap:.3} deg"
+    );
     check(
-        "only the 5 known files are refused",
-        census.refused.values().map(Vec::len).sum::<usize>() == 5,
+        "the stored component order lines up",
+        keys > 0 && same < 10.0 && swap > 20.0,
     );
 
     if failures > 0 {

@@ -365,8 +365,34 @@ fn read_rotations(d: &[u8], at: usize, n: usize, flags: u16) -> Result<Vec<[f32;
                 ))
             })
             .collect(),
+        0x83 => (0..n)
+            .map(|i| {
+                let o = at + i * 8;
+                let low = u64::from(u32_at(d, o)?);
+                Ok(small_tree_quat_64(low | u64::from(u32_at(d, o + 4)?) << 32))
+            })
+            .collect(),
         other => Err(bad(format!("unknown rotation format {other:#x}"))),
     }
+}
+
+/// Components of 21, 21 and 20 bits from the low end, then the two bits naming
+/// the largest component.
+fn small_tree_quat_64(key: u64) -> [f32; 4] {
+    const SCALE_21: f64 = 1_482_909.0;
+    const SCALE_20: f64 = 741_454.0;
+    let component = |bits: u64, scale: f64| bits as f64 / scale - std::f64::consts::FRAC_1_SQRT_2;
+
+    let a = component(key & 0x1F_FFFF, SCALE_21);
+    let b = component(key >> 21 & 0x1F_FFFF, SCALE_21);
+    let c = component(key >> 42 & 0xF_FFFF, SCALE_20);
+    let largest = (1.0 - a * a - b * b - c * c).max(0.0).sqrt();
+
+    let dropped = (key >> 62) as usize;
+    let mut q = [a as f32, b as f32, c as f32, 0.0];
+    q.copy_within(dropped..3, dropped + 1);
+    q[dropped] = largest as f32;
+    q
 }
 
 /// Three 15-bit components crossing the `u16` borders, and two bits naming the
@@ -438,6 +464,16 @@ fn read_planar_positions(d: &[u8], at: usize, n: usize) -> Result<Vec<[f32; 3]>>
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn small_tree_64_reads_its_fields_from_the_low_end() {
+        let q = small_tree_quat_64(0xDFFF_FDFF_FFEF_FFFF);
+        for (v, want) in q.iter().zip([0.0, 0.0, 0.0, 1.0]) {
+            assert!((v - want).abs() < 1e-5, "{q:?}");
+        }
+        // The same middle values with the first component dropped instead.
+        assert!((small_tree_quat_64(0x1FFF_FDFF_FFEF_FFFF)[0] - 1.0).abs() < 1e-5);
+    }
 
     #[test]
     fn small_tree_rebuilds_the_dropped_component() {

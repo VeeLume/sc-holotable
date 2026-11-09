@@ -242,6 +242,54 @@ fn check_reference(rows: &[Row]) -> usize {
     failures
 }
 
+/// Zone names join mesh pieces through `zone_hash`: the site's table for nine
+/// zones (its `hips_zone` entry disagrees with the client's function and is
+/// left out), then every piece of the male body.
+fn check_mesh_zones(
+    assets: &AssetSource,
+    rows: &[Row],
+) -> Result<usize, Box<dyn std::error::Error>> {
+    const PUBLISHED: &[(&str, u32)] = &[
+        ("vneck_zone", 2_432_608_691),
+        ("torso01_zone", 3_955_070_026),
+        ("torso02_zone", 320_886_823),
+        ("torso03_zone", 3_157_836_472),
+        ("torso04_zone", 3_044_089_349),
+        ("underwear_top_zone", 3_553_630_895),
+        ("l_shoulder_zone", 1_353_240_489),
+        ("r_shoulder_zone", 1_020_047_223),
+        ("l_arm01_zone", 3_734_923_156),
+    ];
+    let mut failures = PUBLISHED
+        .iter()
+        .filter(|(name, hash)| sc_extract::zone_hash(name) != *hash)
+        .count();
+    println!();
+    println!(
+        "zone hash: {} of {} published values differ",
+        failures,
+        PUBLISHED.len()
+    );
+
+    let known: BTreeSet<u32> = rows
+        .iter()
+        .flat_map(|r| &r.chunks)
+        .map(|c| sc_extract::zone_hash(&c.zone))
+        .collect();
+    let body = sc_extract::MeshGeometry::read_shape(
+        assets,
+        "objects/characters/human/male_v7/body/m_body.skin",
+    )?;
+    let zoned: Vec<u32> = body.submeshes.iter().filter_map(|s| s.zone).collect();
+    let resolved = zoned.iter().filter(|z| known.contains(z)).count();
+    println!(
+        "male body: {resolved} of {} zoned pieces name a DCB zone",
+        zoned.len()
+    );
+    failures += usize::from(zoned.is_empty() || resolved != zoned.len());
+    Ok(failures)
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let dump = std::env::args().any(|a| a == "--dump");
     let install = sc_discovery::discover_primary()?;
@@ -250,7 +298,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let dc = Datacore::parse(&assets, &data)?;
     let rows = collect(&dc);
     census(&rows);
-    let failures = check_reference(&rows);
+    let failures = check_reference(&rows) + check_mesh_zones(&assets, &rows)?;
     if dump {
         println!("\nname|type|g|hides|zone:layer...");
         for row in &rows {

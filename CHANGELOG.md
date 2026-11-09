@@ -13,6 +13,14 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract`: `Submesh::zone` and `zone_hash`.** A character mesh piece names the body zone it belongs to, which is the join between a mesh and `SCItemClothingParams` chunks. Probe: `clothing_zones`.
+
+### Fixed
+
+- **`sc-extract`: `AnimationClips` decodes rotation format `0x83`.** Five packs were refused whole for it, including both `weapons/reloads.dba`; every human clip now decodes.
+
 ## [v0.45.0] - 2026-11-09
 
 ### Added

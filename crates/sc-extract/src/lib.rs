@@ -94,7 +94,7 @@ pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;
 pub use locale::{LocaleKey, LocaleMap, is_placeholder, strip_locale_metadata};
 pub use material::{Material, MaterialLayer, MaterialTexture, SubMaterial};
-pub use mesh::{BoneWeights, Mesh, MeshGeometry, MeshNode, Submesh};
+pub use mesh::{BoneWeights, Mesh, MeshGeometry, MeshNode, Submesh, zone_hash};
 pub use object_container::{IncludedObject, IncludedObjects, Socpak, XmlNode};
 pub use physics::{PhysicsProxies, PhysicsProxy, ProxyKind, ProxyShape};
 pub use pose::{BoneTransform, Pose};
