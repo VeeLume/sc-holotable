@@ -13,6 +13,10 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`sc-extract`: `AssetSource::open_indexed` no longer maps the archive.** A mapping of a whole 159 GB `Data.p4k` holds 312 MB of commit before a page is touched; indexed sources now read by position. An index cooked with v0.44.0 stays valid.
+
 ## [v0.44.0] - 2026-11-09
 
 ### Added

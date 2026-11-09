@@ -3138,7 +3138,6 @@ version = "0.0.0"
 dependencies = [
  "chrono",
  "encoding_rs",
- "memmap2",
  "quick-xml 0.37.5",
  "rmp-serde",
  "sc-discovery",
