@@ -17,6 +17,7 @@ pinned. Both tag kinds are monotonic and immutable.
 
 - **`sc-extract`: `AnimationClips`** reads `.dba` and `.caf` files into per-bone rotation and position keys (`AnimationClip`, `BoneChannel`, `Keyframe`). An unknown key format is an error for the file rather than a guess. Probe: `animation_clips_probe` reproduces a published standing pose to the digit and decodes every human clip.
 - **`sc-extract`: `Bone::controller_id`, `Bone::local_position` and `Bone::local_rotation`.** A channel joins a skeleton through `controller_id`.
+- **`sc-extract`: `Pose`** evaluates clips on a skeleton: bind pose, base clips, additive layers, weights, and model-space transforms (`BoneTransform`). `AnimationClip::additive` comes from the file header; `BoneChannel::rotation_at` / `position_at` and `AnimationClip::last_frame` sample a clip. Probe: `pose_probe`.
 
 ## [v0.44.1] - 2026-11-09
 

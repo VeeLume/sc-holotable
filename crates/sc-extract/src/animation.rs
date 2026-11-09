@@ -40,6 +40,7 @@ const ANIM_INFO: u32 = 0x4733_C6ED;
 const CONTROLLER_SIZE: usize = 24;
 const CATALOGUE_ENTRY_SIZE: usize = 48;
 const DEFAULT_FPS: u16 = 30;
+const ADDITIVE_FLAG: u32 = 1;
 
 /// The clips of one `.dba` or `.caf`, in file order.
 #[derive(Debug, Clone, PartialEq)]
@@ -56,6 +57,9 @@ pub struct AnimationClip {
     pub fps: u16,
     /// Frame count a `.dba` catalogue declares; `None` for a `.caf`.
     pub declared_frames: Option<u32>,
+    /// Stored as a change on top of another pose, not as a pose of its own.
+    /// From the file's header, which does not always agree with an `_add` name.
+    pub additive: bool,
     pub channels: Vec<BoneChannel>,
 }
 
@@ -134,6 +138,7 @@ struct CatalogueEntry {
     fps: u16,
     controllers: u16,
     frames: u32,
+    additive: bool,
 }
 
 fn parse_dba(file: &[u8], meta: &[u8]) -> Result<AnimationClips> {
@@ -167,6 +172,7 @@ fn parse_dba(file: &[u8], meta: &[u8]) -> Result<AnimationClips> {
                     entry.fps
                 },
                 declared_frames: Some(entry.frames),
+                additive: entry.additive,
                 channels,
             })
         })
@@ -180,12 +186,17 @@ fn parse_caf(file: &[u8]) -> Result<AnimationClips> {
         .and_then(|d| u16_at(d, 4).ok())
         .filter(|&f| f != 0)
         .unwrap_or(DEFAULT_FPS);
+    let additive = chunk(file, ANIM_INFO)
+        .ok()
+        .and_then(|d| u32_at(d, 0).ok())
+        .is_some_and(|flags| flags & ADDITIVE_FLAG != 0);
     let clips = parse_blocks(chunk_to_end(file, CAF_DATA)?)?
         .into_iter()
         .map(|channels| AnimationClip {
             name: String::new(),
             fps,
             declared_frames: None,
+            additive,
             channels,
         })
         .collect();
@@ -212,6 +223,7 @@ fn parse_catalogue(d: &[u8]) -> Result<Vec<CatalogueEntry>> {
                 fps: u16_at(d, e + 8)?,
                 controllers: u16_at(d, e + 10)?,
                 frames: u32_at(d, e + 20)?,
+                additive: u32_at(d, e + 4)? & ADDITIVE_FLAG != 0,
             })
         })
         .collect()
