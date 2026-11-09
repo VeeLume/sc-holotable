@@ -120,6 +120,10 @@ pub struct MeshGeometry {
     /// Triangle list, absolute vertex indices.
     pub indices: Vec<u32>,
     pub submeshes: Vec<Submesh>,
+    /// The detail level the streams came from: 0 is the full mesh, and each
+    /// level above has about half the triangles of the one before. See
+    /// [`MeshGeometry::read_level`].
+    pub level: u8,
 }
 
 /// Up to eight bones moving a skinned vertex.
@@ -226,9 +230,57 @@ impl MeshGeometry {
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn read_shape(assets: &AssetSource, path: &str) -> Result<Self> {
+        Self::read_at(assets, path, 0, Detail::Shape)
+    }
+
+    /// [`read`](Self::read) at one of the game's own detail levels: `level`
+    /// if the file has it, else the nearest finer one, so a file is never
+    /// coarser than asked. [`level`](Self::level) says which was read; a file
+    /// without levels gives its full mesh. Levels share the full mesh's
+    /// [`nodes`](Self::nodes), bone list and `.mtl`, but drop small nodes and
+    /// some submeshes as they go.
+    ///
+    /// ```no_run
+    /// let install = sc_discovery::discover_primary()?;
+    /// let assets = sc_extract::AssetSource::from_install(&install)?;
+    /// let g = sc_extract::MeshGeometry::read_level(
+    ///     &assets,
+    ///     "objects/spaceships/power_plants/small_component/aegs/powr_aegs_s01_pl03.cga",
+    ///     2,
+    /// )?;
+    /// println!("level {}: {} triangles", g.level, g.indices.len() / 3);
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub fn read_level(assets: &AssetSource, path: &str, level: u8) -> Result<Self> {
+        Self::read_at(assets, path, level, Detail::Full)
+    }
+
+    /// [`read_shape`](Self::read_shape) at a detail level, chosen as
+    /// [`read_level`](Self::read_level) does.
+    pub fn read_shape_level(assets: &AssetSource, path: &str, level: u8) -> Result<Self> {
+        Self::read_at(assets, path, level, Detail::Shape)
+    }
+
+    /// A level's `_lodN` metadata file has no node table: its streams are
+    /// parsed against the full mesh's file, whose nodes they index.
+    fn read_at(assets: &AssetSource, path: &str, level: u8, detail: Detail) -> Result<Self> {
         let geometry = read_data(assets, path)?;
+        for n in (1..=level).rev() {
+            let Some(streams) = level_streams(path, n) else {
+                break;
+            };
+            match read_data(assets, &streams) {
+                Ok(streams) => {
+                    let mut g = Self::parse_detail(&geometry, Some(&streams), detail)?;
+                    g.level = n;
+                    return Ok(g);
+                }
+                Err(Error::FileNotInP4k(_)) => {}
+                Err(e) => return Err(e),
+            }
+        }
         let streams = read_data(assets, &format!("{path}m")).ok();
-        Self::parse_detail(&geometry, streams.as_deref(), Detail::Shape)
+        Self::parse_detail(&geometry, streams.as_deref(), detail)
     }
 
     /// Parse a geometry file and, if it has one, its companion streams file.
@@ -261,6 +313,14 @@ impl MeshGeometry {
         }
         Ok(g)
     }
+}
+
+/// The streams file of `path`'s detail level (`x.cga` → `x_lod2.cgam`);
+/// `None` when the file name has no extension.
+fn level_streams(path: &str, level: u8) -> Option<String> {
+    let name = path.rfind(['/', '\\']).map_or(0, |i| i + 1);
+    let dot = name + path[name..].rfind('.')?;
+    Some(format!("{}_lod{level}{}m", &path[..dot], &path[dot..]))
 }
 
 /// Read an archive file by its DataCore-style path (`objects/…`), with or
@@ -572,6 +632,7 @@ fn parse_render_streams(file: &[u8], detail: Detail) -> Result<MeshGeometry> {
         bone_weights: Vec::new(),
         indices: Vec::new(),
         submeshes,
+        level: 0,
     };
     let mut packed_normals: Option<Vec<[f32; 3]>> = None;
     let mut frames: Option<Vec<([f32; 3], [f32; 4])>> = None;
@@ -888,6 +949,19 @@ mod tests {
     }
 
     #[test]
+    fn a_level_names_its_streams_after_the_file_not_the_folder() {
+        assert_eq!(
+            level_streams("objects/a/hull.cga", 2).as_deref(),
+            Some("objects/a/hull_lod2.cgam")
+        );
+        assert_eq!(
+            level_streams("Objects\\a.b\\body.skin", 1).as_deref(),
+            Some("Objects\\a.b\\body_lod1.skinm")
+        );
+        assert_eq!(level_streams("objects/a.b/hull", 1), None);
+    }
+
+    #[test]
     fn bare_material_names_resolve_next_to_the_geometry() {
         let mut g = MeshGeometry {
             nodes: Vec::new(),
@@ -900,6 +974,7 @@ mod tests {
             bone_weights: Vec::new(),
             indices: Vec::new(),
             submeshes: Vec::new(),
+            level: 0,
         };
         assert_eq!(
             g.material_path("objects/a/b/mgzn.cgf").as_deref(),

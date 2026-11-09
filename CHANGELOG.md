@@ -13,6 +13,10 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract`: `MeshGeometry::read_level` and `read_shape_level`** read one of the game's own detail levels (`_lod1` to `_lod5`, about half the triangles each), or the nearest finer level a file has. The new `MeshGeometry::level` field says which was read. Probe: `mesh_level_probe` checks that levels share the full mesh's nodes and bones on real ships, items and skins.
+
 ## [v0.42.1] - 2026-11-08
 
 ### Fixed
