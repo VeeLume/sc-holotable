@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.46.0] - 2026-11-09
+
 ### Added
 
 - **`sc-items-visuals`: `Garments`** lists what each worn item covers (`Garment`, `GarmentZone`, hidden ports), and `Garments::outfit` applies the game client's layer rule to a set of worn items. A zone that depends on a tag condition reports `ZoneState::Conditional`, since those conditions are not evaluated. Probe: `garments_probe`.
