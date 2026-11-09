@@ -258,7 +258,9 @@ pub mod prelude {
     #[cfg(feature = "ship-weapons")]
     pub use sc_items_ship_weapons::{ShipWeaponKind, ShipWeaponStats, ShipWeapons};
     #[cfg(feature = "visuals")]
-    pub use sc_items_visuals::{InventoryView, Palettes, Visual, Visuals};
+    pub use sc_items_visuals::{
+        Garment, Garments, InventoryView, Outfit, Palettes, Visual, Visuals, ZoneState,
+    };
     #[cfg(feature = "locations")]
     pub use sc_locations::{
         Location, LocationKind, Locations, ObjectContainers, Place, Placement, PlacementId,

@@ -7,6 +7,8 @@
 //! - [`Palettes`]: the `TintPaletteTree` records the recipes point at.
 //! - [`InventoryView`]: how the inventory presents an item (orientation
 //!   offset, light rig) and the size of its grid cell.
+//! - [`Garments`]: what worn items cover, and which of their mesh pieces an
+//!   [`Outfit`] hides.
 //! - [`Visuals::scene`]: an item assembled for drawing, with what is
 //!   attached to it ([`Scene`]); [`Visuals::mounted_scene`]: an entity with
 //!   what is installed on it (a vehicle and its loadout).
@@ -34,6 +36,7 @@
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 
+mod garments;
 mod inventory;
 mod palette;
 mod scene;
@@ -50,6 +53,9 @@ use sc_items::Items;
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
 
+pub use garments::{
+    Garment, GarmentZone, Garments, Outfit, PortCondition, ZoneCondition, ZoneState,
+};
 pub use inventory::{InventoryView, LightRig, RigLight};
 pub use palette::{Palette, PaletteEntry, Palettes};
 pub use sc_extract::RecordCollection;

@@ -15,6 +15,7 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ### Added
 
+- **`sc-items-visuals`: `Garments`** lists what each worn item covers (`Garment`, `GarmentZone`, hidden ports), and `Garments::outfit` applies the game client's layer rule to a set of worn items. A zone that depends on a tag condition reports `ZoneState::Conditional`, since those conditions are not evaluated. Probe: `garments_probe`.
 - **`sc-extract`: `Submesh::zone` and `zone_hash`.** A character mesh piece names the body zone it belongs to, which is the join between a mesh and `SCItemClothingParams` chunks. Probe: `clothing_zones`.
 
 ### Fixed
