@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.44.0] - 2026-11-09
+
 ### Added
 
 - **`sc-extract`: `AssetIndex` and `AssetSource::open_indexed`** read a known set of files through cooked pointers, without loading the archive's file list (a second and hundreds of MB on a live build). `AssetIndexBuilder` lists files while the archive is open anyway; the archive's tail is checked on open and each file's own header on read, and a path the index does not list opens the whole archive once. `AssetSource::holds_file_list` says whether that happened. Probe: `asset_index_probe` compares reads through the index with a full open.
