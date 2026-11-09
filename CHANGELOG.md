@@ -13,6 +13,15 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-extract`: `AssetIndex` and `AssetSource::open_indexed`** read a known set of files through cooked pointers, without loading the archive's file list (a second and hundreds of MB on a live build). `AssetIndexBuilder` lists files while the archive is open anyway; the archive's tail is checked on open and each file's own header on read, and a path the index does not list opens the whole archive once. `AssetSource::holds_file_list` says whether that happened. Probe: `asset_index_probe` compares reads through the index with a full open.
+- **`sc-items-visuals`: `Visuals::add_files`** lists every file the recipes can draw from for such an index.
+
+### Changed
+
+- **`sc-extract`: reading a file by its DataCore path tries `Data\` first**, saving a scan of the file list per read.
+
 ## [v0.43.0] - 2026-11-09
 
 ### Added

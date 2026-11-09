@@ -45,7 +45,7 @@ use sc_extract::generated::{
     SItemPortDefAttachmentImplementationBasePtr, SItemPortLoadoutBaseParamsPtr,
     SItemPortLoadoutEntryParams, SMaterialNodeParams, TintPaletteRef,
 };
-use sc_extract::{DataPools, Datacore, Guid};
+use sc_extract::{AssetIndexBuilder, DataPools, Datacore, Guid};
 use sc_items::Items;
 use serde::{Deserialize, Serialize};
 use tracing::{debug, warn};
@@ -230,6 +230,27 @@ impl Visual {
     }
 }
 
+fn add_geometry_files(node: &GeometryNode, index: &mut AssetIndexBuilder) {
+    if let Some(geometry) = &node.geometry {
+        index.add_model(geometry);
+    }
+    if let Some(material) = &node.material {
+        index.add_material(material);
+    }
+    for variant in &node.variants {
+        add_geometry_files(variant, index);
+    }
+}
+
+fn add_material_files(node: &MaterialNode, index: &mut AssetIndexBuilder) {
+    if let Some(material) = &node.material {
+        index.add_material(material);
+    }
+    for variant in &node.variants {
+        add_material_files(variant, index);
+    }
+}
+
 /// Every item's and vehicle's [`Visual`], keyed by `EntityClassDefinition`
 /// GUID. Covers the [`Items`] and the vehicle entities
 /// (`VehicleComponentParams`) that carry `SGeometryResourceParams`.
@@ -263,6 +284,20 @@ impl Visuals {
             }
         }
         Self { by_guid }
+    }
+
+    /// List every file these recipes can draw from, for a cooked
+    /// [`AssetIndex`](sc_extract::AssetIndex): geometry with its streams and
+    /// detail levels, `.cdf` assemblies with their parts, and materials.
+    pub fn add_files(&self, index: &mut AssetIndexBuilder) {
+        for visual in self.by_guid.values() {
+            if let Some(node) = &visual.geometry {
+                add_geometry_files(node, index);
+            }
+            if let Some(node) = &visual.material {
+                add_material_files(node, index);
+            }
+        }
     }
 }
 

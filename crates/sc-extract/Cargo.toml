@@ -32,6 +32,8 @@ zip = { version = "2", default-features = false, features = ["deflate"] }
 # src/snapshot.rs); zstd keeps the on-disk footprint small.
 rmp-serde = "1"
 zstd = "0.13"
+# `AssetIndex` reads through the same mapping svarog-p4k makes.
+memmap2 = "0.9"
 chrono = "0.4.44"
 
 [dev-dependencies]

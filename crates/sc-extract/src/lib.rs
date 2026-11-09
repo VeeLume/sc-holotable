@@ -52,6 +52,7 @@
 //! ```
 
 mod asset_data;
+mod asset_index;
 mod assets;
 mod bundled_walk;
 mod character;
@@ -79,6 +80,7 @@ mod vehicle;
 pub use sc_extract_generated as generated;
 
 pub use asset_data::{AssetConfig, AssetData};
+pub use asset_index::{AssetIndex, AssetIndexBuilder};
 pub use assets::AssetSource;
 pub use bundled_walk::{BundledWalk, Interest, RecordVisitor, VisitItem, VisitorSet};
 pub use character::{AttachmentKind, CharacterAttachment, CharacterDefinition};

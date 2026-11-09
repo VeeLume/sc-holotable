@@ -188,21 +188,7 @@ impl MeshGeometry {
     /// The `.mtl` this geometry names, as an archive path with extension: a
     /// bare `MtlName` (no folder) is resolved next to `geometry_path`.
     pub fn material_path(&self, geometry_path: &str) -> Option<String> {
-        let name = self.material.as_deref()?.replace('\\', "/");
-        let name = if name.contains('/') {
-            name
-        } else {
-            let geometry_path = geometry_path.replace('\\', "/");
-            match geometry_path.rsplit_once('/') {
-                Some((dir, _)) => format!("{dir}/{name}"),
-                None => name,
-            }
-        };
-        Some(if name.to_ascii_lowercase().ends_with(".mtl") {
-            name
-        } else {
-            format!("{name}.mtl")
-        })
+        Some(resolve_material(self.material.as_deref()?, geometry_path))
     }
 
     /// Read `path` and its companion stream file (`x.cga` → `x.cgam`,
@@ -265,7 +251,7 @@ impl MeshGeometry {
     /// parsed against the full mesh's file, whose nodes they index.
     fn read_at(assets: &AssetSource, path: &str, level: u8, detail: Detail) -> Result<Self> {
         let geometry = read_data(assets, path)?;
-        for n in (1..=level).rev() {
+        for n in (1..=level.min(MAX_LEVEL)).rev() {
             let Some(streams) = level_streams(path, n) else {
                 break;
             };
@@ -297,11 +283,7 @@ impl MeshGeometry {
             Err(_) if chunk(geometry, NODE_MESH_COMBO).is_err() => Vec::new(),
             Err(e) => return Err(e),
         };
-        let material = chunk(geometry, MTL_NAME).ok().and_then(|d| {
-            let name = d.get(..128.min(d.len()))?.split(|&b| b == 0).next()?;
-            let name = String::from_utf8_lossy(name).trim().to_string();
-            (!name.is_empty()).then_some(name)
-        });
+        let material = own_material(geometry);
         let mut g = match streams {
             None if chunk(geometry, IVO_SKIN2).is_err() => MeshGeometry::default(),
             _ => parse_render_streams(streams.unwrap_or(geometry), detail)?,
@@ -313,6 +295,44 @@ impl MeshGeometry {
         }
         Ok(g)
     }
+}
+
+/// The `MtlName` chunk of a geometry file.
+pub(crate) fn own_material(geometry: &[u8]) -> Option<String> {
+    let d = chunk(geometry, MTL_NAME).ok()?;
+    let name = d.get(..128.min(d.len()))?.split(|&b| b == 0).next()?;
+    let name = String::from_utf8_lossy(name).trim().to_string();
+    (!name.is_empty()).then_some(name)
+}
+
+/// A material name as an archive path with extension: a bare `MtlName` (no
+/// folder) sits next to its geometry.
+pub(crate) fn resolve_material(name: &str, geometry_path: &str) -> String {
+    let name = name.replace('\\', "/");
+    let name = if name.contains('/') {
+        name
+    } else {
+        let geometry_path = geometry_path.replace('\\', "/");
+        match geometry_path.rsplit_once('/') {
+            Some((dir, _)) => format!("{dir}/{name}"),
+            None => name,
+        }
+    };
+    if name.to_ascii_lowercase().ends_with(".mtl") {
+        name
+    } else {
+        format!("{name}.mtl")
+    }
+}
+
+/// The game's coarsest detail level.
+const MAX_LEVEL: u8 = 5;
+
+/// Every file reading the geometry at `path` can look for.
+pub(crate) fn geometry_files(path: &str) -> Vec<String> {
+    let mut files = vec![path.to_string(), format!("{path}m")];
+    files.extend((1..=MAX_LEVEL).filter_map(|n| level_streams(path, n)));
+    files
 }
 
 /// The streams file of `path`'s detail level (`x.cga` → `x_lod2.cgam`);
@@ -331,10 +351,14 @@ pub(crate) fn read_data(assets: &AssetSource, path: &str) -> Result<Vec<u8>> {
         .iter()
         .find_map(|p| path.strip_prefix(p))
         .unwrap_or(path);
-    if let Some(b) = assets.try_read(bare)? {
+    // Game files are all under `Data\`: asking that first saves a scan.
+    let under_data = format!("Data\\{bare}");
+    if let Some(b) = assets.try_read(&under_data)? {
         return Ok(b);
     }
-    assets.read(&format!("Data\\{bare}"))
+    assets
+        .try_read(bare)?
+        .ok_or(Error::FileNotInP4k(under_data))
 }
 
 fn bad(what: &str) -> Error {

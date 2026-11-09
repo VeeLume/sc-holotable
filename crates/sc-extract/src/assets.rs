@@ -22,10 +22,16 @@
 //!
 //! # Cost model
 //!
-//! Opening a **live** source is cheap — svarog-p4k memory-maps the archive
-//! and parses only the central directory. Reads are eager: each `read`
-//! call returns a fully-decompressed `Vec<u8>`. Holding the handle open
-//! for many scattered reads is the intended usage pattern.
+//! Opening a **live** source maps the archive and parses its whole central
+//! directory: about a second and hundreds of MB on a live build. Reads are
+//! eager: each `read` call returns a fully-decompressed `Vec<u8>`, and each
+//! lookup scans the file list. Holding the handle open for many scattered
+//! reads is the intended usage pattern.
+//!
+//! Opening an **indexed** source ([`AssetSource::open_indexed`]) maps the
+//! archive and reads a cooked [`AssetIndex`](crate::AssetIndex) instead:
+//! milliseconds, and the file list stays on disk unless a read needs a file
+//! the index does not list.
 //!
 //! Opening a **memory** source is a move of the pre-decompressed byte map.
 //! Reads just clone the relevant `Vec<u8>` out of the map (which already
@@ -36,6 +42,7 @@ use std::path::{Path, PathBuf};
 
 use svarog_p4k::{P4kArchive, P4kEntryRef};
 
+use crate::asset_index::{Indexed, Lookup};
 use crate::error::{Error, Result};
 
 /// Read-only byte feed, backed by either a live `.p4k` archive or a
@@ -58,6 +65,8 @@ enum AssetSourceInner {
         archive: P4kArchive,
         source_path: PathBuf,
     },
+    /// Mapped archive read through cooked pointers.
+    Indexed(Box<Indexed>),
     /// Pre-captured, fully-decompressed byte map keyed by in-archive path.
     /// Used by the snapshot-hydration path.
     Memory {
@@ -84,6 +93,34 @@ impl AssetSource {
                 source_path: p4k_path.to_path_buf(),
             },
         })
+    }
+
+    /// Open a `Data.p4k` through a saved [`AssetIndex`](crate::AssetIndex),
+    /// without loading its file list. When `index_file` is missing,
+    /// unreadable or of another state of the archive, this is a plain
+    /// [`open`](Self::open).
+    ///
+    /// Reads and lookups work as on any live source. Enumerating
+    /// ([`find`](Self::find), [`find_and_read`](Self::find_and_read),
+    /// [`archive`](Self::archive)) or reading a path the index does not list
+    /// opens the whole archive, once.
+    pub fn open_indexed(p4k_path: &Path, index_file: &Path) -> Result<Self> {
+        match Indexed::open(p4k_path, index_file) {
+            Some(indexed) => Ok(Self {
+                inner: AssetSourceInner::Indexed(Box::new(indexed)),
+            }),
+            None => Self::open(p4k_path),
+        }
+    }
+
+    /// Whether this source holds the archive's whole file list: always for a
+    /// plain live source, only after falling back for an indexed one.
+    pub fn holds_file_list(&self) -> bool {
+        match &self.inner {
+            AssetSourceInner::Live { .. } => true,
+            AssetSourceInner::Indexed(indexed) => indexed.whole_is_open(),
+            AssetSourceInner::Memory { .. } => false,
+        }
     }
 
     /// Convenience: open the `Data.p4k` from a discovered installation.
@@ -128,6 +165,7 @@ impl AssetSource {
     pub fn source_path(&self) -> Option<&Path> {
         match &self.inner {
             AssetSourceInner::Live { source_path, .. } => Some(source_path),
+            AssetSourceInner::Indexed(indexed) => Some(indexed.path()),
             AssetSourceInner::Memory { .. } => None,
         }
     }
@@ -143,6 +181,7 @@ impl AssetSource {
     pub fn archive(&self) -> Option<&P4kArchive> {
         match &self.inner {
             AssetSourceInner::Live { archive, .. } => Some(archive),
+            AssetSourceInner::Indexed(indexed) => indexed.whole(),
             AssetSourceInner::Memory { .. } => None,
         }
     }
@@ -170,13 +209,12 @@ impl AssetSource {
     /// instead of [`Error::FileNotInP4k`]. Useful when presence is optional.
     pub fn try_read(&self, path: &str) -> Result<Option<Vec<u8>>> {
         match &self.inner {
-            AssetSourceInner::Live { archive, .. } => {
-                let Some(entry) = archive.find(path) else {
-                    return Ok(None);
-                };
-                let bytes = archive.read(&entry)?;
-                Ok(Some(bytes))
-            }
+            AssetSourceInner::Live { archive, .. } => read_from(archive, path),
+            AssetSourceInner::Indexed(indexed) => match indexed.read(path) {
+                Lookup::Found(bytes) => Ok(Some(bytes)),
+                Lookup::Absent => Ok(None),
+                Lookup::Unlisted => read_from(whole(indexed, path)?, path),
+            },
             AssetSourceInner::Memory { files, .. } => {
                 // Match `P4kArchive::find`'s case-insensitive semantics so
                 // callers that hard-code a path like `"Data/Game2.dcb"` get
@@ -210,13 +248,9 @@ impl AssetSource {
         F: Fn(&str) -> bool,
     {
         match &self.inner {
-            AssetSourceInner::Live { archive, .. } => {
-                let Some(entry) = archive.iter().find(|e| predicate(e.name)) else {
-                    return Ok(None);
-                };
-                let name = entry.name.to_string();
-                let bytes = archive.read(&entry)?;
-                Ok(Some((name, bytes)))
+            AssetSourceInner::Live { archive, .. } => find_in(archive, predicate),
+            AssetSourceInner::Indexed(indexed) => {
+                find_in(whole(indexed, "<enumeration>")?, predicate)
             }
             AssetSourceInner::Memory { files, .. } => {
                 for (path, bytes) in files.iter() {
@@ -243,6 +277,10 @@ impl AssetSource {
             AssetSourceInner::Live { archive, .. } => {
                 Box::new(archive.iter().filter(move |e| predicate(e.name)))
             }
+            AssetSourceInner::Indexed(indexed) => match indexed.whole() {
+                Some(archive) => Box::new(archive.iter().filter(move |e| predicate(e.name))),
+                None => Box::new(std::iter::empty()),
+            },
             AssetSourceInner::Memory { .. } => Box::new(std::iter::empty()),
         }
     }
@@ -257,6 +295,7 @@ impl AssetSource {
     pub fn read_entry(&self, entry: &P4kEntryRef<'_>) -> Result<Vec<u8>> {
         match &self.inner {
             AssetSourceInner::Live { archive, .. } => Ok(archive.read(entry)?),
+            AssetSourceInner::Indexed(indexed) => Ok(whole(indexed, entry.name)?.read(entry)?),
             AssetSourceInner::Memory { .. } => Err(Error::FileNotInP4k(
                 "<read_entry on snapshot-backed source>".into(),
             )),
@@ -291,6 +330,30 @@ impl AssetSource {
     }
 }
 
+/// An indexed source's whole archive, which only an unreadable file can deny.
+fn whole<'a>(indexed: &'a Indexed, wanted: &str) -> Result<&'a P4kArchive> {
+    indexed
+        .whole()
+        .ok_or_else(|| Error::FileNotInP4k(wanted.to_string()))
+}
+
+fn read_from(archive: &P4kArchive, path: &str) -> Result<Option<Vec<u8>>> {
+    let Some(entry) = archive.find(path) else {
+        return Ok(None);
+    };
+    Ok(Some(archive.read(&entry)?))
+}
+
+fn find_in(
+    archive: &P4kArchive,
+    predicate: impl Fn(&str) -> bool,
+) -> Result<Option<(String, Vec<u8>)>> {
+    let Some(entry) = archive.iter().find(|e| predicate(e.name)) else {
+        return Ok(None);
+    };
+    Ok(Some((entry.name.to_string(), archive.read(&entry)?)))
+}
+
 impl std::fmt::Debug for AssetSource {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match &self.inner {
@@ -302,6 +365,12 @@ impl std::fmt::Debug for AssetSource {
                 .field("backing", &"live")
                 .field("source_path", source_path)
                 .field("entries", &archive.entry_count())
+                .finish(),
+            AssetSourceInner::Indexed(indexed) => f
+                .debug_struct("AssetSource")
+                .field("backing", &"indexed")
+                .field("source_path", &indexed.path())
+                .field("listed", &indexed.listed())
                 .finish(),
             AssetSourceInner::Memory { files, label } => f
                 .debug_struct("AssetSource")
