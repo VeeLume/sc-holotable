@@ -3322,8 +3322,10 @@ dependencies = [
  "sc-discovery",
  "sc-extract",
  "sc-items",
+ "sc-locations",
  "sc-tags",
  "serde",
+ "serde_json",
  "tracing",
 ]
 

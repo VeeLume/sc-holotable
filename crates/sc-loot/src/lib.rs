@@ -12,7 +12,12 @@
 //!   whose slots carry a loot config (world containers such as weapon racks
 //!   and crates) — each with its
 //!   [`LootConfig`]s (table, pool filter, chance to generate, secondary
-//!   choices).
+//!   choices, fullness).
+//! - [`LootPlacements`]: where lootables sit in the world (object
+//!   containers, live p4k) and the star-map places they belong to.
+//! - Chances: [`LootTables::shares`] (an item's chance to be one pick, from
+//!   the weights) and [`LootTables::simulate`] (whole fills rolled as the
+//!   client fills a container; see [`Odds`] for the rules).
 //!
 //! # What can be picked (client 4.10.197)
 //!
@@ -38,9 +43,16 @@
 //! it admits, an `Additive` step adds the items it admits back (the ASD
 //! delving filter drops faction and special-event items, then adds the
 //! location's event items). That reading comes from the filters' names and
-//! shapes (INFERRED): where the client applies them was not found. Nor are
-//! container capacity limits (an item must fit the container) or weights,
-//! counts and chances modelled; those are carried as authored.
+//! shapes (INFERRED): where the client applies them was not found.
+//!
+//! A pick goes down a decision tree (`MakeArchetypeDecisionTree`): an entry
+//! of the archetype, then one entry of each secondary layer — a v2
+//! archetype's own groups, or for a v3 table the lootable's
+//! `secondaryChoices` — each keeping the items it matches and dropping the
+//! branches left empty. So an item drops only if it matches one entry of
+//! every layer. [`LootTables::drops`] lists what a [`LootConfig`] can yield
+//! under these rules; whether an item fits its container is left to
+//! [`LootTables::simulate`].
 //!
 //! ```no_run
 //! use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
@@ -65,8 +77,13 @@
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 
+mod chance;
+mod placement;
+
 use std::collections::{HashMap, HashSet};
 
+pub use chance::{DropChance, MAX_RESULTS, Odds};
+pub use placement::{LootPlacement, LootPlacements, Placed};
 pub use sc_extract::RecordCollection;
 use sc_extract::generated as dcb;
 use sc_extract::generated::*;
@@ -137,11 +154,12 @@ pub struct SpawnWith {
 /// `Legendary`) or one layer of a lootable's v3 secondary choices
 /// (manufacturer, rarity and faction weights, `V3ManufacturerWeights_*` /
 /// `V3SecondaryChoices_*`; the manufacturer ones end in an "Anything else"
-/// entry with no positive tag). It adds no items of its own. In v2 the
-/// client keeps only the entry picks that match one of every group's
-/// entries, and [`LootEntry::items`] is already narrowed so; how v3 layers
-/// act was not read (they are taken as weights only). Test an item against
-/// an entry with [`LootTables::selects`].
+/// entry with no positive tag). It adds no items of its own: a pick keeps
+/// only the items that match one of its entries, then one entry is chosen
+/// by weight among those left (client `MakeArchetypeDecisionTree`). A v2
+/// archetype's [`LootEntry::items`] are already narrowed by its groups; a
+/// lootable's v3 layers narrow in [`LootTables::drops`]. Test an item
+/// against an entry with [`LootTables::selects`].
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SecondaryGroup {
     pub name: String,
@@ -312,6 +330,52 @@ impl LootTables {
             && !term.negative.iter().any(|t| closure.contains(t))
     }
 
+    /// Every item `config` can yield, sorted: the picks of the table it
+    /// fills from ([`LootConfig::table_used`]) that its pool filter admits
+    /// and, for a v3 table, that pass its secondary layers
+    /// ([`layers_admit`](Self::layers_admit)), and what spawns with them
+    /// (pool filter only).
+    pub fn drops(&self, config: &LootConfig) -> Vec<Guid> {
+        let Some(table) = config.table_used(self).and_then(|g| self.by_guid.get(&g)) else {
+            return Vec::new();
+        };
+        let pooled = |i: &Guid| {
+            config
+                .pool_filter
+                .as_ref()
+                .is_none_or(|f| self.admits(f, i))
+        };
+        let layered = |i: &Guid| {
+            table.generation == Generation::V2 || self.layers_admit(&config.secondary, i)
+        };
+        let mut out: Vec<Guid> = Vec::new();
+        for entry in table.archetypes.iter().flat_map(|a| &a.archetype.entries) {
+            out.extend(entry.items.iter().filter(|i| pooled(i) && layered(i)));
+            out.extend(
+                entry
+                    .spawn_with
+                    .iter()
+                    .flat_map(|s| &s.items)
+                    .filter(|i| pooled(i)),
+            );
+        }
+        out.sort_by_key(|g| g.to_string());
+        out.dedup();
+        out
+    }
+
+    /// Whether `item` matches one entry of every layer (an entry kind not
+    /// modelled matches everything).
+    pub fn layers_admit(&self, layers: &[SecondaryGroup], item: &Guid) -> bool {
+        layers.iter().all(|layer| {
+            layer.entries.iter().any(|e| match &e.selector {
+                Selector::Tags(term) => self.selects(term, item),
+                Selector::Entities(list) => list.contains(item),
+                Selector::Other { .. } => true,
+            })
+        })
+    }
+
     /// Whether `filter` lets `item` into the pool (see the crate docs).
     /// Filter kinds not modelled let everything through.
     pub fn admits(&self, filter: &PoolFilter, item: &Guid) -> bool {
@@ -398,8 +462,10 @@ pub enum PoolFilter {
 pub struct LootConfig {
     /// The v2 table (`lootTable`).
     pub table: Option<Guid>,
-    /// The v3 table (`lootTableV3`). On LIVE 4.10 one config of 3,402 sets
-    /// both; which one the client uses then is not read.
+    /// The v3 table (`lootTableV3`). The client fills from the v2 table
+    /// when it has archetypes, else from this one
+    /// ([`table_used`](Self::table_used)); on LIVE 4.10 one config of 3,402
+    /// sets both.
     pub table_v3: Option<Guid>,
     /// `lootConstraints.poolFilter`, resolved.
     pub pool_filter: Option<PoolFilter>,
@@ -407,20 +473,60 @@ pub struct LootConfig {
     pub pool_filter_record: Option<Guid>,
     /// `lootConstraints.chanceToGenerate`.
     pub chance_to_generate: f32,
-    /// `lootConstraints.totalResultsLimit`.
+    /// `lootConstraints.totalResultsLimit`; 0 or less: no limit.
     pub total_results_limit: i32,
-    /// `lootConstraints.secondaryChoices`: weightings of the picks, one per
-    /// layer (see [`SecondaryGroup`]).
+    /// `lootConstraints.fullnessFactorRange` (min, max): the share of the
+    /// container's capacity a fill aims at, drawn uniformly per fill.
+    #[serde(default = "full")]
+    pub fullness: (f32, f32),
+    /// `lootConstraints.advanced.pruningLevel`: below `dynamic`, a result
+    /// must fit the container, and a container that reached its target
+    /// takes no more.
+    #[serde(with = "pruning_serde", default = "pruning_none")]
+    pub pruning: ELootPruningLevel,
+    /// `lootConstraints.advanced.fullnessMode`: `stopAfterExceed` fills up
+    /// to the capacity and stops once past the target, `preventExceed`
+    /// never passes the target.
+    #[serde(with = "fullness_mode_serde", default = "stop_after_exceed")]
+    pub fullness_mode: ELootFullnessMode,
+    /// `lootConstraints.secondaryChoices`: the layers a v3 table's picks
+    /// go through, in order (see [`SecondaryGroup`]); a v2 table does not
+    /// use them.
     pub secondary: Vec<SecondaryGroup>,
     /// For a harvestable slot, the container entity it spawns
-    /// (`harvestableEntityClass`).
+    /// (`harvestableEntityClass`, else its `harvestable` preset's
+    /// `entityClass`).
     pub container: Option<Guid>,
+    /// For a harvestable slot, its spawn weights.
+    #[serde(default)]
+    pub slot: Option<SlotWeights>,
+}
+
+/// A harvestable slot's spawn weights, as authored. How the harvestable
+/// spawner rolls them was not read.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct SlotWeights {
+    /// The slot's `relativeProbability`.
+    pub weight: f32,
+    /// The `relativeProbability` of every slot of its config, summed (loot
+    /// or not).
+    pub total: f32,
+    /// Its config's `initialSlotsProbability`.
+    pub initial: f32,
 }
 
 impl LootConfig {
     /// The tables it names (v2 and v3).
     pub fn tables(&self) -> impl Iterator<Item = Guid> + '_ {
         self.table.into_iter().chain(self.table_v3)
+    }
+
+    /// The table the client fills from: the v2 table when it has
+    /// archetypes, else the v3 one (client `FUN_143cee260`).
+    pub fn table_used(&self, tables: &LootTables) -> Option<Guid> {
+        self.table
+            .filter(|g| tables.get(g).is_some_and(|t| !t.archetypes.is_empty()))
+            .or(self.table_v3)
     }
 }
 
@@ -899,6 +1005,9 @@ impl Reader<'_> {
     fn config(&self, c: &dcb::LootConfig, container: Option<Guid>) -> LootConfig {
         let constraints = c.loot_constraints.and_then(|h| h.get(self.pools));
         let pool_filter_record = constraints.and_then(|k| k.pool_filter);
+        let advanced = constraints
+            .and_then(|k| k.advanced)
+            .and_then(|h| h.get(self.pools));
         LootConfig {
             table: c.loot_table,
             table_v3: c.loot_table_v3,
@@ -906,24 +1015,53 @@ impl Reader<'_> {
             pool_filter_record,
             chance_to_generate: constraints.map_or(1.0, |k| k.chance_to_generate),
             total_results_limit: constraints.map_or(0, |k| k.total_results_limit),
+            fullness: constraints
+                .and_then(|k| k.fullness_factor_range)
+                .and_then(|h| h.get(self.pools))
+                .map_or((1.0, 1.0), |r| (r.min, r.max)),
+            pruning: advanced.map_or(ELootPruningLevel::none, |a| a.pruning_level.clone()),
+            fullness_mode: advanced.map_or(ELootFullnessMode::stopAfterExceed, |a| {
+                a.fullness_mode.clone()
+            }),
             secondary: constraints
                 .and_then(|k| k.secondary_choices.as_ref())
                 .map(|s| self.secondary_choices(s))
                 .unwrap_or_default(),
             container,
+            slot: None,
         }
     }
 
     /// The loot configs of a sub-harvestable config's slots that name a
     /// table.
     fn slots(&self, config: &SubHarvestableConfig) -> Vec<LootConfig> {
-        config
+        let slots: Vec<&SubHarvestableSlot> = config
             .sub_harvestables
             .iter()
             .filter_map(|s| s.get(self.pools))
+            .collect();
+        let total: f32 = slots.iter().map(|s| s.relative_probability.max(0.0)).sum();
+        slots
+            .iter()
             .filter_map(|slot| {
                 let c = slot.loot_config?.get(self.pools)?;
-                Some(self.config(c, slot.harvestable_entity_class))
+                let container = slot.harvestable_entity_class.or_else(|| {
+                    let preset = self
+                        .store
+                        .records
+                        .multi_feature
+                        .harvestable_preset
+                        .get(&slot.harvestable?)?
+                        .get(self.pools)?;
+                    preset.entity_class
+                });
+                let mut loot = self.config(c, container);
+                loot.slot = Some(SlotWeights {
+                    weight: slot.relative_probability,
+                    total,
+                    initial: config.initial_slots_probability,
+                });
+                Some(loot)
             })
             .filter(|c| c.tables().next().is_some())
             .collect()
@@ -1056,5 +1194,43 @@ impl Reader<'_> {
                 })
             })
             .collect()
+    }
+}
+
+fn full() -> (f32, f32) {
+    (1.0, 1.0)
+}
+
+fn pruning_none() -> ELootPruningLevel {
+    ELootPruningLevel::none
+}
+
+fn stop_after_exceed() -> ELootFullnessMode {
+    ELootFullnessMode::stopAfterExceed
+}
+
+/// `serde` adapter: the DCB string.
+mod pruning_serde {
+    use sc_extract::generated::ELootPruningLevel;
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    pub fn serialize<S: Serializer>(v: &ELootPruningLevel, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(v.as_dcb_str())
+    }
+    pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<ELootPruningLevel, D::Error> {
+        Ok(ELootPruningLevel::from_dcb_str(&String::deserialize(d)?))
+    }
+}
+
+/// `serde` adapter: the DCB string.
+mod fullness_mode_serde {
+    use sc_extract::generated::ELootFullnessMode;
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    pub fn serialize<S: Serializer>(v: &ELootFullnessMode, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(v.as_dcb_str())
+    }
+    pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<ELootFullnessMode, D::Error> {
+        Ok(ELootFullnessMode::from_dcb_str(&String::deserialize(d)?))
     }
 }

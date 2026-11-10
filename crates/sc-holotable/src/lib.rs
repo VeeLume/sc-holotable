@@ -159,7 +159,9 @@ pub mod vehicles {
 #[cfg(feature = "loot")]
 pub mod loot {
     //! Loot tables ([`sc_loot`]): [`LootTables`] of both generations with
-    //! each entry's picks resolved, and the [`Lootables`] that carry them.
+    //! each entry's picks resolved and their drop chances ([`Odds`]), the
+    //! [`Lootables`] that carry them, and where those sit in the world
+    //! ([`LootPlacements`]).
     pub use sc_loot::*;
 }
 
@@ -267,7 +269,7 @@ pub mod prelude {
         Universe,
     };
     #[cfg(feature = "loot")]
-    pub use sc_loot::{LootTable, LootTables, Lootable, Lootables};
+    pub use sc_loot::{LootPlacements, LootTable, LootTables, Lootable, Lootables};
     #[cfg(feature = "manufacturers")]
     pub use sc_manufacturers::{Manufacturer, Manufacturers};
     #[cfg(feature = "mining")]

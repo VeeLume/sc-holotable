@@ -18,11 +18,11 @@
 //! ([`ProviderLocations::compose`]) and the per-member extraction are
 //! unit-tested; the full cook is a p4k-time step.
 
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 use sc_extract::object_container::XmlNode;
 use sc_extract::{AssetSource, Guid, RecordStore, Result};
-use sc_locations::{ObjectContainers, PlacementId, normalize_socpak_path};
+use sc_locations::{ObjectContainers, normalize_socpak_path};
 use serde::{Deserialize, Serialize};
 
 /// `StarMapObject` ↔ `HarvestableProviderPreset` GUID, both directions.
@@ -61,7 +61,7 @@ impl ProviderLocations {
     ) -> Self {
         let mut pl = Self::default();
         for (socpak, providers) in socpak_providers {
-            for place in named_places(containers, socpak) {
+            for (place, _) in containers.places_of(socpak) {
                 for &provider in providers {
                     let at = pl.by_location.entry(place).or_default();
                     if !at.contains(&provider) {
@@ -136,32 +136,6 @@ fn solar_system_roots(store: &RecordStore) -> Vec<String> {
     }
     roots.sort();
     roots
-}
-
-/// The `StarMapObject`s a socpak's content belongs to: from each placement
-/// including it, up through `parentGUID` (else every placement including the
-/// socpak it sits in) to the nearest placement that names one.
-fn named_places(containers: &ObjectContainers, socpak: &str) -> Vec<Guid> {
-    let mut places = Vec::new();
-    let mut seen: HashSet<PlacementId> = HashSet::new();
-    let mut stack: Vec<PlacementId> = containers.nesting(socpak).to_vec();
-    while let Some(id) = stack.pop() {
-        if !seen.insert(id) {
-            continue;
-        }
-        let placement = containers.get(id);
-        if let Some(place) = placement.starmap_guid() {
-            if !places.contains(&place) {
-                places.push(place);
-            }
-            continue;
-        }
-        match containers.parent_entity(id) {
-            Some(parent) => stack.push(parent),
-            None => stack.extend_from_slice(containers.nesting(placement.socpak())),
-        }
-    }
-    places
 }
 
 /// Every non-null `HarvestableProviderComponent.preset` in a socpak member.

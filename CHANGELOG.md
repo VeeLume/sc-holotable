@@ -13,6 +13,26 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-loot`: where loot sits — `LootPlacements`.** `LootPlacements::cook(&AssetSource, &Lootables)` walks every object container (live p4k) for the entities that place a lootable: by its class (`Placed::Entity`: corpses, a few placed NPCs) or by a `looseSubConfigBase` naming a harvestable slot config (`Placed::Container { entity }`: racks, crates, lockers). Each `LootPlacement` has its `socpak`, `count` and `places` (`StarMapObject`, realizations), and `at(&place)` gives the entities there. `LootPlacements::at(&place)` lists the lootables at a place; `compose` is the pure join.
+  - On LIVE 4.10: 121 of 276 lootables are placed, and 378 of 529 container placements reach a place. A place is usually the planet or moon, not the outpost. Event and mission content (Siege of Orison, Fleet Week, hijacked ships) and the `loc/mod/ugf` layouts reach none.
+  - Probe: `sc-loot/examples/placement_probe.rs`.
+- **`sc-loot`: `LootTables::drops(&LootConfig)`**, what a config can yield under the client's rules; plus `LootTables::layers_admit` and `LootConfig::table_used`. The client fills from the v2 table when it has archetypes, else from the v3 one (client 4.10.197).
+- **`sc-loot`: drop chances.** Two ways to get them:
+  - `LootTables::shares(&LootConfig)`: each item's chance to be one pick, from the weights alone, times `chanceToGenerate`.
+  - `LootTables::simulate(&LootConfig, capacity, volume, runs, seed)`: rolls whole fills as the client fills a container. It returns `Odds` with the share of fills that generate, the results per fill, and per item a `DropChance` (`chance` per fill, `expected` count).
+
+  The fill rules were read from the client (4.10.197): v2 archetype minimums and maximums; v3 chance to exist, priorities, choice and dupe limits; stacks; spawn-withs; the fullness target, pruning level and fullness mode. `MAX_RESULTS` bounds a fill with no other bound. Probe: `sc-loot/examples/chance_probe.rs`.
+- **`sc-loot`: `LootConfig` carries the rest of the loot constraints:** `fullness` (`fullnessFactorRange`), `pruning`, `fullness_mode`, and a slot's `SlotWeights` (`relativeProbability`, the config's total, `initialSlotsProbability`). A slot's `container` falls back to its `harvestable` preset's entity class. On LIVE 4.10 all 2,088 slot configs now name a container (1,321 before), and 2,077 of those have a known capacity.
+- **`sc-items`: `Item::occupancy`**, the SCU an item takes in an inventory (`AttachDef.inventoryOccupancyVolume`). Every item that can drop as loot has one on LIVE 4.10.
+- **`sc-locations`: `ObjectContainers::places_of(socpak)`**, the `StarMapObject`s a socpak's content belongs to, each with how many times the socpak is realized there. `sc-gathering` now uses it; its results are unchanged.
+
+### Changed
+
+- **`sc-loot`: a v3 table's picks must pass the lootable's secondary layers.** Read from the client's decision tree (4.10.197): a layer keeps only the items one of its entries matches, then picks among them by weight. The rarity layers have no catch-all entry, so they drop items. `Source::Loot` (`sc-acquisitions`) shrinks from 3,746 to 3,714 items on LIVE 4.10 and names only the table a config fills from. Probe: `sc-loot/examples/secondary_dig.rs`.
+- **`sc-locations`: `ObjectContainers` also indexes entities that nest a socpak through `EntityComponentObjectContainer`, whatever their class.** Before, only classes named `*ObjectContainer*` counted, which cut outposts and caves off from their planet. On LIVE 4.10 this goes from 39,675 to 66,103 placements; `Universe` lookups are unchanged.
+
 ## [v0.46.0] - 2026-11-09
 
 ### Added

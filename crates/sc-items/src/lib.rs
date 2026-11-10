@@ -140,6 +140,10 @@ pub struct Item {
     /// lockers, personal storage, backpacks).
     #[serde(default)]
     pub inventory: Option<Inventory>,
+    /// `AttachDef.inventoryOccupancyVolume`, SCU: the room it takes in an
+    /// inventory.
+    #[serde(default)]
+    pub occupancy: Option<f64>,
 }
 
 impl Item {
@@ -349,6 +353,10 @@ fn item_for(ecd: &EntityClassDefinition, store: &RecordStore) -> Option<Item> {
         required_tags: words(&item_def.required_tags),
         mass: mass(ecd, pools),
         inventory: inventory(ecd, store),
+        occupancy: item_def
+            .inventory_occupancy_volume
+            .as_ref()
+            .and_then(|v| inventory::scu(v, pools)),
     })
 }
 
@@ -461,6 +469,7 @@ mod tests {
             required_tags: Vec::new(),
             mass: None,
             inventory: None,
+            occupancy: None,
         }
     }
 
