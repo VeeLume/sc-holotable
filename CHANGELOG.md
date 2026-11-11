@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.47.0] - 2026-11-11
+
 ### Added
 
 - **`sc-loot`: where loot sits — `LootPlacements`.** `LootPlacements::cook(&AssetSource, &Lootables)` walks every object container (live p4k) for the entities that place a lootable: by its class (`Placed::Entity`: corpses, a few placed NPCs) or by a `looseSubConfigBase` naming a harvestable slot config (`Placed::Container { entity }`: racks, crates, lockers). Each `LootPlacement` has its `socpak`, `count` and `places` (`StarMapObject`, realizations), and `at(&place)` gives the entities there. `LootPlacements::at(&place)` lists the lootables at a place; `compose` is the pure join.
