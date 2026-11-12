@@ -5650,6 +5650,8 @@ pub enum BB_IntegerField {
     SvgScalingBehavior,
     /// DCB value: `TextureGroup`
     TextureGroup,
+    /// DCB value: `TextCharLimit`
+    TextCharLimit,
     /// DCB value: `TickBoxMode`
     TickBoxMode,
     /// DCB value: `VerticalAlignment`
@@ -5731,6 +5733,7 @@ impl BB_IntegerField {
             "StrokeAlignment" => Self::StrokeAlignment,
             "SvgScalingBehavior" => Self::SvgScalingBehavior,
             "TextureGroup" => Self::TextureGroup,
+            "TextCharLimit" => Self::TextCharLimit,
             "TickBoxMode" => Self::TickBoxMode,
             "VerticalAlignment" => Self::VerticalAlignment,
             "WidthBehavior" => Self::WidthBehavior,
@@ -5805,6 +5808,7 @@ impl BB_IntegerField {
             Self::StrokeAlignment => "StrokeAlignment",
             Self::SvgScalingBehavior => "SvgScalingBehavior",
             Self::TextureGroup => "TextureGroup",
+            Self::TextCharLimit => "TextCharLimit",
             Self::TickBoxMode => "TickBoxMode",
             Self::VerticalAlignment => "VerticalAlignment",
             Self::WidthBehavior => "WidthBehavior",
@@ -24924,6 +24928,46 @@ impl EItemType {
             Self::WheeledController => "WheeledController",
             Self::WeaponMount => "WeaponMount",
             Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `EJournalEntryPriority`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum EJournalEntryPriority {
+    /// DCB value: `Low`
+    Low,
+    /// DCB value: `Medium`
+    Medium,
+    /// DCB value: `High`
+    High,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl EJournalEntryPriority {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Low" => Self::Low,
+            "Medium" => Self::Medium,
+            "High" => Self::High,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Low => "Low",
+            Self::Medium => "Medium",
+            Self::High => "High",
             Self::Unrecognized(s) => s,
         }
     }

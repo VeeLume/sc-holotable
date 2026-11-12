@@ -3557,6 +3557,26 @@ impl<'a> Extract<'a> for BuildingBlocks_ShapeWidget {
     }
 }
 
+/// DCB type: `BuildingBlocks_TextOverflowEllipsis`
+/// Inherits from: `BuildingBlocks_TextOverflowBase`
+pub struct BuildingBlocks_TextOverflowEllipsis {}
+
+impl Pooled for BuildingBlocks_TextOverflowEllipsis {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.building_blocks_text_overflow_ellipsis
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.building_blocks_text_overflow_ellipsis
+    }
+}
+
+impl<'a> Extract<'a> for BuildingBlocks_TextOverflowEllipsis {
+    const TYPE_NAME: &'static str = "BuildingBlocks_TextOverflowEllipsis";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `BuildingBlocks_EntityWidgetBase`
 /// Inherits from: `BuildingBlocks_WidgetBase`
 pub struct BuildingBlocks_EntityWidgetBase {
@@ -8238,52 +8258,6 @@ impl<'a> Extract<'a> for SArchetypeEntityAssetDefBase {
                 .get_str("parentItemportName")
                 .map(String::from)
                 .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `SArchetypeAssetEntityDef`
-/// Inherits from: `SArchetypeEntityAssetDefBase`
-pub struct SArchetypeAssetEntityDef {
-    /// `debugName` (String)
-    pub debug_name: String,
-    /// `itemportName` (String)
-    pub itemport_name: String,
-    /// `parentItemportName` (String)
-    pub parent_itemport_name: String,
-    /// `entityClass` (Reference)
-    pub entity_class: Option<CigGuid>,
-}
-
-impl Pooled for SArchetypeAssetEntityDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.sarchetype_asset_entity_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.sarchetype_asset_entity_def
-    }
-}
-
-impl<'a> Extract<'a> for SArchetypeAssetEntityDef {
-    const TYPE_NAME: &'static str = "SArchetypeAssetEntityDef";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            itemport_name: inst
-                .get_str("itemportName")
-                .map(String::from)
-                .unwrap_or_default(),
-            parent_itemport_name: inst
-                .get_str("parentItemportName")
-                .map(String::from)
-                .unwrap_or_default(),
-            entity_class: inst
-                .get("entityClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
         }
     }
 }
@@ -14481,34 +14455,6 @@ impl<'a> Extract<'a> for StringUserVariableSetValueTask {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
             value: inst.get_str("value").map(String::from).unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `RecordRefUserVariableTypeCanvasRecord`
-/// Inherits from: `RecordRefUserVariableTypeBase`
-pub struct RecordRefUserVariableTypeCanvasRecord {
-    /// `value` (Reference)
-    pub value: Option<CigGuid>,
-}
-
-impl Pooled for RecordRefUserVariableTypeCanvasRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.record_ref_user_variable_type_canvas_record
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.record_ref_user_variable_type_canvas_record
-    }
-}
-
-impl<'a> Extract<'a> for RecordRefUserVariableTypeCanvasRecord {
-    const TYPE_NAME: &'static str = "RecordRefUserVariableTypeCanvasRecord";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            value: inst
-                .get("value")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
         }
     }
 }

@@ -17,6 +17,8 @@ pub struct MusiclogicPools {
     pub cinematic_config: Vec<Option<CinematicConfig>>,
     pub attack_detection_config: Vec<Option<AttackDetectionConfig>>,
     pub enemy_awareness_config: Vec<Option<EnemyAwarenessConfig>>,
+    pub enemy_type_entry: Vec<Option<EnemyTypeEntry>>,
+    pub enemy_type_config: Vec<Option<EnemyTypeConfig>>,
     pub playlist_rngconfig: Vec<Option<PlaylistRNGConfig>>,
     pub location_music_config: Vec<Option<LocationMusicConfig>>,
     pub music_logic_config: Vec<Option<MusicLogicConfig>>,

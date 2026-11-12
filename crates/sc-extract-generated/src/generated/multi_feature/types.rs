@@ -5941,7 +5941,6 @@ impl<'a> Extract<'a> for AITargetableComponentParams {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -5949,8 +5948,7 @@ impl<'a> Extract<'a> for AITargetableComponentParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct NavigationLinkTagCost {
     /// `conditionTags` (Class)
@@ -5977,7 +5975,6 @@ pub struct NavigationLinkTagCost {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -5985,8 +5982,7 @@ pub struct NavigationLinkTagCost {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for NavigationLinkTagCost {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -6013,7 +6009,6 @@ impl Pooled for NavigationLinkTagCost {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6021,8 +6016,7 @@ impl Pooled for NavigationLinkTagCost {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for NavigationLinkTagCost {
     const TYPE_NAME: &'static str = "NavigationLinkTagCost";
@@ -6060,7 +6054,6 @@ impl<'a> Extract<'a> for NavigationLinkTagCost {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6068,8 +6061,7 @@ impl<'a> Extract<'a> for NavigationLinkTagCost {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct NavigationLinkCostCustomization {
     /// `tagCosts` (Class (array))
@@ -6092,7 +6084,6 @@ pub struct NavigationLinkCostCustomization {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6100,8 +6091,7 @@ pub struct NavigationLinkCostCustomization {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for NavigationLinkCostCustomization {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -6128,7 +6118,6 @@ impl Pooled for NavigationLinkCostCustomization {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6136,8 +6125,7 @@ impl Pooled for NavigationLinkCostCustomization {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for NavigationLinkCostCustomization {
     const TYPE_NAME: &'static str = "NavigationLinkCostCustomization";
@@ -6183,7 +6171,6 @@ impl<'a> Extract<'a> for NavigationLinkCostCustomization {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6191,8 +6178,7 @@ impl<'a> Extract<'a> for NavigationLinkCostCustomization {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct NavigationLinkType {
     /// `linkValidForAgentType` (String)
@@ -6221,7 +6207,6 @@ pub struct NavigationLinkType {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6229,8 +6214,7 @@ pub struct NavigationLinkType {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for NavigationLinkType {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -6257,7 +6241,6 @@ impl Pooled for NavigationLinkType {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6265,8 +6248,7 @@ impl Pooled for NavigationLinkType {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for NavigationLinkType {
     const TYPE_NAME: &'static str = "NavigationLinkType";
@@ -6316,7 +6298,6 @@ impl<'a> Extract<'a> for NavigationLinkType {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6324,8 +6305,7 @@ impl<'a> Extract<'a> for NavigationLinkType {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct NavLinkHelperLocation {
     /// `helperName` (String)
@@ -6347,7 +6327,6 @@ pub struct NavLinkHelperLocation {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6355,8 +6334,7 @@ pub struct NavLinkHelperLocation {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for NavLinkHelperLocation {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -6380,7 +6358,6 @@ impl Pooled for NavLinkHelperLocation {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6388,8 +6365,7 @@ impl Pooled for NavLinkHelperLocation {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for NavLinkHelperLocation {
     const TYPE_NAME: &'static str = "NavLinkHelperLocation";
@@ -6469,7 +6445,6 @@ impl<'a> Extract<'a> for NavLinkTransformLocation {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6477,8 +6452,7 @@ impl<'a> Extract<'a> for NavLinkTransformLocation {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct LocomotionNavigationLink {
     /// `linkValidForAgentType` (String)
@@ -6515,7 +6489,6 @@ pub struct LocomotionNavigationLink {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6523,8 +6496,7 @@ pub struct LocomotionNavigationLink {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for LocomotionNavigationLink {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -6549,7 +6521,6 @@ impl Pooled for LocomotionNavigationLink {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -6557,8 +6528,7 @@ impl Pooled for LocomotionNavigationLink {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for LocomotionNavigationLink {
     const TYPE_NAME: &'static str = "LocomotionNavigationLink";
@@ -6938,15 +6908,13 @@ impl<'a> Extract<'a> for VaultNavigationLink {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct DoorNavigationLinkController {}
 
@@ -6963,15 +6931,13 @@ pub struct DoorNavigationLinkController {}
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for DoorNavigationLinkController {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -6995,15 +6961,13 @@ impl Pooled for DoorNavigationLinkController {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for DoorNavigationLinkController {
     const TYPE_NAME: &'static str = "DoorNavigationLinkController";
@@ -7030,7 +6994,6 @@ impl<'a> Extract<'a> for DoorNavigationLinkController {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -7038,8 +7001,7 @@ impl<'a> Extract<'a> for DoorNavigationLinkController {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct NavigationLinkComponentParams {
     /// `enabledForAI` (Boolean)
@@ -7066,7 +7028,6 @@ pub struct NavigationLinkComponentParams {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -7074,8 +7035,7 @@ pub struct NavigationLinkComponentParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for NavigationLinkComponentParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -7102,7 +7062,6 @@ impl Pooled for NavigationLinkComponentParams {
     feature = "entities-scitem-human",
     feature = "entities-scitem-navigationlinks",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -7110,8 +7069,7 @@ impl Pooled for NavigationLinkComponentParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for NavigationLinkComponentParams {
     const TYPE_NAME: &'static str = "NavigationLinkComponentParams";
@@ -7878,14 +7836,12 @@ impl<'a> Extract<'a> for BoundingBoxTraversalCostShapeConfig {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct DoorNavigationTriggerAdapter {}
 
@@ -7898,14 +7854,12 @@ pub struct DoorNavigationTriggerAdapter {}
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for DoorNavigationTriggerAdapter {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -7925,14 +7879,12 @@ impl Pooled for DoorNavigationTriggerAdapter {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for DoorNavigationTriggerAdapter {
     const TYPE_NAME: &'static str = "DoorNavigationTriggerAdapter";
@@ -53637,7 +53589,6 @@ impl<'a> Extract<'a> for AnimationJointLinearRotation {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-simpleanimators",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -53645,8 +53596,7 @@ impl<'a> Extract<'a> for AnimationJointLinearRotation {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct AnimationJointLinearTranslation {
     /// `variable` (WeakPointer)
@@ -53672,7 +53622,6 @@ pub struct AnimationJointLinearTranslation {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-simpleanimators",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -53680,8 +53629,7 @@ pub struct AnimationJointLinearTranslation {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for AnimationJointLinearTranslation {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -53703,7 +53651,6 @@ impl Pooled for AnimationJointLinearTranslation {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-simpleanimators",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -53711,8 +53658,7 @@ impl Pooled for AnimationJointLinearTranslation {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for AnimationJointLinearTranslation {
     const TYPE_NAME: &'static str = "AnimationJointLinearTranslation";
@@ -63182,6 +63128,30 @@ impl<'a> Extract<'a> for BuildingBlocks_IntegerStringPair {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-suit",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -63209,6 +63179,30 @@ pub struct BindingsOperations_IntegerStringCanvasPair {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-suit",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -63242,6 +63236,30 @@ impl Pooled for BindingsOperations_IntegerStringCanvasPair {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-suit",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -63275,6 +63293,7 @@ impl<'a> Extract<'a> for BindingsOperations_IntegerStringCanvasPair {
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
+    feature = "missionbroker",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
 ))]
@@ -63298,6 +63317,7 @@ pub struct BuildingBlocks_StringStringPair {
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
+    feature = "missionbroker",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
 ))]
@@ -63321,6 +63341,7 @@ impl Pooled for BuildingBlocks_StringStringPair {
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
+    feature = "missionbroker",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
 ))]
@@ -65005,6 +65026,8 @@ impl<'a> Extract<'a> for BuildingBlocks_TagIntegerPair {
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -65023,6 +65046,8 @@ pub struct BuildingBlocks_TagLocalizedPair {
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -65041,6 +65066,8 @@ impl Pooled for BuildingBlocks_TagLocalizedPair {
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -65207,6 +65234,8 @@ impl<'a> Extract<'a> for BuildingBlocks_TagStringPair {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -65224,6 +65253,8 @@ pub struct BuildingBlocks_TagTagPair {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -65243,6 +65274,8 @@ impl Pooled for BuildingBlocks_TagTagPair {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -67963,6 +67996,8 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsBooleanFromIntegerSwitch {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks",
@@ -67984,6 +68019,8 @@ pub struct BuildingBlocks_BindingsBooleanFromTagSwitch {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks",
@@ -68009,6 +68046,8 @@ impl Pooled for BuildingBlocks_BindingsBooleanFromTagSwitch {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks",
@@ -89918,6 +89957,30 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsStringFromBooleanCanvas {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-suit",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -89947,6 +90010,30 @@ pub struct BindingsOperations_StringFromIntegerSwitchCanvas {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-suit",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -89980,6 +90067,30 @@ impl Pooled for BindingsOperations_StringFromIntegerSwitchCanvas {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-suit",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -90786,6 +90897,7 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsStringFromTagSwitch {
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
+    feature = "missionbroker",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
 ))]
@@ -90811,6 +90923,7 @@ pub struct BuildingBlocks_BindingsStringFromStringSwitch {
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
+    feature = "missionbroker",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
 ))]
@@ -90838,6 +90951,7 @@ impl Pooled for BuildingBlocks_BindingsStringFromStringSwitch {
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
+    feature = "missionbroker",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
 ))]
@@ -92379,6 +92493,8 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsTagFromStringSwitch {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -92398,6 +92514,8 @@ pub struct BuildingBlocks_BindingsTagFromTagSwitch {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -92421,6 +92539,8 @@ impl Pooled for BuildingBlocks_BindingsTagFromTagSwitch {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -96971,6 +97091,8 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsLocalizationFromIntegerSwitch {
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -96991,6 +97113,8 @@ pub struct BuildingBlocks_BindingsLocalizedFromTagSwitch {
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -97013,6 +97137,8 @@ impl Pooled for BuildingBlocks_BindingsLocalizedFromTagSwitch {
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -133938,6 +134064,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierColor {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -134057,6 +134184,7 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeWidthBehavior {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -134184,6 +134312,7 @@ impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeWidthBehavior {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -140062,6 +140191,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeSegmentProgre
     feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-airlocks",
     feature = "entities-scitem-atc",
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
@@ -140078,6 +140208,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeSegmentProgre
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -140177,6 +140308,7 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeSvgScalingBehavior {
     feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-airlocks",
     feature = "entities-scitem-atc",
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
@@ -140193,6 +140325,7 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeSvgScalingBehavior {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -140300,6 +140433,7 @@ impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeSvgScalingBehavior {
     feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-airlocks",
     feature = "entities-scitem-atc",
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
@@ -140316,6 +140450,7 @@ impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeSvgScalingBehavior {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -141990,6 +142125,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeContentBoxPos
     feature = "entities-environmentscreen",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
@@ -141997,6 +142133,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeContentBoxPos
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "genericmobiterminals",
     feature = "harvestable",
@@ -142022,6 +142159,7 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeTextFieldWidgetStylePreset 
     feature = "entities-environmentscreen",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
@@ -142029,6 +142167,7 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeTextFieldWidgetStylePreset 
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "genericmobiterminals",
     feature = "harvestable",
@@ -142060,6 +142199,7 @@ impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeTextFieldWidgetStylePr
     feature = "entities-environmentscreen",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
@@ -142067,6 +142207,7 @@ impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeTextFieldWidgetStylePr
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "genericmobiterminals",
     feature = "harvestable",
@@ -142656,6 +142797,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeModularKitVer
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -142699,6 +142841,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeModularKitVer
     feature = "sglobalsalvagerepairbeamparams",
     feature = "ssolarsystem",
     feature = "starmap",
+    feature = "transportsystem",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
     feature = "ui-mobiglas"
@@ -142764,6 +142907,7 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeModularKitCaseModifier {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -142807,6 +142951,7 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeModularKitCaseModifier {
     feature = "sglobalsalvagerepairbeamparams",
     feature = "ssolarsystem",
     feature = "starmap",
+    feature = "transportsystem",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
     feature = "ui-mobiglas"
@@ -142878,6 +143023,7 @@ impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeModularKitCaseModifier
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -142921,6 +143067,7 @@ impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeModularKitCaseModifier
     feature = "sglobalsalvagerepairbeamparams",
     feature = "ssolarsystem",
     feature = "starmap",
+    feature = "transportsystem",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
     feature = "ui-mobiglas"
@@ -150491,6 +150638,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldTransitionNumber {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -150646,6 +150794,7 @@ pub struct BuildingBlocks_FieldTransitionColor {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -150795,6 +150944,7 @@ impl Pooled for BuildingBlocks_FieldTransitionColor {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -150961,6 +151111,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldTransitionColor {
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -151115,6 +151266,7 @@ pub struct BuildingBlocks_TimelineTypeReference {
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -151273,6 +151425,7 @@ impl Pooled for BuildingBlocks_TimelineTypeReference {
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -152047,6 +152200,7 @@ impl<'a> Extract<'a> for BuildingBlocks_TimelineTypeEmbedded {
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -152200,6 +152354,7 @@ pub struct BuildingBlocks_Timeline {
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -152357,6 +152512,7 @@ impl Pooled for BuildingBlocks_Timeline {
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -162010,6 +162166,10 @@ pub struct BuildingBlocks_WidgetText {
     pub text_alignment: BB_TextAlignment,
     /// `verticalAlignment` (EnumChoice)
     pub vertical_alignment: BB_VerticalTextAlignment,
+    /// `textOverflow` (StrongPointer)
+    pub text_overflow: Option<BuildingBlocks_TextOverflowBasePtr>,
+    /// `charLimit` (Int32)
+    pub char_limit: i32,
     /// `wordWrap` (Boolean)
     pub word_wrap: bool,
     /// `lineSpacing` (Single)
@@ -162815,6 +162975,13 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetText {
             vertical_alignment: BB_VerticalTextAlignment::from_dcb_str(
                 inst.get_str("verticalAlignment").unwrap_or(""),
             ),
+            text_overflow: match inst.get("textOverflow") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(BuildingBlocks_TextOverflowBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            char_limit: inst.get_i32("charLimit").unwrap_or_default(),
             word_wrap: inst.get_bool("wordWrap").unwrap_or_default(),
             line_spacing: inst.get_f32("lineSpacing").unwrap_or_default(),
             letter_spacing: inst.get_f32("letterSpacing").unwrap_or_default(),
@@ -171908,7 +172075,6 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetCinematicLabel {
     feature = "entities-scitem-actormovables",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-carryables",
-    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
@@ -172077,7 +172243,6 @@ pub struct BuildingBlocks_WidgetContainer {
     feature = "entities-scitem-actormovables",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-carryables",
-    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
@@ -172122,7 +172287,6 @@ impl Pooled for BuildingBlocks_WidgetContainer {
     feature = "entities-scitem-actormovables",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-carryables",
-    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
@@ -186230,6 +186394,7 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentLabelCaptionPair {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -186510,6 +186675,7 @@ pub struct BuildingBlocks_ComponentGeneralButton {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -186656,6 +186822,7 @@ impl Pooled for BuildingBlocks_ComponentGeneralButton {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -211123,108 +211290,43 @@ impl<'a> Extract<'a> for BuildingBlocks_StyleEntry {
 /// Inherits from: `BuildingBlocks_TextFormatModifierBase`
 #[cfg(any(
     feature = "actor-actors",
-    feature = "actorstatuscomponent",
-    feature = "actorstatuscomponent-globalactorstatusparams",
-    feature = "actorstatuscomponent-medicaltieritemconfig",
-    feature = "actorstatuscomponent-playerstatus",
-    feature = "actorstatuscomponent-playerstatus_aiboss",
-    feature = "actorstatuscomponent-playerstatus_aibosssuper",
-    feature = "actorstatuscomponent-playerstatusai",
-    feature = "actorstatuscomponent-playerstatusai_captain",
-    feature = "actorstatuscomponent-playerstatusai_elite",
-    feature = "actorstatuscomponent-playerstatusai_juggernaut",
-    feature = "actorstatuscomponent-playerstatusai_juggernaut_elite",
-    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
-    feature = "actorstatuscomponent-playerstatusai_vanduul",
-    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
-    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
-    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
-    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
-    feature = "actorstatuscomponent-playerstatusai_vlkapex",
-    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
-    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
-    feature = "actorstatuscomponent-playerstatusai_yormandi",
-    feature = "actorstatuscomponent-playerstatuscorpse",
-    feature = "actorstatuscomponent-playerstatuscreature",
-    feature = "actorstatuscomponent-playerstatusea",
-    feature = "actorstatuscomponent-playerstatuspu",
-    feature = "actorstatuscomponent-powersuitstatus",
-    feature = "actorstatuscomponent-powersuitstatus_combat",
-    feature = "actorstatuscomponent-transportstatus",
     feature = "aiwavecollection",
-    feature = "ammoparams",
-    feature = "areaservices",
-    feature = "cargomanifest",
-    feature = "commsnotifications",
-    feature = "communicationsystem",
     feature = "contracts",
     feature = "crafting",
-    feature = "crewmanifest",
-    feature = "entities-animentity_character",
-    feature = "entities-area",
-    feature = "entities-audio",
     feature = "entities-basebuilding",
-    feature = "entities-cinematiclabelwithvehicle",
-    feature = "entities-commodities",
-    feature = "entities-dev",
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
     feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
-    feature = "entities-navpoint_dynamic_spawnedbarge",
-    feature = "entities-scitem-atc",
-    feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
-    feature = "entities-scitem-human",
     feature = "entities-scitem-itembanks",
     feature = "entities-scitem-mission_entities",
-    feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
-    feature = "entities-scitem-spawers",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
-    feature = "entities-scitem-vehicles",
-    feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
     feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
     feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
     feature = "entities-spaceships",
-    feature = "entities-test",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "factions",
-    feature = "fuelparams",
     feature = "gamemode",
     feature = "genericmobiterminals",
-    feature = "globalcommsnotificationparams",
-    feature = "globalshopparams",
     feature = "harvestable",
-    feature = "instancedinterior",
-    feature = "inventorycontainers",
-    feature = "item",
-    feature = "itemresourcenetwork",
     feature = "journalentry",
-    feature = "lawsystem",
     feature = "level",
     feature = "loadoutkits",
-    feature = "lootgeneration",
     feature = "megamap",
-    feature = "missionbroker",
-    feature = "missiondata",
-    feature = "missiongiver",
     feature = "player",
     feature = "reputation",
-    feature = "resourcetypedatabase",
-    feature = "sglobalsalvagerepairbeamparams",
-    feature = "ssolarsystem",
-    feature = "starmap",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
     feature = "ui-mobiglas"
@@ -211238,108 +211340,43 @@ pub struct BuildingBlocks_BooleanTextFormatModifier {
 
 #[cfg(any(
     feature = "actor-actors",
-    feature = "actorstatuscomponent",
-    feature = "actorstatuscomponent-globalactorstatusparams",
-    feature = "actorstatuscomponent-medicaltieritemconfig",
-    feature = "actorstatuscomponent-playerstatus",
-    feature = "actorstatuscomponent-playerstatus_aiboss",
-    feature = "actorstatuscomponent-playerstatus_aibosssuper",
-    feature = "actorstatuscomponent-playerstatusai",
-    feature = "actorstatuscomponent-playerstatusai_captain",
-    feature = "actorstatuscomponent-playerstatusai_elite",
-    feature = "actorstatuscomponent-playerstatusai_juggernaut",
-    feature = "actorstatuscomponent-playerstatusai_juggernaut_elite",
-    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
-    feature = "actorstatuscomponent-playerstatusai_vanduul",
-    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
-    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
-    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
-    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
-    feature = "actorstatuscomponent-playerstatusai_vlkapex",
-    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
-    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
-    feature = "actorstatuscomponent-playerstatusai_yormandi",
-    feature = "actorstatuscomponent-playerstatuscorpse",
-    feature = "actorstatuscomponent-playerstatuscreature",
-    feature = "actorstatuscomponent-playerstatusea",
-    feature = "actorstatuscomponent-playerstatuspu",
-    feature = "actorstatuscomponent-powersuitstatus",
-    feature = "actorstatuscomponent-powersuitstatus_combat",
-    feature = "actorstatuscomponent-transportstatus",
     feature = "aiwavecollection",
-    feature = "ammoparams",
-    feature = "areaservices",
-    feature = "cargomanifest",
-    feature = "commsnotifications",
-    feature = "communicationsystem",
     feature = "contracts",
     feature = "crafting",
-    feature = "crewmanifest",
-    feature = "entities-animentity_character",
-    feature = "entities-area",
-    feature = "entities-audio",
     feature = "entities-basebuilding",
-    feature = "entities-cinematiclabelwithvehicle",
-    feature = "entities-commodities",
-    feature = "entities-dev",
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
     feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
-    feature = "entities-navpoint_dynamic_spawnedbarge",
-    feature = "entities-scitem-atc",
-    feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
-    feature = "entities-scitem-human",
     feature = "entities-scitem-itembanks",
     feature = "entities-scitem-mission_entities",
-    feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
-    feature = "entities-scitem-spawers",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
-    feature = "entities-scitem-vehicles",
-    feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
     feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
     feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
     feature = "entities-spaceships",
-    feature = "entities-test",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "factions",
-    feature = "fuelparams",
     feature = "gamemode",
     feature = "genericmobiterminals",
-    feature = "globalcommsnotificationparams",
-    feature = "globalshopparams",
     feature = "harvestable",
-    feature = "instancedinterior",
-    feature = "inventorycontainers",
-    feature = "item",
-    feature = "itemresourcenetwork",
     feature = "journalentry",
-    feature = "lawsystem",
     feature = "level",
     feature = "loadoutkits",
-    feature = "lootgeneration",
     feature = "megamap",
-    feature = "missionbroker",
-    feature = "missiondata",
-    feature = "missiongiver",
     feature = "player",
     feature = "reputation",
-    feature = "resourcetypedatabase",
-    feature = "sglobalsalvagerepairbeamparams",
-    feature = "ssolarsystem",
-    feature = "starmap",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
     feature = "ui-mobiglas"
@@ -211359,108 +211396,43 @@ impl Pooled for BuildingBlocks_BooleanTextFormatModifier {
 
 #[cfg(any(
     feature = "actor-actors",
-    feature = "actorstatuscomponent",
-    feature = "actorstatuscomponent-globalactorstatusparams",
-    feature = "actorstatuscomponent-medicaltieritemconfig",
-    feature = "actorstatuscomponent-playerstatus",
-    feature = "actorstatuscomponent-playerstatus_aiboss",
-    feature = "actorstatuscomponent-playerstatus_aibosssuper",
-    feature = "actorstatuscomponent-playerstatusai",
-    feature = "actorstatuscomponent-playerstatusai_captain",
-    feature = "actorstatuscomponent-playerstatusai_elite",
-    feature = "actorstatuscomponent-playerstatusai_juggernaut",
-    feature = "actorstatuscomponent-playerstatusai_juggernaut_elite",
-    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
-    feature = "actorstatuscomponent-playerstatusai_vanduul",
-    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
-    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
-    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
-    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
-    feature = "actorstatuscomponent-playerstatusai_vlkapex",
-    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
-    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
-    feature = "actorstatuscomponent-playerstatusai_yormandi",
-    feature = "actorstatuscomponent-playerstatuscorpse",
-    feature = "actorstatuscomponent-playerstatuscreature",
-    feature = "actorstatuscomponent-playerstatusea",
-    feature = "actorstatuscomponent-playerstatuspu",
-    feature = "actorstatuscomponent-powersuitstatus",
-    feature = "actorstatuscomponent-powersuitstatus_combat",
-    feature = "actorstatuscomponent-transportstatus",
     feature = "aiwavecollection",
-    feature = "ammoparams",
-    feature = "areaservices",
-    feature = "cargomanifest",
-    feature = "commsnotifications",
-    feature = "communicationsystem",
     feature = "contracts",
     feature = "crafting",
-    feature = "crewmanifest",
-    feature = "entities-animentity_character",
-    feature = "entities-area",
-    feature = "entities-audio",
     feature = "entities-basebuilding",
-    feature = "entities-cinematiclabelwithvehicle",
-    feature = "entities-commodities",
-    feature = "entities-dev",
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
     feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
-    feature = "entities-navpoint_dynamic_spawnedbarge",
-    feature = "entities-scitem-atc",
-    feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
-    feature = "entities-scitem-human",
     feature = "entities-scitem-itembanks",
     feature = "entities-scitem-mission_entities",
-    feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
-    feature = "entities-scitem-spawers",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
-    feature = "entities-scitem-vehicles",
-    feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
     feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
     feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
     feature = "entities-spaceships",
-    feature = "entities-test",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "factions",
-    feature = "fuelparams",
     feature = "gamemode",
     feature = "genericmobiterminals",
-    feature = "globalcommsnotificationparams",
-    feature = "globalshopparams",
     feature = "harvestable",
-    feature = "instancedinterior",
-    feature = "inventorycontainers",
-    feature = "item",
-    feature = "itemresourcenetwork",
     feature = "journalentry",
-    feature = "lawsystem",
     feature = "level",
     feature = "loadoutkits",
-    feature = "lootgeneration",
     feature = "megamap",
-    feature = "missionbroker",
-    feature = "missiondata",
-    feature = "missiongiver",
     feature = "player",
     feature = "reputation",
-    feature = "resourcetypedatabase",
-    feature = "sglobalsalvagerepairbeamparams",
-    feature = "ssolarsystem",
-    feature = "starmap",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
     feature = "ui-mobiglas"
@@ -216394,6 +216366,7 @@ impl<'a> Extract<'a> for BuildingBlocks_StyleSelectorConditionAnyOfCondition {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -216537,6 +216510,7 @@ pub struct BuildingBlocks_StyleSelectorConditionAllOfTag {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -216688,6 +216662,7 @@ impl Pooled for BuildingBlocks_StyleSelectorConditionAllOfTag {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -228854,12 +228829,15 @@ impl<'a> Extract<'a> for BuildingBlocks_ColorRecordReference {
     feature = "contracts",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
+    feature = "transportsystem",
     feature = "ui-aspectratiototag_mfd",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -228877,12 +228855,15 @@ pub struct BuildingBlocks_AspectRatioOption {
     feature = "contracts",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
+    feature = "transportsystem",
     feature = "ui-aspectratiototag_mfd",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -228902,12 +228883,15 @@ impl Pooled for BuildingBlocks_AspectRatioOption {
     feature = "contracts",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
+    feature = "transportsystem",
     feature = "ui-aspectratiototag_mfd",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -228932,12 +228916,15 @@ impl<'a> Extract<'a> for BuildingBlocks_AspectRatioOption {
     feature = "contracts",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
+    feature = "transportsystem",
     feature = "ui-aspectratiototag_mfd",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -228953,12 +228940,15 @@ pub struct BuildingBlocks_AspectRatioLibrary {
     feature = "contracts",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
+    feature = "transportsystem",
     feature = "ui-aspectratiototag_mfd",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -228978,12 +228968,15 @@ impl Pooled for BuildingBlocks_AspectRatioLibrary {
     feature = "contracts",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
+    feature = "transportsystem",
     feature = "ui-aspectratiototag_mfd",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -229102,7 +229095,6 @@ impl<'a> Extract<'a> for BuildingBlocks_StandardContainerMode {
     feature = "entities-scitem-actormovables",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-carryables",
-    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
@@ -229145,7 +229137,6 @@ pub struct BuildingBlocks_SVGContainerMode {
     feature = "entities-scitem-actormovables",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-carryables",
-    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
@@ -229190,7 +229181,6 @@ impl Pooled for BuildingBlocks_SVGContainerMode {
     feature = "entities-scitem-actormovables",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-carryables",
-    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
@@ -237397,7 +237387,6 @@ impl<'a> Extract<'a> for ActorCameraOffsetFiltered {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237405,8 +237394,7 @@ impl<'a> Extract<'a> for ActorCameraOffsetFiltered {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CameraOrbitEntityConfig {
     /// `baseSettings` (Class)
@@ -237451,7 +237439,6 @@ pub struct CameraOrbitEntityConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237459,8 +237446,7 @@ pub struct CameraOrbitEntityConfig {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CameraOrbitEntityConfig {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -237481,7 +237467,6 @@ impl Pooled for CameraOrbitEntityConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237489,8 +237474,7 @@ impl Pooled for CameraOrbitEntityConfig {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CameraOrbitEntityConfig {
     const TYPE_NAME: &'static str = "CameraOrbitEntityConfig";
@@ -237658,7 +237642,6 @@ impl<'a> Extract<'a> for CameraOrbitEntityConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237667,8 +237650,7 @@ impl<'a> Extract<'a> for CameraOrbitEntityConfig {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct HeadMotionOffsetParams {
     /// `minOffset` (Class)
@@ -237705,7 +237687,6 @@ pub struct HeadMotionOffsetParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237714,8 +237695,7 @@ pub struct HeadMotionOffsetParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for HeadMotionOffsetParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -237736,7 +237716,6 @@ impl Pooled for HeadMotionOffsetParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237745,8 +237724,7 @@ impl Pooled for HeadMotionOffsetParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for HeadMotionOffsetParams {
     const TYPE_NAME: &'static str = "HeadMotionOffsetParams";
@@ -237796,7 +237774,6 @@ impl<'a> Extract<'a> for HeadMotionOffsetParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237805,8 +237782,7 @@ impl<'a> Extract<'a> for HeadMotionOffsetParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct HeadMotionShakeSettings {
     /// `enabledForChaseCamera` (Boolean)
@@ -237831,7 +237807,6 @@ pub struct HeadMotionShakeSettings {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237840,8 +237815,7 @@ pub struct HeadMotionShakeSettings {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for HeadMotionShakeSettings {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -237862,7 +237836,6 @@ impl Pooled for HeadMotionShakeSettings {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237871,8 +237844,7 @@ impl Pooled for HeadMotionShakeSettings {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for HeadMotionShakeSettings {
     const TYPE_NAME: &'static str = "HeadMotionShakeSettings";
@@ -237917,7 +237889,6 @@ impl<'a> Extract<'a> for HeadMotionShakeSettings {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237926,8 +237897,7 @@ impl<'a> Extract<'a> for HeadMotionShakeSettings {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct HeadMotionConfig {
     /// `filterName` (String)
@@ -237972,7 +237942,6 @@ pub struct HeadMotionConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -237981,8 +237950,7 @@ pub struct HeadMotionConfig {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for HeadMotionConfig {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -238003,7 +237971,6 @@ impl Pooled for HeadMotionConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -238012,8 +237979,7 @@ impl Pooled for HeadMotionConfig {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for HeadMotionConfig {
     const TYPE_NAME: &'static str = "HeadMotionConfig";
@@ -240397,7 +240363,6 @@ impl<'a> Extract<'a> for CameraOrbitPassengerSCItemSeatConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -240406,8 +240371,7 @@ impl<'a> Extract<'a> for CameraOrbitPassengerSCItemSeatConfig {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CameraSeatCockpitConfig {
     /// `baseSettings` (Class)
@@ -240436,7 +240400,6 @@ pub struct CameraSeatCockpitConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -240445,8 +240408,7 @@ pub struct CameraSeatCockpitConfig {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CameraSeatCockpitConfig {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -240467,7 +240429,6 @@ impl Pooled for CameraSeatCockpitConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -240476,8 +240437,7 @@ impl Pooled for CameraSeatCockpitConfig {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CameraSeatCockpitConfig {
     const TYPE_NAME: &'static str = "CameraSeatCockpitConfig";
@@ -240922,15 +240882,13 @@ impl<'a> Extract<'a> for ActorFOVViewParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SuggestedFOVSetup {
     /// `suggestedFOV` (Single)
@@ -240949,15 +240907,13 @@ pub struct SuggestedFOVSetup {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SuggestedFOVSetup {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -240978,15 +240934,13 @@ impl Pooled for SuggestedFOVSetup {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SuggestedFOVSetup {
     const TYPE_NAME: &'static str = "SuggestedFOVSetup";
@@ -243288,6 +243242,55 @@ impl<'a> Extract<'a> for SArchetypeAssetDefBase {
     }
 }
 
+/// DCB type: `SArchetypeAssetEntityDef`
+/// Inherits from: `SArchetypeEntityAssetDefBase`
+#[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
+pub struct SArchetypeAssetEntityDef {
+    /// `debugName` (String)
+    pub debug_name: String,
+    /// `itemportName` (String)
+    pub itemport_name: String,
+    /// `parentItemportName` (String)
+    pub parent_itemport_name: String,
+    /// `entityClass` (Reference)
+    pub entity_class: Option<CigGuid>,
+}
+
+#[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
+impl Pooled for SArchetypeAssetEntityDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.multi_feature.sarchetype_asset_entity_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.multi_feature.sarchetype_asset_entity_def
+    }
+}
+
+#[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
+impl<'a> Extract<'a> for SArchetypeAssetEntityDef {
+    const TYPE_NAME: &'static str = "SArchetypeAssetEntityDef";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            debug_name: inst
+                .get_str("debugName")
+                .map(String::from)
+                .unwrap_or_default(),
+            itemport_name: inst
+                .get_str("itemportName")
+                .map(String::from)
+                .unwrap_or_default(),
+            parent_itemport_name: inst
+                .get_str("parentItemportName")
+                .map(String::from)
+                .unwrap_or_default(),
+            entity_class: inst
+                .get("entityClass")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
 /// DCB type: `SArchetypeAssetCHFDef`
 /// Inherits from: `SArchetypeAssetDefBase`
 #[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
@@ -244197,7 +244200,6 @@ impl<'a> Extract<'a> for EntityComponentCommLinkProviderParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244211,8 +244213,7 @@ impl<'a> Extract<'a> for EntityComponentCommLinkProviderParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CommunicationConfig {
     /// `name` (String)
@@ -244251,7 +244252,6 @@ pub struct CommunicationConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244265,8 +244265,7 @@ pub struct CommunicationConfig {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CommunicationConfig {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -244305,7 +244304,6 @@ impl Pooled for CommunicationConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244319,8 +244317,7 @@ impl Pooled for CommunicationConfig {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CommunicationConfig {
     const TYPE_NAME: &'static str = "CommunicationConfig";
@@ -244392,7 +244389,6 @@ impl<'a> Extract<'a> for CommunicationConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244406,8 +244402,7 @@ impl<'a> Extract<'a> for CommunicationConfig {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CommunicationEntry {
     /// `name` (Reference)
@@ -244456,7 +244451,6 @@ pub struct CommunicationEntry {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244470,8 +244464,7 @@ pub struct CommunicationEntry {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CommunicationEntry {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -244510,7 +244503,6 @@ impl Pooled for CommunicationEntry {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244524,8 +244516,7 @@ impl Pooled for CommunicationEntry {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CommunicationEntry {
     const TYPE_NAME: &'static str = "CommunicationEntry";
@@ -244608,7 +244599,6 @@ impl<'a> Extract<'a> for CommunicationEntry {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244622,8 +244612,7 @@ impl<'a> Extract<'a> for CommunicationEntry {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CommunicationVariation {
     /// `animationFragmentId` (String)
@@ -244676,7 +244665,6 @@ pub struct CommunicationVariation {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244690,8 +244678,7 @@ pub struct CommunicationVariation {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CommunicationVariation {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -244730,7 +244717,6 @@ impl Pooled for CommunicationVariation {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244744,8 +244730,7 @@ impl Pooled for CommunicationVariation {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CommunicationVariation {
     const TYPE_NAME: &'static str = "CommunicationVariation";
@@ -244829,7 +244814,6 @@ impl<'a> Extract<'a> for CommunicationVariation {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244843,8 +244827,7 @@ impl<'a> Extract<'a> for CommunicationVariation {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CommunicationVariationRules {
     /// `timeout` (Single)
@@ -244893,7 +244876,6 @@ pub struct CommunicationVariationRules {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244907,8 +244889,7 @@ pub struct CommunicationVariationRules {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CommunicationVariationRules {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -244947,7 +244928,6 @@ impl Pooled for CommunicationVariationRules {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -244961,8 +244941,7 @@ impl Pooled for CommunicationVariationRules {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CommunicationVariationRules {
     const TYPE_NAME: &'static str = "CommunicationVariationRules";
@@ -245009,7 +244988,6 @@ impl<'a> Extract<'a> for CommunicationVariationRules {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -245023,8 +245001,7 @@ impl<'a> Extract<'a> for CommunicationVariationRules {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CommunicationVariationCondition {
     /// `expression` (String)
@@ -245061,7 +245038,6 @@ pub struct CommunicationVariationCondition {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -245075,8 +245051,7 @@ pub struct CommunicationVariationCondition {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CommunicationVariationCondition {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -245115,7 +245090,6 @@ impl Pooled for CommunicationVariationCondition {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -245129,8 +245103,7 @@ impl Pooled for CommunicationVariationCondition {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CommunicationVariationCondition {
     const TYPE_NAME: &'static str = "CommunicationVariationCondition";
@@ -245182,7 +245155,6 @@ impl<'a> Extract<'a> for CommunicationVariationCondition {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -245196,8 +245168,7 @@ impl<'a> Extract<'a> for CommunicationVariationCondition {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CommunicationName {
     /// `name` (String)
@@ -245234,7 +245205,6 @@ pub struct CommunicationName {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -245248,8 +245218,7 @@ pub struct CommunicationName {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CommunicationName {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -245290,7 +245259,6 @@ impl Pooled for CommunicationName {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -245304,8 +245272,7 @@ impl Pooled for CommunicationName {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CommunicationName {
     const TYPE_NAME: &'static str = "CommunicationName";
@@ -245349,7 +245316,6 @@ impl<'a> Extract<'a> for CommunicationName {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -245363,8 +245329,7 @@ impl<'a> Extract<'a> for CommunicationName {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CommunicationChannelName {
     /// `name` (String)
@@ -245403,7 +245368,6 @@ pub struct CommunicationChannelName {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -245417,8 +245381,7 @@ pub struct CommunicationChannelName {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CommunicationChannelName {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -245461,7 +245424,6 @@ impl Pooled for CommunicationChannelName {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -245475,8 +245437,7 @@ impl Pooled for CommunicationChannelName {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CommunicationChannelName {
     const TYPE_NAME: &'static str = "CommunicationChannelName";
@@ -256353,7 +256314,6 @@ impl<'a> Extract<'a> for SRenderProxyParams {
     feature = "entities-scitem-human",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-spawnedactionarea",
@@ -256362,8 +256322,7 @@ impl<'a> Extract<'a> for SRenderProxyParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SAreaComponentParams {
     /// `densityClassOverwrites` (StrongPointer)
@@ -256391,7 +256350,6 @@ pub struct SAreaComponentParams {
     feature = "entities-scitem-human",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-spawnedactionarea",
@@ -256400,8 +256358,7 @@ pub struct SAreaComponentParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SAreaComponentParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -256433,7 +256390,6 @@ impl Pooled for SAreaComponentParams {
     feature = "entities-scitem-human",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-spawnedactionarea",
@@ -256442,8 +256398,7 @@ impl Pooled for SAreaComponentParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SAreaComponentParams {
     const TYPE_NAME: &'static str = "SAreaComponentParams";
@@ -258327,7 +258282,6 @@ impl<'a> Extract<'a> for HarvestableGeometry {
     feature = "entities-scitem-remoteconnectionreceiver",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -258336,8 +258290,7 @@ impl<'a> Extract<'a> for HarvestableGeometry {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct OperatorModeAvailability {
     /// `defaultMode` (EnumChoice)
@@ -258373,7 +258326,6 @@ pub struct OperatorModeAvailability {
     feature = "entities-scitem-remoteconnectionreceiver",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -258382,8 +258334,7 @@ pub struct OperatorModeAvailability {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for OperatorModeAvailability {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -258421,7 +258372,6 @@ impl Pooled for OperatorModeAvailability {
     feature = "entities-scitem-remoteconnectionreceiver",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -258430,8 +258380,7 @@ impl Pooled for OperatorModeAvailability {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for OperatorModeAvailability {
     const TYPE_NAME: &'static str = "OperatorModeAvailability";
@@ -258474,7 +258423,6 @@ impl<'a> Extract<'a> for OperatorModeAvailability {
     feature = "entities-scitem-remoteconnectionreceiver",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -258483,8 +258431,7 @@ impl<'a> Extract<'a> for OperatorModeAvailability {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct OperatorModeAvailabilityParams {
     /// `defaultMode` (EnumChoice)
@@ -258524,7 +258471,6 @@ pub struct OperatorModeAvailabilityParams {
     feature = "entities-scitem-remoteconnectionreceiver",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -258533,8 +258479,7 @@ pub struct OperatorModeAvailabilityParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for OperatorModeAvailabilityParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -258572,7 +258517,6 @@ impl Pooled for OperatorModeAvailabilityParams {
     feature = "entities-scitem-remoteconnectionreceiver",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -258581,8 +258525,7 @@ impl Pooled for OperatorModeAvailabilityParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for OperatorModeAvailabilityParams {
     const TYPE_NAME: &'static str = "OperatorModeAvailabilityParams";
@@ -259608,7 +259551,6 @@ impl<'a> Extract<'a> for ItemPowerSegmentThrottleParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -259617,8 +259559,7 @@ impl<'a> Extract<'a> for ItemPowerSegmentThrottleParams {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct ItemPowerSimpleSegmentThrottleParams {
     /// `defaultFull` (Boolean)
@@ -259636,7 +259577,6 @@ pub struct ItemPowerSimpleSegmentThrottleParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -259645,8 +259585,7 @@ pub struct ItemPowerSimpleSegmentThrottleParams {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for ItemPowerSimpleSegmentThrottleParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -259672,7 +259611,6 @@ impl Pooled for ItemPowerSimpleSegmentThrottleParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -259681,8 +259619,7 @@ impl Pooled for ItemPowerSimpleSegmentThrottleParams {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for ItemPowerSimpleSegmentThrottleParams {
     const TYPE_NAME: &'static str = "ItemPowerSimpleSegmentThrottleParams";
@@ -261321,14 +261258,12 @@ impl<'a> Extract<'a> for MiningFilterItemModifierParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct ItemWeaponModifiersParams {
     /// `modifierLifetime` (StrongPointer)
@@ -261353,14 +261288,12 @@ pub struct ItemWeaponModifiersParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for ItemWeaponModifiersParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -261381,14 +261314,12 @@ impl Pooled for ItemWeaponModifiersParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for ItemWeaponModifiersParams {
     const TYPE_NAME: &'static str = "ItemWeaponModifiersParams";
@@ -261485,14 +261416,12 @@ impl<'a> Extract<'a> for TurretModifiersParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct ItemportTraversingModifiersParams {
     /// `modifierLifetime` (StrongPointer)
@@ -261513,14 +261442,12 @@ pub struct ItemportTraversingModifiersParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for ItemportTraversingModifiersParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -261539,14 +261466,12 @@ impl Pooled for ItemportTraversingModifiersParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for ItemportTraversingModifiersParams {
     const TYPE_NAME: &'static str = "ItemportTraversingModifiersParams";
@@ -261590,7 +261515,6 @@ impl<'a> Extract<'a> for ItemportTraversingModifiersParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -261598,8 +261522,7 @@ impl<'a> Extract<'a> for ItemportTraversingModifiersParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct EntityComponentAttachableModifierParams {
     /// `modifiers` (StrongPointer (array))
@@ -261630,7 +261553,6 @@ pub struct EntityComponentAttachableModifierParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -261638,8 +261560,7 @@ pub struct EntityComponentAttachableModifierParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for EntityComponentAttachableModifierParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -261664,7 +261585,6 @@ impl Pooled for EntityComponentAttachableModifierParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -261672,8 +261592,7 @@ impl Pooled for EntityComponentAttachableModifierParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for EntityComponentAttachableModifierParams {
     const TYPE_NAME: &'static str = "EntityComponentAttachableModifierParams";
@@ -272003,7 +271922,6 @@ impl<'a> Extract<'a> for SurfaceRaindrops_Override {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272012,8 +271930,7 @@ impl<'a> Extract<'a> for SurfaceRaindrops_Override {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct STargetByRaycast {
     /// `rayLength` (Single)
@@ -272028,7 +271945,6 @@ pub struct STargetByRaycast {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272037,8 +271953,7 @@ pub struct STargetByRaycast {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for STargetByRaycast {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272057,7 +271972,6 @@ impl Pooled for STargetByRaycast {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272066,8 +271980,7 @@ impl Pooled for STargetByRaycast {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for STargetByRaycast {
     const TYPE_NAME: &'static str = "STargetByRaycast";
@@ -272088,7 +272001,6 @@ impl<'a> Extract<'a> for STargetByRaycast {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272097,8 +272009,7 @@ impl<'a> Extract<'a> for STargetByRaycast {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct STargetByLineIntersection {
     /// `angle` (Single)
@@ -272113,7 +272024,6 @@ pub struct STargetByLineIntersection {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272122,8 +272032,7 @@ pub struct STargetByLineIntersection {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for STargetByLineIntersection {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272142,7 +272051,6 @@ impl Pooled for STargetByLineIntersection {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272151,8 +272059,7 @@ impl Pooled for STargetByLineIntersection {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for STargetByLineIntersection {
     const TYPE_NAME: &'static str = "STargetByLineIntersection";
@@ -272172,7 +272079,6 @@ impl<'a> Extract<'a> for STargetByLineIntersection {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272181,8 +272087,7 @@ impl<'a> Extract<'a> for STargetByLineIntersection {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct STargetingMethodRecord {
     /// `targetingMethod` (StrongPointer)
@@ -272197,7 +272102,6 @@ pub struct STargetingMethodRecord {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272206,8 +272110,7 @@ pub struct STargetingMethodRecord {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for STargetingMethodRecord {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272226,7 +272129,6 @@ impl Pooled for STargetingMethodRecord {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272235,8 +272137,7 @@ impl Pooled for STargetingMethodRecord {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for STargetingMethodRecord {
     const TYPE_NAME: &'static str = "STargetingMethodRecord";
@@ -272261,7 +272162,6 @@ impl<'a> Extract<'a> for STargetingMethodRecord {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272270,8 +272170,7 @@ impl<'a> Extract<'a> for STargetingMethodRecord {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SPrecisionTargetingItemName {
     /// `type` (EnumChoice)
@@ -272288,7 +272187,6 @@ pub struct SPrecisionTargetingItemName {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272297,8 +272195,7 @@ pub struct SPrecisionTargetingItemName {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SPrecisionTargetingItemName {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272317,7 +272214,6 @@ impl Pooled for SPrecisionTargetingItemName {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272326,8 +272222,7 @@ impl Pooled for SPrecisionTargetingItemName {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SPrecisionTargetingItemName {
     const TYPE_NAME: &'static str = "SPrecisionTargetingItemName";
@@ -272351,7 +272246,6 @@ impl<'a> Extract<'a> for SPrecisionTargetingItemName {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272360,8 +272254,7 @@ impl<'a> Extract<'a> for SPrecisionTargetingItemName {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct STargetableItemType {
     /// `type` (EnumChoice)
@@ -272378,7 +272271,6 @@ pub struct STargetableItemType {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272387,8 +272279,7 @@ pub struct STargetableItemType {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for STargetableItemType {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272407,7 +272298,6 @@ impl Pooled for STargetableItemType {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272416,8 +272306,7 @@ impl Pooled for STargetableItemType {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for STargetableItemType {
     const TYPE_NAME: &'static str = "STargetableItemType";
@@ -272444,7 +272333,6 @@ impl<'a> Extract<'a> for STargetableItemType {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272453,8 +272341,7 @@ impl<'a> Extract<'a> for STargetableItemType {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct STargetableItemTypesRecord {
     /// `targetableItemTypes` (Class (array))
@@ -272471,7 +272358,6 @@ pub struct STargetableItemTypesRecord {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272480,8 +272366,7 @@ pub struct STargetableItemTypesRecord {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for STargetableItemTypesRecord {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272500,7 +272385,6 @@ impl Pooled for STargetableItemTypesRecord {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272509,8 +272393,7 @@ impl Pooled for STargetableItemTypesRecord {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for STargetableItemTypesRecord {
     const TYPE_NAME: &'static str = "STargetableItemTypesRecord";
@@ -272567,7 +272450,6 @@ impl<'a> Extract<'a> for STargetableItemTypesRecord {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272576,8 +272458,7 @@ impl<'a> Extract<'a> for STargetableItemTypesRecord {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCombatTargeting {
     /// `targetingMethodRecord` (Reference)
@@ -272592,7 +272473,6 @@ pub struct SCombatTargeting {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272601,8 +272481,7 @@ pub struct SCombatTargeting {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCombatTargeting {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272621,7 +272500,6 @@ impl Pooled for SCombatTargeting {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272630,8 +272508,7 @@ impl Pooled for SCombatTargeting {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCombatTargeting {
     const TYPE_NAME: &'static str = "SCombatTargeting";
@@ -272654,7 +272531,6 @@ impl<'a> Extract<'a> for SCombatTargeting {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272663,8 +272539,7 @@ impl<'a> Extract<'a> for SCombatTargeting {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SScanTargeting {
     /// `targetingMethodRecord` (Reference)
@@ -272679,7 +272554,6 @@ pub struct SScanTargeting {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272688,8 +272562,7 @@ pub struct SScanTargeting {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SScanTargeting {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272708,7 +272581,6 @@ impl Pooled for SScanTargeting {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272717,8 +272589,7 @@ impl Pooled for SScanTargeting {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SScanTargeting {
     const TYPE_NAME: &'static str = "SScanTargeting";
@@ -272741,7 +272612,6 @@ impl<'a> Extract<'a> for SScanTargeting {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272750,8 +272620,7 @@ impl<'a> Extract<'a> for SScanTargeting {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SMiningTargeting {
     /// `targetingMethodRecord` (Reference)
@@ -272766,7 +272635,6 @@ pub struct SMiningTargeting {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272775,8 +272643,7 @@ pub struct SMiningTargeting {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SMiningTargeting {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272795,7 +272662,6 @@ impl Pooled for SMiningTargeting {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272804,8 +272670,7 @@ impl Pooled for SMiningTargeting {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SMiningTargeting {
     const TYPE_NAME: &'static str = "SMiningTargeting";
@@ -272829,7 +272694,6 @@ impl<'a> Extract<'a> for SMiningTargeting {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272838,8 +272702,7 @@ impl<'a> Extract<'a> for SMiningTargeting {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SSCItemTargetSelectorComponentParams {
     /// `globalTargetingParams` (Reference)
@@ -272890,7 +272753,6 @@ pub struct SSCItemTargetSelectorComponentParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272899,8 +272761,7 @@ pub struct SSCItemTargetSelectorComponentParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SSCItemTargetSelectorComponentParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -272919,7 +272780,6 @@ impl Pooled for SSCItemTargetSelectorComponentParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -272928,8 +272788,7 @@ impl Pooled for SSCItemTargetSelectorComponentParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SSCItemTargetSelectorComponentParams {
     const TYPE_NAME: &'static str = "SSCItemTargetSelectorComponentParams";
@@ -273072,7 +272931,6 @@ impl<'a> Extract<'a> for SSCItemTargetSelectorComponentParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273081,8 +272939,7 @@ impl<'a> Extract<'a> for SSCItemTargetSelectorComponentParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SARMarkersParams {
     /// `lockedRatioClose` (Single)
@@ -273097,7 +272954,6 @@ pub struct SARMarkersParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273106,8 +272962,7 @@ pub struct SARMarkersParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SARMarkersParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -273126,7 +272981,6 @@ impl Pooled for SARMarkersParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273135,8 +272989,7 @@ impl Pooled for SARMarkersParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SARMarkersParams {
     const TYPE_NAME: &'static str = "SARMarkersParams";
@@ -273156,7 +273009,6 @@ impl<'a> Extract<'a> for SARMarkersParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273165,8 +273017,7 @@ impl<'a> Extract<'a> for SARMarkersParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SARTrailParams {
     /// `quatLifetime` (Single)
@@ -273189,7 +273040,6 @@ pub struct SARTrailParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273198,8 +273048,7 @@ pub struct SARTrailParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SARTrailParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -273218,7 +273067,6 @@ impl Pooled for SARTrailParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273227,8 +273075,7 @@ impl Pooled for SARTrailParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SARTrailParams {
     const TYPE_NAME: &'static str = "SARTrailParams";
@@ -273252,7 +273099,6 @@ impl<'a> Extract<'a> for SARTrailParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273261,8 +273107,7 @@ impl<'a> Extract<'a> for SARTrailParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct OcclusionBindingsParams {
     /// `supportRayPushInAmount` (Single)
@@ -273281,7 +273126,6 @@ pub struct OcclusionBindingsParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273290,8 +273134,7 @@ pub struct OcclusionBindingsParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for OcclusionBindingsParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -273310,7 +273153,6 @@ impl Pooled for OcclusionBindingsParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273319,8 +273161,7 @@ impl Pooled for OcclusionBindingsParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for OcclusionBindingsParams {
     const TYPE_NAME: &'static str = "OcclusionBindingsParams";
@@ -273344,7 +273185,6 @@ impl<'a> Extract<'a> for OcclusionBindingsParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273353,8 +273193,7 @@ impl<'a> Extract<'a> for OcclusionBindingsParams {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct STargetSelectorGlobalTargetingParams {
     /// `combatTargetingMethodRecord` (Class)
@@ -273373,7 +273212,6 @@ pub struct STargetSelectorGlobalTargetingParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273382,8 +273220,7 @@ pub struct STargetSelectorGlobalTargetingParams {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for STargetSelectorGlobalTargetingParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -273402,7 +273239,6 @@ impl Pooled for STargetSelectorGlobalTargetingParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -273411,8 +273247,7 @@ impl Pooled for STargetSelectorGlobalTargetingParams {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for STargetSelectorGlobalTargetingParams {
     const TYPE_NAME: &'static str = "STargetSelectorGlobalTargetingParams";
@@ -278619,6 +278454,7 @@ impl<'a> Extract<'a> for SRGBA8 {
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -278792,6 +278628,7 @@ pub struct SRGB8 {
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -278965,6 +278802,7 @@ impl Pooled for SRGB8 {
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -293920,6 +293758,7 @@ impl<'a> Extract<'a> for SEntityComponentCrewManifestParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entities-watervolume",
     feature = "entitlementpolicies",
     feature = "gamemode",
     feature = "globalquantumdriveparams",
@@ -293963,6 +293802,7 @@ pub struct SerializedComponentParams {}
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entities-watervolume",
     feature = "entitlementpolicies",
     feature = "gamemode",
     feature = "globalquantumdriveparams",
@@ -294013,6 +293853,7 @@ impl Pooled for SerializedComponentParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entities-watervolume",
     feature = "entitlementpolicies",
     feature = "gamemode",
     feature = "globalquantumdriveparams",
@@ -301051,7 +300892,6 @@ impl<'a> Extract<'a> for DialogueBundle {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -301066,8 +300906,7 @@ impl<'a> Extract<'a> for DialogueBundle {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SDialogueComponentParams {}
 
@@ -301100,7 +300939,6 @@ pub struct SDialogueComponentParams {}
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -301115,8 +300953,7 @@ pub struct SDialogueComponentParams {}
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SDialogueComponentParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -301156,7 +300993,6 @@ impl Pooled for SDialogueComponentParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -301171,8 +301007,7 @@ impl Pooled for SDialogueComponentParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SDialogueComponentParams {
     const TYPE_NAME: &'static str = "SDialogueComponentParams";
@@ -301194,15 +301029,13 @@ impl<'a> Extract<'a> for SDialogueComponentParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct DialogueExternalSource {
     /// `name` (String)
@@ -301225,15 +301058,13 @@ pub struct DialogueExternalSource {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for DialogueExternalSource {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -301256,15 +301087,13 @@ impl Pooled for DialogueExternalSource {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for DialogueExternalSource {
     const TYPE_NAME: &'static str = "DialogueExternalSource";
@@ -310400,6 +310229,7 @@ impl<'a> Extract<'a> for CustomMaterialsEntityParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310433,6 +310263,7 @@ pub struct SLightStatePreset {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310458,6 +310289,7 @@ impl Pooled for SLightStatePreset {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310493,6 +310325,7 @@ impl<'a> Extract<'a> for SLightStatePreset {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310518,6 +310351,7 @@ pub struct SLightStateFallback {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310543,6 +310377,7 @@ impl Pooled for SLightStateFallback {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310576,6 +310411,7 @@ impl<'a> Extract<'a> for SLightStateFallback {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310599,6 +310435,7 @@ pub struct SLightStateOverride {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310624,6 +310461,7 @@ impl Pooled for SLightStateOverride {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310661,6 +310499,7 @@ impl<'a> Extract<'a> for SLightStateOverride {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310684,6 +310523,7 @@ pub struct SAttachmentImplementationBase {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310709,6 +310549,7 @@ impl Pooled for SAttachmentImplementationBase {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310739,6 +310580,7 @@ impl<'a> Extract<'a> for SAttachmentImplementationBase {
     feature = "actor-actors",
     feature = "entities-decorations",
     feature = "entities-lights",
+    feature = "entities-scitem-usables",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
@@ -310757,6 +310599,7 @@ pub struct SAttachmentImplementationEntity {
     feature = "actor-actors",
     feature = "entities-decorations",
     feature = "entities-lights",
+    feature = "entities-scitem-usables",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
@@ -310777,6 +310620,7 @@ impl Pooled for SAttachmentImplementationEntity {
     feature = "actor-actors",
     feature = "entities-decorations",
     feature = "entities-lights",
+    feature = "entities-scitem-usables",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
@@ -310805,6 +310649,7 @@ impl<'a> Extract<'a> for SAttachmentImplementationEntity {
 #[cfg(any(
     feature = "contracts",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships"
 ))]
 pub struct SAttachmentImplementationBone {
@@ -310819,6 +310664,7 @@ pub struct SAttachmentImplementationBone {
 #[cfg(any(
     feature = "contracts",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships"
 ))]
 impl Pooled for SAttachmentImplementationBone {
@@ -310833,6 +310679,7 @@ impl Pooled for SAttachmentImplementationBone {
 #[cfg(any(
     feature = "contracts",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships"
 ))]
 impl<'a> Extract<'a> for SAttachmentImplementationBone {
@@ -310864,6 +310711,7 @@ impl<'a> Extract<'a> for SAttachmentImplementationBone {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310889,6 +310737,7 @@ pub struct SItemBase {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310914,6 +310763,7 @@ impl Pooled for SItemBase {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310948,6 +310798,7 @@ impl<'a> Extract<'a> for SItemBase {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -310981,6 +310832,7 @@ pub struct SLightItem {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311006,6 +310858,7 @@ impl Pooled for SLightItem {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311069,6 +310922,7 @@ impl<'a> Extract<'a> for SLightItem {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311100,6 +310954,7 @@ pub struct SEnvironmentLightItem {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311125,6 +310980,7 @@ impl Pooled for SEnvironmentLightItem {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311184,6 +311040,7 @@ impl<'a> Extract<'a> for SEnvironmentLightItem {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311229,6 +311086,7 @@ pub struct SClipboxItem {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311254,6 +311112,7 @@ impl Pooled for SClipboxItem {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311298,6 +311157,7 @@ impl<'a> Extract<'a> for SClipboxItem {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311347,6 +311207,7 @@ pub struct SLightGroupComponentParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -311372,6 +311233,7 @@ impl Pooled for SLightGroupComponentParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -317061,7 +316923,6 @@ impl<'a> Extract<'a> for UIAudioComponent_Offset {
     feature = "entities-scitem-prototypeentities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-shipselectorkiosk",
@@ -317103,8 +316964,7 @@ impl<'a> Extract<'a> for UIAudioComponent_Offset {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct UIAudioComponent_ManualOffset {
     /// `offset` (Class)
@@ -317127,7 +316987,6 @@ pub struct UIAudioComponent_ManualOffset {
     feature = "entities-scitem-prototypeentities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-shipselectorkiosk",
@@ -317169,8 +317028,7 @@ pub struct UIAudioComponent_ManualOffset {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for UIAudioComponent_ManualOffset {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -317197,7 +317055,6 @@ impl Pooled for UIAudioComponent_ManualOffset {
     feature = "entities-scitem-prototypeentities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-shipselectorkiosk",
@@ -317239,8 +317096,7 @@ impl Pooled for UIAudioComponent_ManualOffset {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for UIAudioComponent_ManualOffset {
     const TYPE_NAME: &'static str = "UIAudioComponent_ManualOffset";
@@ -320814,6 +320670,53 @@ impl<'a> Extract<'a> for BoolUserVariable {
                     .collect()
                 })
                 .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `RecordRefUserVariableTypeCanvasRecord`
+/// Inherits from: `RecordRefUserVariableTypeBase`
+#[cfg(any(
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-scitem-mission_entities"
+))]
+pub struct RecordRefUserVariableTypeCanvasRecord {
+    /// `value` (Reference)
+    pub value: Option<CigGuid>,
+}
+
+#[cfg(any(
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-scitem-mission_entities"
+))]
+impl Pooled for RecordRefUserVariableTypeCanvasRecord {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .multi_feature
+            .record_ref_user_variable_type_canvas_record
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .multi_feature
+            .record_ref_user_variable_type_canvas_record
+    }
+}
+
+#[cfg(any(
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-scitem-mission_entities"
+))]
+impl<'a> Extract<'a> for RecordRefUserVariableTypeCanvasRecord {
+    const TYPE_NAME: &'static str = "RecordRefUserVariableTypeCanvasRecord";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            value: inst
+                .get("value")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -329037,8 +328940,7 @@ impl<'a> Extract<'a> for BiomeAccumulationParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SThrowMode {
     /// `mode` (EnumChoice)
@@ -329140,8 +329042,7 @@ pub struct SThrowMode {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SThrowMode {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -329243,8 +329144,7 @@ impl Pooled for SThrowMode {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SThrowMode {
     const TYPE_NAME: &'static str = "SThrowMode";
@@ -329361,8 +329261,7 @@ impl<'a> Extract<'a> for SThrowMode {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SThrowableParams {
     /// `reticle` (String)
@@ -329482,8 +329381,7 @@ pub struct SThrowableParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SThrowableParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -329585,8 +329483,7 @@ impl Pooled for SThrowableParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SThrowableParams {
     const TYPE_NAME: &'static str = "SThrowableParams";
@@ -329739,8 +329636,7 @@ impl<'a> Extract<'a> for SThrowableParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCEquipableParams {
     /// `itemPort` (String)
@@ -329838,8 +329734,7 @@ pub struct SCEquipableParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCEquipableParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -329941,8 +329836,7 @@ impl Pooled for SCEquipableParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCEquipableParams {
     const TYPE_NAME: &'static str = "SCEquipableParams";
@@ -330048,8 +329942,7 @@ impl<'a> Extract<'a> for SCEquipableParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCarryableStatesParams {
     /// `settledState` (WeakPointer)
@@ -330165,8 +330058,7 @@ pub struct SCarryableStatesParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCarryableStatesParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -330268,8 +330160,7 @@ impl Pooled for SCarryableStatesParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCarryableStatesParams {
     const TYPE_NAME: &'static str = "SCarryableStatesParams";
@@ -330636,7 +330527,6 @@ impl<'a> Extract<'a> for SSequencerChangeStanceCarryableTaskParams {
     feature = "contracts",
     feature = "crafting",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -330678,7 +330568,6 @@ pub struct SSequencerBespokeTakeCarryableTaskParams {
     feature = "contracts",
     feature = "crafting",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -330726,7 +330615,6 @@ impl Pooled for SSequencerBespokeTakeCarryableTaskParams {
     feature = "contracts",
     feature = "crafting",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -330943,7 +330831,6 @@ impl<'a> Extract<'a> for SSequencerBespokePlaceCarryableTaskParams {
     feature = "contracts",
     feature = "crafting",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -330979,7 +330866,6 @@ pub struct SSequencerFirstSelectCarryableTaskParams {}
     feature = "contracts",
     feature = "crafting",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -331026,7 +330912,6 @@ impl Pooled for SSequencerFirstSelectCarryableTaskParams {
     feature = "contracts",
     feature = "crafting",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -331403,8 +331288,7 @@ impl<'a> Extract<'a> for SSequencerSetInteractionStateCarryableTaskParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCarryParams {
     /// `width` (Single)
@@ -331506,8 +331390,7 @@ pub struct SCarryParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCarryParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -331609,8 +331492,7 @@ impl Pooled for SCarryParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCarryParams {
     const TYPE_NAME: &'static str = "SCarryParams";
@@ -331715,8 +331597,7 @@ impl<'a> Extract<'a> for SCarryParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCarryableGrip {
     /// `carryStyleID` (String)
@@ -331828,8 +331709,7 @@ pub struct SCarryableGrip {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCarryableGrip {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -331931,8 +331811,7 @@ impl Pooled for SCarryableGrip {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCarryableGrip {
     const TYPE_NAME: &'static str = "SCarryableGrip";
@@ -332072,8 +331951,7 @@ impl<'a> Extract<'a> for SCarryableGrip {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCarryableInteractionPointOffsets {
     /// `interactionOffsetEquipped` (Class)
@@ -332175,8 +332053,7 @@ pub struct SCarryableInteractionPointOffsets {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCarryableInteractionPointOffsets {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -332278,8 +332155,7 @@ impl Pooled for SCarryableInteractionPointOffsets {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCarryableInteractionPointOffsets {
     const TYPE_NAME: &'static str = "SCarryableInteractionPointOffsets";
@@ -332534,8 +332410,7 @@ impl<'a> Extract<'a> for SCarryableIKInteraction {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCarryableSequenceRef {
     /// `sequenceAction` (EnumChoice)
@@ -332637,8 +332512,7 @@ pub struct SCarryableSequenceRef {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCarryableSequenceRef {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -332740,8 +332614,7 @@ impl Pooled for SCarryableSequenceRef {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCarryableSequenceRef {
     const TYPE_NAME: &'static str = "SCarryableSequenceRef";
@@ -332998,8 +332871,7 @@ impl<'a> Extract<'a> for SCarryableIKInteractionList {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CarryableInteractionsMetadataDef {
     /// `ignoreDefaultActionWhenBlocked` (Boolean)
@@ -333098,8 +332970,7 @@ pub struct CarryableInteractionsMetadataDef {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CarryableInteractionsMetadataDef {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -333202,8 +333073,7 @@ impl Pooled for CarryableInteractionsMetadataDef {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CarryableInteractionsMetadataDef {
     const TYPE_NAME: &'static str = "CarryableInteractionsMetadataDef";
@@ -333309,8 +333179,7 @@ impl<'a> Extract<'a> for CarryableInteractionsMetadataDef {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CarryableInteractionsMetadataConfigDef {
     /// `metadata` (StrongPointer (array))
@@ -333409,8 +333278,7 @@ pub struct CarryableInteractionsMetadataConfigDef {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CarryableInteractionsMetadataConfigDef {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -333517,8 +333385,7 @@ impl Pooled for CarryableInteractionsMetadataConfigDef {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CarryableInteractionsMetadataConfigDef {
     const TYPE_NAME: &'static str = "CarryableInteractionsMetadataConfigDef";
@@ -333636,8 +333503,7 @@ impl<'a> Extract<'a> for CarryableInteractionsMetadataConfigDef {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SEntityComponentCarryableParams {
     /// `carryInteraction` (WeakPointer)
@@ -333787,8 +333653,7 @@ pub struct SEntityComponentCarryableParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SEntityComponentCarryableParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -333890,8 +333755,7 @@ impl Pooled for SEntityComponentCarryableParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SEntityComponentCarryableParams {
     const TYPE_NAME: &'static str = "SEntityComponentCarryableParams";
@@ -334218,8 +334082,7 @@ impl<'a> Extract<'a> for SEntityComponentCarryableParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCarryAnimationParams {
     /// `motionBase` (String)
@@ -334319,8 +334182,7 @@ pub struct SCarryAnimationParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCarryAnimationParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -334422,8 +334284,7 @@ impl Pooled for SCarryAnimationParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCarryAnimationParams {
     const TYPE_NAME: &'static str = "SCarryAnimationParams";
@@ -334533,8 +334394,7 @@ impl<'a> Extract<'a> for SCarryAnimationParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SGripContainer {
     /// `gripOverrideUsingLOS` (Boolean)
@@ -334634,8 +334494,7 @@ pub struct SGripContainer {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SGripContainer {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -334737,8 +334596,7 @@ impl Pooled for SGripContainer {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SGripContainer {
     const TYPE_NAME: &'static str = "SGripContainer";
@@ -334860,8 +334718,7 @@ impl<'a> Extract<'a> for SGripContainer {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SThrowAudioParams {
     /// `onThrownAudioTrigger` (Class)
@@ -334967,8 +334824,7 @@ pub struct SThrowAudioParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SThrowAudioParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -335070,8 +334926,7 @@ impl Pooled for SThrowAudioParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SThrowAudioParams {
     const TYPE_NAME: &'static str = "SThrowAudioParams";
@@ -338644,7 +338499,6 @@ impl<'a> Extract<'a> for SItemPortLoadoutManualParams {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
     feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
@@ -338668,8 +338522,7 @@ impl<'a> Extract<'a> for SItemPortLoadoutManualParams {
     feature = "reputation",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SItemPortLoadoutXMLParams {
     /// `WearRange` (StrongPointer)
@@ -338722,7 +338575,6 @@ pub struct SItemPortLoadoutXMLParams {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
     feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
@@ -338746,8 +338598,7 @@ pub struct SItemPortLoadoutXMLParams {
     feature = "reputation",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SItemPortLoadoutXMLParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -338796,7 +338647,6 @@ impl Pooled for SItemPortLoadoutXMLParams {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
     feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
@@ -338820,8 +338670,7 @@ impl Pooled for SItemPortLoadoutXMLParams {
     feature = "reputation",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SItemPortLoadoutXMLParams {
     const TYPE_NAME: &'static str = "SItemPortLoadoutXMLParams";
@@ -354200,7 +354049,6 @@ impl<'a> Extract<'a> for SSequencerDefSequenceParams {
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-template_cuttableinteractable",
     feature = "entities-scitem-template_cuttableinteractable_surfacerelay",
@@ -354226,8 +354074,7 @@ impl<'a> Extract<'a> for SSequencerDefSequenceParams {
     feature = "playerchoicemenutypes",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SReplicatedSequencerDefSequenceParams {
     /// `name` (String)
@@ -354308,7 +354155,6 @@ pub struct SReplicatedSequencerDefSequenceParams {
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-template_cuttableinteractable",
     feature = "entities-scitem-template_cuttableinteractable_surfacerelay",
@@ -354334,8 +354180,7 @@ pub struct SReplicatedSequencerDefSequenceParams {
     feature = "playerchoicemenutypes",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SReplicatedSequencerDefSequenceParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -354420,7 +354265,6 @@ impl Pooled for SReplicatedSequencerDefSequenceParams {
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-template_cuttableinteractable",
     feature = "entities-scitem-template_cuttableinteractable_surfacerelay",
@@ -354446,8 +354290,7 @@ impl Pooled for SReplicatedSequencerDefSequenceParams {
     feature = "playerchoicemenutypes",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SReplicatedSequencerDefSequenceParams {
     const TYPE_NAME: &'static str = "SReplicatedSequencerDefSequenceParams";
@@ -363242,12 +363085,8 @@ impl<'a> Extract<'a> for SVibrationVehicleDef {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct EntityComponentVibrationParams {
     /// `vibrationRecord` (Reference)
@@ -363265,12 +363104,8 @@ pub struct EntityComponentVibrationParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for EntityComponentVibrationParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -363290,12 +363125,8 @@ impl Pooled for EntityComponentVibrationParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for EntityComponentVibrationParams {
     const TYPE_NAME: &'static str = "EntityComponentVibrationParams";
@@ -381867,6 +381698,7 @@ impl<'a> Extract<'a> for EntityEffectSystem_LightType {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -382007,6 +381839,7 @@ pub struct EntityEffectSystem_LightType_PointLight {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -382151,6 +381984,7 @@ impl Pooled for EntityEffectSystem_LightType_PointLight {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -385810,7 +385644,6 @@ impl<'a> Extract<'a> for EntityEffectSystem_ToggleSequencerTask {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-simpleanimators",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -385818,8 +385651,7 @@ impl<'a> Extract<'a> for EntityEffectSystem_ToggleSequencerTask {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct AnimationSetVariable {
     /// `variable` (WeakPointer)
@@ -385841,7 +385673,6 @@ pub struct AnimationSetVariable {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-simpleanimators",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -385849,8 +385680,7 @@ pub struct AnimationSetVariable {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for AnimationSetVariable {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -385872,7 +385702,6 @@ impl Pooled for AnimationSetVariable {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-simpleanimators",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -385880,8 +385709,7 @@ impl Pooled for AnimationSetVariable {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for AnimationSetVariable {
     const TYPE_NAME: &'static str = "AnimationSetVariable";
@@ -388137,7 +387965,6 @@ impl<'a> Extract<'a> for EntityPhysicalAudioParams {
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weaponmounts",
@@ -388147,8 +387974,7 @@ impl<'a> Extract<'a> for EntityPhysicalAudioParams {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SEntityTraversingNodeTypeItemPort {
     /// `itemPortName` (String)
@@ -388177,7 +388003,6 @@ pub struct SEntityTraversingNodeTypeItemPort {
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weaponmounts",
@@ -388187,8 +388012,7 @@ pub struct SEntityTraversingNodeTypeItemPort {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SEntityTraversingNodeTypeItemPort {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -388221,7 +388045,6 @@ impl Pooled for SEntityTraversingNodeTypeItemPort {
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weaponmounts",
@@ -388231,8 +388054,7 @@ impl Pooled for SEntityTraversingNodeTypeItemPort {
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SEntityTraversingNodeTypeItemPort {
     const TYPE_NAME: &'static str = "SEntityTraversingNodeTypeItemPort";
@@ -388633,6 +388455,7 @@ impl<'a> Extract<'a> for SEntityTraversingNodeTypeRootEntity {
     feature = "entities-hackable",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
@@ -388653,6 +388476,7 @@ pub struct SEntityTraversingNodeTypeEntityLink {
     feature = "entities-hackable",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
@@ -388677,6 +388501,7 @@ impl Pooled for SEntityTraversingNodeTypeEntityLink {
     feature = "entities-hackable",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
@@ -389261,13 +389086,9 @@ impl<'a> Extract<'a> for SEntityTraversingNodeTypeCommandHostVehicle {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct SEntityTraversingNodeTypeUserControl {
     /// `listenedForItemComponent` (Reference)
@@ -389280,13 +389101,9 @@ pub struct SEntityTraversingNodeTypeUserControl {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for SEntityTraversingNodeTypeUserControl {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -389307,13 +389124,9 @@ impl Pooled for SEntityTraversingNodeTypeUserControl {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for SEntityTraversingNodeTypeUserControl {
     const TYPE_NAME: &'static str = "SEntityTraversingNodeTypeUserControl";
@@ -389329,7 +389142,13 @@ impl<'a> Extract<'a> for SEntityTraversingNodeTypeUserControl {
 
 /// DCB type: `SEntityTraversingNodeTypeChildTag`
 /// Inherits from: `SEntityTraversingNodeTypeParams`
-#[cfg(any(feature = "entities-scitem-doors", feature = "entities-scitem-storage"))]
+#[cfg(any(
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-storage",
+    feature = "entities-spaceships"
+))]
 pub struct SEntityTraversingNodeTypeChildTag {
     /// `filterTag` (Reference)
     pub filter_tag: Option<CigGuid>,
@@ -389337,7 +389156,13 @@ pub struct SEntityTraversingNodeTypeChildTag {
     pub recursive: bool,
 }
 
-#[cfg(any(feature = "entities-scitem-doors", feature = "entities-scitem-storage"))]
+#[cfg(any(
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-storage",
+    feature = "entities-spaceships"
+))]
 impl Pooled for SEntityTraversingNodeTypeChildTag {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
         &pools.multi_feature.sentity_traversing_node_type_child_tag
@@ -389347,7 +389172,13 @@ impl Pooled for SEntityTraversingNodeTypeChildTag {
     }
 }
 
-#[cfg(any(feature = "entities-scitem-doors", feature = "entities-scitem-storage"))]
+#[cfg(any(
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-storage",
+    feature = "entities-spaceships"
+))]
 impl<'a> Extract<'a> for SEntityTraversingNodeTypeChildTag {
     const TYPE_NAME: &'static str = "SEntityTraversingNodeTypeChildTag";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
@@ -390629,6 +390460,7 @@ impl<'a> Extract<'a> for SInverseInteractionLinkParams {
     feature = "entities-scitem-access",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
@@ -390640,16 +390472,12 @@ impl<'a> Extract<'a> for SInverseInteractionLinkParams {
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weaponmounts",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct SInteractionLinkExecuteCreateInteractionLinkNode {
     /// `linkedInteractionName` (String)
@@ -390670,6 +390498,7 @@ pub struct SInteractionLinkExecuteCreateInteractionLinkNode {
     feature = "entities-scitem-access",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
@@ -390681,16 +390510,12 @@ pub struct SInteractionLinkExecuteCreateInteractionLinkNode {
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weaponmounts",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for SInteractionLinkExecuteCreateInteractionLinkNode {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -390717,6 +390542,7 @@ impl Pooled for SInteractionLinkExecuteCreateInteractionLinkNode {
     feature = "entities-scitem-access",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
@@ -390728,16 +390554,12 @@ impl Pooled for SInteractionLinkExecuteCreateInteractionLinkNode {
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weaponmounts",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for SInteractionLinkExecuteCreateInteractionLinkNode {
     const TYPE_NAME: &'static str = "SInteractionLinkExecuteCreateInteractionLinkNode";
@@ -392474,6 +392296,7 @@ impl<'a> Extract<'a> for FacialTrackingParams {
     feature = "missiondata",
     feature = "missiongiver",
     feature = "missionscenarios",
+    feature = "musiclogic",
     feature = "ui-buildingblocks"
 ))]
 pub struct Faction {
@@ -392527,6 +392350,7 @@ pub struct Faction {
     feature = "missiondata",
     feature = "missiongiver",
     feature = "missionscenarios",
+    feature = "musiclogic",
     feature = "ui-buildingblocks"
 ))]
 impl Pooled for Faction {
@@ -392562,6 +392386,7 @@ impl Pooled for Faction {
     feature = "missiondata",
     feature = "missiongiver",
     feature = "missionscenarios",
+    feature = "musiclogic",
     feature = "ui-buildingblocks"
 ))]
 impl<'a> Extract<'a> for Faction {
@@ -393025,6 +392850,7 @@ impl<'a> Extract<'a> for FactionRelationship {
     feature = "missiondata",
     feature = "missiongiver",
     feature = "missionscenarios",
+    feature = "musiclogic",
     feature = "player",
     feature = "ssolarsystem",
     feature = "starmap",
@@ -393071,6 +392897,7 @@ pub struct FriendlyFireReactionOverride {
     feature = "missiondata",
     feature = "missiongiver",
     feature = "missionscenarios",
+    feature = "musiclogic",
     feature = "player",
     feature = "ssolarsystem",
     feature = "starmap",
@@ -393119,6 +392946,7 @@ impl Pooled for FriendlyFireReactionOverride {
     feature = "missiondata",
     feature = "missiongiver",
     feature = "missionscenarios",
+    feature = "musiclogic",
     feature = "player",
     feature = "ssolarsystem",
     feature = "starmap",
@@ -394922,6 +394750,7 @@ impl<'a> Extract<'a> for AudioFootstepSurfaceMapping {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "reputation",
     feature = "ui-buildingblocks",
@@ -394967,6 +394796,7 @@ pub struct UserRTPC {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "reputation",
     feature = "ui-buildingblocks",
@@ -395012,6 +394842,7 @@ impl Pooled for UserRTPC {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "reputation",
     feature = "ui-buildingblocks",
@@ -395571,6 +395402,7 @@ impl<'a> Extract<'a> for PlayerFormationParams {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -395848,6 +395680,7 @@ pub struct AudioRtpc {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -396129,6 +395962,7 @@ impl Pooled for AudioRtpc {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -396484,6 +396318,7 @@ impl<'a> Extract<'a> for AudioRtpcWithDefault {
     feature = "lootgeneration",
     feature = "megamap",
     feature = "missionbroker",
+    feature = "musiclogic",
     feature = "player",
     feature = "playerchoicemenuitems",
     feature = "playerchoicemenutypes",
@@ -396533,6 +396368,7 @@ pub struct AudioSwitch {
     feature = "lootgeneration",
     feature = "megamap",
     feature = "missionbroker",
+    feature = "musiclogic",
     feature = "player",
     feature = "playerchoicemenuitems",
     feature = "playerchoicemenutypes",
@@ -396586,6 +396422,7 @@ impl Pooled for AudioSwitch {
     feature = "lootgeneration",
     feature = "megamap",
     feature = "missionbroker",
+    feature = "musiclogic",
     feature = "player",
     feature = "playerchoicemenuitems",
     feature = "playerchoicemenutypes",
@@ -402478,6 +402315,14 @@ pub struct ResourceNetworkParams {
     pub doors_ignore_rn: bool,
     /// `enableExperimentalArmorPenetration` (Boolean)
     pub enable_experimental_armor_penetration: bool,
+    /// `shipPassDestroyedPartDamageToComponent` (Boolean)
+    pub ship_pass_destroyed_part_damage_to_component: bool,
+    /// `shipPassDestroyedPartDamageToChild` (Boolean)
+    pub ship_pass_destroyed_part_damage_to_child: bool,
+    /// `shipDestructionBufferMultiplier` (Single)
+    pub ship_destruction_buffer_multiplier: f32,
+    /// `shipDestructionHealthThreshold` (Single)
+    pub ship_destruction_health_threshold: f32,
 }
 
 #[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
@@ -402506,6 +402351,18 @@ impl<'a> Extract<'a> for ResourceNetworkParams {
             doors_ignore_rn: inst.get_bool("doorsIgnoreRN").unwrap_or_default(),
             enable_experimental_armor_penetration: inst
                 .get_bool("enableExperimentalArmorPenetration")
+                .unwrap_or_default(),
+            ship_pass_destroyed_part_damage_to_component: inst
+                .get_bool("shipPassDestroyedPartDamageToComponent")
+                .unwrap_or_default(),
+            ship_pass_destroyed_part_damage_to_child: inst
+                .get_bool("shipPassDestroyedPartDamageToChild")
+                .unwrap_or_default(),
+            ship_destruction_buffer_multiplier: inst
+                .get_f32("shipDestructionBufferMultiplier")
+                .unwrap_or_default(),
+            ship_destruction_health_threshold: inst
+                .get_f32("shipDestructionHealthThreshold")
                 .unwrap_or_default(),
         }
     }
@@ -413102,8 +412959,7 @@ impl<'a> Extract<'a> for SGreenZoneObedienceComponentParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SGrip {
     /// `gripID` (String)
@@ -413216,8 +413072,7 @@ pub struct SGrip {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SGrip {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -413328,8 +413183,7 @@ impl Pooled for SGrip {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SGrip {
     const TYPE_NAME: &'static str = "SGrip";
@@ -413461,8 +413315,7 @@ impl<'a> Extract<'a> for SGrip {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SGripShapeParams {
     /// `gripShape` (String)
@@ -413573,8 +413426,7 @@ pub struct SGripShapeParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SGripShapeParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -413685,8 +413537,7 @@ impl Pooled for SGripShapeParams {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SGripShapeParams {
     const TYPE_NAME: &'static str = "SGripShapeParams";
@@ -418294,6 +418145,7 @@ impl<'a> Extract<'a> for EntityComponentHealth_SApplyDamageMapTask {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418367,6 +418219,7 @@ pub struct BodyPart {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418440,6 +418293,7 @@ impl Pooled for BodyPart {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418520,6 +418374,7 @@ impl<'a> Extract<'a> for BodyPart {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418569,6 +418424,7 @@ pub struct BodyJoint {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418616,6 +418472,7 @@ impl Pooled for BodyJoint {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418674,6 +418531,7 @@ impl<'a> Extract<'a> for BodyJoint {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418719,6 +418577,7 @@ pub struct BodyMapping {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418766,6 +418625,7 @@ impl Pooled for BodyMapping {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418834,6 +418694,7 @@ impl<'a> Extract<'a> for BodyMapping {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418893,6 +418754,7 @@ pub struct BodyPartConfig {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -418940,6 +418802,7 @@ impl Pooled for BodyPartConfig {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -419008,6 +418871,7 @@ impl<'a> Extract<'a> for BodyPartConfig {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -419065,6 +418929,7 @@ pub struct BodyHealthConfig {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -419112,6 +418977,7 @@ impl Pooled for BodyHealthConfig {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -419206,6 +419072,7 @@ impl<'a> Extract<'a> for BodyHealthConfig {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -419250,6 +419117,7 @@ pub struct HealthTemplate {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -419296,6 +419164,7 @@ impl Pooled for HealthTemplate {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -425235,15 +425104,13 @@ impl<'a> Extract<'a> for SHardPointHighlightNode {
     feature = "entities-scitem-openableobject",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SRootEntityHighlightNode {}
 
@@ -425261,15 +425128,13 @@ pub struct SRootEntityHighlightNode {}
     feature = "entities-scitem-openableobject",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SRootEntityHighlightNode {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -425294,15 +425159,13 @@ impl Pooled for SRootEntityHighlightNode {
     feature = "entities-scitem-openableobject",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SRootEntityHighlightNode {
     const TYPE_NAME: &'static str = "SRootEntityHighlightNode";
@@ -427801,6 +427664,8 @@ impl<'a> Extract<'a> for SInteractionPointSpherePrimitiveParams {
     feature = "aiwavecollection",
     feature = "contracts",
     feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
@@ -427822,6 +427687,8 @@ pub struct SInteractionPointCuboidPrimitiveParams {
     feature = "aiwavecollection",
     feature = "contracts",
     feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
@@ -427849,6 +427716,8 @@ impl Pooled for SInteractionPointCuboidPrimitiveParams {
     feature = "aiwavecollection",
     feature = "contracts",
     feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
@@ -443992,7 +443861,6 @@ impl<'a> Extract<'a> for InteractionConditionAccountBadge {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -444020,8 +443888,7 @@ impl<'a> Extract<'a> for InteractionConditionAccountBadge {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InteractionConditionSeatUserRegistered {
     /// `conditionDisplay` (StrongPointer)
@@ -444060,7 +443927,6 @@ pub struct InteractionConditionSeatUserRegistered {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -444088,8 +443954,7 @@ pub struct InteractionConditionSeatUserRegistered {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InteractionConditionSeatUserRegistered {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -444136,7 +444001,6 @@ impl Pooled for InteractionConditionSeatUserRegistered {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -444164,8 +444028,7 @@ impl Pooled for InteractionConditionSeatUserRegistered {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InteractionConditionSeatUserRegistered {
     const TYPE_NAME: &'static str = "InteractionConditionSeatUserRegistered";
@@ -444381,7 +444244,6 @@ impl<'a> Extract<'a> for InteractionConditionOR {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -444409,8 +444271,7 @@ impl<'a> Extract<'a> for InteractionConditionOR {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InteractionConditionAND {
     /// `conditionDisplay` (StrongPointer)
@@ -444456,7 +444317,6 @@ pub struct InteractionConditionAND {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -444484,8 +444344,7 @@ pub struct InteractionConditionAND {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InteractionConditionAND {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -444531,7 +444390,6 @@ impl Pooled for InteractionConditionAND {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -444559,8 +444417,7 @@ impl Pooled for InteractionConditionAND {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InteractionConditionAND {
     const TYPE_NAME: &'static str = "InteractionConditionAND";
@@ -444746,7 +444603,6 @@ impl<'a> Extract<'a> for InteractionConditionNAND {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
@@ -444776,8 +444632,7 @@ impl<'a> Extract<'a> for InteractionConditionNAND {
     feature = "reputation",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InteractionConditionNOT {
     /// `conditionDisplay` (StrongPointer)
@@ -444824,7 +444679,6 @@ pub struct InteractionConditionNOT {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
@@ -444854,8 +444708,7 @@ pub struct InteractionConditionNOT {
     feature = "reputation",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InteractionConditionNOT {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -444904,7 +444757,6 @@ impl Pooled for InteractionConditionNOT {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
@@ -444934,8 +444786,7 @@ impl Pooled for InteractionConditionNOT {
     feature = "reputation",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InteractionConditionNOT {
     const TYPE_NAME: &'static str = "InteractionConditionNOT";
@@ -445626,6 +445477,7 @@ impl<'a> Extract<'a> for IneractionConditionUserNotInUsable {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
@@ -445686,6 +445538,7 @@ pub struct InteractionConditionActorHasAttachedEntityTypes {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
@@ -445746,6 +445599,7 @@ impl Pooled for InteractionConditionActorHasAttachedEntityTypes {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
@@ -446423,7 +446277,6 @@ impl<'a> Extract<'a> for InteractionConditionCanAttachItem {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
@@ -446460,8 +446313,7 @@ impl<'a> Extract<'a> for InteractionConditionCanAttachItem {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InteractionConditionCanStoreInPersonalInventory {
     /// `conditionDisplay` (StrongPointer)
@@ -446506,7 +446358,6 @@ pub struct InteractionConditionCanStoreInPersonalInventory {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
@@ -446543,8 +446394,7 @@ pub struct InteractionConditionCanStoreInPersonalInventory {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InteractionConditionCanStoreInPersonalInventory {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -446597,7 +446447,6 @@ impl Pooled for InteractionConditionCanStoreInPersonalInventory {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
@@ -446634,8 +446483,7 @@ impl Pooled for InteractionConditionCanStoreInPersonalInventory {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InteractionConditionCanStoreInPersonalInventory {
     const TYPE_NAME: &'static str = "InteractionConditionCanStoreInPersonalInventory";
@@ -447293,7 +447141,6 @@ impl<'a> Extract<'a> for InteractionConditionCanReachMovable {
     feature = "crafting",
     feature = "crewmanifest",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -447342,7 +447189,6 @@ pub struct InteractionConditionEntityIsAttachedToInteractor {
     feature = "crafting",
     feature = "crewmanifest",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -447397,7 +447243,6 @@ impl Pooled for InteractionConditionEntityIsAttachedToInteractor {
     feature = "crafting",
     feature = "crewmanifest",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -447578,7 +447423,6 @@ impl<'a> Extract<'a> for InteractionConditionEntityIsHeldByInteractor {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -447606,8 +447450,7 @@ impl<'a> Extract<'a> for InteractionConditionEntityIsHeldByInteractor {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InteractionConditionEntityIsAttachedToOtherActor {
     /// `conditionDisplay` (StrongPointer)
@@ -447646,7 +447489,6 @@ pub struct InteractionConditionEntityIsAttachedToOtherActor {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -447674,8 +447516,7 @@ pub struct InteractionConditionEntityIsAttachedToOtherActor {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InteractionConditionEntityIsAttachedToOtherActor {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -447722,7 +447563,6 @@ impl Pooled for InteractionConditionEntityIsAttachedToOtherActor {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -447750,8 +447590,7 @@ impl Pooled for InteractionConditionEntityIsAttachedToOtherActor {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InteractionConditionEntityIsAttachedToOtherActor {
     const TYPE_NAME: &'static str = "InteractionConditionEntityIsAttachedToOtherActor";
@@ -447804,7 +447643,6 @@ impl<'a> Extract<'a> for InteractionConditionEntityIsAttachedToOtherActor {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -447832,8 +447670,7 @@ impl<'a> Extract<'a> for InteractionConditionEntityIsAttachedToOtherActor {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InteractionConditionEntityIsHeldByOtherActor {
     /// `conditionDisplay` (StrongPointer)
@@ -447872,7 +447709,6 @@ pub struct InteractionConditionEntityIsHeldByOtherActor {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -447900,8 +447736,7 @@ pub struct InteractionConditionEntityIsHeldByOtherActor {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InteractionConditionEntityIsHeldByOtherActor {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -447948,7 +447783,6 @@ impl Pooled for InteractionConditionEntityIsHeldByOtherActor {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
@@ -447976,8 +447810,7 @@ impl Pooled for InteractionConditionEntityIsHeldByOtherActor {
     feature = "playerchoicemenutypes",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InteractionConditionEntityIsHeldByOtherActor {
     const TYPE_NAME: &'static str = "InteractionConditionEntityIsHeldByOtherActor";
@@ -448122,7 +447955,6 @@ impl<'a> Extract<'a> for InteractionConditionInteractableEntityOwnerHasArmorAtta
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -448162,8 +447994,7 @@ impl<'a> Extract<'a> for InteractionConditionInteractableEntityOwnerHasArmorAtta
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InteractionConditionLootableNotBeingViewedByAnyOtherInventory {
     /// `conditionDisplay` (StrongPointer)
@@ -448212,7 +448043,6 @@ pub struct InteractionConditionLootableNotBeingViewedByAnyOtherInventory {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -448252,8 +448082,7 @@ pub struct InteractionConditionLootableNotBeingViewedByAnyOtherInventory {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InteractionConditionLootableNotBeingViewedByAnyOtherInventory {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -448310,7 +448139,6 @@ impl Pooled for InteractionConditionLootableNotBeingViewedByAnyOtherInventory {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -448350,8 +448178,7 @@ impl Pooled for InteractionConditionLootableNotBeingViewedByAnyOtherInventory {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InteractionConditionLootableNotBeingViewedByAnyOtherInventory {
     const TYPE_NAME: &'static str = "InteractionConditionLootableNotBeingViewedByAnyOtherInventory";
@@ -448656,7 +448483,6 @@ impl<'a> Extract<'a> for InteractionConditionHasProhibitedItems {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -448696,7 +448522,6 @@ impl<'a> Extract<'a> for InteractionConditionHasProhibitedItems {
     feature = "starmap",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
-    feature = "ui-mobiglas",
     feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
     feature = "ui-uiconfig_starcitizen"
 ))]
@@ -448750,7 +448575,6 @@ pub struct InteractionConditionEntityTags {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -448790,7 +448614,6 @@ pub struct InteractionConditionEntityTags {
     feature = "starmap",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
-    feature = "ui-mobiglas",
     feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
     feature = "ui-uiconfig_starcitizen"
 ))]
@@ -448844,7 +448667,6 @@ impl Pooled for InteractionConditionEntityTags {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -448884,7 +448706,6 @@ impl Pooled for InteractionConditionEntityTags {
     feature = "starmap",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
-    feature = "ui-mobiglas",
     feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
     feature = "ui-uiconfig_starcitizen"
 ))]
@@ -448953,7 +448774,6 @@ impl<'a> Extract<'a> for InteractionConditionEntityTags {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
@@ -448990,8 +448810,7 @@ impl<'a> Extract<'a> for InteractionConditionEntityTags {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InteractionConditionIsAttachedToItemPort {
     /// `conditionDisplay` (StrongPointer)
@@ -449040,7 +448859,6 @@ pub struct InteractionConditionIsAttachedToItemPort {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
@@ -449077,8 +448895,7 @@ pub struct InteractionConditionIsAttachedToItemPort {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InteractionConditionIsAttachedToItemPort {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -449131,7 +448948,6 @@ impl Pooled for InteractionConditionIsAttachedToItemPort {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-starmarine",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-template",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
@@ -449168,8 +448984,7 @@ impl Pooled for InteractionConditionIsAttachedToItemPort {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InteractionConditionIsAttachedToItemPort {
     const TYPE_NAME: &'static str = "InteractionConditionIsAttachedToItemPort";
@@ -449206,7 +449021,6 @@ impl<'a> Extract<'a> for InteractionConditionIsAttachedToItemPort {
     feature = "crewmanifest",
     feature = "entities-basebuilding",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -449260,7 +449074,6 @@ pub struct InteractionConditionSwapAvailable {
     feature = "crewmanifest",
     feature = "entities-basebuilding",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -449318,7 +449131,6 @@ impl Pooled for InteractionConditionSwapAvailable {
     feature = "crewmanifest",
     feature = "entities-basebuilding",
     feature = "entities-entityspawners",
-    feature = "entities-groundvehicles",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
@@ -451442,7 +451254,6 @@ impl<'a> Extract<'a> for InteractionPointTemplate {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weaponmounts",
@@ -451457,8 +451268,7 @@ impl<'a> Extract<'a> for InteractionPointTemplate {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InteractionConditionInteractionStateMachineTag {
     /// `conditionDisplay` (StrongPointer)
@@ -451489,7 +451299,6 @@ pub struct InteractionConditionInteractionStateMachineTag {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weaponmounts",
@@ -451504,8 +451313,7 @@ pub struct InteractionConditionInteractionStateMachineTag {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InteractionConditionInteractionStateMachineTag {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -451542,7 +451350,6 @@ impl Pooled for InteractionConditionInteractionStateMachineTag {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weaponmounts",
@@ -451557,8 +451364,7 @@ impl Pooled for InteractionConditionInteractionStateMachineTag {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InteractionConditionInteractionStateMachineTag {
     const TYPE_NAME: &'static str = "InteractionConditionInteractionStateMachineTag";
@@ -452689,7 +452495,11 @@ impl<'a> Extract<'a> for InteractionConditionIsItemNotBricked {
 
 /// DCB type: `InteractionConditionEntityOrientation`
 /// Inherits from: `InteractionConditionParams`
-#[cfg(any(feature = "contracts", feature = "entities-decorations"))]
+#[cfg(any(
+    feature = "contracts",
+    feature = "entities-decorations",
+    feature = "entities-scitem-usables"
+))]
 pub struct InteractionConditionEntityOrientation {
     /// `conditionDisplay` (StrongPointer)
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
@@ -452701,7 +452511,11 @@ pub struct InteractionConditionEntityOrientation {
     pub direction_vector_to_match: Option<Handle<Vec3>>,
 }
 
-#[cfg(any(feature = "contracts", feature = "entities-decorations"))]
+#[cfg(any(
+    feature = "contracts",
+    feature = "entities-decorations",
+    feature = "entities-scitem-usables"
+))]
 impl Pooled for InteractionConditionEntityOrientation {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
         &pools.multi_feature.interaction_condition_entity_orientation
@@ -452711,7 +452525,11 @@ impl Pooled for InteractionConditionEntityOrientation {
     }
 }
 
-#[cfg(any(feature = "contracts", feature = "entities-decorations"))]
+#[cfg(any(
+    feature = "contracts",
+    feature = "entities-decorations",
+    feature = "entities-scitem-usables"
+))]
 impl<'a> Extract<'a> for InteractionConditionEntityOrientation {
     const TYPE_NAME: &'static str = "InteractionConditionEntityOrientation";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
@@ -458829,6 +458647,7 @@ impl<'a> Extract<'a> for SItemResourceContainerStateModifier {
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
     feature = "entities-scitem-gameplayinteractables",
@@ -458838,7 +458657,6 @@ impl<'a> Extract<'a> for SItemResourceContainerStateModifier {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-simpleanimators",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-trackview",
     feature = "entities-ui",
@@ -458846,8 +458664,7 @@ impl<'a> Extract<'a> for SItemResourceContainerStateModifier {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SEntityLinkedContext {}
 
@@ -458864,6 +458681,7 @@ pub struct SEntityLinkedContext {}
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
     feature = "entities-scitem-gameplayinteractables",
@@ -458873,7 +458691,6 @@ pub struct SEntityLinkedContext {}
     feature = "entities-scitem-ships",
     feature = "entities-scitem-simpleanimators",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-trackview",
     feature = "entities-ui",
@@ -458881,8 +458698,7 @@ pub struct SEntityLinkedContext {}
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SEntityLinkedContext {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -458906,6 +458722,7 @@ impl Pooled for SEntityLinkedContext {
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-airlocks",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
     feature = "entities-scitem-gameplayinteractables",
@@ -458915,7 +458732,6 @@ impl Pooled for SEntityLinkedContext {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-simpleanimators",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-trackview",
     feature = "entities-ui",
@@ -458923,8 +458739,7 @@ impl Pooled for SEntityLinkedContext {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SEntityLinkedContext {
     const TYPE_NAME: &'static str = "SEntityLinkedContext";
@@ -459272,7 +459087,11 @@ impl<'a> Extract<'a> for SEntityTraversalNodeContext {
 /// DCB type: `SEntityTraversalNodeReferenceContext`
 /// Inherits from: `SEntityContextBase`
 #[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
     feature = "entities-scitem-chipsets",
     feature = "entities-scitem-consumables",
     feature = "entities-scitem-controlpanels",
@@ -459280,7 +459099,11 @@ impl<'a> Extract<'a> for SEntityTraversalNodeContext {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies"
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
 ))]
 pub struct SEntityTraversalNodeReferenceContext {
     /// `traversingNode` (WeakPointer)
@@ -459288,7 +459111,11 @@ pub struct SEntityTraversalNodeReferenceContext {
 }
 
 #[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
     feature = "entities-scitem-chipsets",
     feature = "entities-scitem-consumables",
     feature = "entities-scitem-controlpanels",
@@ -459296,7 +459123,11 @@ pub struct SEntityTraversalNodeReferenceContext {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies"
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
 ))]
 impl Pooled for SEntityTraversalNodeReferenceContext {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -459308,7 +459139,11 @@ impl Pooled for SEntityTraversalNodeReferenceContext {
 }
 
 #[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
     feature = "entities-scitem-chipsets",
     feature = "entities-scitem-consumables",
     feature = "entities-scitem-controlpanels",
@@ -459316,7 +459151,11 @@ impl Pooled for SEntityTraversalNodeReferenceContext {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies"
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SEntityTraversalNodeReferenceContext {
     const TYPE_NAME: &'static str = "SEntityTraversalNodeReferenceContext";
@@ -459345,20 +459184,19 @@ impl<'a> Extract<'a> for SEntityTraversalNodeReferenceContext {
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SEntityTraversalTargetPathContext {
     /// `targetPath` (WeakPointer)
@@ -459373,20 +459211,19 @@ pub struct SEntityTraversalTargetPathContext {
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SEntityTraversalTargetPathContext {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -459405,20 +459242,19 @@ impl Pooled for SEntityTraversalTargetPathContext {
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SEntityTraversalTargetPathContext {
     const TYPE_NAME: &'static str = "SEntityTraversalTargetPathContext";
@@ -460247,20 +460083,27 @@ impl<'a> Extract<'a> for SLinkedInteractionStateChangedStateModifier {
     feature = "aiwavecollection",
     feature = "contracts",
     feature = "crafting",
+    feature = "entities-cinematiclabelwithvehicle",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
     feature = "entities-mineable",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "factions",
     feature = "gamemode",
@@ -460292,20 +460135,27 @@ pub struct SAttachableStateModifier {
     feature = "aiwavecollection",
     feature = "contracts",
     feature = "crafting",
+    feature = "entities-cinematiclabelwithvehicle",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
     feature = "entities-mineable",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "factions",
     feature = "gamemode",
@@ -460337,20 +460187,27 @@ impl Pooled for SAttachableStateModifier {
     feature = "aiwavecollection",
     feature = "contracts",
     feature = "crafting",
+    feature = "entities-cinematiclabelwithvehicle",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
     feature = "entities-mineable",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "factions",
     feature = "gamemode",
@@ -460469,7 +460326,6 @@ impl<'a> Extract<'a> for SEntityAttachStateModifier {
     feature = "entities-scitem-salvageablerepairable",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-stormbreaker_pylon_hatch",
@@ -460479,8 +460335,7 @@ impl<'a> Extract<'a> for SEntityAttachStateModifier {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SItemPortStateModifier {
     /// `itemPort` (WeakPointer)
@@ -460519,7 +460374,6 @@ pub struct SItemPortStateModifier {
     feature = "entities-scitem-salvageablerepairable",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-stormbreaker_pylon_hatch",
@@ -460529,8 +460383,7 @@ pub struct SItemPortStateModifier {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SItemPortStateModifier {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -460563,7 +460416,6 @@ impl Pooled for SItemPortStateModifier {
     feature = "entities-scitem-salvageablerepairable",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entities-stormbreaker_pylon_hatch",
@@ -460573,8 +460425,7 @@ impl Pooled for SItemPortStateModifier {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SItemPortStateModifier {
     const TYPE_NAME: &'static str = "SItemPortStateModifier";
@@ -461068,15 +460919,13 @@ impl<'a> Extract<'a> for SKioskInteractionStateModifier {
     feature = "entities-scitem-locations",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-test",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct ItemResourceStateModifier {
     /// `stateRanges` (Class (array))
@@ -461099,15 +460948,13 @@ pub struct ItemResourceStateModifier {
     feature = "entities-scitem-locations",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-test",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for ItemResourceStateModifier {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -461132,15 +460979,13 @@ impl Pooled for ItemResourceStateModifier {
     feature = "entities-scitem-locations",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-test",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for ItemResourceStateModifier {
     const TYPE_NAME: &'static str = "ItemResourceStateModifier";
@@ -464286,13 +464131,9 @@ impl<'a> Extract<'a> for AggregateStateModifier {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct AttachableStateModifierContext_Self {}
 
@@ -464303,13 +464144,9 @@ pub struct AttachableStateModifierContext_Self {}
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for AttachableStateModifierContext_Self {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -464327,13 +464164,9 @@ impl Pooled for AttachableStateModifierContext_Self {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for AttachableStateModifierContext_Self {
     const TYPE_NAME: &'static str = "AttachableStateModifierContext_Self";
@@ -464351,13 +464184,9 @@ impl<'a> Extract<'a> for AttachableStateModifierContext_Self {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct AttachableStateModifierContext_Parent {}
 
@@ -464368,13 +464197,9 @@ pub struct AttachableStateModifierContext_Parent {}
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for AttachableStateModifierContext_Parent {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -464392,13 +464217,9 @@ impl Pooled for AttachableStateModifierContext_Parent {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for AttachableStateModifierContext_Parent {
     const TYPE_NAME: &'static str = "AttachableStateModifierContext_Parent";
@@ -464536,7 +464357,6 @@ impl<'a> Extract<'a> for AttachableStateModifierContext_Immediate_Parent {
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -464545,8 +464365,7 @@ impl<'a> Extract<'a> for AttachableStateModifierContext_Immediate_Parent {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct DoorOpenStates {
     /// `opened` (WeakPointer)
@@ -464574,7 +464393,6 @@ pub struct DoorOpenStates {
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -464583,8 +464401,7 @@ pub struct DoorOpenStates {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for DoorOpenStates {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -464610,7 +464427,6 @@ impl Pooled for DoorOpenStates {
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -464619,8 +464435,7 @@ impl Pooled for DoorOpenStates {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for DoorOpenStates {
     const TYPE_NAME: &'static str = "DoorOpenStates";
@@ -464682,7 +464497,6 @@ impl<'a> Extract<'a> for DoorOpenStates {
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -464691,8 +464505,7 @@ impl<'a> Extract<'a> for DoorOpenStates {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct DoorLockStates {
     /// `locked` (WeakPointer)
@@ -464716,7 +464529,6 @@ pub struct DoorLockStates {
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -464725,8 +464537,7 @@ pub struct DoorLockStates {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for DoorLockStates {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -464752,7 +464563,6 @@ impl Pooled for DoorLockStates {
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -464761,8 +464571,7 @@ impl Pooled for DoorLockStates {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for DoorLockStates {
     const TYPE_NAME: &'static str = "DoorLockStates";
@@ -464807,7 +464616,6 @@ impl<'a> Extract<'a> for DoorLockStates {
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -464816,8 +464624,7 @@ impl<'a> Extract<'a> for DoorLockStates {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct DoorStateModifier {
     /// `openStates` (StrongPointer)
@@ -464841,7 +464648,6 @@ pub struct DoorStateModifier {
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -464850,8 +464656,7 @@ pub struct DoorStateModifier {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for DoorStateModifier {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -464877,7 +464682,6 @@ impl Pooled for DoorStateModifier {
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -464886,8 +464690,7 @@ impl Pooled for DoorStateModifier {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for DoorStateModifier {
     const TYPE_NAME: &'static str = "DoorStateModifier";
@@ -464981,13 +464784,9 @@ impl<'a> Extract<'a> for CargoOccupancyStateModifier {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct FlightControllerEnableStates {
     /// `enabled` (WeakPointer)
@@ -465002,13 +464801,9 @@ pub struct FlightControllerEnableStates {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for FlightControllerEnableStates {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -465025,13 +464820,9 @@ impl Pooled for FlightControllerEnableStates {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for FlightControllerEnableStates {
     const TYPE_NAME: &'static str = "FlightControllerEnableStates";
@@ -465066,13 +464857,9 @@ impl<'a> Extract<'a> for FlightControllerEnableStates {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct FlightControllerHydrogenFuelStates {
     /// `full` (WeakPointer)
@@ -465095,13 +464882,9 @@ pub struct FlightControllerHydrogenFuelStates {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for FlightControllerHydrogenFuelStates {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -465118,13 +464901,9 @@ impl Pooled for FlightControllerHydrogenFuelStates {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for FlightControllerHydrogenFuelStates {
     const TYPE_NAME: &'static str = "FlightControllerHydrogenFuelStates";
@@ -465195,13 +464974,9 @@ impl<'a> Extract<'a> for FlightControllerHydrogenFuelStates {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct FlightControllerQuantumFuelStates {
     /// `normal` (WeakPointer)
@@ -465218,13 +464993,9 @@ pub struct FlightControllerQuantumFuelStates {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for FlightControllerQuantumFuelStates {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -465241,13 +465012,9 @@ impl Pooled for FlightControllerQuantumFuelStates {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for FlightControllerQuantumFuelStates {
     const TYPE_NAME: &'static str = "FlightControllerQuantumFuelStates";
@@ -465292,13 +465059,9 @@ impl<'a> Extract<'a> for FlightControllerQuantumFuelStates {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct FlightControllerStateModifier {
     /// `engineStates` (StrongPointer)
@@ -465327,13 +465090,9 @@ pub struct FlightControllerStateModifier {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for FlightControllerStateModifier {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -465350,13 +465109,9 @@ impl Pooled for FlightControllerStateModifier {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for FlightControllerStateModifier {
     const TYPE_NAME: &'static str = "FlightControllerStateModifier";
@@ -465456,12 +465211,8 @@ impl<'a> Extract<'a> for FlightControllerStateModifier {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct LandingGearStateModifier {
     /// `context` (StrongPointer)
@@ -465483,12 +465234,8 @@ pub struct LandingGearStateModifier {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for LandingGearStateModifier {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -465506,12 +465253,8 @@ impl Pooled for LandingGearStateModifier {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for LandingGearStateModifier {
     const TYPE_NAME: &'static str = "LandingGearStateModifier";
@@ -465654,14 +465397,10 @@ impl<'a> Extract<'a> for LandingGearContactStateModifier {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct PowerConnectionStateModifier {
     /// `context` (StrongPointer)
@@ -465686,14 +465425,10 @@ pub struct PowerConnectionStateModifier {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for PowerConnectionStateModifier {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -465714,14 +465449,10 @@ impl Pooled for PowerConnectionStateModifier {
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for PowerConnectionStateModifier {
     const TYPE_NAME: &'static str = "PowerConnectionStateModifier";
@@ -467798,7 +467529,6 @@ impl<'a> Extract<'a> for SStandardCargoUnit {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -467818,10 +467548,7 @@ impl<'a> Extract<'a> for SStandardCargoUnit {
     feature = "missiondata",
     feature = "player",
     feature = "ssolarsystem",
-    feature = "starmap",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "starmap"
 ))]
 pub struct SCentiCargoUnit {
     /// `centiSCU` (Int32)
@@ -467863,7 +467590,6 @@ pub struct SCentiCargoUnit {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -467883,10 +467609,7 @@ pub struct SCentiCargoUnit {
     feature = "missiondata",
     feature = "player",
     feature = "ssolarsystem",
-    feature = "starmap",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "starmap"
 ))]
 impl Pooled for SCentiCargoUnit {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -467932,7 +467655,6 @@ impl Pooled for SCentiCargoUnit {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -467952,10 +467674,7 @@ impl Pooled for SCentiCargoUnit {
     feature = "missiondata",
     feature = "player",
     feature = "ssolarsystem",
-    feature = "starmap",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "starmap"
 ))]
 impl<'a> Extract<'a> for SCentiCargoUnit {
     const TYPE_NAME: &'static str = "SCentiCargoUnit";
@@ -468981,7 +468700,6 @@ impl<'a> Extract<'a> for SInventoryParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-prop",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -468989,8 +468707,7 @@ impl<'a> Extract<'a> for SInventoryParams {
     feature = "inventorycontainers",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InventoryContainerGridCellSizeCentimeters {
     /// `centimeters` (Int32)
@@ -469010,7 +468727,6 @@ pub struct InventoryContainerGridCellSizeCentimeters {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-prop",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -469018,8 +468734,7 @@ pub struct InventoryContainerGridCellSizeCentimeters {
     feature = "inventorycontainers",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InventoryContainerGridCellSizeCentimeters {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -469047,7 +468762,6 @@ impl Pooled for InventoryContainerGridCellSizeCentimeters {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-prop",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -469055,8 +468769,7 @@ impl Pooled for InventoryContainerGridCellSizeCentimeters {
     feature = "inventorycontainers",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InventoryContainerGridCellSizeCentimeters {
     const TYPE_NAME: &'static str = "InventoryContainerGridCellSizeCentimeters";
@@ -469434,7 +469147,6 @@ impl<'a> Extract<'a> for InventoryClosedContainerType {
     feature = "entities-scitem-freightelevators",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -469442,8 +469154,7 @@ impl<'a> Extract<'a> for InventoryClosedContainerType {
     feature = "inventorycontainers",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct InventoryOpenContainerType {
     /// `gridCellSize` (StrongPointer)
@@ -469477,7 +469188,6 @@ pub struct InventoryOpenContainerType {
     feature = "entities-scitem-freightelevators",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -469485,8 +469195,7 @@ pub struct InventoryOpenContainerType {
     feature = "inventorycontainers",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for InventoryOpenContainerType {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -469508,7 +469217,6 @@ impl Pooled for InventoryOpenContainerType {
     feature = "entities-scitem-freightelevators",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -469516,8 +469224,7 @@ impl Pooled for InventoryOpenContainerType {
     feature = "inventorycontainers",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for InventoryOpenContainerType {
     const TYPE_NAME: &'static str = "InventoryOpenContainerType";
@@ -471120,6 +470827,7 @@ impl<'a> Extract<'a> for SItemPortDefExtensionTurret {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -471314,6 +471022,7 @@ pub struct SItemPortDefTypes {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -471510,6 +471219,7 @@ impl Pooled for SItemPortDefTypes {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -475553,6 +475263,7 @@ impl<'a> Extract<'a> for SItemPortDefAttachmentImplementationEntity {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -475741,6 +475452,7 @@ pub struct SEnergyPipeDefinition {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -475931,6 +475643,7 @@ impl Pooled for SEnergyPipeDefinition {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -476125,6 +475838,7 @@ impl<'a> Extract<'a> for SEnergyPipeDefinition {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -476318,6 +476032,7 @@ pub struct SItemPortConnectionParam {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -476513,6 +476228,7 @@ impl Pooled for SItemPortConnectionParam {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -476710,6 +476426,7 @@ impl<'a> Extract<'a> for SItemPortConnectionParam {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -476903,6 +476620,7 @@ pub struct SItemPortAttachmentPoints {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -477098,6 +476816,7 @@ impl Pooled for SItemPortAttachmentPoints {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -477295,6 +477014,7 @@ impl<'a> Extract<'a> for SItemPortAttachmentPoints {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -477492,6 +477212,7 @@ pub struct SItemPortBreakable {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -477687,6 +477408,7 @@ impl Pooled for SItemPortBreakable {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -477886,6 +477608,7 @@ impl<'a> Extract<'a> for SItemPortBreakable {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -478081,6 +477804,7 @@ pub struct SItemPortInteractionsParams {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -478276,6 +478000,7 @@ impl Pooled for SItemPortInteractionsParams {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -478487,6 +478212,7 @@ impl<'a> Extract<'a> for SItemPortInteractionsParams {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -478682,6 +478408,7 @@ pub struct SItemPortDefaultItemDef {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -478877,6 +478604,7 @@ impl Pooled for SItemPortDefaultItemDef {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -479099,6 +478827,7 @@ impl<'a> Extract<'a> for SItemPortDefaultItemDef {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -479358,6 +479087,7 @@ pub struct SItemPortDef {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -479553,6 +479283,7 @@ impl Pooled for SItemPortDef {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -479977,6 +479708,7 @@ impl<'a> Extract<'a> for SItemPortDef {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -480163,6 +479895,7 @@ pub struct SItemPortMasterControllerParams {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -480353,6 +480086,7 @@ impl Pooled for SItemPortMasterControllerParams {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -480562,6 +480296,7 @@ impl<'a> Extract<'a> for SItemPortMasterControllerParams {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -480750,6 +480485,7 @@ pub struct SInternalResourceLink {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -480940,6 +480676,7 @@ impl Pooled for SInternalResourceLink {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -481148,6 +480885,7 @@ impl<'a> Extract<'a> for SInternalResourceLink {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -481336,6 +481074,7 @@ pub struct SInternalHardpointLink {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -481526,6 +481265,7 @@ impl Pooled for SInternalHardpointLink {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -484665,6 +484405,7 @@ impl<'a> Extract<'a> for SAttachableComponentParams {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -484851,6 +484592,7 @@ pub struct PowerPool {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -485041,6 +484783,7 @@ impl Pooled for PowerPool {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -485882,6 +485625,7 @@ impl<'a> Extract<'a> for DynamicPowerPool {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -486070,6 +485814,7 @@ pub struct ResourceNetworkPowerPoolSetup {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -486260,6 +486005,7 @@ impl Pooled for ResourceNetworkPowerPoolSetup {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -486464,6 +486210,7 @@ impl<'a> Extract<'a> for ResourceNetworkPowerPoolSetup {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -486672,6 +486419,7 @@ pub struct SItemPortContainerComponentParams {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -486862,6 +486610,7 @@ impl Pooled for SItemPortContainerComponentParams {
     feature = "entities-locationtemplate",
     feature = "entities-mineable",
     feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-objectcontainers",
     feature = "entities-physics",
     feature = "entities-rastar",
     feature = "entities-salvagable",
@@ -490815,7 +490564,6 @@ impl<'a> Extract<'a> for SMicroResourceUnit {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -490826,8 +490574,7 @@ impl<'a> Extract<'a> for SMicroResourceUnit {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SPowerSegmentResourceUnit {
     /// `units` (Int32)
@@ -490845,7 +490592,6 @@ pub struct SPowerSegmentResourceUnit {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -490856,8 +490602,7 @@ pub struct SPowerSegmentResourceUnit {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SPowerSegmentResourceUnit {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -490879,7 +490624,6 @@ impl Pooled for SPowerSegmentResourceUnit {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -490890,8 +490634,7 @@ impl Pooled for SPowerSegmentResourceUnit {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SPowerSegmentResourceUnit {
     const TYPE_NAME: &'static str = "SPowerSegmentResourceUnit";
@@ -492230,7 +491973,6 @@ impl<'a> Extract<'a> for ItemResourceDeltaStorage {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -492239,8 +491981,7 @@ impl<'a> Extract<'a> for ItemResourceDeltaStorage {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct ItemResourceDeltaConversion {
     /// `minimumConsumptionFraction` (Single)
@@ -492274,7 +492015,6 @@ pub struct ItemResourceDeltaConversion {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -492283,8 +492023,7 @@ pub struct ItemResourceDeltaConversion {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for ItemResourceDeltaConversion {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -492306,7 +492045,6 @@ impl Pooled for ItemResourceDeltaConversion {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
@@ -492315,8 +492053,7 @@ impl Pooled for ItemResourceDeltaConversion {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for ItemResourceDeltaConversion {
     const TYPE_NAME: &'static str = "ItemResourceDeltaConversion";
@@ -499145,7 +498882,6 @@ impl<'a> Extract<'a> for ItemResourceDynamicAmountFuelNozzleFuel {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -499156,8 +498892,7 @@ impl<'a> Extract<'a> for ItemResourceDynamicAmountFuelNozzleFuel {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct ItemResourceDynamicAmountCoolant {}
 
@@ -499172,7 +498907,6 @@ pub struct ItemResourceDynamicAmountCoolant {}
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -499183,8 +498917,7 @@ pub struct ItemResourceDynamicAmountCoolant {}
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for ItemResourceDynamicAmountCoolant {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -499206,7 +498939,6 @@ impl Pooled for ItemResourceDynamicAmountCoolant {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -499217,8 +498949,7 @@ impl Pooled for ItemResourceDynamicAmountCoolant {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for ItemResourceDynamicAmountCoolant {
     const TYPE_NAME: &'static str = "ItemResourceDynamicAmountCoolant";
@@ -499498,6 +499229,8 @@ pub struct JournalEntry {
     pub short_title: LocaleKey,
     /// `SubHeading` (Locale)
     pub sub_heading: LocaleKey,
+    /// `priority` (EnumChoice)
+    pub priority: EJournalEntryPriority,
     /// `autoOpenMobiGlas` (Boolean)
     pub auto_open_mobi_glas: bool,
     /// `showNotification` (Boolean)
@@ -499581,6 +499314,7 @@ impl<'a> Extract<'a> for JournalEntry {
                 .get_str("SubHeading")
                 .map(LocaleKey::from)
                 .unwrap_or_default(),
+            priority: EJournalEntryPriority::from_dcb_str(inst.get_str("priority").unwrap_or("")),
             auto_open_mobi_glas: inst.get_bool("autoOpenMobiGlas").unwrap_or_default(),
             show_notification: inst.get_bool("showNotification").unwrap_or_default(),
             mission_specific_content: inst.get_bool("missionSpecificContent").unwrap_or_default(),
@@ -509189,6 +508923,7 @@ impl<'a> Extract<'a> for SCExtendedLocalizationLevelParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509263,6 +508998,7 @@ pub struct LightComponentParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509289,6 +509025,7 @@ impl Pooled for LightComponentParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509481,6 +509218,7 @@ impl<'a> Extract<'a> for LightComponentParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509509,6 +509247,7 @@ pub struct LightSizeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509535,6 +509274,7 @@ impl Pooled for LightSizeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509565,6 +509305,7 @@ impl<'a> Extract<'a> for LightSizeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509587,6 +509328,7 @@ pub struct LightStateParams_Off {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509613,6 +509355,7 @@ impl Pooled for LightStateParams_Off {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509644,6 +509387,7 @@ impl<'a> Extract<'a> for LightStateParams_Off {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509674,6 +509418,7 @@ pub struct LightStateParams_Default {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509700,6 +509445,7 @@ impl Pooled for LightStateParams_Default {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509741,6 +509487,7 @@ impl<'a> Extract<'a> for LightStateParams_Default {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509771,6 +509518,7 @@ pub struct LightStateParams_Aux {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509797,6 +509545,7 @@ impl Pooled for LightStateParams_Aux {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509838,6 +509587,7 @@ impl<'a> Extract<'a> for LightStateParams_Aux {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509868,6 +509618,7 @@ pub struct LightStateParams_Emergency {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509894,6 +509645,7 @@ impl Pooled for LightStateParams_Emergency {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509935,6 +509687,7 @@ impl<'a> Extract<'a> for LightStateParams_Emergency {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509965,6 +509718,7 @@ pub struct LightStateParams_Cinematic {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -509991,6 +509745,7 @@ impl Pooled for LightStateParams_Cinematic {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510032,6 +509787,7 @@ impl<'a> Extract<'a> for LightStateParams_Cinematic {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510064,6 +509820,7 @@ pub struct LightStateParams_TagBased {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510090,6 +509847,7 @@ impl Pooled for LightStateParams_TagBased {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510135,6 +509893,7 @@ impl<'a> Extract<'a> for LightStateParams_TagBased {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510162,6 +509921,7 @@ pub struct LightProjectorParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510189,6 +509949,7 @@ impl Pooled for LightProjectorParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510221,6 +509982,7 @@ impl<'a> Extract<'a> for LightProjectorParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510255,6 +510017,7 @@ pub struct LightShadowParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510281,6 +510044,7 @@ impl Pooled for LightShadowParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510316,6 +510080,7 @@ impl<'a> Extract<'a> for LightShadowParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510346,6 +510111,7 @@ pub struct LightStyleParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510372,6 +510138,7 @@ impl Pooled for LightStyleParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510406,6 +510173,7 @@ impl<'a> Extract<'a> for LightStyleParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510434,6 +510202,7 @@ pub struct LightGroupParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510460,6 +510229,7 @@ impl Pooled for LightGroupParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510490,6 +510260,7 @@ impl<'a> Extract<'a> for LightGroupParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510514,6 +510285,7 @@ pub struct LightClipBoxParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510540,6 +510312,7 @@ impl Pooled for LightClipBoxParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510568,6 +510341,7 @@ impl<'a> Extract<'a> for LightClipBoxParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510596,6 +510370,7 @@ pub struct LightFadeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510622,6 +510397,7 @@ impl Pooled for LightFadeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510652,6 +510428,7 @@ impl<'a> Extract<'a> for LightFadeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510686,6 +510463,7 @@ pub struct LightMiscParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -510712,6 +510490,7 @@ impl Pooled for LightMiscParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
@@ -511343,6 +511122,7 @@ impl<'a> Extract<'a> for LightFlareParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511396,6 +511176,7 @@ pub struct EnvironmentLightComponentParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511421,6 +511202,7 @@ impl Pooled for EnvironmentLightComponentParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511563,6 +511345,7 @@ impl<'a> Extract<'a> for EnvironmentLightComponentParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511592,6 +511375,7 @@ pub struct EnvironmentLightRuntimeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511617,6 +511401,7 @@ impl Pooled for EnvironmentLightRuntimeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511647,6 +511432,7 @@ impl<'a> Extract<'a> for EnvironmentLightRuntimeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511674,6 +511460,7 @@ pub struct EnvironmentLightSizeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511699,6 +511486,7 @@ impl Pooled for EnvironmentLightSizeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511729,6 +511517,7 @@ impl<'a> Extract<'a> for EnvironmentLightSizeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511756,6 +511545,7 @@ pub struct EnvironmentLightStateParams_Default {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511781,6 +511571,7 @@ impl Pooled for EnvironmentLightStateParams_Default {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511823,6 +511614,7 @@ impl<'a> Extract<'a> for EnvironmentLightStateParams_Default {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511850,6 +511642,7 @@ pub struct EnvironmentLightStateParams_Aux {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511875,6 +511668,7 @@ impl Pooled for EnvironmentLightStateParams_Aux {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511917,6 +511711,7 @@ impl<'a> Extract<'a> for EnvironmentLightStateParams_Aux {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511944,6 +511739,7 @@ pub struct EnvironmentLightStateParams_Emergency {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -511969,6 +511765,7 @@ impl Pooled for EnvironmentLightStateParams_Emergency {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512011,6 +511808,7 @@ impl<'a> Extract<'a> for EnvironmentLightStateParams_Emergency {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512038,6 +511836,7 @@ pub struct EnvironmentLightStateParams_Cinematic {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512063,6 +511862,7 @@ impl Pooled for EnvironmentLightStateParams_Cinematic {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512105,6 +511905,7 @@ impl<'a> Extract<'a> for EnvironmentLightStateParams_Cinematic {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512134,6 +511935,7 @@ pub struct EnvironmentLightStateParams_TagBased {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512159,6 +511961,7 @@ impl Pooled for EnvironmentLightStateParams_TagBased {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512204,6 +512007,7 @@ impl<'a> Extract<'a> for EnvironmentLightStateParams_TagBased {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512225,6 +512029,7 @@ pub struct EnvironmentLightGroupParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512250,6 +512055,7 @@ impl Pooled for EnvironmentLightGroupParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512276,6 +512082,7 @@ impl<'a> Extract<'a> for EnvironmentLightGroupParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512303,6 +512110,7 @@ pub struct EnvironmentLightProjectionParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512328,6 +512136,7 @@ impl Pooled for EnvironmentLightProjectionParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512357,6 +512166,7 @@ impl<'a> Extract<'a> for EnvironmentLightProjectionParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512384,6 +512194,7 @@ pub struct EnvironmentLightFadeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512409,6 +512220,7 @@ impl Pooled for EnvironmentLightFadeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512438,6 +512250,7 @@ impl<'a> Extract<'a> for EnvironmentLightFadeParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512465,6 +512278,7 @@ pub struct EnvironmentLightMiscParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -512490,6 +512304,7 @@ impl Pooled for EnvironmentLightMiscParams {
     feature = "entities-scitem-lightgroupitem",
     feature = "entities-scitem-lightgrouppowereditem",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "player",
@@ -556692,7 +556507,6 @@ impl<'a> Extract<'a> for CoolingEqualizationMultiplier {
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -556703,8 +556517,7 @@ impl<'a> Extract<'a> for CoolingEqualizationMultiplier {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct CoolingEqualizationRateAtTemperatureDifference {
     /// `coolingEqualizationRate` (Single)
@@ -556726,7 +556539,6 @@ pub struct CoolingEqualizationRateAtTemperatureDifference {
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -556737,8 +556549,7 @@ pub struct CoolingEqualizationRateAtTemperatureDifference {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for CoolingEqualizationRateAtTemperatureDifference {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -556766,7 +556577,6 @@ impl Pooled for CoolingEqualizationRateAtTemperatureDifference {
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -556777,8 +556587,7 @@ impl Pooled for CoolingEqualizationRateAtTemperatureDifference {
     feature = "loadoutkits",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for CoolingEqualizationRateAtTemperatureDifference {
     const TYPE_NAME: &'static str = "CoolingEqualizationRateAtTemperatureDifference";
@@ -594452,7 +594261,6 @@ impl<'a> Extract<'a> for DescriptionScanProcedureParams {
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
-    feature = "entities-groundvehicles",
     feature = "entities-hackable",
     feature = "entities-haulingentityclass",
     feature = "entities-radarscanning",
@@ -594545,7 +594353,6 @@ pub struct DoorScanProcedureParams {
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
-    feature = "entities-groundvehicles",
     feature = "entities-hackable",
     feature = "entities-haulingentityclass",
     feature = "entities-radarscanning",
@@ -594614,7 +594421,6 @@ impl Pooled for DoorScanProcedureParams {
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
-    feature = "entities-groundvehicles",
     feature = "entities-hackable",
     feature = "entities-haulingentityclass",
     feature = "entities-radarscanning",
@@ -595538,7 +595344,6 @@ impl<'a> Extract<'a> for FactionScanProcedureParams {
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
-    feature = "entities-groundvehicles",
     feature = "entities-hackable",
     feature = "entities-haulingentityclass",
     feature = "entities-radarscanning",
@@ -595627,7 +595432,6 @@ pub struct HackableScanProcedureParams {
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
-    feature = "entities-groundvehicles",
     feature = "entities-hackable",
     feature = "entities-haulingentityclass",
     feature = "entities-radarscanning",
@@ -595696,7 +595500,6 @@ impl Pooled for HackableScanProcedureParams {
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
-    feature = "entities-groundvehicles",
     feature = "entities-hackable",
     feature = "entities-haulingentityclass",
     feature = "entities-radarscanning",
@@ -599277,7 +599080,6 @@ impl<'a> Extract<'a> for PassengerScanProcedureParams {
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
-    feature = "entities-groundvehicles",
     feature = "entities-hackable",
     feature = "entities-haulingentityclass",
     feature = "entities-roomsystem",
@@ -599364,7 +599166,6 @@ pub struct PowerScanProcedureParams {
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
-    feature = "entities-groundvehicles",
     feature = "entities-hackable",
     feature = "entities-haulingentityclass",
     feature = "entities-roomsystem",
@@ -599431,7 +599232,6 @@ impl Pooled for PowerScanProcedureParams {
     feature = "entities-entityspawners",
     feature = "entities-environment",
     feature = "entities-environmentscreen",
-    feature = "entities-groundvehicles",
     feature = "entities-hackable",
     feature = "entities-haulingentityclass",
     feature = "entities-roomsystem",
@@ -613798,15 +613598,13 @@ impl<'a> Extract<'a> for SEntityComponentRoomParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SEntityComponentRoomConnectorParams {
     /// `defaultAreaBounds` (Class)
@@ -613837,15 +613635,13 @@ pub struct SEntityComponentRoomConnectorParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SEntityComponentRoomConnectorParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -613870,15 +613666,13 @@ impl Pooled for SEntityComponentRoomConnectorParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SEntityComponentRoomConnectorParams {
     const TYPE_NAME: &'static str = "SEntityComponentRoomConnectorParams";
@@ -621561,7 +621355,9 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Parent {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-proximityvolumes",
-    feature = "entities-scitem-salvageablerepairable"
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships"
 ))]
 pub struct GameplayTrigger_TargetType_EntityLinks {
     /// `optionalTarget` (Boolean)
@@ -621577,7 +621373,9 @@ pub struct GameplayTrigger_TargetType_EntityLinks {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-proximityvolumes",
-    feature = "entities-scitem-salvageablerepairable"
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships"
 ))]
 impl Pooled for GameplayTrigger_TargetType_EntityLinks {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -621599,7 +621397,9 @@ impl Pooled for GameplayTrigger_TargetType_EntityLinks {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-proximityvolumes",
-    feature = "entities-scitem-salvageablerepairable"
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships"
 ))]
 impl<'a> Extract<'a> for GameplayTrigger_TargetType_EntityLinks {
     const TYPE_NAME: &'static str = "GameplayTrigger_TargetType_EntityLinks";
@@ -621620,6 +621420,7 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_EntityLinks {
 /// Inherits from: `GameplayTrigger_TargetType_Base`
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
@@ -621637,6 +621438,7 @@ pub struct GameplayTrigger_TargetType_ItemPortAll {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
@@ -621660,6 +621462,7 @@ impl Pooled for GameplayTrigger_TargetType_ItemPortAll {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
@@ -621880,6 +621683,8 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_EntityReference {
 /// Inherits from: `GameplayTrigger_TargetType_Base`
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -621898,6 +621703,8 @@ pub struct GameplayTrigger_TargetType_Filtered {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -621914,6 +621721,8 @@ impl Pooled for GameplayTrigger_TargetType_Filtered {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -621956,6 +621765,8 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Filtered {
 /// Inherits from: `GameplayTrigger_FilterType_Base`
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -621970,6 +621781,8 @@ pub struct GameplayTrigger_FilterType_EntityTag {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -621986,6 +621799,8 @@ impl Pooled for GameplayTrigger_FilterType_EntityTag {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -622382,7 +622197,9 @@ impl<'a> Extract<'a> for GameplayTrigger_Executor_ActivateInteraction_ByReferenc
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-proximityvolumes",
-    feature = "entities-scitem-salvageablerepairable"
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships"
 ))]
 pub struct GameplayTrigger_Executor_ActivateInteraction_ByTag {
     /// `interactionLinkingTag` (Reference)
@@ -622398,7 +622215,9 @@ pub struct GameplayTrigger_Executor_ActivateInteraction_ByTag {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-proximityvolumes",
-    feature = "entities-scitem-salvageablerepairable"
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships"
 ))]
 impl Pooled for GameplayTrigger_Executor_ActivateInteraction_ByTag {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -622420,7 +622239,9 @@ impl Pooled for GameplayTrigger_Executor_ActivateInteraction_ByTag {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-proximityvolumes",
-    feature = "entities-scitem-salvageablerepairable"
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships"
 ))]
 impl<'a> Extract<'a> for GameplayTrigger_Executor_ActivateInteraction_ByTag {
     const TYPE_NAME: &'static str = "GameplayTrigger_Executor_ActivateInteraction_ByTag";
@@ -622453,8 +622274,10 @@ impl<'a> Extract<'a> for GameplayTrigger_Executor_ActivateInteraction_ByTag {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-toggleableentities",
-    feature = "entities-scitem-usables"
+    feature = "entities-scitem-usables",
+    feature = "entities-spaceships"
 ))]
 pub struct SetInteractionStateGameplayTrigger {
     /// `stateToSet` (StrongPointer)
@@ -622477,8 +622300,10 @@ pub struct SetInteractionStateGameplayTrigger {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-toggleableentities",
-    feature = "entities-scitem-usables"
+    feature = "entities-scitem-usables",
+    feature = "entities-spaceships"
 ))]
 impl Pooled for SetInteractionStateGameplayTrigger {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -622505,8 +622330,10 @@ impl Pooled for SetInteractionStateGameplayTrigger {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-toggleableentities",
-    feature = "entities-scitem-usables"
+    feature = "entities-scitem-usables",
+    feature = "entities-spaceships"
 ))]
 impl<'a> Extract<'a> for SetInteractionStateGameplayTrigger {
     const TYPE_NAME: &'static str = "SetInteractionStateGameplayTrigger";
@@ -622602,8 +622429,10 @@ impl<'a> Extract<'a> for GameplayTrigger_Executor_SetInteractionState_ByName {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-toggleableentities",
-    feature = "entities-scitem-usables"
+    feature = "entities-scitem-usables",
+    feature = "entities-spaceships"
 ))]
 pub struct GameplayTrigger_Executor_SetInteractionState_ByReference {
     /// `state` (WeakPointer)
@@ -622626,8 +622455,10 @@ pub struct GameplayTrigger_Executor_SetInteractionState_ByReference {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-toggleableentities",
-    feature = "entities-scitem-usables"
+    feature = "entities-scitem-usables",
+    feature = "entities-spaceships"
 ))]
 impl Pooled for GameplayTrigger_Executor_SetInteractionState_ByReference {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -622658,8 +622489,10 @@ impl Pooled for GameplayTrigger_Executor_SetInteractionState_ByReference {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-toggleableentities",
-    feature = "entities-scitem-usables"
+    feature = "entities-scitem-usables",
+    feature = "entities-spaceships"
 ))]
 impl<'a> Extract<'a> for GameplayTrigger_Executor_SetInteractionState_ByReference {
     const TYPE_NAME: &'static str = "GameplayTrigger_Executor_SetInteractionState_ByReference";
@@ -623230,9 +623063,12 @@ impl<'a> Extract<'a> for AreaEntityCommunicationGameplayTrigger {
 /// DCB type: `GameplayTriggerConditionAND`
 /// Inherits from: `GameplayTriggerCondition`
 #[cfg(any(
+    feature = "actor-actors",
+    feature = "commsnotifications",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
+    feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-orbgn"
 ))]
 pub struct GameplayTriggerConditionAND {
@@ -623241,9 +623077,12 @@ pub struct GameplayTriggerConditionAND {
 }
 
 #[cfg(any(
+    feature = "actor-actors",
+    feature = "commsnotifications",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
+    feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-orbgn"
 ))]
 impl Pooled for GameplayTriggerConditionAND {
@@ -623256,9 +623095,12 @@ impl Pooled for GameplayTriggerConditionAND {
 }
 
 #[cfg(any(
+    feature = "actor-actors",
+    feature = "commsnotifications",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
+    feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-orbgn"
 ))]
 impl<'a> Extract<'a> for GameplayTriggerConditionAND {
@@ -623284,8 +623126,11 @@ impl<'a> Extract<'a> for GameplayTriggerConditionAND {
 /// DCB type: `GameplayTriggerConditionOR`
 /// Inherits from: `GameplayTriggerCondition`
 #[cfg(any(
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
-    feature = "entities-scitem-gameplayinteractables"
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships"
 ))]
 pub struct GameplayTriggerConditionOR {
     /// `inputs` (StrongPointer (array))
@@ -623293,8 +623138,11 @@ pub struct GameplayTriggerConditionOR {
 }
 
 #[cfg(any(
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
-    feature = "entities-scitem-gameplayinteractables"
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships"
 ))]
 impl Pooled for GameplayTriggerConditionOR {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -623306,8 +623154,11 @@ impl Pooled for GameplayTriggerConditionOR {
 }
 
 #[cfg(any(
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
-    feature = "entities-scitem-gameplayinteractables"
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships"
 ))]
 impl<'a> Extract<'a> for GameplayTriggerConditionOR {
     const TYPE_NAME: &'static str = "GameplayTriggerConditionOR";
@@ -623391,12 +623242,15 @@ impl<'a> Extract<'a> for GameplayTriggerConditionNOT {
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-scitem-carryables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-orbgn",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "transitsystem"
 ))]
 pub struct GameplayTriggerConditionCheckState {
@@ -623410,12 +623264,15 @@ pub struct GameplayTriggerConditionCheckState {
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-scitem-carryables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-orbgn",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "transitsystem"
 ))]
 impl Pooled for GameplayTriggerConditionCheckState {
@@ -623433,12 +623290,15 @@ impl Pooled for GameplayTriggerConditionCheckState {
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-scitem-carryables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-human",
     feature = "entities-scitem-orbgn",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "transitsystem"
 ))]
 impl<'a> Extract<'a> for GameplayTriggerConditionCheckState {
@@ -623886,7 +623746,9 @@ impl<'a> Extract<'a> for StateSetResult {
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-orbgn",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "transitsystem"
 ))]
 pub struct ConditionalOption {
@@ -623912,7 +623774,9 @@ pub struct ConditionalOption {
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-orbgn",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "transitsystem"
 ))]
 impl Pooled for ConditionalOption {
@@ -623938,7 +623802,9 @@ impl Pooled for ConditionalOption {
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-orbgn",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "transitsystem"
 ))]
 impl<'a> Extract<'a> for ConditionalOption {
@@ -623995,7 +623861,9 @@ impl<'a> Extract<'a> for ConditionalOption {
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-orbgn",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "transitsystem"
 ))]
 pub struct CheckConditionGameplayTrigger {
@@ -624021,7 +623889,9 @@ pub struct CheckConditionGameplayTrigger {
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-orbgn",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "transitsystem"
 ))]
 impl Pooled for CheckConditionGameplayTrigger {
@@ -624047,7 +623917,9 @@ impl Pooled for CheckConditionGameplayTrigger {
     feature = "entities-scitem-missionstorage",
     feature = "entities-scitem-orbgn",
     feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
+    feature = "entities-spaceships",
     feature = "transitsystem"
 ))]
 impl<'a> Extract<'a> for CheckConditionGameplayTrigger {
@@ -632007,6 +631879,7 @@ impl<'a> Extract<'a> for SCItemLightAmplification {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -632153,6 +632026,7 @@ pub struct SCItemManufacturer {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -632287,6 +632161,7 @@ impl Pooled for SCItemManufacturer {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -634050,7 +633925,6 @@ impl<'a> Extract<'a> for SAimableGameModeParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -634059,8 +633933,7 @@ impl<'a> Extract<'a> for SAimableGameModeParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemAimableControllerParams {
     /// `hudParamsOverride` (Reference)
@@ -634077,7 +633950,6 @@ pub struct SCItemAimableControllerParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -634086,8 +633958,7 @@ pub struct SCItemAimableControllerParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemAimableControllerParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -634106,7 +633977,6 @@ impl Pooled for SCItemAimableControllerParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -634115,8 +633985,7 @@ impl Pooled for SCItemAimableControllerParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemAimableControllerParams {
     const TYPE_NAME: &'static str = "SCItemAimableControllerParams";
@@ -636250,7 +636119,6 @@ impl<'a> Extract<'a> for SCItemClothingParams {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-slotspawnpoint",
@@ -636270,8 +636138,7 @@ impl<'a> Extract<'a> for SCItemClothingParams {
     feature = "player",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemInventoryContainerComponentParams {
     /// `openInventoryInteraction` (WeakPointer)
@@ -636311,7 +636178,6 @@ pub struct SCItemInventoryContainerComponentParams {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-slotspawnpoint",
@@ -636331,8 +636197,7 @@ pub struct SCItemInventoryContainerComponentParams {
     feature = "player",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemInventoryContainerComponentParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -636374,7 +636239,6 @@ impl Pooled for SCItemInventoryContainerComponentParams {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-slotspawnpoint",
@@ -636394,8 +636258,7 @@ impl Pooled for SCItemInventoryContainerComponentParams {
     feature = "player",
     feature = "reputation",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemInventoryContainerComponentParams {
     const TYPE_NAME: &'static str = "SCItemInventoryContainerComponentParams";
@@ -643405,7 +643268,6 @@ impl<'a> Extract<'a> for SCItemAttachableObjectContainerParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -643426,8 +643288,7 @@ impl<'a> Extract<'a> for SCItemAttachableObjectContainerParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SOutfitPlacingRule {
     /// `Type` (EnumChoice)
@@ -643481,7 +643342,6 @@ pub struct SOutfitPlacingRule {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -643502,8 +643362,7 @@ pub struct SOutfitPlacingRule {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SOutfitPlacingRule {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -643555,7 +643414,6 @@ impl Pooled for SOutfitPlacingRule {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -643576,8 +643434,7 @@ impl Pooled for SOutfitPlacingRule {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SOutfitPlacingRule {
     const TYPE_NAME: &'static str = "SOutfitPlacingRule";
@@ -643649,7 +643506,6 @@ impl<'a> Extract<'a> for SOutfitPlacingRule {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -643670,8 +643526,7 @@ impl<'a> Extract<'a> for SOutfitPlacingRule {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SOutfitHangerGroup {
     /// `groupPorts` (WeakPointer (array))
@@ -643723,7 +643578,6 @@ pub struct SOutfitHangerGroup {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -643744,8 +643598,7 @@ pub struct SOutfitHangerGroup {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SOutfitHangerGroup {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -643797,7 +643650,6 @@ impl Pooled for SOutfitHangerGroup {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -643818,8 +643670,7 @@ impl Pooled for SOutfitHangerGroup {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SOutfitHangerGroup {
     const TYPE_NAME: &'static str = "SOutfitHangerGroup";
@@ -643904,7 +643755,6 @@ impl<'a> Extract<'a> for SOutfitHangerGroup {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -643925,8 +643775,7 @@ impl<'a> Extract<'a> for SOutfitHangerGroup {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCoreInventoryItem {
     /// `entityClassName` (String)
@@ -643976,7 +643825,6 @@ pub struct SCoreInventoryItem {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -643997,8 +643845,7 @@ pub struct SCoreInventoryItem {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCoreInventoryItem {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -644050,7 +643897,6 @@ impl Pooled for SCoreInventoryItem {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644071,8 +643917,7 @@ impl Pooled for SCoreInventoryItem {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCoreInventoryItem {
     const TYPE_NAME: &'static str = "SCoreInventoryItem";
@@ -644129,7 +643974,6 @@ impl<'a> Extract<'a> for SCoreInventoryItem {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644150,8 +643994,7 @@ impl<'a> Extract<'a> for SCoreInventoryItem {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SLootableMainInteractionsTarget {
     /// `helperName` (String)
@@ -644201,7 +644044,6 @@ pub struct SLootableMainInteractionsTarget {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644222,8 +644064,7 @@ pub struct SLootableMainInteractionsTarget {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SLootableMainInteractionsTarget {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -644275,7 +644116,6 @@ impl Pooled for SLootableMainInteractionsTarget {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644296,8 +644136,7 @@ impl Pooled for SLootableMainInteractionsTarget {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SLootableMainInteractionsTarget {
     const TYPE_NAME: &'static str = "SLootableMainInteractionsTarget";
@@ -644360,7 +644199,6 @@ impl<'a> Extract<'a> for SLootableMainInteractionsTarget {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644381,8 +644219,7 @@ impl<'a> Extract<'a> for SLootableMainInteractionsTarget {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SLootableInventoryParams {
     /// `lootOpenInventoryViewInteraction` (WeakPointer)
@@ -644434,7 +644271,6 @@ pub struct SLootableInventoryParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644455,8 +644291,7 @@ pub struct SLootableInventoryParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SLootableInventoryParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -644508,7 +644343,6 @@ impl Pooled for SLootableInventoryParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644529,8 +644363,7 @@ impl Pooled for SLootableInventoryParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SLootableInventoryParams {
     const TYPE_NAME: &'static str = "SLootableInventoryParams";
@@ -644605,7 +644438,6 @@ impl<'a> Extract<'a> for SLootableInventoryParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644626,8 +644458,7 @@ impl<'a> Extract<'a> for SLootableInventoryParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SEntityLootableContainerParams {
     /// `initialLocalPlayerAccess` (Boolean)
@@ -644729,7 +644560,6 @@ pub struct SEntityLootableContainerParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644750,8 +644580,7 @@ pub struct SEntityLootableContainerParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SEntityLootableContainerParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -644803,7 +644632,6 @@ impl Pooled for SEntityLootableContainerParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -644824,8 +644652,7 @@ impl Pooled for SEntityLootableContainerParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SEntityLootableContainerParams {
     const TYPE_NAME: &'static str = "SEntityLootableContainerParams";
@@ -645101,7 +644928,6 @@ impl<'a> Extract<'a> for SEntityLootableContainerParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -645122,8 +644948,7 @@ impl<'a> Extract<'a> for SEntityLootableContainerParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SLootableItemPortRuleParams {
     /// `itemPort` (WeakPointer)
@@ -645179,7 +645004,6 @@ pub struct SLootableItemPortRuleParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -645200,8 +645024,7 @@ pub struct SLootableItemPortRuleParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SLootableItemPortRuleParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -645253,7 +645076,6 @@ impl Pooled for SLootableItemPortRuleParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -645274,8 +645096,7 @@ impl Pooled for SLootableItemPortRuleParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SLootableItemPortRuleParams {
     const TYPE_NAME: &'static str = "SLootableItemPortRuleParams";
@@ -645363,7 +645184,6 @@ impl<'a> Extract<'a> for SLootableItemPortRuleParams {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -645384,8 +645204,7 @@ impl<'a> Extract<'a> for SLootableItemPortRuleParams {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SInteractionStateDef {
     /// `stateTypeName` (String)
@@ -645435,7 +645254,6 @@ pub struct SInteractionStateDef {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -645456,8 +645274,7 @@ pub struct SInteractionStateDef {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SInteractionStateDef {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -645509,7 +645326,6 @@ impl Pooled for SInteractionStateDef {
     feature = "entities-scitem-starmarine",
     feature = "entities-scitem-storage",
     feature = "entities-scitem-storagecage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-test_shelf",
     feature = "entities-scitem-test_shelf_missionblackboxdropoff",
     feature = "entities-scitem-usables",
@@ -645530,8 +645346,7 @@ impl Pooled for SInteractionStateDef {
     feature = "playerchoicemenutypes",
     feature = "resourcetypedatabase",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SInteractionStateDef {
     const TYPE_NAME: &'static str = "SInteractionStateDef";
@@ -649488,7 +649303,6 @@ impl<'a> Extract<'a> for SCItemATCCommsComponentParams {
     feature = "entities-scitem-commsreceiver",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -649503,8 +649317,7 @@ impl<'a> Extract<'a> for SCItemATCCommsComponentParams {
     feature = "missionscenarios",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCRTTCameraParams {
     /// `onFootCameraView` (Reference)
@@ -649529,7 +649342,6 @@ pub struct SCRTTCameraParams {
     feature = "entities-scitem-commsreceiver",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -649544,8 +649356,7 @@ pub struct SCRTTCameraParams {
     feature = "missionscenarios",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCRTTCameraParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -649570,7 +649381,6 @@ impl Pooled for SCRTTCameraParams {
     feature = "entities-scitem-commsreceiver",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -649585,8 +649395,7 @@ impl Pooled for SCRTTCameraParams {
     feature = "missionscenarios",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCRTTCameraParams {
     const TYPE_NAME: &'static str = "SCRTTCameraParams";
@@ -649781,15 +649590,13 @@ impl<'a> Extract<'a> for SMeleeWeaponComponentParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct ShipComputerDefinition {
     /// `communicationConfig` (Reference)
@@ -649812,15 +649619,13 @@ pub struct ShipComputerDefinition {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for ShipComputerDefinition {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -649841,15 +649646,13 @@ impl Pooled for ShipComputerDefinition {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for ShipComputerDefinition {
     const TYPE_NAME: &'static str = "ShipComputerDefinition";
@@ -649883,15 +649686,13 @@ impl<'a> Extract<'a> for ShipComputerDefinition {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemShipComputerParams {
     /// `definition` (Reference)
@@ -649907,15 +649708,13 @@ pub struct SCItemShipComputerParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemShipComputerParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -649935,15 +649734,13 @@ impl Pooled for SCItemShipComputerParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemShipComputerParams {
     const TYPE_NAME: &'static str = "SCItemShipComputerParams";
@@ -650908,15 +650705,13 @@ impl<'a> Extract<'a> for SCItemRadarDisplayHoloVolumeParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemRadarDisplayScreenParams {
     /// `fullScreenLerpSpeed` (Single)
@@ -650931,15 +650726,13 @@ pub struct SCItemRadarDisplayScreenParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemRadarDisplayScreenParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -650958,15 +650751,13 @@ impl Pooled for SCItemRadarDisplayScreenParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemRadarDisplayScreenParams {
     const TYPE_NAME: &'static str = "SCItemRadarDisplayScreenParams";
@@ -652094,12 +651885,8 @@ impl<'a> Extract<'a> for SCItemDockingTubeParams {
     feature = "crafting",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct SDockingAnimatorStageTriggerParams {
     /// `dockingAnimationStageTrigger` (EnumChoice)
@@ -652114,12 +651901,8 @@ pub struct SDockingAnimatorStageTriggerParams {
     feature = "crafting",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for SDockingAnimatorStageTriggerParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -652136,12 +651919,8 @@ impl Pooled for SDockingAnimatorStageTriggerParams {
     feature = "crafting",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for SDockingAnimatorStageTriggerParams {
     const TYPE_NAME: &'static str = "SDockingAnimatorStageTriggerParams";
@@ -652162,12 +651941,8 @@ impl<'a> Extract<'a> for SDockingAnimatorStageTriggerParams {
     feature = "crafting",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct SDockingAnimatorBaseParams {
     /// `OverrideTime` (Single)
@@ -652184,12 +651959,8 @@ pub struct SDockingAnimatorBaseParams {
     feature = "crafting",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for SDockingAnimatorBaseParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -652206,12 +651977,8 @@ impl Pooled for SDockingAnimatorBaseParams {
     feature = "crafting",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for SDockingAnimatorBaseParams {
     const TYPE_NAME: &'static str = "SDockingAnimatorBaseParams";
@@ -652252,12 +652019,8 @@ impl<'a> Extract<'a> for SDockingAnimatorBaseParams {
     feature = "aiwavecollection",
     feature = "contracts",
     feature = "entities-scitem-doors",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct DockingDoorAnimatorComponentParams {
     /// `DockingAnimatorParams` (Class)
@@ -652268,12 +652031,8 @@ pub struct DockingDoorAnimatorComponentParams {
     feature = "aiwavecollection",
     feature = "contracts",
     feature = "entities-scitem-doors",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for DockingDoorAnimatorComponentParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -652288,12 +652047,8 @@ impl Pooled for DockingDoorAnimatorComponentParams {
     feature = "aiwavecollection",
     feature = "contracts",
     feature = "entities-scitem-doors",
-    feature = "entities-scitem-suit",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for DockingDoorAnimatorComponentParams {
     const TYPE_NAME: &'static str = "DockingDoorAnimatorComponentParams";
@@ -652750,7 +652505,6 @@ impl<'a> Extract<'a> for DockingHUDMessagesParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -652760,8 +652514,7 @@ impl<'a> Extract<'a> for DockingHUDMessagesParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemDoorUserAnimationParams {
     /// `useSyncedEnslavement` (Boolean)
@@ -652790,7 +652543,6 @@ pub struct SCItemDoorUserAnimationParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -652800,8 +652552,7 @@ pub struct SCItemDoorUserAnimationParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemDoorUserAnimationParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -652830,7 +652581,6 @@ impl Pooled for SCItemDoorUserAnimationParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -652840,8 +652590,7 @@ impl Pooled for SCItemDoorUserAnimationParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemDoorUserAnimationParams {
     const TYPE_NAME: &'static str = "SCItemDoorUserAnimationParams";
@@ -652879,7 +652628,6 @@ impl<'a> Extract<'a> for SCItemDoorUserAnimationParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -652889,8 +652637,7 @@ impl<'a> Extract<'a> for SCItemDoorUserAnimationParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemDoorAnimationParams {
     /// `DefaultAnimationDurationScale` (Single)
@@ -652919,7 +652666,6 @@ pub struct SCItemDoorAnimationParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -652929,8 +652675,7 @@ pub struct SCItemDoorAnimationParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemDoorAnimationParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -652959,7 +652704,6 @@ impl Pooled for SCItemDoorAnimationParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -652969,8 +652713,7 @@ impl Pooled for SCItemDoorAnimationParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemDoorAnimationParams {
     const TYPE_NAME: &'static str = "SCItemDoorAnimationParams";
@@ -653012,15 +652755,12 @@ impl<'a> Extract<'a> for SCItemDoorAnimationParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "transitsystem",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-buildingblocks"
 ))]
 pub struct SCItemDoorSimpleOpenCloseParams {
     /// `DefaultAnimationDurationScale` (Single)
@@ -653050,15 +652790,12 @@ pub struct SCItemDoorSimpleOpenCloseParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "transitsystem",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-buildingblocks"
 ))]
 impl Pooled for SCItemDoorSimpleOpenCloseParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -653084,15 +652821,12 @@ impl Pooled for SCItemDoorSimpleOpenCloseParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "transitsystem",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-buildingblocks"
 ))]
 impl<'a> Extract<'a> for SCItemDoorSimpleOpenCloseParams {
     const TYPE_NAME: &'static str = "SCItemDoorSimpleOpenCloseParams";
@@ -653139,7 +652873,6 @@ impl<'a> Extract<'a> for SCItemDoorSimpleOpenCloseParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653148,8 +652881,7 @@ impl<'a> Extract<'a> for SCItemDoorSimpleOpenCloseParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemDoorSingleProceduralParams {
     /// `DefaultAnimationDurationScale` (Single)
@@ -653174,7 +652906,6 @@ pub struct SCItemDoorSingleProceduralParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653183,8 +652914,7 @@ pub struct SCItemDoorSingleProceduralParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemDoorSingleProceduralParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -653207,7 +652937,6 @@ impl Pooled for SCItemDoorSingleProceduralParams {
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653216,8 +652945,7 @@ impl Pooled for SCItemDoorSingleProceduralParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemDoorSingleProceduralParams {
     const TYPE_NAME: &'static str = "SCItemDoorSingleProceduralParams";
@@ -653266,7 +652994,6 @@ impl<'a> Extract<'a> for SCItemDoorSingleProceduralParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653276,8 +653003,7 @@ impl<'a> Extract<'a> for SCItemDoorSingleProceduralParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SDoorCollisionReactionNoneParams {}
 
@@ -653299,7 +653025,6 @@ pub struct SDoorCollisionReactionNoneParams {}
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653309,8 +653034,7 @@ pub struct SDoorCollisionReactionNoneParams {}
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SDoorCollisionReactionNoneParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -653339,7 +653063,6 @@ impl Pooled for SDoorCollisionReactionNoneParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653349,8 +653072,7 @@ impl Pooled for SDoorCollisionReactionNoneParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SDoorCollisionReactionNoneParams {
     const TYPE_NAME: &'static str = "SDoorCollisionReactionNoneParams";
@@ -653423,7 +653145,6 @@ impl<'a> Extract<'a> for SDoorCollisionReactionRetractParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653433,8 +653154,7 @@ impl<'a> Extract<'a> for SDoorCollisionReactionRetractParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemDoorConnectVisAreas {
     /// `visAreaOffset` (Class)
@@ -653459,7 +653179,6 @@ pub struct SCItemDoorConnectVisAreas {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653469,8 +653188,7 @@ pub struct SCItemDoorConnectVisAreas {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemDoorConnectVisAreas {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -653499,7 +653217,6 @@ impl Pooled for SCItemDoorConnectVisAreas {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653509,8 +653226,7 @@ impl Pooled for SCItemDoorConnectVisAreas {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemDoorConnectVisAreas {
     const TYPE_NAME: &'static str = "SCItemDoorConnectVisAreas";
@@ -653547,7 +653263,6 @@ impl<'a> Extract<'a> for SCItemDoorConnectVisAreas {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653556,8 +653271,7 @@ impl<'a> Extract<'a> for SCItemDoorConnectVisAreas {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemDoorPortalModeAutomaticParams {
     /// `PortalLookupMode` (EnumChoice)
@@ -653582,7 +653296,6 @@ pub struct SCItemDoorPortalModeAutomaticParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653591,8 +653304,7 @@ pub struct SCItemDoorPortalModeAutomaticParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemDoorPortalModeAutomaticParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -653621,7 +653333,6 @@ impl Pooled for SCItemDoorPortalModeAutomaticParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653630,8 +653341,7 @@ impl Pooled for SCItemDoorPortalModeAutomaticParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemDoorPortalModeAutomaticParams {
     const TYPE_NAME: &'static str = "SCItemDoorPortalModeAutomaticParams";
@@ -653718,7 +653428,6 @@ impl<'a> Extract<'a> for SCItemDoorPortalModeManualParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653728,8 +653437,7 @@ impl<'a> Extract<'a> for SCItemDoorPortalModeManualParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemDoorEffectParams {
     /// `openTrigger` (Reference)
@@ -653780,7 +653488,6 @@ pub struct SCItemDoorEffectParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653790,8 +653497,7 @@ pub struct SCItemDoorEffectParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemDoorEffectParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -653820,7 +653526,6 @@ impl Pooled for SCItemDoorEffectParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653830,8 +653535,7 @@ impl Pooled for SCItemDoorEffectParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemDoorEffectParams {
     const TYPE_NAME: &'static str = "SCItemDoorEffectParams";
@@ -653979,7 +653683,6 @@ impl<'a> Extract<'a> for SSequencerMoveToAnimateItemDoorTaskParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -653989,8 +653692,7 @@ impl<'a> Extract<'a> for SSequencerMoveToAnimateItemDoorTaskParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemDoorParams {
     /// `UseAutoCloseDelay` (Boolean)
@@ -654101,7 +653803,6 @@ pub struct SCItemDoorParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -654111,8 +653812,7 @@ pub struct SCItemDoorParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemDoorParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -654141,7 +653841,6 @@ impl Pooled for SCItemDoorParams {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -654151,8 +653850,7 @@ impl Pooled for SCItemDoorParams {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemDoorParams {
     const TYPE_NAME: &'static str = "SCItemDoorParams";
@@ -661035,7 +660733,6 @@ impl<'a> Extract<'a> for VehicleSalvageGlobalParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -661044,8 +660741,7 @@ impl<'a> Extract<'a> for VehicleSalvageGlobalParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCSeatActorAttachmentParams {
     /// `type` (EnumChoice)
@@ -661065,7 +660761,6 @@ pub struct SCSeatActorAttachmentParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -661074,8 +660769,7 @@ pub struct SCSeatActorAttachmentParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCSeatActorAttachmentParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -661095,7 +660789,6 @@ impl Pooled for SCSeatActorAttachmentParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
@@ -661104,8 +660797,7 @@ impl Pooled for SCSeatActorAttachmentParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCSeatActorAttachmentParams {
     const TYPE_NAME: &'static str = "SCSeatActorAttachmentParams";
@@ -661178,7 +660870,6 @@ impl<'a> Extract<'a> for SCSeatHeadPosAdjustSetup {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -661186,8 +660877,7 @@ impl<'a> Extract<'a> for SCSeatHeadPosAdjustSetup {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemSeatEjectParams {
     /// `maxLinearVelocity` (Single)
@@ -661215,7 +660905,6 @@ pub struct SCItemSeatEjectParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -661223,8 +660912,7 @@ pub struct SCItemSeatEjectParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemSeatEjectParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -661244,7 +660932,6 @@ impl Pooled for SCItemSeatEjectParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -661252,8 +660939,7 @@ impl Pooled for SCItemSeatEjectParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemSeatEjectParams {
     const TYPE_NAME: &'static str = "SCItemSeatEjectParams";
@@ -661585,7 +661271,6 @@ impl<'a> Extract<'a> for SeatAdsDef {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -661597,8 +661282,7 @@ impl<'a> Extract<'a> for SeatAdsDef {
     feature = "missiongiver",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct AdsCameraParams {
     /// `adsCamera` (Reference)
@@ -661620,7 +661304,6 @@ pub struct AdsCameraParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -661632,8 +661315,7 @@ pub struct AdsCameraParams {
     feature = "missiongiver",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for AdsCameraParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -661657,7 +661339,6 @@ impl Pooled for AdsCameraParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -661669,8 +661350,7 @@ impl Pooled for AdsCameraParams {
     feature = "missiongiver",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for AdsCameraParams {
     const TYPE_NAME: &'static str = "AdsCameraParams";
@@ -661909,7 +661589,6 @@ impl<'a> Extract<'a> for SeatUserActorCDIKRecord {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -661917,8 +661596,7 @@ impl<'a> Extract<'a> for SeatUserActorCDIKRecord {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemSeatParams {
     /// `availableOperatorModes` (Reference)
@@ -662018,7 +661696,6 @@ pub struct SCItemSeatParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -662026,8 +661703,7 @@ pub struct SCItemSeatParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemSeatParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -662047,7 +661723,6 @@ impl Pooled for SCItemSeatParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
@@ -662055,8 +661730,7 @@ impl Pooled for SCItemSeatParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemSeatParams {
     const TYPE_NAME: &'static str = "SCItemSeatParams";
@@ -677430,13 +677104,9 @@ impl<'a> Extract<'a> for SCItemTurretStandardAngleLimitParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct SCItemTurretCustomAngleLimit {
     /// `TurretRotation` (Single)
@@ -677454,13 +677124,9 @@ pub struct SCItemTurretCustomAngleLimit {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for SCItemTurretCustomAngleLimit {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -677478,13 +677144,9 @@ impl Pooled for SCItemTurretCustomAngleLimit {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for SCItemTurretCustomAngleLimit {
     const TYPE_NAME: &'static str = "SCItemTurretCustomAngleLimit";
@@ -677505,13 +677167,9 @@ impl<'a> Extract<'a> for SCItemTurretCustomAngleLimit {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct SCItemTurretCustomAngleLimitTagOverwriteParams {
     /// `limiterTag` (Reference)
@@ -677527,13 +677185,9 @@ pub struct SCItemTurretCustomAngleLimitTagOverwriteParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for SCItemTurretCustomAngleLimitTagOverwriteParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -677555,13 +677209,9 @@ impl Pooled for SCItemTurretCustomAngleLimitTagOverwriteParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for SCItemTurretCustomAngleLimitTagOverwriteParams {
     const TYPE_NAME: &'static str = "SCItemTurretCustomAngleLimitTagOverwriteParams";
@@ -677603,13 +677253,9 @@ impl<'a> Extract<'a> for SCItemTurretCustomAngleLimitTagOverwriteParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 pub struct SCItemTurretCustomAngleLimitParams {
     /// `RelativeJointName` (String)
@@ -677627,13 +677273,9 @@ pub struct SCItemTurretCustomAngleLimitParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for SCItemTurretCustomAngleLimitParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -677651,13 +677293,9 @@ impl Pooled for SCItemTurretCustomAngleLimitParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
-    feature = "entitlementpolicies",
-    feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for SCItemTurretCustomAngleLimitParams {
     const TYPE_NAME: &'static str = "SCItemTurretCustomAngleLimitParams";
@@ -693522,6 +693160,8 @@ pub struct SProjectileLauncher {
     pub muzzle_helper: String,
     /// `ammoCost` (Int32)
     pub ammo_cost: i32,
+    /// `heatCost` (Single)
+    pub heat_cost: f32,
     /// `pelletCount` (Int32)
     pub pellet_count: i32,
     /// `damageMultiplier` (Single)
@@ -693756,6 +693396,7 @@ impl<'a> Extract<'a> for SProjectileLauncher {
                 .map(String::from)
                 .unwrap_or_default(),
             ammo_cost: inst.get_i32("ammoCost").unwrap_or_default(),
+            heat_cost: inst.get_f32("heatCost").unwrap_or_default(),
             pellet_count: inst.get_i32("pelletCount").unwrap_or_default(),
             damage_multiplier: inst.get_f32("damageMultiplier").unwrap_or_default(),
             sound_radius: inst.get_f32("soundRadius").unwrap_or_default(),
@@ -697134,6 +696775,8 @@ pub struct SWeaponActionFireBeamParams {
     pub min_energy_draw: f32,
     /// `maxEnergyDraw` (Single)
     pub max_energy_draw: f32,
+    /// `heatCostPerSecond` (Single)
+    pub heat_cost_per_second: f32,
     /// `damagePerSecond` (StrongPointer)
     pub damage_per_second: Option<DamageBasePtr>,
     /// `fullDamageRange` (Single)
@@ -697309,6 +696952,7 @@ impl<'a> Extract<'a> for SWeaponActionFireBeamParams {
             ammo_type: EAmmoContainerType::from_dcb_str(inst.get_str("ammoType").unwrap_or("")),
             min_energy_draw: inst.get_f32("minEnergyDraw").unwrap_or_default(),
             max_energy_draw: inst.get_f32("maxEnergyDraw").unwrap_or_default(),
+            heat_cost_per_second: inst.get_f32("heatCostPerSecond").unwrap_or_default(),
             damage_per_second: match inst.get("damagePerSecond") {
                 Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
                     Some(DamageBasePtr::from_ref(b, r))
@@ -705294,7 +704938,8 @@ impl<'a> Extract<'a> for SAuxiliaryWeaponActionBeamParams {
     feature = "gamemode",
     feature = "harvestable",
     feature = "level",
-    feature = "megamap"
+    feature = "megamap",
+    feature = "missionbroker"
 ))]
 pub struct AuxiliaryWeaponActionMisfireParams {
     /// `misfireProbabilities` (Reference)
@@ -705320,7 +704965,8 @@ pub struct AuxiliaryWeaponActionMisfireParams {
     feature = "gamemode",
     feature = "harvestable",
     feature = "level",
-    feature = "megamap"
+    feature = "megamap",
+    feature = "missionbroker"
 ))]
 impl Pooled for AuxiliaryWeaponActionMisfireParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -705346,7 +704992,8 @@ impl Pooled for AuxiliaryWeaponActionMisfireParams {
     feature = "gamemode",
     feature = "harvestable",
     feature = "level",
-    feature = "megamap"
+    feature = "megamap",
+    feature = "missionbroker"
 ))]
 impl<'a> Extract<'a> for AuxiliaryWeaponActionMisfireParams {
     const TYPE_NAME: &'static str = "AuxiliaryWeaponActionMisfireParams";
@@ -705387,7 +705034,8 @@ impl<'a> Extract<'a> for AuxiliaryWeaponActionMisfireParams {
     feature = "gamemode",
     feature = "harvestable",
     feature = "level",
-    feature = "megamap"
+    feature = "megamap",
+    feature = "missionbroker"
 ))]
 pub struct SAuxiliaryWeaponActionComponentParams {
     /// `pausable` (Boolean)
@@ -705433,7 +705081,8 @@ pub struct SAuxiliaryWeaponActionComponentParams {
     feature = "gamemode",
     feature = "harvestable",
     feature = "level",
-    feature = "megamap"
+    feature = "megamap",
+    feature = "missionbroker"
 ))]
 impl Pooled for SAuxiliaryWeaponActionComponentParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -705463,7 +705112,8 @@ impl Pooled for SAuxiliaryWeaponActionComponentParams {
     feature = "gamemode",
     feature = "harvestable",
     feature = "level",
-    feature = "megamap"
+    feature = "megamap",
+    feature = "missionbroker"
 ))]
 impl<'a> Extract<'a> for SAuxiliaryWeaponActionComponentParams {
     const TYPE_NAME: &'static str = "SAuxiliaryWeaponActionComponentParams";
@@ -705925,6 +705575,7 @@ impl<'a> Extract<'a> for SWeaponReticleParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -705958,6 +705609,7 @@ pub struct SWeaponZeroingParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -705989,6 +705641,7 @@ impl Pooled for SWeaponZeroingParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -708063,6 +707716,7 @@ impl<'a> Extract<'a> for SCItemWeaponComponentParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -708094,6 +707748,7 @@ pub struct SWeaponModifierBeamEffectParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -708125,6 +707780,7 @@ impl Pooled for SWeaponModifierBeamEffectParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -708170,6 +707826,7 @@ impl<'a> Extract<'a> for SWeaponModifierBeamEffectParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -708203,6 +707860,7 @@ pub struct SScopeAttachmentParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -708234,6 +707892,7 @@ impl Pooled for SScopeAttachmentParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -708286,6 +707945,7 @@ impl<'a> Extract<'a> for SScopeAttachmentParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -708345,6 +708005,7 @@ pub struct SWeaponModifierComponentParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -708376,6 +708037,7 @@ impl Pooled for SWeaponModifierComponentParams {
     feature = "level",
     feature = "loadoutkits",
     feature = "megamap",
+    feature = "missionbroker",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -709441,7 +709103,8 @@ impl<'a> Extract<'a> for WeaponMisfireDef {
     feature = "gamemode",
     feature = "harvestable",
     feature = "level",
-    feature = "megamap"
+    feature = "megamap",
+    feature = "missionbroker"
 ))]
 pub struct WeaponFlickerParams {
     /// `totalDuration` (Single)
@@ -709467,7 +709130,8 @@ pub struct WeaponFlickerParams {
     feature = "gamemode",
     feature = "harvestable",
     feature = "level",
-    feature = "megamap"
+    feature = "megamap",
+    feature = "missionbroker"
 ))]
 impl Pooled for WeaponFlickerParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -709493,7 +709157,8 @@ impl Pooled for WeaponFlickerParams {
     feature = "gamemode",
     feature = "harvestable",
     feature = "level",
-    feature = "megamap"
+    feature = "megamap",
+    feature = "missionbroker"
 ))]
 impl<'a> Extract<'a> for WeaponFlickerParams {
     const TYPE_NAME: &'static str = "WeaponFlickerParams";
@@ -709885,7 +709550,6 @@ impl<'a> Extract<'a> for WeaponARModifier {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -709894,8 +709558,7 @@ impl<'a> Extract<'a> for WeaponARModifier {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemWeaponControllerStaggeredFiring {
     /// `DefaultStaggerFire` (Boolean)
@@ -709912,7 +709575,6 @@ pub struct SCItemWeaponControllerStaggeredFiring {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -709921,8 +709583,7 @@ pub struct SCItemWeaponControllerStaggeredFiring {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemWeaponControllerStaggeredFiring {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -709945,7 +709606,6 @@ impl Pooled for SCItemWeaponControllerStaggeredFiring {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -709954,8 +709614,7 @@ impl Pooled for SCItemWeaponControllerStaggeredFiring {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemWeaponControllerStaggeredFiring {
     const TYPE_NAME: &'static str = "SCItemWeaponControllerStaggeredFiring";
@@ -709985,7 +709644,6 @@ impl<'a> Extract<'a> for SCItemWeaponControllerStaggeredFiring {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -709994,8 +709652,7 @@ impl<'a> Extract<'a> for SCItemWeaponControllerStaggeredFiring {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct SCItemWeaponControllerParams {
     /// `StaggeredMode` (StrongPointer)
@@ -710036,7 +709693,6 @@ pub struct SCItemWeaponControllerParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -710045,8 +709701,7 @@ pub struct SCItemWeaponControllerParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for SCItemWeaponControllerParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -710065,7 +709720,6 @@ impl Pooled for SCItemWeaponControllerParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -710074,8 +709728,7 @@ impl Pooled for SCItemWeaponControllerParams {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for SCItemWeaponControllerParams {
     const TYPE_NAME: &'static str = "SCItemWeaponControllerParams";
@@ -734028,10 +733681,12 @@ impl<'a> Extract<'a> for TimeValue_Partitioned {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -734165,10 +733820,12 @@ pub struct TintEntry {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -734302,10 +733959,12 @@ impl Pooled for TintEntry {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -734454,10 +734113,12 @@ impl<'a> Extract<'a> for TintEntry {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -734607,10 +734268,12 @@ pub struct TintPalette {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -734744,10 +734407,12 @@ impl Pooled for TintPalette {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -734953,10 +734618,12 @@ impl<'a> Extract<'a> for TintPalette {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -735088,10 +734755,12 @@ pub struct TintPaletteTree {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -735225,10 +734894,12 @@ impl Pooled for TintPaletteTree {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -740310,6 +739981,7 @@ impl<'a> Extract<'a> for UIElement {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -740425,6 +740097,7 @@ pub struct SCItemUIView_DashboardCanvasViewDef {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -740544,6 +740217,7 @@ impl Pooled for SCItemUIView_DashboardCanvasViewDef {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -740676,6 +740350,7 @@ impl<'a> Extract<'a> for SCItemUIView_DashboardCanvasViewDef {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -740791,6 +740466,7 @@ pub struct SCItemUIView_DashboardCanvasDef {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -740910,6 +740586,7 @@ impl Pooled for SCItemUIView_DashboardCanvasDef {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -750752,15 +750429,13 @@ impl<'a> Extract<'a> for AlignmentSlotBase {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 pub struct OperatorSeatAlignmentSlot {
     /// `id` (Guid)
@@ -750790,15 +750465,13 @@ pub struct OperatorSeatAlignmentSlot {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl Pooled for OperatorSeatAlignmentSlot {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -750818,15 +750491,13 @@ impl Pooled for OperatorSeatAlignmentSlot {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl<'a> Extract<'a> for OperatorSeatAlignmentSlot {
     const TYPE_NAME: &'static str = "OperatorSeatAlignmentSlot";
