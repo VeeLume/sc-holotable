@@ -101,13 +101,23 @@ pub enum Misfit {
 /// type); its size lies within the port's range; it carries
 /// every tag the port requires; and every tag it requires is offered.
 /// Tags compare without a leading `$` and without case.
+///
+/// A sub-type the bindings do not know ([`EItemSubType::Unrecognized`])
+/// still matches an item with the same value, but does not narrow the
+/// list: a list of only such entries takes every sub-type. The Drake
+/// Marauder's power plant ports (LIVE 4.10.3) list `subtypes="$editable"`,
+/// a flag written into the sub-type list; read as a restriction, it
+/// refused every power plant, the stock one included. On stale bindings a
+/// port that lists only a sub-type newer than them takes every sub-type.
 pub fn fits(port: &Port, item: &Item, offered: &[&str]) -> Result<(), Misfit> {
     let type_ok = port.types.is_empty()
         || port.types.iter().any(|t| {
             t.item_type == item.item_type
-                && (t.sub_types.is_empty()
-                    || item.item_sub_type == EItemSubType::UNDEFINED
-                    || t.sub_types.contains(&item.item_sub_type))
+                && (item.item_sub_type == EItemSubType::UNDEFINED
+                    || t.sub_types.contains(&item.item_sub_type)
+                    || t.sub_types
+                        .iter()
+                        .all(|s| matches!(s, EItemSubType::Unrecognized(_))))
         });
     if !type_ok {
         return Err(Misfit::Type);
@@ -235,6 +245,20 @@ mod tests {
         let mut open = port(&[]);
         open.types.clear();
         assert_eq!(fits(&open, &cooler, &[]), Ok(()));
+        // An unknown sub-type does not narrow the list (Marauder:
+        // `subtypes="$editable"`), but still matches its own value.
+        let mut stray = port(&[]);
+        stray.types[0].sub_types = vec![EItemSubType::Unrecognized("$editable".into())];
+        assert_eq!(fits(&stray, &gun(2, EItemSubType::Rocket), &[]), Ok(()));
+        stray.types[0].sub_types.push(EItemSubType::Gun);
+        assert_eq!(
+            fits(&stray, &gun(2, EItemSubType::Rocket), &[]),
+            Err(Misfit::Type)
+        );
+        let newer = EItemSubType::Unrecognized("NewSub".into());
+        assert_eq!(fits(&stray, &gun(2, newer.clone()), &[]), Err(Misfit::Type));
+        stray.types[0].sub_types.push(newer.clone());
+        assert_eq!(fits(&stray, &gun(2, newer), &[]), Ok(()));
 
         // Tags compare without `$` and case.
         let mut locked = port(&[]);
