@@ -13,6 +13,16 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`sc-regen` waits for a launcher patch instead of failing.** A run that
+  finds a launcher run open on an install now polls until it ends (up to two
+  hours) and regenerates the patched build, so a patch started right after
+  boot no longer raises a "sc-regen failed" toast and waits for the next
+  three-hourly run. Installs the launcher left half-patched, a patch that
+  outlasts the wait, and a game started meanwhile are logged skips, not
+  failures.
+
 ## [v0.47.0] - 2026-11-11
 
 ### Added
