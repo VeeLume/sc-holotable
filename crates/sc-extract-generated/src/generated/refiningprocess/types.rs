@@ -26,6 +26,8 @@ pub struct RefiningProcess {
     pub refining_quality: RefiningQuality,
     /// `processName` (Locale)
     pub process_name: LocaleKey,
+    /// `processDetail` (Locale)
+    pub process_detail: LocaleKey,
 }
 
 impl Pooled for RefiningProcess {
@@ -49,6 +51,10 @@ impl<'a> Extract<'a> for RefiningProcess {
             ),
             process_name: inst
                 .get_str("processName")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            process_detail: inst
+                .get_str("processDetail")
                 .map(LocaleKey::from)
                 .unwrap_or_default(),
         }

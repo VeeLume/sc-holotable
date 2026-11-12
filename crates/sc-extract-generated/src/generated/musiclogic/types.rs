@@ -112,6 +112,102 @@ impl<'a> Extract<'a> for EnemyAwarenessConfig {
     }
 }
 
+/// DCB type: `EnemyTypeEntry`
+pub struct EnemyTypeEntry {
+    /// `faction` (Reference)
+    pub faction: Option<CigGuid>,
+    /// `musicSwitch` (Class)
+    pub music_switch: Option<Handle<AudioSwitch>>,
+}
+
+impl Pooled for EnemyTypeEntry {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.musiclogic.enemy_type_entry
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.musiclogic.enemy_type_entry
+    }
+}
+
+impl<'a> Extract<'a> for EnemyTypeEntry {
+    const TYPE_NAME: &'static str = "EnemyTypeEntry";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            faction: inst
+                .get("faction")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            music_switch: match inst.get("musicSwitch") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioSwitch>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `EnemyTypeConfig`
+pub struct EnemyTypeConfig {
+    /// `noneSwitch` (Class)
+    pub none_switch: Option<Handle<AudioSwitch>>,
+    /// `defaultSwitch` (Class)
+    pub default_switch: Option<Handle<AudioSwitch>>,
+    /// `entries` (Class (array))
+    pub entries: Vec<Handle<EnemyTypeEntry>>,
+}
+
+impl Pooled for EnemyTypeConfig {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.musiclogic.enemy_type_config
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.musiclogic.enemy_type_config
+    }
+}
+
+impl<'a> Extract<'a> for EnemyTypeConfig {
+    const TYPE_NAME: &'static str = "EnemyTypeConfig";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            none_switch: match inst.get("noneSwitch") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioSwitch>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+            default_switch: match inst.get("defaultSwitch") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioSwitch>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+            entries: inst
+                .get_array("entries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<EnemyTypeEntry>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<EnemyTypeEntry>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `PlaylistRNGConfig`
 pub struct PlaylistRNGConfig {
     /// `parameters` (Reference (array))
@@ -206,12 +302,16 @@ pub struct MusicLogicConfig {
     pub fps_attack_detection_config: Option<Handle<AttackDetectionConfig>>,
     /// `playlistRNGConfig` (Class)
     pub playlist_rngconfig: Option<Handle<PlaylistRNGConfig>>,
+    /// `enemyTypeConfig` (Class)
+    pub enemy_type_config: Option<Handle<EnemyTypeConfig>>,
     /// `locationMusicConfig` (Class)
     pub location_music_config: Option<Handle<LocationMusicConfig>>,
     /// `enemyAwarenessConfig` (Class)
     pub enemy_awareness_config: Option<Handle<EnemyAwarenessConfig>>,
     /// `triggerParentMusicAreaOnLeave` (Boolean)
     pub trigger_parent_music_area_on_leave: bool,
+    /// `numHostilesOnRadar` (Reference)
+    pub num_hostiles_on_radar: Option<CigGuid>,
 }
 
 impl Pooled for MusicLogicConfig {
@@ -263,6 +363,15 @@ impl<'a> Extract<'a> for MusicLogicConfig {
                 }
                 _ => None,
             },
+            enemy_type_config: match inst.get("enemyTypeConfig") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<EnemyTypeConfig>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
             location_music_config: match inst.get("locationMusicConfig") {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<LocationMusicConfig>(
@@ -284,6 +393,10 @@ impl<'a> Extract<'a> for MusicLogicConfig {
             trigger_parent_music_area_on_leave: inst
                 .get_bool("triggerParentMusicAreaOnLeave")
                 .unwrap_or_default(),
+            num_hostiles_on_radar: inst
+                .get("numHostilesOnRadar")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }

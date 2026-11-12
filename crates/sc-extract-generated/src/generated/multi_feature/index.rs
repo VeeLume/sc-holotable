@@ -1087,6 +1087,7 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-shopdisplays",
         feature = "entities-scitem-spawers",
         feature = "entities-scitem-starmarine",
+        feature = "entities-scitem-storage",
         feature = "entities-scitem-suit",
         feature = "entities-scitem-usables",
         feature = "entities-scitem-vehicles",
@@ -1909,12 +1910,15 @@ pub struct MultiFeatureIndex {
         feature = "contracts",
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
+        feature = "entities-scitem-controlpanels",
+        feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
         feature = "entities-ui",
         feature = "entitlementpolicies",
         feature = "player",
+        feature = "transportsystem",
         feature = "ui-aspectratiototag_mfd",
         feature = "ui-buildingblocks",
         feature = "ui-graphs"
@@ -2045,15 +2049,13 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-atc",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-spaceships",
         feature = "entities-ui",
         feature = "entitlementpolicies",
         feature = "player",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub suggested_fovsetup: HashMap<CigGuid, Handle<SuggestedFOVSetup>>,
     #[cfg(any(feature = "aiwavecollection", feature = "cargomanifest"))]
@@ -2170,7 +2172,6 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-atc",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-spaceships",
         feature = "entities-test",
@@ -2184,8 +2185,7 @@ pub struct MultiFeatureIndex {
         feature = "player",
         feature = "transitsystem",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub communication_config: HashMap<CigGuid, Handle<CommunicationConfig>>,
     #[cfg(any(
@@ -2218,7 +2218,6 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-atc",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-spaceships",
         feature = "entities-test",
@@ -2232,8 +2231,7 @@ pub struct MultiFeatureIndex {
         feature = "player",
         feature = "transitsystem",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub communication_name: HashMap<CigGuid, Handle<CommunicationName>>,
     #[cfg(any(
@@ -2268,7 +2266,6 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-atc",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-spaceships",
         feature = "entities-test",
@@ -2282,8 +2279,7 @@ pub struct MultiFeatureIndex {
         feature = "player",
         feature = "transitsystem",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub communication_channel_name: HashMap<CigGuid, Handle<CommunicationChannelName>>,
     #[cfg(any(
@@ -2755,7 +2751,6 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-remoteconnectionreceiver",
         feature = "entities-scitem-ships",
         feature = "entities-scitem-spawers",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -2764,8 +2759,7 @@ pub struct MultiFeatureIndex {
         feature = "harvestable",
         feature = "player",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub operator_mode_availability_params: HashMap<CigGuid, Handle<OperatorModeAvailabilityParams>>,
     #[cfg(any(
@@ -2909,7 +2903,6 @@ pub struct MultiFeatureIndex {
         feature = "entities-groundvehicles",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -2918,8 +2911,7 @@ pub struct MultiFeatureIndex {
         feature = "player",
         feature = "targetselector",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub stargeting_method_record: HashMap<CigGuid, Handle<STargetingMethodRecord>>,
     #[cfg(any(
@@ -2930,7 +2922,6 @@ pub struct MultiFeatureIndex {
         feature = "entities-groundvehicles",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -2939,8 +2930,7 @@ pub struct MultiFeatureIndex {
         feature = "player",
         feature = "targetselector",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub stargetable_item_types_record: HashMap<CigGuid, Handle<STargetableItemTypesRecord>>,
     #[cfg(any(
@@ -2951,7 +2941,6 @@ pub struct MultiFeatureIndex {
         feature = "entities-groundvehicles",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -2960,8 +2949,7 @@ pub struct MultiFeatureIndex {
         feature = "player",
         feature = "targetselector",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub starget_selector_global_targeting_params:
         HashMap<CigGuid, Handle<STargetSelectorGlobalTargetingParams>>,
@@ -3413,15 +3401,13 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-atc",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-spaceships",
         feature = "entities-ui",
         feature = "entitlementpolicies",
         feature = "player",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub dialogue_external_source: HashMap<CigGuid, Handle<DialogueExternalSource>>,
     #[cfg(any(
@@ -4229,8 +4215,7 @@ pub struct MultiFeatureIndex {
         feature = "ssolarsystem",
         feature = "starmap",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub carryable_interactions_metadata_config_def:
         HashMap<CigGuid, Handle<CarryableInteractionsMetadataConfigDef>>,
@@ -4720,6 +4705,7 @@ pub struct MultiFeatureIndex {
         feature = "missiondata",
         feature = "missiongiver",
         feature = "missionscenarios",
+        feature = "musiclogic",
         feature = "ui-buildingblocks"
     ))]
     pub faction: HashMap<CigGuid, Handle<Faction>>,
@@ -5094,6 +5080,7 @@ pub struct MultiFeatureIndex {
         feature = "actorhealthcomponent-healthtemplate_ai",
         feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
         feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+        feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
         feature = "actorhealthcomponent-healthtemplate_invulnerable",
         feature = "actorhealthcomponent-healthtemplate_kopion",
         feature = "actorhealthcomponent-healthtemplate_player",
@@ -5158,6 +5145,7 @@ pub struct MultiFeatureIndex {
         feature = "actorhealthcomponent-healthtemplate_ai",
         feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
         feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+        feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
         feature = "actorhealthcomponent-healthtemplate_invulnerable",
         feature = "actorhealthcomponent-healthtemplate_kopion",
         feature = "actorhealthcomponent-healthtemplate_player",
@@ -5197,6 +5185,7 @@ pub struct MultiFeatureIndex {
         feature = "actorhealthcomponent-healthtemplate_ai",
         feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
         feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+        feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
         feature = "actorhealthcomponent-healthtemplate_invulnerable",
         feature = "actorhealthcomponent-healthtemplate_kopion",
         feature = "actorhealthcomponent-healthtemplate_player",
@@ -5235,6 +5224,7 @@ pub struct MultiFeatureIndex {
         feature = "actorhealthcomponent-healthtemplate_ai",
         feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
         feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+        feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
         feature = "actorhealthcomponent-healthtemplate_invulnerable",
         feature = "actorhealthcomponent-healthtemplate_kopion",
         feature = "actorhealthcomponent-healthtemplate_player",
@@ -8622,6 +8612,7 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-decals",
         feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
@@ -8974,15 +8965,13 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-atc",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-scitem-suit",
         feature = "entities-scitem-vehicles",
         feature = "entities-spaceships",
         feature = "entities-ui",
         feature = "entitlementpolicies",
         feature = "player",
         feature = "ui-buildingblocks",
-        feature = "ui-graphs",
-        feature = "ui-mobiglas"
+        feature = "ui-graphs"
     ))]
     pub ship_computer_definition: HashMap<CigGuid, Handle<ShipComputerDefinition>>,
     #[cfg(any(
@@ -10499,10 +10488,12 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-decals",
         feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-environments",
+        feature = "entities-scitem-flair",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-harvestables",
         feature = "entities-scitem-human",
@@ -10817,6 +10808,7 @@ pub struct MultiFeatureIndex {
         feature = "entities-scitem-cargo",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
+        feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-decals",
         feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
@@ -13006,6 +12998,7 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-shopdisplays",
             feature = "entities-scitem-spawers",
             feature = "entities-scitem-starmarine",
+            feature = "entities-scitem-storage",
             feature = "entities-scitem-suit",
             feature = "entities-scitem-usables",
             feature = "entities-scitem-vehicles",
@@ -13837,12 +13830,15 @@ impl MultiFeatureIndex {
             feature = "contracts",
             feature = "entities-entityspawners",
             feature = "entities-groundvehicles",
+            feature = "entities-scitem-controlpanels",
+            feature = "entities-scitem-doors",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
             feature = "entities-spaceships",
             feature = "entities-ui",
             feature = "entitlementpolicies",
             feature = "player",
+            feature = "transportsystem",
             feature = "ui-aspectratiototag_mfd",
             feature = "ui-buildingblocks",
             feature = "ui-graphs"
@@ -13982,15 +13978,13 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-ui",
             feature = "entitlementpolicies",
             feature = "player",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.suggested_fovsetup.len();
@@ -14120,7 +14114,6 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-test",
@@ -14134,8 +14127,7 @@ impl MultiFeatureIndex {
             feature = "player",
             feature = "transitsystem",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.communication_config.len();
@@ -14170,7 +14162,6 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-test",
@@ -14184,8 +14175,7 @@ impl MultiFeatureIndex {
             feature = "player",
             feature = "transitsystem",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.communication_name.len();
@@ -14222,7 +14212,6 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-test",
@@ -14236,8 +14225,7 @@ impl MultiFeatureIndex {
             feature = "player",
             feature = "transitsystem",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.communication_channel_name.len();
@@ -14736,7 +14724,6 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-remoteconnectionreceiver",
             feature = "entities-scitem-ships",
             feature = "entities-scitem-spawers",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-scitem-weapons",
             feature = "entities-spaceships",
@@ -14745,8 +14732,7 @@ impl MultiFeatureIndex {
             feature = "harvestable",
             feature = "player",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.operator_mode_availability_params.len();
@@ -14912,7 +14898,6 @@ impl MultiFeatureIndex {
             feature = "entities-groundvehicles",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-scitem-weapons",
             feature = "entities-spaceships",
@@ -14921,8 +14906,7 @@ impl MultiFeatureIndex {
             feature = "player",
             feature = "targetselector",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.stargeting_method_record.len();
@@ -14935,7 +14919,6 @@ impl MultiFeatureIndex {
             feature = "entities-groundvehicles",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-scitem-weapons",
             feature = "entities-spaceships",
@@ -14944,8 +14927,7 @@ impl MultiFeatureIndex {
             feature = "player",
             feature = "targetselector",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.stargetable_item_types_record.len();
@@ -14958,7 +14940,6 @@ impl MultiFeatureIndex {
             feature = "entities-groundvehicles",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-scitem-weapons",
             feature = "entities-spaceships",
@@ -14967,8 +14948,7 @@ impl MultiFeatureIndex {
             feature = "player",
             feature = "targetselector",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.starget_selector_global_targeting_params.len();
@@ -15448,15 +15428,13 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-ui",
             feature = "entitlementpolicies",
             feature = "player",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.dialogue_external_source.len();
@@ -16286,8 +16264,7 @@ impl MultiFeatureIndex {
             feature = "ssolarsystem",
             feature = "starmap",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.carryable_interactions_metadata_config_def.len();
@@ -16790,6 +16767,7 @@ impl MultiFeatureIndex {
             feature = "missiondata",
             feature = "missiongiver",
             feature = "missionscenarios",
+            feature = "musiclogic",
             feature = "ui-buildingblocks"
         ))]
         {
@@ -17198,6 +17176,7 @@ impl MultiFeatureIndex {
             feature = "actorhealthcomponent-healthtemplate_ai",
             feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
             feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+            feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
             feature = "actorhealthcomponent-healthtemplate_invulnerable",
             feature = "actorhealthcomponent-healthtemplate_kopion",
             feature = "actorhealthcomponent-healthtemplate_player",
@@ -17264,6 +17243,7 @@ impl MultiFeatureIndex {
             feature = "actorhealthcomponent-healthtemplate_ai",
             feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
             feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+            feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
             feature = "actorhealthcomponent-healthtemplate_invulnerable",
             feature = "actorhealthcomponent-healthtemplate_kopion",
             feature = "actorhealthcomponent-healthtemplate_player",
@@ -17305,6 +17285,7 @@ impl MultiFeatureIndex {
             feature = "actorhealthcomponent-healthtemplate_ai",
             feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
             feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+            feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
             feature = "actorhealthcomponent-healthtemplate_invulnerable",
             feature = "actorhealthcomponent-healthtemplate_kopion",
             feature = "actorhealthcomponent-healthtemplate_player",
@@ -17345,6 +17326,7 @@ impl MultiFeatureIndex {
             feature = "actorhealthcomponent-healthtemplate_ai",
             feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
             feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+            feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
             feature = "actorhealthcomponent-healthtemplate_invulnerable",
             feature = "actorhealthcomponent-healthtemplate_kopion",
             feature = "actorhealthcomponent-healthtemplate_player",
@@ -20993,6 +20975,7 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-carryables",
             feature = "entities-scitem-characters",
             feature = "entities-scitem-consumables",
+            feature = "entities-scitem-controlpanels",
             feature = "entities-scitem-decals",
             feature = "entities-scitem-default_lensdisplay",
             feature = "entities-scitem-default_lensdisplay_pu",
@@ -21362,15 +21345,13 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-ui",
             feature = "entitlementpolicies",
             feature = "player",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         {
             total += self.ship_computer_definition.len();
@@ -22960,10 +22941,12 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-carryables",
             feature = "entities-scitem-characters",
             feature = "entities-scitem-consumables",
+            feature = "entities-scitem-decals",
             feature = "entities-scitem-default_lensdisplay",
             feature = "entities-scitem-default_lensdisplay_pu",
             feature = "entities-scitem-doors",
             feature = "entities-scitem-environments",
+            feature = "entities-scitem-flair",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-harvestables",
             feature = "entities-scitem-human",
@@ -23293,6 +23276,7 @@ impl MultiFeatureIndex {
             feature = "entities-scitem-cargo",
             feature = "entities-scitem-carryables",
             feature = "entities-scitem-characters",
+            feature = "entities-scitem-controlpanels",
             feature = "entities-scitem-decals",
             feature = "entities-scitem-default_lensdisplay",
             feature = "entities-scitem-default_lensdisplay_pu",
