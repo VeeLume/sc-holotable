@@ -108,11 +108,13 @@ impl Raycaster {
                 continue;
             }
             if node.leaf {
-                for t in node.a as usize..(node.a + node.b) as usize {
-                    if let Some(d) = intersect(&self.triangles[t].v, origin, direction)
+                let first = node.a as usize;
+                let leaf = &self.triangles[first..first + node.b as usize];
+                for (k, tri) in leaf.iter().enumerate() {
+                    if let Some(d) = intersect(&tri.v, origin, direction)
                         && d < best.map_or(f32::INFINITY, |b| b.0)
                     {
-                        best = Some((d, t));
+                        best = Some((d, first + k));
                     }
                 }
             } else {
