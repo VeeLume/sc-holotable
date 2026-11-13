@@ -201,7 +201,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "\npower-on {} (supply {}, left {}):",
             mode.as_dcb_str(),
             a.supply,
-            a.remaining
+            network.free_supply(&a, &mode)
         );
         let mut by_type: HashMap<&str, f64> = HashMap::new();
         for ((c, g), r) in network.consumers.iter().zip(&a.granted).zip(&ratios) {
@@ -243,7 +243,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             readout.ir,
             readout.shield_made
         );
-        assert_eq!(a.remaining, 0);
+        assert_eq!(network.free_supply(&a, &mode), 0);
         assert_eq!(readout.coolant_made, 82.0);
         if mode == EMasterMode::SCM {
             // Plants 12 + 12, radar 6 × 1, shields 2 × 4 × (0.5 × 0.7), life

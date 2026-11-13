@@ -13,6 +13,22 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-vehicles`: the power network answers what a pool takes, what is free, and what a player's pip does.** `PowerNetwork::pool_level(&Allocation, pool, mode)` is what a pool takes from the supply in whole segments (its target clamped to size and capacity; 0 when no member may run in the mode or none is on). `free_supply(&Allocation, mode)` is the plants' output less the drawing grants outside pools and every pool level. `set_pool_target` and `set_grant` (items outside a pool) follow the client's server-side handlers for a player's pips: clamp to `[0, size]` or `[0, request]`, decreases always pass, increases capped by free supply, no snapping to member minimums (a dynamic pool can hold segments its members cannot use, as in game). Read from client 4.10.3 (`irc_requestPoolTarget`, `irc_requestEntityTarget`). Probe: `sc-vehicles/examples/power_pool_sweep.rs`.
+
+### Changed
+
+- **`sc-vehicles`: `split_pools` writes the clamped target back** to `Allocation::pool_targets`, as the client does, so a target set above what a pool can take reads back as what it took.
+
+### Removed
+
+- **`sc-vehicles`: `Allocation::remaining`.** It went stale as soon as a target or grant changed; use `PowerNetwork::free_supply(&allocation, mode)`.
+
+### Fixed
+
+- **`sc-vehicles`: a fixed pool no longer grants a member more than it asks for.** When the members ask a fractional total below `poolSize` (the pool size rounds up), a full target gave each member `target / total` of its request, above 1. The client caps that share at the full request. On LIVE 4.10.3, 607 fixed pools across the vehicle records (AI and variant records included) ask such a total; the Argo MOLE's guns went from 1.667× their request to 1×.
+
 ## [v0.47.2] - 2026-11-13
 
 ### Fixed

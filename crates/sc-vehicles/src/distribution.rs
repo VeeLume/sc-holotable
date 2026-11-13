@@ -1,8 +1,26 @@
 //! A vehicle's power network and how the client shares its power out
 //! (LIVE 4.10.197).
 //!
-//! Amounts are the client's integer micro-units: 1 segment (pip) =
-//! 1,000,000.
+//! Requests and minimums are the client's integer micro-units: 1 segment
+//! (pip) = 1,000,000. Supply, pool targets and the grants of items outside a
+//! pool are whole segments. A pool member's grant is a fraction of a segment
+//! where the client makes it one: it keeps grants as doubles, and a fixed
+//! pool gives each member `target / requests × request` (`FUN_1429417b0`).
+//!
+//! Read the network's state through [`PowerNetwork::pool_level`] and
+//! [`PowerNetwork::free_supply`] rather than summing grants: the client
+//! charges a pool its whole-segment level, not what its members were granted.
+//!
+//! ```no_run
+//! # fn demo(network: &sc_vehicles::PowerNetwork) {
+//! use sc_extract::generated::EMasterMode;
+//! let mode = EMasterMode::SCM;
+//! let allocation = network.power_on(&mode);
+//! let free = network.free_supply(&allocation, &mode);
+//! let weapons = network.pool_level(&allocation, 0, &mode);
+//! # let _ = (free, weapons);
+//! # }
+//! ```
 
 use sc_extract::generated::{EItemType, EMasterMode, ResourceNetworkResource};
 use sc_extract::{Guid, RecordCollection};
@@ -135,14 +153,15 @@ pub struct Pool {
 pub struct Allocation {
     /// What all online plants make, segments.
     pub supply: i64,
-    /// Segments granted per [`PowerNetwork::consumers`] entry. A consumer
-    /// that does not [`draw`](Consumer::draws) in the mode keeps its grant
-    /// on record but takes no supply and does not run.
+    /// Segments granted per [`PowerNetwork::consumers`] entry: whole for an
+    /// item outside a pool, possibly fractional for a pool member. A
+    /// consumer that does not [`draw`](Consumer::draws) in the mode keeps
+    /// its grant on record but takes no supply and does not run.
     pub granted: Vec<f64>,
     /// The target per [`PowerNetwork::pools`] entry, segments.
+    /// [`split_pools`](PowerNetwork::split_pools) clamps it to what the pool
+    /// can take, as the client does.
     pub pool_targets: Vec<i64>,
-    /// Supply left over, segments.
-    pub remaining: i64,
 }
 
 /// [`PowerNetwork::readout`]: the network's state as the engineering
@@ -493,20 +512,23 @@ impl PowerNetwork {
             supply,
             granted,
             pool_targets,
-            remaining,
         };
         self.split_pools(&mut allocation);
         allocation
     }
 
     /// Set every pool member's grant from `allocation.pool_targets`, as the
-    /// client shares a pool out each frame (`FUN_1429417b0`): a fixed pool
-    /// gives each member the same fraction of its request; a dynamic pool
-    /// gives every member its full request when the target covers them all,
-    /// else each its minimum in member order while it fits, and what is
-    /// left goes to members in order unless a minimum did not fit.
+    /// client shares a pool out each frame (`FUN_1429417b0`). First each
+    /// target is clamped to the pool's size and capacity and written back,
+    /// so a target set too high stays at what the pool can take. Then a
+    /// fixed pool gives each member the same fraction of its request, at
+    /// most all of it; a dynamic pool gives every member its full request
+    /// when the target covers them all, else each its minimum in member
+    /// order while it fits, and what is left goes to members in order
+    /// unless a minimum did not fit.
     ///
-    /// Call it after changing a pool target (a player moving pips); grants
+    /// Call it after changing a pool target by hand;
+    /// [`set_pool_target`](Self::set_pool_target) calls it for you. Grants
     /// of items outside pools are left as they are.
     pub fn split_pools(&self, allocation: &mut Allocation) {
         for p in 0..self.pools.len() {
@@ -515,18 +537,9 @@ impl PowerNetwork {
             for &c in &pool.members {
                 allocation.granted[c] = 0.0;
             }
-            // A dynamic pool's capacity: a running sum of its members'
-            // requests the client truncates after each member is added
-            // (FUN_1428469a0). It caps the target and is what a full share
-            // is measured against. A fixed pool keeps its poolSize there
-            // instead, so only the pool size caps it.
-            let capacity = pool.members.iter().fold(0.0, |sum, &c| {
-                (sum + self.consumers[c].request_segments()).trunc()
-            }) as i64;
-            let mut target = allocation.pool_targets[p].min(self.pool_size(p));
-            if !matches!(pool.size, PoolSize::Fixed(_)) {
-                target = target.min(capacity);
-            }
+            let capacity = self.capacity(p);
+            let target = allocation.pool_targets[p].min(self.max_target(p));
+            allocation.pool_targets[p] = target;
             let target = target as f64;
             match pool.size {
                 PoolSize::Fixed(_) => {
@@ -537,7 +550,10 @@ impl PowerNetwork {
                     if asked <= 0.0 {
                         continue;
                     }
-                    let ratio = target / asked;
+                    // A target above the requests' total (a fractional
+                    // total below poolSize) grants each member its full
+                    // request, no more.
+                    let ratio = (target / asked).min(1.0);
                     for &c in &active {
                         allocation.granted[c] = ratio * self.consumers[c].request_segments();
                     }
@@ -575,6 +591,119 @@ impl PowerNetwork {
                 }
             }
         }
+    }
+
+    /// What `pool` takes from the supply under `allocation` in `mode`, whole
+    /// segments: its target clamped to its size and capacity, as
+    /// [`split_pools`](Self::split_pools) clamps it, or 0 when none of its
+    /// members may run in `mode` or none is switched on.
+    pub fn pool_level(&self, allocation: &Allocation, pool: usize, mode: &EMasterMode) -> i64 {
+        if !self.pool_allowed(pool, mode) || self.active_members(pool).next().is_none() {
+            return 0;
+        }
+        allocation.pool_targets[pool]
+            .min(self.max_target(pool))
+            .max(0)
+    }
+
+    /// Supply not taken under `allocation` in `mode`, whole segments: the
+    /// plants' output less the grants of items outside a pool that
+    /// [`draw`](Consumer::draws) and every [`pool_level`](Self::pool_level).
+    /// Negative when the allocation asks for more than the plants make.
+    pub fn free_supply(&self, allocation: &Allocation, mode: &EMasterMode) -> i64 {
+        let loose: i64 = self
+            .consumers
+            .iter()
+            .zip(&allocation.granted)
+            .filter(|(c, _)| c.pool.is_none() && c.draws(mode))
+            .map(|(_, &g)| g.round() as i64)
+            .sum();
+        let pools: i64 = (0..self.pools.len())
+            .map(|p| self.pool_level(allocation, p, mode))
+            .sum();
+        self.supply() - loose - pools
+    }
+
+    /// Set `pool`'s target as the client does for a player's pips (RMI
+    /// `irc_requestPoolTarget`, server `FUN_14283db30`), then
+    /// [`split_pools`](Self::split_pools); returns the target set.
+    ///
+    /// The request is clamped to `[0, pool_size]`. A decrease always
+    /// passes; an increase is capped by the [`free_supply`](Self::free_supply)
+    /// in `mode`. Nothing snaps it to member minimums: a dynamic pool can
+    /// hold a target its members cannot use (minimums 2 and 2 at a target
+    /// of 3 run one member), and those segments stay taken. Only
+    /// [`power_on`](Self::power_on) snaps.
+    ///
+    /// Not modelled: when supply runs short the server can take segments
+    /// from other pools for some pool types, and a server option can raise a
+    /// target to the pool minimum (`FUN_14292edb0`).
+    ///
+    /// # Panics
+    ///
+    /// When `pool` is not an index into [`pools`](Self::pools).
+    ///
+    /// ```no_run
+    /// # fn demo(network: &sc_vehicles::PowerNetwork) {
+    /// use sc_extract::generated::EMasterMode;
+    /// let mode = EMasterMode::SCM;
+    /// let mut allocation = network.power_on(&mode);
+    /// let set = network.set_pool_target(&mut allocation, 0, 4, &mode);
+    /// let level = network.pool_level(&allocation, 0, &mode);
+    /// # let _ = (set, level);
+    /// # }
+    /// ```
+    pub fn set_pool_target(
+        &self,
+        allocation: &mut Allocation,
+        pool: usize,
+        target: i64,
+        mode: &EMasterMode,
+    ) -> i64 {
+        let current = allocation.pool_targets[pool];
+        let want = target.clamp(0, self.pool_size(pool));
+        let free = self.free_supply(allocation, mode).max(0);
+        allocation.pool_targets[pool] = current + (want - current).min(free);
+        self.split_pools(allocation);
+        allocation.pool_targets[pool]
+    }
+
+    /// Set the grant of an item outside a pool as the client does for a
+    /// player's pips (RMI `irc_requestEntityTarget`, server
+    /// `FUN_14296f620`); returns the grant set, `None` for a pool member.
+    ///
+    /// The request is clamped to `[0, request]` in whole segments. A
+    /// decrease always passes; an increase is capped by the
+    /// [`free_supply`](Self::free_supply) in `mode`. A grant below the
+    /// item's minimum is kept as asked: what the item does with it is not
+    /// read.
+    ///
+    /// # Panics
+    ///
+    /// When `consumer` is not an index into [`consumers`](Self::consumers).
+    pub fn set_grant(
+        &self,
+        allocation: &mut Allocation,
+        consumer: usize,
+        segments: i64,
+        mode: &EMasterMode,
+    ) -> Option<i64> {
+        let c = &self.consumers[consumer];
+        if c.pool.is_some() {
+            return None;
+        }
+        // The client truncates the current grant to whole segments.
+        let current = allocation.granted[consumer] as i64;
+        let want = segments.clamp(0, c.request / SEGMENT);
+        let free = if c.draws(mode) {
+            self.free_supply(allocation, mode).max(0)
+        } else {
+            // It takes no supply in `mode`, so none caps it.
+            i64::MAX
+        };
+        let set = current + (want - current).min(free);
+        allocation.granted[consumer] = set as f64;
+        Some(set)
     }
 
     /// Each consumer's power ratio under `allocation` in `mode`: granted
@@ -709,6 +838,25 @@ impl PowerNetwork {
         } else {
             1.0
         }
+    }
+
+    /// A pool's capacity (`pool+0x08`): for a dynamic pool a running sum of
+    /// its members' requests the client truncates after each member is
+    /// added (`FUN_1428469a0`), what a full share is measured against; a
+    /// fixed pool keeps its poolSize there.
+    fn capacity(&self, pool: usize) -> i64 {
+        match self.pools[pool].size {
+            PoolSize::Fixed(size) => i64::from(size),
+            _ => self.pools[pool].members.iter().fold(0.0, |sum, &c| {
+                (sum + self.consumers[c].request_segments()).trunc()
+            }) as i64,
+        }
+    }
+
+    /// The highest target the pool keeps: its size and capacity, the
+    /// smaller (`FUN_1429417b0` writes `min(target, size, capacity)` back).
+    fn max_target(&self, pool: usize) -> i64 {
+        self.pool_size(pool).min(self.capacity(pool))
     }
 
     /// The largest sum of leading member minimums within `target`; `target`
@@ -917,7 +1065,7 @@ mod tests {
         // takes nothing in SCM.
         assert_eq!(&a.granted[..5], &[4.0, 4.0, 6.0, 1.0, 3.0]);
         assert_eq!(a.pool_targets, [3, 4, 2]);
-        assert_eq!(a.remaining, 0);
+        assert_eq!(n.free_supply(&a, &EMasterMode::SCM), 0);
         // Flight controller 3 of 6, each shield 2 of 4, each gun 2 / 12.2 of
         // its request.
         assert_eq!(&a.granted[5..8], &[3.0, 2.0, 2.0]);
@@ -936,7 +1084,9 @@ mod tests {
         // without taking supply, so the radar gets the last 5.
         assert_eq!(&a.granted[..5], &[4.0, 4.0, 7.0, 1.0, 3.0]);
         assert_eq!(a.pool_targets, [3, 4, 2]);
-        assert_eq!(a.remaining, 0);
+        assert_eq!(n.free_supply(&a, &EMasterMode::Navigation), 0);
+        // The shields may not run in NAV: their pool takes nothing.
+        assert_eq!(n.pool_level(&a, 1, &EMasterMode::Navigation), 0);
         let ratios = n.ratios(&a, &EMasterMode::Navigation);
         assert_eq!((ratios[6], ratios[7]), (0.0, 0.0));
     }
@@ -994,5 +1144,74 @@ mod tests {
         n.split_pools(&mut a);
         let guns: f64 = a.granted[8..20].iter().sum();
         assert!((guns - 4.0).abs() < 1e-9, "{guns}");
+    }
+
+    #[test]
+    fn fixed_pool_target_above_requests() {
+        // 12 × 0.3 = 3.6 in a pool of 4: the pool size is ceil(3.6) = 4, so
+        // a target of 4 stays, but each gun gets its full 0.3, not 4/3.6 of
+        // it. The pool still takes its whole 4 segments.
+        let mut n = centaurus();
+        for c in &mut n.consumers[8..20] {
+            c.request = 300_000;
+            c.minimum = 0;
+        }
+        let mut a = n.power_on(&EMasterMode::SCM);
+        a.pool_targets[2] = 4;
+        n.split_pools(&mut a);
+        assert_eq!(a.pool_targets[2], 4);
+        assert!(a.granted[8..20].iter().all(|&g| (g - 0.3).abs() < 1e-9));
+        assert_eq!(n.pool_level(&a, 2, &EMasterMode::SCM), 4);
+    }
+
+    #[test]
+    fn set_pool_target_like_the_server() {
+        let n = centaurus();
+        let mode = EMasterMode::SCM;
+        let mut a = n.power_on(&mode);
+        assert_eq!(n.free_supply(&a, &mode), 0);
+        // No supply free: an increase does not pass, a decrease does.
+        assert_eq!(n.set_pool_target(&mut a, 1, 6, &mode), 4);
+        assert_eq!(n.set_pool_target(&mut a, 1, 3, &mode), 3);
+        // Not snapped: shields at 3 run one generator at its minimum 2, and
+        // the pool still takes all 3.
+        assert_eq!(&a.granted[6..8], &[2.0, 0.0][..]);
+        assert_eq!(n.pool_level(&a, 1, &mode), 3);
+        assert_eq!(n.free_supply(&a, &mode), 1);
+        // The freed segment goes back up to 4; then to 0 and past the size.
+        assert_eq!(n.set_pool_target(&mut a, 1, 8, &mode), 4);
+        assert_eq!(n.set_pool_target(&mut a, 1, -2, &mode), 0);
+        assert_eq!(n.free_supply(&a, &mode), 4);
+        assert_eq!(n.set_pool_target(&mut a, 1, 50, &mode), 4);
+        assert_eq!(n.free_supply(&a, &mode), 0);
+    }
+
+    #[test]
+    fn set_grant_outside_pools() {
+        let n = centaurus();
+        let mode = EMasterMode::SCM;
+        let mut a = n.power_on(&mode);
+        // The radar (2): 6 of 8; down to 1 (below its minimum 2, kept).
+        assert_eq!(n.set_grant(&mut a, 2, 1, &mode), Some(1));
+        assert_eq!(n.free_supply(&a, &mode), 5);
+        // Up to 10 is clamped to its request 8.
+        assert_eq!(n.set_grant(&mut a, 2, 10, &mode), Some(6));
+        assert_eq!(n.free_supply(&a, &mode), 0);
+        // The quantum drive takes no supply in SCM: nothing caps it.
+        assert_eq!(n.set_grant(&mut a, 4, 0, &mode), Some(0));
+        assert_eq!(n.set_grant(&mut a, 4, 3, &mode), Some(3));
+        // A pool member is set through its pool.
+        assert_eq!(n.set_grant(&mut a, 6, 4, &mode), None);
+    }
+
+    #[test]
+    fn split_writes_clamped_target_back() {
+        let n = centaurus();
+        let mut a = n.power_on(&EMasterMode::SCM);
+        a.pool_targets[1] = 50;
+        n.split_pools(&mut a);
+        assert_eq!(a.pool_targets[1], 8);
+        // Shields 8 instead of 4: four segments short.
+        assert_eq!(n.free_supply(&a, &EMasterMode::SCM), -4);
     }
 }
