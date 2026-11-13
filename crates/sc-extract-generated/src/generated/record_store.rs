@@ -1930,6 +1930,7 @@ fn extract_record_award_service_config<'a>(b: &mut Builder<'a>, guid: CigGuid, i
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -2839,12 +2840,15 @@ fn extract_record_building_blocks_external_color_reference<'a>(
     feature = "contracts",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
+    feature = "transportsystem",
     feature = "ui-aspectratiototag_mfd",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -3020,15 +3024,13 @@ fn extract_record_actor_fovview_params<'a>(b: &mut Builder<'a>, guid: CigGuid, i
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_suggested_fovsetup<'a>(b: &mut Builder<'a>, guid: CigGuid, inst: Instance<'a>) {
     let id: Handle<SuggestedFOVSetup> =
@@ -3278,7 +3280,6 @@ fn extract_record_cockpit_responses<'a>(b: &mut Builder<'a>, guid: CigGuid, inst
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -3292,8 +3293,7 @@ fn extract_record_cockpit_responses<'a>(b: &mut Builder<'a>, guid: CigGuid, inst
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_communication_config<'a>(b: &mut Builder<'a>, guid: CigGuid, inst: Instance<'a>) {
     let id: Handle<CommunicationConfig> =
@@ -3404,7 +3404,6 @@ fn extract_record_contextual_communication_config<'a>(
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -3418,8 +3417,7 @@ fn extract_record_contextual_communication_config<'a>(
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_communication_name<'a>(b: &mut Builder<'a>, guid: CigGuid, inst: Instance<'a>) {
     let id: Handle<CommunicationName> =
@@ -3459,7 +3457,6 @@ fn extract_record_communication_name<'a>(b: &mut Builder<'a>, guid: CigGuid, ins
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -3473,8 +3470,7 @@ fn extract_record_communication_name<'a>(b: &mut Builder<'a>, guid: CigGuid, ins
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_communication_channel_name<'a>(
     b: &mut Builder<'a>,
@@ -4229,7 +4225,6 @@ fn extract_record_harvestable_provider_preset<'a>(
     feature = "entities-scitem-remoteconnectionreceiver",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -4238,8 +4233,7 @@ fn extract_record_harvestable_provider_preset<'a>(
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_operator_mode_availability_params<'a>(
     b: &mut Builder<'a>,
@@ -4522,7 +4516,6 @@ fn extract_record_planet_ocean_audio_data<'a>(
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -4531,8 +4524,7 @@ fn extract_record_planet_ocean_audio_data<'a>(
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_stargeting_method_record<'a>(
     b: &mut Builder<'a>,
@@ -4555,7 +4547,6 @@ fn extract_record_stargeting_method_record<'a>(
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -4564,8 +4555,7 @@ fn extract_record_stargeting_method_record<'a>(
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_stargetable_item_types_record<'a>(
     b: &mut Builder<'a>,
@@ -4602,7 +4592,6 @@ fn extract_record_starget_selector_hud_params<'a>(
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -4611,8 +4600,7 @@ fn extract_record_starget_selector_hud_params<'a>(
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_starget_selector_global_targeting_params<'a>(
     b: &mut Builder<'a>,
@@ -5321,15 +5309,13 @@ fn extract_record_dev_owner<'a>(b: &mut Builder<'a>, guid: CigGuid, inst: Instan
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_dialogue_external_source<'a>(
     b: &mut Builder<'a>,
@@ -6400,8 +6386,7 @@ fn extract_record_scarryable_ikinteraction_list<'a>(
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_carryable_interactions_metadata_config_def<'a>(
     b: &mut Builder<'a>,
@@ -7035,6 +7020,7 @@ fn extract_record_sentity_traversing_node_id<'a>(
     feature = "missiondata",
     feature = "missiongiver",
     feature = "missionscenarios",
+    feature = "musiclogic",
     feature = "ui-buildingblocks"
 ))]
 fn extract_record_faction<'a>(b: &mut Builder<'a>, guid: CigGuid, inst: Instance<'a>) {
@@ -7826,6 +7812,7 @@ fn extract_record_initial_damage_override<'a>(
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -7894,6 +7881,7 @@ fn extract_record_body_part<'a>(b: &mut Builder<'a>, guid: CigGuid, inst: Instan
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -7937,6 +7925,7 @@ fn extract_record_body_mapping<'a>(b: &mut Builder<'a>, guid: CigGuid, inst: Ins
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -7979,6 +7968,7 @@ fn extract_record_body_health_config<'a>(b: &mut Builder<'a>, guid: CigGuid, ins
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -13363,6 +13353,7 @@ fn extract_record_scitem_light_amplification<'a>(
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -13862,15 +13853,13 @@ fn extract_record_scitem_comms_component_setup<'a>(
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 fn extract_record_ship_computer_definition<'a>(
     b: &mut Builder<'a>,
@@ -16027,10 +16016,12 @@ fn extract_record_take_down_config<'a>(b: &mut Builder<'a>, guid: CigGuid, inst:
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -16623,6 +16614,7 @@ fn extract_record_uielement<'a>(b: &mut Builder<'a>, guid: CigGuid, inst: Instan
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -19638,6 +19630,7 @@ impl crate::RecordLookup for AwardService_Config {
     feature = "entities-scitem-shopdisplays",
     feature = "entities-scitem-spawers",
     feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-vehicles",
@@ -20522,12 +20515,15 @@ impl crate::RecordLookup for BuildingBlocks_ExternalColorReference {
     feature = "contracts",
     feature = "entities-entityspawners",
     feature = "entities-groundvehicles",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
+    feature = "transportsystem",
     feature = "ui-aspectratiototag_mfd",
     feature = "ui-buildingblocks",
     feature = "ui-graphs"
@@ -20697,15 +20693,13 @@ impl crate::RecordLookup for ActorFOVViewParams {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for SuggestedFOVSetup {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -20940,7 +20934,6 @@ impl crate::RecordLookup for CockpitResponses {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -20954,8 +20947,7 @@ impl crate::RecordLookup for CockpitResponses {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for CommunicationConfig {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -21048,7 +21040,6 @@ impl crate::RecordLookup for ContextualCommunicationConfig {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -21062,8 +21053,7 @@ impl crate::RecordLookup for ContextualCommunicationConfig {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for CommunicationName {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -21103,7 +21093,6 @@ impl crate::RecordLookup for CommunicationName {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-test",
@@ -21117,8 +21106,7 @@ impl crate::RecordLookup for CommunicationName {
     feature = "player",
     feature = "transitsystem",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for CommunicationChannelName {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -21808,7 +21796,6 @@ impl crate::RecordLookup for HarvestableProviderPreset {
     feature = "entities-scitem-remoteconnectionreceiver",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-spawers",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -21817,8 +21804,7 @@ impl crate::RecordLookup for HarvestableProviderPreset {
     feature = "harvestable",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for OperatorModeAvailabilityParams {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -22070,7 +22056,6 @@ impl crate::RecordLookup for PlanetOceanAudioData {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -22079,8 +22064,7 @@ impl crate::RecordLookup for PlanetOceanAudioData {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for STargetingMethodRecord {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -22100,7 +22084,6 @@ impl crate::RecordLookup for STargetingMethodRecord {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -22109,8 +22092,7 @@ impl crate::RecordLookup for STargetingMethodRecord {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for STargetableItemTypesRecord {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -22141,7 +22123,6 @@ impl crate::RecordLookup for STargetSelectorHudParams {
     feature = "entities-groundvehicles",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -22150,8 +22131,7 @@ impl crate::RecordLookup for STargetSelectorHudParams {
     feature = "player",
     feature = "targetselector",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for STargetSelectorGlobalTargetingParams {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -22805,15 +22785,13 @@ impl crate::RecordLookup for DevOwner {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for DialogueExternalSource {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -23832,8 +23810,7 @@ impl crate::RecordLookup for SCarryableIKInteractionList {
     feature = "ssolarsystem",
     feature = "starmap",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for CarryableInteractionsMetadataConfigDef {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -24434,6 +24411,7 @@ impl crate::RecordLookup for SEntityTraversingNodeId {
     feature = "missiondata",
     feature = "missiongiver",
     feature = "missionscenarios",
+    feature = "musiclogic",
     feature = "ui-buildingblocks"
 ))]
 impl crate::RecordLookup for Faction {
@@ -25157,6 +25135,7 @@ impl crate::RecordLookup for InitialDamageOverride {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -25226,6 +25205,7 @@ impl crate::RecordLookup for BodyPart {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -25270,6 +25250,7 @@ impl crate::RecordLookup for BodyMapping {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -25313,6 +25294,7 @@ impl crate::RecordLookup for BodyHealthConfig {
     feature = "actorhealthcomponent-healthtemplate_ai",
     feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
     feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
     feature = "actorhealthcomponent-healthtemplate_invulnerable",
     feature = "actorhealthcomponent-healthtemplate_kopion",
     feature = "actorhealthcomponent-healthtemplate_player",
@@ -30250,6 +30232,7 @@ impl crate::RecordLookup for SCItemLightAmplification {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -30721,15 +30704,13 @@ impl crate::RecordLookup for SCItemCommsComponentSetup {
     feature = "entities-scitem-atc",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-scitem-suit",
     feature = "entities-scitem-vehicles",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "player",
     feature = "ui-buildingblocks",
-    feature = "ui-graphs",
-    feature = "ui-mobiglas"
+    feature = "ui-graphs"
 ))]
 impl crate::RecordLookup for ShipComputerDefinition {
     fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
@@ -32762,10 +32743,12 @@ impl crate::RecordLookup for TakeDownConfig {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-harvestables",
     feature = "entities-scitem-human",
@@ -33320,6 +33303,7 @@ impl crate::RecordLookup for UIElement {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-decals",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -35886,6 +35870,7 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-shopdisplays",
             feature = "entities-scitem-spawers",
             feature = "entities-scitem-starmarine",
+            feature = "entities-scitem-storage",
             feature = "entities-scitem-suit",
             feature = "entities-scitem-usables",
             feature = "entities-scitem-vehicles",
@@ -36726,12 +36711,15 @@ impl<'a> Builder<'a> {
             feature = "contracts",
             feature = "entities-entityspawners",
             feature = "entities-groundvehicles",
+            feature = "entities-scitem-controlpanels",
+            feature = "entities-scitem-doors",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
             feature = "entities-spaceships",
             feature = "entities-ui",
             feature = "entitlementpolicies",
             feature = "player",
+            feature = "transportsystem",
             feature = "ui-aspectratiototag_mfd",
             feature = "ui-buildingblocks",
             feature = "ui-graphs"
@@ -36875,15 +36863,13 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-ui",
             feature = "entitlementpolicies",
             feature = "player",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(SuggestedFOVSetup::TYPE_NAME) {
             dispatch[i] = Some(extract_record_suggested_fovsetup);
@@ -37045,7 +37031,6 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-test",
@@ -37059,8 +37044,7 @@ impl<'a> Builder<'a> {
             feature = "player",
             feature = "transitsystem",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(CommunicationConfig::TYPE_NAME) {
             dispatch[i] = Some(extract_record_communication_config);
@@ -37115,7 +37099,6 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-test",
@@ -37129,8 +37112,7 @@ impl<'a> Builder<'a> {
             feature = "player",
             feature = "transitsystem",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(CommunicationName::TYPE_NAME) {
             dispatch[i] = Some(extract_record_communication_name);
@@ -37167,7 +37149,6 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-test",
@@ -37181,8 +37162,7 @@ impl<'a> Builder<'a> {
             feature = "player",
             feature = "transitsystem",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(CommunicationChannelName::TYPE_NAME) {
             dispatch[i] = Some(extract_record_communication_channel_name);
@@ -37713,7 +37693,6 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-remoteconnectionreceiver",
             feature = "entities-scitem-ships",
             feature = "entities-scitem-spawers",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-scitem-weapons",
             feature = "entities-spaceships",
@@ -37722,8 +37701,7 @@ impl<'a> Builder<'a> {
             feature = "harvestable",
             feature = "player",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(OperatorModeAvailabilityParams::TYPE_NAME) {
             dispatch[i] = Some(extract_record_operator_mode_availability_params);
@@ -37897,7 +37875,6 @@ impl<'a> Builder<'a> {
             feature = "entities-groundvehicles",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-scitem-weapons",
             feature = "entities-spaceships",
@@ -37906,8 +37883,7 @@ impl<'a> Builder<'a> {
             feature = "player",
             feature = "targetselector",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(STargetingMethodRecord::TYPE_NAME) {
             dispatch[i] = Some(extract_record_stargeting_method_record);
@@ -37920,7 +37896,6 @@ impl<'a> Builder<'a> {
             feature = "entities-groundvehicles",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-scitem-weapons",
             feature = "entities-spaceships",
@@ -37929,8 +37904,7 @@ impl<'a> Builder<'a> {
             feature = "player",
             feature = "targetselector",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(STargetableItemTypesRecord::TYPE_NAME) {
             dispatch[i] = Some(extract_record_stargetable_item_types_record);
@@ -37947,7 +37921,6 @@ impl<'a> Builder<'a> {
             feature = "entities-groundvehicles",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-scitem-weapons",
             feature = "entities-spaceships",
@@ -37956,8 +37929,7 @@ impl<'a> Builder<'a> {
             feature = "player",
             feature = "targetselector",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(STargetSelectorGlobalTargetingParams::TYPE_NAME) {
             dispatch[i] = Some(extract_record_starget_selector_global_targeting_params);
@@ -38477,15 +38449,13 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-ui",
             feature = "entitlementpolicies",
             feature = "player",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(DialogueExternalSource::TYPE_NAME) {
             dispatch[i] = Some(extract_record_dialogue_external_source);
@@ -39366,8 +39336,7 @@ impl<'a> Builder<'a> {
             feature = "ssolarsystem",
             feature = "starmap",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(CarryableInteractionsMetadataConfigDef::TYPE_NAME) {
             dispatch[i] = Some(extract_record_carryable_interactions_metadata_config_def);
@@ -39898,6 +39867,7 @@ impl<'a> Builder<'a> {
             feature = "missiondata",
             feature = "missiongiver",
             feature = "missionscenarios",
+            feature = "musiclogic",
             feature = "ui-buildingblocks"
         ))]
         if let Some(&i) = name_to_idx.get(Faction::TYPE_NAME) {
@@ -40402,6 +40372,7 @@ impl<'a> Builder<'a> {
             feature = "actorhealthcomponent-healthtemplate_ai",
             feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
             feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+            feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
             feature = "actorhealthcomponent-healthtemplate_invulnerable",
             feature = "actorhealthcomponent-healthtemplate_kopion",
             feature = "actorhealthcomponent-healthtemplate_player",
@@ -40468,6 +40439,7 @@ impl<'a> Builder<'a> {
             feature = "actorhealthcomponent-healthtemplate_ai",
             feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
             feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+            feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
             feature = "actorhealthcomponent-healthtemplate_invulnerable",
             feature = "actorhealthcomponent-healthtemplate_kopion",
             feature = "actorhealthcomponent-healthtemplate_player",
@@ -40509,6 +40481,7 @@ impl<'a> Builder<'a> {
             feature = "actorhealthcomponent-healthtemplate_ai",
             feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
             feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+            feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
             feature = "actorhealthcomponent-healthtemplate_invulnerable",
             feature = "actorhealthcomponent-healthtemplate_kopion",
             feature = "actorhealthcomponent-healthtemplate_player",
@@ -40549,6 +40522,7 @@ impl<'a> Builder<'a> {
             feature = "actorhealthcomponent-healthtemplate_ai",
             feature = "actorhealthcomponent-healthtemplate_ai_boss_nostun",
             feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+            feature = "actorhealthcomponent-healthtemplate_ai_vanduul_nostun",
             feature = "actorhealthcomponent-healthtemplate_invulnerable",
             feature = "actorhealthcomponent-healthtemplate_kopion",
             feature = "actorhealthcomponent-healthtemplate_player",
@@ -44453,6 +44427,7 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-carryables",
             feature = "entities-scitem-characters",
             feature = "entities-scitem-consumables",
+            feature = "entities-scitem-controlpanels",
             feature = "entities-scitem-decals",
             feature = "entities-scitem-default_lensdisplay",
             feature = "entities-scitem-default_lensdisplay_pu",
@@ -44842,15 +44817,13 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-atc",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-ships",
-            feature = "entities-scitem-suit",
             feature = "entities-scitem-vehicles",
             feature = "entities-spaceships",
             feature = "entities-ui",
             feature = "entitlementpolicies",
             feature = "player",
             feature = "ui-buildingblocks",
-            feature = "ui-graphs",
-            feature = "ui-mobiglas"
+            feature = "ui-graphs"
         ))]
         if let Some(&i) = name_to_idx.get(ShipComputerDefinition::TYPE_NAME) {
             dispatch[i] = Some(extract_record_ship_computer_definition);
@@ -46548,10 +46521,12 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-carryables",
             feature = "entities-scitem-characters",
             feature = "entities-scitem-consumables",
+            feature = "entities-scitem-decals",
             feature = "entities-scitem-default_lensdisplay",
             feature = "entities-scitem-default_lensdisplay_pu",
             feature = "entities-scitem-doors",
             feature = "entities-scitem-environments",
+            feature = "entities-scitem-flair",
             feature = "entities-scitem-gameplayinteractables",
             feature = "entities-scitem-harvestables",
             feature = "entities-scitem-human",
@@ -46957,6 +46932,7 @@ impl<'a> Builder<'a> {
             feature = "entities-scitem-cargo",
             feature = "entities-scitem-carryables",
             feature = "entities-scitem-characters",
+            feature = "entities-scitem-controlpanels",
             feature = "entities-scitem-decals",
             feature = "entities-scitem-default_lensdisplay",
             feature = "entities-scitem-default_lensdisplay_pu",

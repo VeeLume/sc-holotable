@@ -2559,6 +2559,8 @@ pub struct HaulingOrder_MissionItemDropOff {
     pub drop_off_target_types: Vec<CigGuid>,
     /// `deliveryOrderInput` (WeakPointer)
     pub delivery_order_input: Option<Handle<ObjectiveProperty_Input>>,
+    /// `dropOffInstanceBrokerTags` (Reference (array))
+    pub drop_off_instance_broker_tags: Vec<CigGuid>,
 }
 
 impl Pooled for HaulingOrder_MissionItemDropOff {
@@ -2621,6 +2623,19 @@ impl<'a> Extract<'a> for HaulingOrder_MissionItemDropOff {
                 }
                 _ => None,
             },
+            drop_off_instance_broker_tags: inst
+                .get_array("dropOffInstanceBrokerTags")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

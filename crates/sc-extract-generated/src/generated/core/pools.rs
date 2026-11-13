@@ -61,6 +61,7 @@ pub struct CorePools {
         Vec<Option<BuildingBlocks_FieldModifierRecordRefTypeBase>>,
     pub building_blocks_timing_function_base: Vec<Option<BuildingBlocks_TimingFunctionBase>>,
     pub building_blocks_timeline_type_base: Vec<Option<BuildingBlocks_TimelineTypeBase>>,
+    pub building_blocks_text_overflow_base: Vec<Option<BuildingBlocks_TextOverflowBase>>,
     pub building_blocks_transformer_base: Vec<Option<BuildingBlocks_TransformerBase>>,
     pub building_blocks_slicer_base: Vec<Option<BuildingBlocks_SlicerBase>>,
     pub building_blocks_trigger_base: Vec<Option<BuildingBlocks_TriggerBase>>,

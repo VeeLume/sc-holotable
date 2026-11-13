@@ -872,6 +872,25 @@ impl<'a> Extract<'a> for BuildingBlocks_TimelineTypeBase {
     }
 }
 
+/// DCB type: `BuildingBlocks_TextOverflowBase`
+pub struct BuildingBlocks_TextOverflowBase {}
+
+impl Pooled for BuildingBlocks_TextOverflowBase {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.building_blocks_text_overflow_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.building_blocks_text_overflow_base
+    }
+}
+
+impl<'a> Extract<'a> for BuildingBlocks_TextOverflowBase {
+    const TYPE_NAME: &'static str = "BuildingBlocks_TextOverflowBase";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `BuildingBlocks_TransformerBase`
 pub struct BuildingBlocks_TransformerBase {}
 

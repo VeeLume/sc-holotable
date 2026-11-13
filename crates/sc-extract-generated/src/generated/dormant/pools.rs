@@ -123,6 +123,7 @@ pub struct DormantPools {
         Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeProgressMeterState>>,
     pub building_blocks_widget_line_list: Vec<Option<BuildingBlocks_WidgetLineList>>,
     pub building_blocks_shape_widget: Vec<Option<BuildingBlocks_ShapeWidget>>,
+    pub building_blocks_text_overflow_ellipsis: Vec<Option<BuildingBlocks_TextOverflowEllipsis>>,
     pub building_blocks_entity_widget_base: Vec<Option<BuildingBlocks_EntityWidgetBase>>,
     pub building_blocks_widget_shared_window_atlas_region_bounds:
         Vec<Option<BuildingBlocks_WidgetSharedWindowAtlasRegionBounds>>,
@@ -151,7 +152,6 @@ pub struct DormantPools {
     pub scharacter_customizer_preset: Vec<Option<SCharacterCustomizerPreset>>,
     pub scharacter_customizer_feature_preset: Vec<Option<SCharacterCustomizerFeaturePreset>>,
     pub sarchetype_entity_asset_def_base: Vec<Option<SArchetypeEntityAssetDefBase>>,
-    pub sarchetype_asset_entity_def: Vec<Option<SArchetypeAssetEntityDef>>,
     pub sarchetype_asset_item_port_name_pair: Vec<Option<SArchetypeAssetItemPortNamePair>>,
     pub sarchetype_asset_tag_def: Vec<Option<SArchetypeAssetTagDef>>,
     pub cockpit_rule_int: Vec<Option<CockpitRuleInt>>,
@@ -344,8 +344,6 @@ pub struct DormantPools {
     pub bindings_subsumption_broadcast_event: Vec<Option<Bindings_SubsumptionBroadcastEvent>>,
     pub uibindings_subsumption_component_params: Vec<Option<UIBindingsSubsumptionComponentParams>>,
     pub string_user_variable_set_value_task: Vec<Option<StringUserVariableSetValueTask>>,
-    pub record_ref_user_variable_type_canvas_record:
-        Vec<Option<RecordRefUserVariableTypeCanvasRecord>>,
     pub dummy_test_arrays_component_params: Vec<Option<DummyTestArraysComponentParams>>,
     pub fo_ipconfiguration_provider_params: Vec<Option<FoIPConfigurationProviderParams>>,
     pub ss42_subsumption_mission_component_params:

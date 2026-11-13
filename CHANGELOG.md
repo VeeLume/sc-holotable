@@ -23,6 +23,12 @@ pinned. Both tag kinds are monotonic and immutable.
   outlasts the wait, and a game started meanwhile are logged skips, not
   failures.
 
+## [v0.47.1] - 2026-11-12
+
+### Bindings
+
+- Regenerated from SC 4.10.3-live.13165946 (`datacore/4.10.3-live.13165946`), since `datacore/4.10.2-live.12913470`.
+
 ## [v0.47.0] - 2026-11-11
 
 ### Added
