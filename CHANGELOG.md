@@ -15,6 +15,7 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ### Fixed
 
+- **`sc-vehicles`: a port's unknown sub-type no longer narrows what fits.** The Drake Marauder's power plant ports list `subtypes="$editable"` (a flag written into the sub-type list), so `fits`, `Loadout::check` and `Loadout::candidates` refused every power plant there, the stock LightBlossom included. A sub-type the bindings do not know (`EItemSubType::Unrecognized`: a flag, an item type such as `CargoGrid`, an empty entry) now matches only its own value and does not narrow the port's list. On LIVE 4.10.3 the Marauder's ports take the Arrow's 32 S1 power plants, and none of the 126 items the game's own loadouts put on such ports is refused on type (20 were). Probe: `sc-vehicles/examples/power_plant_ports_probe.rs`.
 - **`sc-regen` waits for a launcher patch instead of failing.** A run that
   finds a launcher run open on an install now polls until it ends (up to two
   hours) and regenerates the patched build, so a patch started right after
