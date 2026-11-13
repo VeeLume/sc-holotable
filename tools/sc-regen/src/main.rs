@@ -6,12 +6,16 @@
 //!    its `build_manifest.id`. Only installs whose launcher label matches
 //!    that changelist count: a folder renamed between channels (LIVE moved
 //!    to PTU to seed a patch) is skipped until the launcher has patched it.
-//!    So is an install the launcher is patching or left half-patched
-//!    (`Installation::patch_state`); the check runs again once the generator
-//!    has read `Data.p4k`, and a change in between fails the run.
+//!    So is an install the launcher left half-patched
+//!    (`Installation::patch_state`). While the launcher has a run open on
+//!    any install, the run waits for it to end (up to two hours), so a patch
+//!    started right after boot is regenerated as soon as it lands. The check
+//!    runs again once the generator has read `Data.p4k`, and a change in
+//!    between fails the run.
 //! 2. Stops if that build is no newer than the newest `datacore/*` tag, if
 //!    a PR for it already exists (open, merged or closed), or if the game is
-//!    running.
+//!    running (checked again after waiting out a patch). A stop is not a
+//!    failure: the next run tries again, and only failures raise a toast.
 //! 3. Regenerates in its own worktree (`%LOCALAPPDATA%\sc-regen\worktree`,
 //!    reset to `origin/main`), never in a development checkout: generator,
 //!    fmt, clippy `--fix` on the generated crate, one commit on
@@ -192,7 +196,10 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
     if !options.now && !options.dry_run && windows::game_running() {
         return Ok("game running; skipped until the next run".into());
     }
-    let build = newest_build()?;
+    let build = match pick_build(options)? {
+        Pick::Build(build) => build,
+        Pick::Skip(why) => return Ok(why),
+    };
     info!(
         label = %build.label,
         channel = %build.channel,
@@ -272,8 +279,10 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
     )?;
     // The launcher rewrites Data.p4k in place; a patch that started while the
     // generator read it leaves bindings from a torn file.
-    match newest_build() {
-        Ok(now) if now.label == build.label && now.p4k == build.p4k => {}
+    // An install the launcher has a run open on drops out of the survey's
+    // builds, so a patch on it shows as a different newest build.
+    match Survey::take().map(Survey::newest) {
+        Ok(Some(now)) if now.label == build.label && now.p4k == build.p4k => {}
         _ => {
             return Err(format!(
                 "{} changed while the generator read it (did the launcher start patching?); \
@@ -581,60 +590,160 @@ fn schedule(repo: &Path) -> Result<(), String> {
     Ok(())
 }
 
-/// The newest installed build that carries a launcher label for the build
-/// actually on disk, and that the launcher is not patching or left
-/// half-patched.
-fn newest_build() -> Result<Build, String> {
-    let installs = sc_discovery::discover().map_err(|e| format!("discovering installs: {e}"))?;
-    let mut builds = Vec::new();
-    for install in installs {
-        match install.patch_state() {
-            Ok(sc_discovery::PatchState::Settled) => {}
-            Ok(state) => {
-                warn!(
-                    channel = %install.channel,
-                    root = %install.root.display(),
-                    ?state,
-                    "skipping install: the launcher is patching it or left it half-patched"
-                );
-                continue;
-            }
-            Err(e) => {
-                warn!(
-                    channel = %install.channel,
-                    root = %install.root.display(),
-                    error = %e,
-                    "skipping install: cannot rule out a launcher patch"
-                );
-                continue;
-            }
-        }
-        let changelist = install
-            .manifest
-            .changelist
-            .as_deref()
-            .and_then(|c| c.parse::<u64>().ok());
-        let (Some(changelist), Some(label)) = (changelist, install.launcher_version_label.clone())
-        else {
-            warn!(
-                channel = %install.channel,
-                root = %install.root.display(),
-                "skipping install: no changelist, or no launcher label for the build on disk \
-                 (the launcher has not finished patching it?)"
-            );
-            continue;
+/// How long a run waits for an open launcher run to end. The common case is
+/// a patch started right after boot, which the logon run catches midway; a
+/// patch takes about an hour. The cap leaves the regen and the CI wait room
+/// inside the task's four-hour execution limit.
+const PATCH_WAIT: Duration = Duration::from_secs(2 * 60 * 60);
+
+/// How often a waiting run asks the launcher log again.
+const PATCH_POLL: Duration = Duration::from_secs(60);
+
+/// What the installs look like right now.
+struct Survey {
+    /// Settled installs with a launcher label for the build on disk.
+    builds: Vec<Build>,
+    /// Installs the launcher has a run open on (possibly paused), as
+    /// `"LIVE (4.10.3-live.13165946)"`.
+    patching: Vec<String>,
+    /// Every other install, with why it cannot be read.
+    unusable: Vec<String>,
+}
+
+impl Survey {
+    fn take() -> Result<Self, String> {
+        let installs =
+            sc_discovery::discover().map_err(|e| format!("discovering installs: {e}"))?;
+        let mut survey = Survey {
+            builds: Vec::new(),
+            patching: Vec::new(),
+            unusable: Vec::new(),
         };
-        builds.push(Build {
-            label,
-            changelist,
-            channel: install.channel,
-            p4k: install.data_p4k(),
-        });
+        for install in installs {
+            match install.patch_state() {
+                Ok(sc_discovery::PatchState::Settled) => {}
+                Ok(sc_discovery::PatchState::Patching(run)) => {
+                    survey
+                        .patching
+                        .push(format!("{} ({})", install.channel, run.version_label));
+                    continue;
+                }
+                Ok(state) => {
+                    warn!(
+                        channel = %install.channel,
+                        root = %install.root.display(),
+                        ?state,
+                        "skipping install: the launcher left it half-patched"
+                    );
+                    survey
+                        .unusable
+                        .push(format!("{} left half-patched", install.channel));
+                    continue;
+                }
+                Err(e) => {
+                    warn!(
+                        channel = %install.channel,
+                        root = %install.root.display(),
+                        error = %e,
+                        "skipping install: cannot rule out a launcher patch"
+                    );
+                    survey.unusable.push(format!("{}: {e}", install.channel));
+                    continue;
+                }
+            }
+            let changelist = install
+                .manifest
+                .changelist
+                .as_deref()
+                .and_then(|c| c.parse::<u64>().ok());
+            let (Some(changelist), Some(label)) =
+                (changelist, install.launcher_version_label.clone())
+            else {
+                warn!(
+                    channel = %install.channel,
+                    root = %install.root.display(),
+                    "skipping install: no changelist, or no launcher label for the build on disk \
+                     (the launcher has not finished patching it?)"
+                );
+                survey.unusable.push(format!(
+                    "{} has no launcher label for its build",
+                    install.channel
+                ));
+                continue;
+            };
+            survey.builds.push(Build {
+                label,
+                changelist,
+                channel: install.channel,
+                p4k: install.data_p4k(),
+            });
+        }
+        Ok(survey)
     }
-    builds
-        .into_iter()
-        .max_by_key(|b| b.changelist)
-        .ok_or_else(|| "no install with a launcher label for the build on disk".into())
+
+    /// The newest settled build.
+    fn newest(self) -> Option<Build> {
+        self.builds.into_iter().max_by_key(|b| b.changelist)
+    }
+}
+
+/// Which build a run regenerates, or why it does nothing this time.
+enum Pick {
+    Build(Build),
+    Skip(String),
+}
+
+/// The newest installed build that carries a launcher label for the build
+/// actually on disk, once no launcher run is open on any install.
+///
+/// An open run is waited out (up to [`PATCH_WAIT`]) rather than skipped:
+/// the build it installs is the one to regenerate. A run that ends with the
+/// game started, a patch that outlasts the wait, or installs the launcher
+/// left half-patched are skips, not failures; the next run tries again.
+fn pick_build(options: &Options) -> Result<Pick, String> {
+    let deadline = Instant::now() + PATCH_WAIT;
+    let mut waited = false;
+    let survey = loop {
+        let survey = Survey::take()?;
+        if survey.patching.is_empty() {
+            break survey;
+        }
+        let patching = survey.patching.join(", ");
+        if options.dry_run {
+            return Ok(Pick::Skip(format!(
+                "dry run: would wait for the launcher to finish patching {patching}"
+            )));
+        }
+        if Instant::now() >= deadline {
+            return Ok(Pick::Skip(format!(
+                "{patching} still patching after {} min; skipped until the next run",
+                PATCH_WAIT.as_secs() / 60
+            )));
+        }
+        if !waited {
+            info!(%patching, "waiting for the launcher to finish patching");
+            waited = true;
+        }
+        std::thread::sleep(PATCH_POLL);
+    };
+    if waited {
+        info!("launcher run ended");
+        if !options.now && windows::game_running() {
+            return Ok(Pick::Skip(
+                "patch finished, game running; skipped until the next run".into(),
+            ));
+        }
+    }
+    if survey.builds.is_empty() && !survey.unusable.is_empty() {
+        return Ok(Pick::Skip(format!(
+            "no usable install ({}); skipped until the next run",
+            survey.unusable.join(", ")
+        )));
+    }
+    survey
+        .newest()
+        .map(Pick::Build)
+        .ok_or_else(|| "no Star Citizen install found".into())
 }
 
 /// The `datacore/*` tag with the highest changelist (its trailing number).
