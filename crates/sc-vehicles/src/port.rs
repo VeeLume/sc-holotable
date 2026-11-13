@@ -104,11 +104,13 @@ pub enum Misfit {
 ///
 /// A sub-type the bindings do not know ([`EItemSubType::Unrecognized`])
 /// still matches an item with the same value, but does not narrow the
-/// list: a list of only such entries takes every sub-type. The Drake
-/// Marauder's power plant ports (LIVE 4.10.3) list `subtypes="$editable"`,
-/// a flag written into the sub-type list; read as a restriction, it
-/// refused every power plant, the stock one included. On stale bindings a
-/// port that lists only a sub-type newer than them takes every sub-type.
+/// list: a list of only such entries takes every sub-type. On LIVE 4.10.3,
+/// 314 ports list such values: a flag (`$editable`: the Drake Marauder's
+/// power plants), an item type (`CargoGrid`, `Misc`) or an empty entry.
+/// Read as a restriction, they refused 20 of the 126 items the game's own
+/// loadouts put there, the Marauder's stock power plants among them; now
+/// every one passes (`power_plant_ports_probe`). On stale bindings a port
+/// that lists only a sub-type newer than them takes every sub-type.
 pub fn fits(port: &Port, item: &Item, offered: &[&str]) -> Result<(), Misfit> {
     let type_ok = port.types.is_empty()
         || port.types.iter().any(|t| {
