@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.48.0] - 2026-11-13
+
 ### Added
 
 - **`sc-vehicles`: the power network answers what a pool takes, what is free, and what a player's pip does.** `PowerNetwork::pool_level(&Allocation, pool, mode)` is what a pool takes from the supply in whole segments (its target clamped to size and capacity; 0 when no member may run in the mode or none is on). `free_supply(&Allocation, mode)` is the plants' output less the drawing grants outside pools and every pool level. `set_pool_target` and `set_grant` (items outside a pool) follow the client's server-side handlers for a player's pips: clamp to `[0, size]` or `[0, request]`, decreases always pass, increases capped by free supply, no snapping to member minimums (a dynamic pool can hold segments its members cannot use, as in game). Read from client 4.10.3 (`irc_requestPoolTarget`, `irc_requestEntityTarget`). Probe: `sc-vehicles/examples/power_pool_sweep.rs`.
