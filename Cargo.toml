@@ -23,6 +23,7 @@ members = [
     "crates/sc-missions",
     "crates/sc-acquisitions",
     "crates/sc-loot",
+    "crates/sc-refining",
     "crates/sc-holotable",
     "tools/sc-generator",
     "tools/sc-regen",
@@ -60,6 +61,7 @@ sc-weapons = { path = "crates/sc-weapons" }
 sc-missions = { path = "crates/sc-missions" }
 sc-acquisitions = { path = "crates/sc-acquisitions" }
 sc-loot = { path = "crates/sc-loot" }
+sc-refining = { path = "crates/sc-refining" }
 
 # Workspace-wide logging. Every crate that emits logs uses `tracing`.
 # See the "Conventions" section of the README for the rationale.

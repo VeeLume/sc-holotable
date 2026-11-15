@@ -1,0 +1,22 @@
+[package]
+name = "sc-refining"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Domain crate: refining. The `RefiningProcess` records, the entity classes
+# carrying a refinery component, and where object containers place them.
+#   refiningprocess     the processes a refinery offers (speed x quality)
+#   entities-refinery   EntityComponentRefineryParams and the Refinery class
+sc-extract = { workspace = true, features = ["refiningprocess", "entities-refinery"] }
+# Where refineries sit: the object-container placement graph (live p4k).
+sc-locations = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }
+serde_json = { workspace = true }
+# refinery_probe: the crafter classes (item fabricators, crafting benches).
+sc-extract = { workspace = true, features = ["entities-basebuilding"] }

@@ -3,7 +3,8 @@
 //! Aslarite rock read 741 / 287 (two Aslarite entries) / 588 (Agricium) /
 //! 622 (Titanium); the iron asteroid 664 / 325. Quality comes out in a few
 //! fixed steps (the resources' quantization bands), so the odds per step are
-//! printed.
+//! printed, and checked against the exact odds (`QualityRoll::odds`) within
+//! one percentage point per step.
 //!
 //! ```bash
 //! cargo run -p sc-mining --release --example mining_quality_probe
@@ -80,8 +81,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 o.contains_key(want),
                 "{rock_type} entry {k}: {want} is not an outcome"
             );
+            // The exact odds agree with the draws step by step.
+            let part = &composition.parts[k];
+            let exact = roll
+                .odds(&part.element.ok_or("no element")?, part.quality_scale)
+                .ok_or("no odds")?;
+            for &(q, p) in exact.steps() {
+                let drawn = o.get(&q).copied().unwrap_or(0) as f64 / runs as f64;
+                assert!(
+                    (drawn - p).abs() < 0.01,
+                    "{rock_type} entry {k} Q{q}: exact {p:.4}, drawn {drawn:.4}"
+                );
+            }
+            let at_700 = composition
+                .chance_at_quality(&part.element.ok_or("no element")?, 700, &roll, 2000)
+                .ok_or("no chance")?;
+            println!(
+                "  {element:<14} exact: Q700+ {:.1}% of rolls, {:.1}% of rocks",
+                exact.at_least(700) * 100.0,
+                at_700 * 100.0
+            );
         }
     }
-    println!("asserts passed: every scanned quality is an outcome of the roll");
+    println!(
+        "asserts passed: every scanned quality is an outcome of the roll, \
+         and the exact odds match the draws within 1 point"
+    );
     Ok(())
 }

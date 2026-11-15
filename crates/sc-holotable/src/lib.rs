@@ -40,6 +40,7 @@
 //! | `vehicles` | `vehicles` | ships and ground vehicles as a loadout calculator sees them: hull, ports, editable loadouts with the fit rule and locks, the power network (power-on, pips, cooling, EM / IR), defence, flight, fuel, quantum travel, weapon power |
 //! | `acquisitions` | `acquisitions` | how a player comes by an item or vehicle: sources and mount evidence, obtainable / unobtainable / unknown (pulls `vehicles`, `crafting`, `missions`, `loot`) |
 //! | `loot` | `loot` | loot tables of both generations, what their entries pick, and the corpses, actors and world containers carrying them (pulls `items`, `tags`) |
+//! | `refining` | `refining` | refining processes and the star-map places with a refinery (pulls `locations`) |
 //! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
 //! | `mining` | `mining` | rock properties, breakability, the charge simulation, rock spawns and fracture trees (pulls `resources`, `tags`, `ship-weapons`, `mining-items`) |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
@@ -165,6 +166,14 @@ pub mod loot {
     pub use sc_loot::*;
 }
 
+#[cfg(feature = "refining")]
+pub mod refining {
+    //! Refining ([`sc_refining`]): the [`RefiningProcesses`] a refinery
+    //! offers, the [`Refineries`] (entity classes that refine) and where
+    //! they sit in the world ([`RefineryPlacements`]).
+    pub use sc_refining::*;
+}
+
 #[cfg(feature = "acquisitions")]
 pub mod acquisitions {
     //! How a player comes by an item or a vehicle ([`sc_acquisitions`]):
@@ -279,6 +288,10 @@ pub mod prelude {
     };
     #[cfg(feature = "missions")]
     pub use sc_missions::Missions;
+    #[cfg(feature = "refining")]
+    pub use sc_refining::{
+        Refineries, Refinery, RefineryPlacements, RefiningProcess, RefiningProcesses,
+    };
     #[cfg(feature = "resources")]
     pub use sc_resources::{
         CargoQuantity, Density, DensityUnit, Quality, QualityDistribution,

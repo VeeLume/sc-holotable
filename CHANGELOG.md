@@ -13,6 +13,11 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-mining`: exact quality odds.** `QualityRoll::odds(element, quality_scale)` returns a `QualityOdds`: each quality the roll can give with its probability (`steps`, `at_least`, `mean`). It takes the same steps as the roll (location override, the normal truncated at `min - 0.5` / `max + 0.5`, `qualityScale` truncation, quantization), but each `Q`'s probability comes from the client's normal CDF instead of a draw. `Composition::chance_at_quality(element, min_quality, &roll, runs)` is the chance a rock of the composition holds the element at that quality or better. Which parts a rock holds still comes from the composition roll over `runs` seeds; the quality odds are exact. A rock holding the element in two parts counts when either reaches the quality. Probe: `sc-mining/examples/mining_quality_probe.rs` checks the exact odds against 20 000 draws per part.
+- **`sc-refining`: a new domain crate (umbrella feature `refining`).** `RefiningProcesses` holds the `RefiningProcess` records: speed × quality, with their names. `Refineries` holds the entity classes carrying `EntityComponentRefineryParams`. `RefineryPlacements::cook(&AssetSource, &Refineries)` finds where object containers place them and joins each to its star-map places (`places`, `has_refinery`). Refining yields are not in the data (the refining recipe types have no records), so none is modelled. Probe: `sc-refining/examples/refinery_probe.rs`, which also shows that no object container places a crafter (item fabricators and crafting benches are base-building items).
+
 ## [v0.48.0] - 2026-11-13
 
 ### Added

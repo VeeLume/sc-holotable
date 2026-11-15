@@ -3214,6 +3214,7 @@ dependencies = [
  "sc-manufacturers",
  "sc-mining",
  "sc-missions",
+ "sc-refining",
  "sc-resources",
  "sc-tags",
  "sc-vehicles",
@@ -3374,6 +3375,18 @@ dependencies = [
  "thiserror 2.0.18",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-refining"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-locations",
+ "serde",
+ "serde_json",
+ "tracing",
 ]
 
 [[package]]

@@ -95,6 +95,52 @@ impl Composition {
             .collect()
     }
 
+    /// The chance a rock of this composition holds `element` at
+    /// `min_quality` or better. Which parts a rock holds comes from `runs`
+    /// rolls (seeds `0..runs`, as [`odds`](Self::odds)); each held part's
+    /// quality odds are exact ([`QualityRoll::odds`] with the part's
+    /// `qualityScale`). A rock holding the element in two parts counts when
+    /// either reaches `min_quality`; the two qualities are rolled
+    /// independently. `None` when a part listing `element` has no quality
+    /// odds.
+    ///
+    /// ```no_run
+    /// # fn chance(c: &sc_mining::Composition, roll: &sc_mining::QualityRoll<'_>, ti: &sc_extract::Guid) {
+    /// if let Some(p) = c.chance_at_quality(ti, 700, roll, 2000) {
+    ///     println!("{:.0} % of these rocks hold it at Q700+", p * 100.0);
+    /// }
+    /// # }
+    /// ```
+    pub fn chance_at_quality(
+        &self,
+        element: &Guid,
+        min_quality: u16,
+        quality: &QualityRoll<'_>,
+        runs: u32,
+    ) -> Option<f32> {
+        let mut reach: HashMap<usize, f64> = HashMap::new();
+        for (i, part) in self.parts.iter().enumerate() {
+            if part.element.as_ref() == Some(element) {
+                let odds = quality.odds(element, part.quality_scale)?;
+                reach.insert(i, odds.at_least(min_quality));
+            }
+        }
+        if reach.is_empty() {
+            return Some(0.0);
+        }
+        let mut total = 0.0f64;
+        for seed in 0..u64::from(runs) {
+            let miss: f64 = self
+                .roll_parts(&mut Rng::new(seed))
+                .iter()
+                .filter_map(|(_, part)| reach.get(part))
+                .map(|p| 1.0 - p)
+                .product();
+            total += 1.0 - miss;
+        }
+        Some((total / f64::from(runs.max(1))) as f32)
+    }
+
     /// The rolled entries with the index of the part each came from.
     fn roll_parts(&self, rng: &mut Rng) -> Vec<(Entry, usize)> {
         let mut total = 0.0f32;

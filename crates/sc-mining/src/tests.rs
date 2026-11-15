@@ -665,6 +665,87 @@ fn composition_roll() {
     }
 }
 
+/// The rock-level quality chance: an element listed in two always-present
+/// parts reaches Q700 when either roll does, which the sampled roll agrees
+/// with; an element the composition does not list has no chance.
+#[test]
+fn chance_at_quality() {
+    use sc_resources::{
+        DistributionRef, Quality, QualityDistributionShape, Resource, ResourceQuality, Resources,
+    };
+    let mut resources = Resources::new();
+    resources.insert(Resource {
+        guid: guid(9),
+        name_key: Default::default(),
+        description_key: Default::default(),
+        thumbnail_path: String::new(),
+        thumbnail_path_svg: String::new(),
+        rtt_thumbnail_entity_class: None,
+        refined_version: None,
+        validate_default_cargo_box: false,
+        density: None,
+        volatility: None,
+        quality: Some(ResourceQuality {
+            distribution: Some(DistributionRef::Inline(QualityDistributionShape::Normal {
+                min: 0,
+                max: 1000,
+                mean: 500.0,
+                stddev: 200.0,
+            })),
+            quantization: None,
+            location_override: None,
+        }),
+    });
+    let mut elements = Elements::new();
+    elements.insert(Element {
+        resource: Some(guid(9)),
+        ..element(1, 0.0, 0.0, 1.0)
+    });
+    let catalog = Quality::default();
+    let roll = QualityRoll {
+        elements: &elements,
+        resources: &resources,
+        catalog: &catalog,
+        locations: &[],
+    };
+    let part = |quality_scale| Part {
+        element: Some(guid(1)),
+        min_percentage: 10.0,
+        max_percentage: 20.0,
+        probability: 1.0,
+        curve_exponent: 1.0,
+        quality_scale,
+    };
+    let composition = Composition {
+        guid: Guid::default(),
+        deposit_name: Default::default(),
+        minimum_distinct_elements: 0,
+        parts: vec![part(1.0), part(0.8)],
+    };
+    let p1 = roll.odds(&guid(1), 1.0).unwrap().at_least(700);
+    let p2 = roll.odds(&guid(1), 0.8).unwrap().at_least(700);
+    let want = 1.0 - (1.0 - p1) * (1.0 - p2);
+    let got = composition
+        .chance_at_quality(&guid(1), 700, &roll, 50)
+        .unwrap();
+    assert!((f64::from(got) - want).abs() < 1e-6, "{got} vs {want}");
+    let runs = 20_000;
+    let hits = (0..runs)
+        .filter(|&seed| {
+            composition
+                .roll_with_quality(seed, &roll)
+                .iter()
+                .any(|e| e.quality.is_some_and(|q| q >= 700))
+        })
+        .count();
+    let sampled = hits as f64 / runs as f64;
+    assert!((sampled - want).abs() < 0.02, "{sampled} vs {want}");
+    assert_eq!(
+        composition.chance_at_quality(&guid(2), 700, &roll, 50),
+        Some(0.0)
+    );
+}
+
 /// Fracture tree: scaling by s multiplies every volume by s³; cracks count
 /// the rock and each uncollectable piece.
 #[test]

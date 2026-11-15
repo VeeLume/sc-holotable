@@ -1,10 +1,13 @@
 //! The quality an element of a freshly spawned rock gets.
 
+use std::collections::BTreeMap;
+
 use sc_extract::{Guid, RecordCollection};
 use sc_resources::{
     DistributionRef, LocationOverrideRef, Quality, QualityDistributionShape, QuantizationBand,
     QuantizationRef, Resources,
 };
+use serde::{Deserialize, Serialize};
 
 use crate::Elements;
 use crate::sim::Rng;
@@ -32,23 +35,59 @@ impl QualityRoll<'_> {
     /// containing it (when its mapped value lies in the band). `None` when the
     /// element's resource has no quality.
     pub(crate) fn roll(&self, element: &Guid, quality_scale: f32, rng: &mut Rng) -> Option<u16> {
+        let (shape, bands) = self.wiring(element)?;
+        let q = sample(shape, rng)?;
+        Some(finish(q, quality_scale, bands))
+    }
+
+    /// The exact odds of each quality the roll gives `element` in a part with
+    /// this `quality_scale` (a [`Part`](crate::Part)'s): the same steps as
+    /// the roll, with each `Q`'s probability taken from the truncated
+    /// normal's CDF instead of a draw. Exact up to the client's own
+    /// approximations of the normal CDF and its inverse, which do not
+    /// quite invert each other (a cumulative odd differs from the draws' by
+    /// under 0.002). `None`
+    /// when the element's resource has no quality or its distribution is
+    /// not a normal one.
+    ///
+    /// ```no_run
+    /// # fn odds(roll: &sc_mining::QualityRoll<'_>, titanium: &sc_extract::Guid) {
+    /// if let Some(odds) = roll.odds(titanium, 1.0) {
+    ///     println!("Q700+ in {:.1} % of rolls", odds.at_least(700) * 100.0);
+    /// }
+    /// # }
+    /// ```
+    pub fn odds(&self, element: &Guid, quality_scale: f32) -> Option<QualityOdds> {
+        let (shape, bands) = self.wiring(element)?;
+        let mut steps: BTreeMap<u16, f64> = BTreeMap::new();
+        for (q, p) in distribution(shape)? {
+            *steps.entry(finish(q, quality_scale, bands)).or_default() += p;
+        }
+        Some(QualityOdds {
+            steps: steps.into_iter().filter(|&(_, p)| p > 0.0).collect(),
+        })
+    }
+
+    /// The element's distribution (location override applied) and
+    /// quantization bands.
+    fn wiring(
+        &self,
+        element: &Guid,
+    ) -> Option<(&QualityDistributionShape, Option<&[QuantizationBand]>)> {
         let resource = self.resources.get(&self.elements.get(element)?.resource?)?;
         let wiring = resource.quality.as_ref()?;
         let shape = self.shape(
             wiring.location_override.as_ref(),
             wiring.distribution.as_ref(),
         )?;
-        let q = sample(shape, rng)?;
-        let q = ((q as f32 * quality_scale) as i32).clamp(0, 1000);
-        let q = match &wiring.quantization {
-            Some(QuantizationRef::Inline(bands)) => quantize(bands, q),
-            Some(QuantizationRef::Record(g)) => self
-                .catalog
-                .quantization(g)
-                .map_or(q, |r| quantize(&r.bands, q)),
-            _ => q,
+        let bands = match &wiring.quantization {
+            Some(QuantizationRef::Inline(bands)) => Some(bands.as_slice()),
+            Some(QuantizationRef::Record(g)) => {
+                self.catalog.quantization(g).map(|r| r.bands.as_slice())
+            }
+            _ => None,
         };
-        Some(q as u16)
+        Some((shape, bands))
     }
 
     fn shape<'b>(
@@ -99,6 +138,77 @@ fn sample(shape: &QualityDistributionShape, rng: &mut Rng) -> Option<i32> {
             Some(x.clamp(lo, hi).round() as i32)
         }
         QualityDistributionShape::Other { .. } => None,
+    }
+}
+
+/// What the client does with a drawn `Q`: scale it, truncate, clamp to
+/// `0..=1000`, then quantize.
+fn finish(q: i32, quality_scale: f32, bands: Option<&[QuantizationBand]>) -> u16 {
+    let q = ((q as f32 * quality_scale) as i32).clamp(0, 1000);
+    bands.map_or(q, |b| quantize(b, q)) as u16
+}
+
+/// Every `Q` [`sample`] can return with its probability. A draw lands on
+/// `k` when the truncated normal falls in `[k - 0.5, k + 0.5)`; the
+/// truncation bounds are `min - 0.5` and `max + 0.5`, so the steps sum to 1.
+fn distribution(shape: &QualityDistributionShape) -> Option<Vec<(i32, f64)>> {
+    match *shape {
+        QualityDistributionShape::Normal {
+            min,
+            max,
+            mean,
+            stddev,
+        } => {
+            let (mu, sigma) = (f64::from(mean), f64::from(stddev).max(1e-9));
+            let cdf = |x: f64| phi((x - mu) / sigma);
+            let width = cdf(f64::from(max) + 0.5) - cdf(f64::from(min) - 0.5);
+            if width <= 1e-12 {
+                // All the mass is beyond one end; the draw clamps to it.
+                let end = if mu < f64::from(min) { min } else { max };
+                return Some(vec![(end, 1.0)]);
+            }
+            Some(
+                (min..=max)
+                    .map(|k| {
+                        let k_f = f64::from(k);
+                        (k, (cdf(k_f + 0.5) - cdf(k_f - 0.5)) / width)
+                    })
+                    .collect(),
+            )
+        }
+        QualityDistributionShape::Other { .. } => None,
+    }
+}
+
+/// The odds of each quality an element's roll gives (see
+/// [`QualityRoll::odds`]).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct QualityOdds {
+    steps: Vec<(u16, f64)>,
+}
+
+impl QualityOdds {
+    /// Each quality the roll can give with its probability, lowest first;
+    /// the probabilities sum to 1.
+    pub fn steps(&self) -> &[(u16, f64)] {
+        &self.steps
+    }
+
+    /// The chance of a quality of `quality` or better.
+    pub fn at_least(&self, quality: u16) -> f64 {
+        self.steps
+            .iter()
+            .filter(|(q, _)| *q >= quality)
+            // A fold from +0.0: an empty f64 sum is -0.0.
+            .fold(0.0, |sum, (_, p)| sum + p)
+            .min(1.0)
+    }
+
+    /// The expected quality.
+    pub fn mean(&self) -> f64 {
+        self.steps
+            .iter()
+            .fold(0.0, |sum, &(q, p)| sum + f64::from(q) * p)
     }
 }
 
@@ -176,6 +286,87 @@ mod tests {
         assert!(qs.iter().all(|q| (300..=700).contains(q)));
         let mean = qs.iter().sum::<i32>() as f32 / qs.len() as f32;
         assert!((mean - 500.0).abs() < 10.0, "{mean}");
+    }
+
+    /// The exact steps against 2 000 000 draws through the client's inverse
+    /// CDF: every cumulative odd within 0.002.
+    #[test]
+    fn distribution_matches_draws() {
+        for shape in [
+            QualityDistributionShape::Normal {
+                min: 300,
+                max: 700,
+                mean: 500.0,
+                stddev: 150.0,
+            },
+            QualityDistributionShape::Normal {
+                min: 1,
+                max: 1000,
+                mean: 250.0,
+                stddev: 120.0,
+            },
+        ] {
+            let exact = distribution(&shape).unwrap();
+            let total: f64 = exact.iter().map(|(_, p)| p).sum();
+            assert!((total - 1.0).abs() < 1e-9, "{total}");
+            let runs = 2_000_000;
+            let mut rng = Rng::new(7);
+            let mut drawn: BTreeMap<i32, u32> = BTreeMap::new();
+            for _ in 0..runs {
+                *drawn.entry(sample(&shape, &mut rng).unwrap()).or_default() += 1;
+            }
+            let (mut want, mut got) = (0.0, 0.0);
+            for (k, p) in &exact {
+                want += p;
+                got += f64::from(drawn.get(k).copied().unwrap_or(0)) / f64::from(runs);
+                assert!((want - got).abs() < 2e-3, "at {k}: {want} vs {got}");
+            }
+        }
+    }
+
+    #[test]
+    fn odds_follow_scale_and_bands() {
+        let shape = QualityDistributionShape::Normal {
+            min: 400,
+            max: 600,
+            mean: 500.0,
+            stddev: 50.0,
+        };
+        let bands = [QuantizationBand {
+            start: 0,
+            end: 499,
+            mapped_value: 250,
+        }];
+        let mut steps: BTreeMap<u16, f64> = BTreeMap::new();
+        for (q, p) in distribution(&shape).unwrap() {
+            *steps.entry(finish(q, 2.0, Some(&bands))).or_default() += p;
+        }
+        // Scaled by 2 every Q lands at 800..=1000 (clamped); no band holds it.
+        assert!(steps.keys().all(|q| (800..=1000).contains(q)));
+        assert!(steps[&1000] > 0.49, "{}", steps[&1000]);
+        let odds = QualityOdds {
+            steps: steps.into_iter().collect(),
+        };
+        assert!((odds.at_least(0) - 1.0).abs() < 1e-9);
+        assert!((odds.at_least(1000) - odds.steps().last().unwrap().1).abs() < 1e-12);
+        // Below the band's end everything maps to 250.
+        let mut low: BTreeMap<u16, f64> = BTreeMap::new();
+        for (q, p) in distribution(&shape).unwrap() {
+            *low.entry(finish(q, 0.5, Some(&bands))).or_default() += p;
+        }
+        assert_eq!(low.len(), 1);
+        assert!((low[&250] - 1.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn mass_beyond_the_range_clamps_to_its_end() {
+        let shape = QualityDistributionShape::Normal {
+            min: 0,
+            max: 100,
+            mean: 900.0,
+            stddev: 1.0,
+        };
+        assert_eq!(distribution(&shape).unwrap(), vec![(100, 1.0)]);
     }
 
     #[test]
