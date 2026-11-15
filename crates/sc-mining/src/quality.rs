@@ -29,19 +29,27 @@ pub struct QualityRoll<'a> {
 
 impl QualityRoll<'_> {
     /// The location ids for a rock at `place` (a `StarMapObject`), most
-    /// specific first: the place, then its `parent` chain. Pass them as
+    /// specific first: the place, its `parent` chain, then its solar system
+    /// ([`Locations::system_of`]). Pass them as
     /// [`locations`](Self::locations).
     ///
-    /// The client asks its location system for the rock's runtime location
-    /// ids, which this chain stands in for. One known gap (LIVE 4.10): the
-    /// solar-system `StarMapObject` (`PyroSolarSystem`, which `SSolarSystem`
-    /// links to) is no body's parent, so the chain never reaches it, and
-    /// whether the client's list holds it is not proven; Pyro's system-wide
-    /// overrides are left out.
+    /// The client (4.10) takes them from its universe hierarchy
+    /// (`CUniverseHierarchyShardGraph::GetLocationIds`): the rock's node, then
+    /// every node above it. That hierarchy hangs each MegaMap system's
+    /// containers under a node for the system's `SolarSystemRecord`, which is
+    /// how Pyro's system-wide overrides reach its rocks; the `parent` chain
+    /// alone stops at the star. The system node is read from the client's
+    /// location-debug builder, not from the runtime graph builder itself.
     pub fn locations_at(locations: &Locations, place: &Guid) -> Vec<Guid> {
-        std::iter::once(*place)
+        let mut ids: Vec<Guid> = std::iter::once(*place)
             .chain(locations.ancestors(place).map(|l| l.guid))
-            .collect()
+            .collect();
+        if let Some(system) = locations.system_of(place)
+            && !ids.contains(&system.guid)
+        {
+            ids.push(system.guid);
+        }
+        ids
     }
 
     /// Where `element`'s distribution comes from at these locations: the

@@ -73,6 +73,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(resources.len(), f.resources.len(), "resources mismatch");
     assert_eq!(locations.len(), f.locations.len(), "locations mismatch");
     assert_eq!(paths.len(), f.paths.len(), "paths mismatch");
+    // The solar-system links ride along in the bundled walk.
+    let in_system = |l: &Locations| {
+        l.values()
+            .filter(|loc| l.system_of(&loc.guid).is_some())
+            .count()
+    };
+    let systems = in_system(&locations);
+    println!(
+        "in a system   : sep {systems:>6}  bundle {:>6}",
+        in_system(&f.locations)
+    );
+    assert!(systems > 1000, "{systems} locations in a system");
+    assert_eq!(systems, in_system(&f.locations), "system links mismatch");
 
     // HolotableSnapshot round-trip (all four cooked indices).
     let snap = HolotableSnapshot::from_foundations(&f);
@@ -97,6 +110,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         loaded.locations.as_ref().map(Locations::len),
         Some(f.locations.len())
     );
+    assert_eq!(loaded.locations.as_ref().map(in_system), Some(systems));
     let size = std::fs::metadata(&path)?.len();
     let _ = std::fs::remove_file(&path);
     println!(

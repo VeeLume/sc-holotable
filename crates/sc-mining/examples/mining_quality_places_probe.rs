@@ -9,12 +9,14 @@
 //! - places with the same source get the same exact odds (distinct
 //!   sources may still share odds: every `Rockcracker` cluster is its own
 //!   override location with one distribution);
-//! - the Keeger belt splits: the 30 placed `Rockcracker` clusters carry
-//!   their own Savrilium and Torite overrides, its other places take the
-//!   default; no other provider splits;
-//! - the `PyroSolarSystem` override (most resources) lies on no place's
-//!   chain: Pyro's bodies are children of `PyroStar`, and only the
-//!   `SSolarSystem` record links the system location.
+//! - every provider place lies in a solar system ([`Locations::system_of`]),
+//!   and every placed override location is on some place's chain;
+//! - three providers split. The Keeger belt: its 30 placed `Rockcracker`
+//!   clusters carry their own Savrilium and Torite overrides. Two split by
+//!   system, the `PyroSolarSystem` override applying at exactly their Pyro
+//!   places: `HPP_Pyro_DeepSpaceAsteroids` (143 Pyro clusters; its other
+//!   40 places are Nyx QV extraction stations reusing the template) and
+//!   `HPP_Stanton2c_Belt` (Yela's belt, reused at Pyro6).
 //!
 //! ```bash
 //! cargo run -p sc-mining --release --example mining_quality_places_probe
@@ -91,13 +93,36 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (n, count) in unreached.iter().filter(|(n, _)| !n.contains("Rockcracker")) {
         println!("  unreached: {n} ({count} resources)");
     }
-    let pyro = unreached
+    assert!(
+        unreached.iter().all(|(n, _)| n.contains("Rockcracker")),
+        "only unplaced Rockcracker clusters stay unreached"
+    );
+    let pyro = named
         .iter()
-        .find(|(n, _)| n == "PyroSolarSystem")
-        .ok_or("PyroSolarSystem is reached now: recheck the Pyro gap")?;
-    assert!(pyro.1 > 30, "PyroSolarSystem names {} resources", pyro.1);
+        .find(|(g, _)| name(g) == "PyroSolarSystem")
+        .ok_or("no PyroSolarSystem override")?;
+    assert!(*pyro.1 > 30, "PyroSolarSystem names {} resources", pyro.1);
 
-    let mut splits: BTreeMap<String, Vec<(String, usize)>> = BTreeMap::new();
+    // Every provider place lies in a solar system, by its star.
+    let mut per_system: BTreeMap<String, usize> = BTreeMap::new();
+    for (pg, _) in providers.iter() {
+        for place in places.locations_of(pg) {
+            let system = locations
+                .system_of(place)
+                .ok_or_else(|| format!("{} is in no system", name(place)))?;
+            *per_system.entry(name(&system.guid)).or_default() += 1;
+        }
+    }
+    println!("provider places per system: {per_system:?}");
+    let pyro = *pyro.0;
+    assert_eq!(
+        per_system.keys().map(String::as_str).collect::<Vec<_>>(),
+        ["NyxSolarSystem", "PyroSolarSystem", "StantonSolarSystem"]
+    );
+
+    // provider -> (element, places overridden, Pyro override exactly at the
+    // provider's Pyro places).
+    let mut splits: BTreeMap<String, Vec<(String, usize, bool)>> = BTreeMap::new();
     let mut multi = 0;
     for (pg, provider) in providers.iter() {
         let at = places.locations_of(pg);
@@ -116,6 +141,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let chains: Vec<Vec<Guid>> = at
             .iter()
             .map(|p| QualityRoll::locations_at(&locations, p))
+            .collect();
+        let in_pyro: Vec<bool> = at
+            .iter()
+            .map(|p| locations.system_of(p).is_some_and(|s| s.guid == pyro))
             .collect();
         for element in &held {
             let mut groups: Vec<(Option<QualitySource>, Vec<usize>)> = Vec::new();
@@ -154,31 +183,57 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .filter(|(s, _)| matches!(s, Some(QualitySource::Override(_))))
                     .map(|(_, ks)| ks.len())
                     .sum();
+                let by_system = groups.iter().all(|(s, ks)| {
+                    ks.iter()
+                        .all(|&k| in_pyro[k] == (*s == Some(QualitySource::Override(pyro))))
+                });
                 splits
-                    .entry(format!("{} ({} places)", name(pg), at.len()))
+                    .entry(name(pg))
                     .or_default()
-                    .push((name(element), overridden));
+                    .push((name(element), overridden, by_system));
             }
         }
     }
     println!("{multi} providers serve more than one place");
     for (provider, elements) in &splits {
-        for (element, overridden) in elements {
-            println!("  {provider}: {element} overridden at {overridden} places");
-        }
+        let overridden: BTreeMap<usize, usize> =
+            elements.iter().fold(BTreeMap::new(), |mut m, (_, n, _)| {
+                *m.entry(*n).or_default() += 1;
+                m
+            });
+        println!(
+            "  {provider}: {} elements split, places overridden {overridden:?}",
+            elements.len()
+        );
     }
-    assert_eq!(splits.len(), 1, "providers splitting on quality");
-    let keeger = splits
-        .iter()
-        .find(|(p, _)| p.starts_with("HPP_Nyx_KeegerBelt"))
-        .ok_or("the Keeger belt no longer splits")?;
-    let mut split_elements: Vec<&str> = keeger.1.iter().map(|(e, _)| e.as_str()).collect();
+    assert_eq!(
+        splits.keys().map(String::as_str).collect::<Vec<_>>(),
+        [
+            "HPP_Nyx_KeegerBelt",
+            "HPP_Pyro_DeepSpaceAsteroids",
+            "HPP_Stanton2c_Belt"
+        ],
+        "providers splitting on quality"
+    );
+    let keeger = &splits["HPP_Nyx_KeegerBelt"];
+    let mut split_elements: Vec<&str> = keeger.iter().map(|(e, _, _)| e.as_str()).collect();
     split_elements.sort();
     assert_eq!(split_elements, ["Savrilium_Ore", "Torite_Ore"]);
-    assert!(keeger.1.iter().all(|(_, n)| *n == 30));
+    assert!(keeger.iter().all(|(_, n, _)| *n == 30));
+    for (provider, pyro_places) in [
+        ("HPP_Pyro_DeepSpaceAsteroids", 143),
+        ("HPP_Stanton2c_Belt", 1),
+    ] {
+        assert!(
+            splits[provider]
+                .iter()
+                .all(|(_, n, by_system)| *by_system && *n == pyro_places),
+            "{provider} splits other than by system"
+        );
+    }
     println!(
-        "asserts passed: one source, one odds; only the Keeger belt splits \
-         (30 Rockcracker clusters), PyroSolarSystem is on no chain"
+        "asserts passed: one source, one odds; Keeger splits on its 30 Rockcracker \
+         clusters, two providers split by system (PyroSolarSystem at their Pyro places)"
     );
     Ok(())
 }

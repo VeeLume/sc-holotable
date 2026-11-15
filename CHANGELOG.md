@@ -13,6 +13,15 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-locations`: `Locations::system_of(place)`.** Gives the solar-system `StarMapObject` a place belongs to (`StantonSolarSystem`, `PyroSolarSystem`, `NyxSolarSystem`). These records have no parent and no children, so the hierarchy never reached them. The join runs through the `SSolarSystem` records: a place belongs to the system whose `DefaultLocation` shares its star. `sc-locations` now enables the `ssolarsystem` feature, and `LocationsBuilder` visits `SSolarSystem` records as well.
+
+### Changed
+
+- **`sc-mining`: `QualityRoll::locations_at` ends with the place's solar system.** Pyro's system-wide quality overrides (35 resources) now apply to Pyro rocks: average quality rises 4 to 13 points per resource, and Bexalite 43. The client builds a rock's location list from its universe hierarchy, the rock's node and every node above it, with each MegaMap system as a node over its containers. The system node is read from the client's location-debug builder, not from the runtime graph builder. The probe now asserts three splitting providers: the Keeger belt, and two that split by system (`HPP_Pyro_DeepSpaceAsteroids`, whose 40 Nyx QV extraction-station places reuse the template, and `HPP_Stanton2c_Belt`, reused at Pyro6).
+- **`sc-holotable`: `HOLOTABLE_COOK_VERSION` 8.** `Locations` persists the system links, so v7 snapshots are rejected and rebuilt.
+
 ## [v0.50.0] - 2026-11-15
 
 ### Added

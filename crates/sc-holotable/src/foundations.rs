@@ -72,7 +72,9 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
 /// v0.27.0; `#[serde(default)]` would let a v4 snapshot load with them empty).
 /// v6 (2026-10-21): `Item` gained `inventory`.
 /// v7 (2026-10-21): `Location` gained `quantum`.
-pub const HOLOTABLE_COOK_VERSION: u32 = 7;
+/// v8 (2026-11-15): `Locations` persists the `SSolarSystem` links behind
+/// `system_of` (a v7 snapshot would load without them).
+pub const HOLOTABLE_COOK_VERSION: u32 = 8;
 
 /// A batteries-included bundle of cooked indices, serializable for fast load.
 ///

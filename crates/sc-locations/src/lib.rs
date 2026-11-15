@@ -18,7 +18,9 @@
 //! nav icon — Levski is `Manmade`, not `LandingZone`. There is no dedicated
 //! Lagrange or asteroid-cluster kind: those are `Asteroid` / `AsteroidValidQt`,
 //! jump points are `Anomaly`, stations are `Manmade`. The hierarchy is rooted at
-//! the `Star`; the `SolarSystem` record is a parentless, childless sibling.
+//! the `Star`; the `SolarSystem` record is a parentless, childless sibling,
+//! which [`Locations::system_of`] joins a place to through the system's
+//! `SSolarSystem` record.
 //!
 //! # Why this is its own crate
 //!
@@ -36,7 +38,8 @@
 use std::collections::{HashMap, HashSet};
 
 use sc_extract::generated::{
-    ERespawnLocationType, NavPointIconEnum, RecordLookup, StarMapObject, StarMapObjectType,
+    ERespawnLocationType, NavPointIconEnum, RecordLookup, SSolarSystem, StarMapObject,
+    StarMapObjectType,
 };
 use sc_extract::{Guid, LocaleKey, LocaleMap, RecordStore, class_crc};
 use serde::{Deserialize, Serialize};
@@ -255,28 +258,38 @@ impl Location {
 #[serde(from = "LocationsRepr", into = "LocationsRepr")]
 pub struct Locations {
     by_guid: HashMap<Guid, Location>,
+    /// The `SSolarSystem` records: (`DefaultLocation`, `SolarSystemRecord`).
+    systems: Vec<SystemLink>,
     /// Derived: `class_crc → guid`. Rebuilt, not serialized.
     by_crc: HashMap<u32, Guid>,
     /// Derived: `parent guid → child guids` (sorted). Rebuilt, not serialized.
     children: HashMap<Guid, Vec<Guid>>,
+    /// Derived: hierarchy root (the star) → solar-system location. Rebuilt,
+    /// not serialized.
+    system_by_root: HashMap<Guid, Guid>,
 }
 
-/// Serialization shadow: only `by_guid` is persisted; the derived `by_crc` and
-/// `children` indices are recomputed on the way back in.
+/// One `SSolarSystem` record, as far as the hierarchy needs it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+struct SystemLink {
+    /// `DefaultLocation`: a place in the system, whose chain gives its star.
+    default_location: Guid,
+    /// `SolarSystemRecord`: the system's own `StarMapObject`.
+    system: Guid,
+}
+
+/// Serialization shadow: `by_guid` and the system links are persisted; the
+/// derived indices are recomputed on the way back in.
 #[derive(Serialize, Deserialize)]
 struct LocationsRepr {
     by_guid: HashMap<Guid, Location>,
+    #[serde(default)]
+    systems: Vec<SystemLink>,
 }
 
 impl From<LocationsRepr> for Locations {
     fn from(repr: LocationsRepr) -> Self {
-        let mut locations = Locations {
-            by_guid: repr.by_guid,
-            by_crc: HashMap::new(),
-            children: HashMap::new(),
-        };
-        locations.rebuild_indices();
-        locations
+        Locations::assemble(repr.by_guid, repr.systems)
     }
 }
 
@@ -284,6 +297,7 @@ impl From<Locations> for LocationsRepr {
     fn from(locations: Locations) -> Self {
         LocationsRepr {
             by_guid: locations.by_guid,
+            systems: locations.systems,
         }
     }
 }
@@ -297,31 +311,68 @@ impl Locations {
     /// Build from a collection of [`Location`]s (keyed by their `guid`),
     /// recomputing the derived CRC and hierarchy indices. The primary entry
     /// points ([`build`](Self::build) / [`LocationsBuilder`]) delegate here.
+    /// No solar-system links: [`system_of`](Self::system_of) is `None`.
     pub fn from_locations(locations: impl IntoIterator<Item = Location>) -> Self {
         let by_guid = locations.into_iter().map(|l| (l.guid, l)).collect();
+        Self::assemble(by_guid, Vec::new())
+    }
+
+    fn assemble(by_guid: HashMap<Guid, Location>, systems: Vec<SystemLink>) -> Self {
         let mut index = Locations {
             by_guid,
+            systems,
             by_crc: HashMap::new(),
             children: HashMap::new(),
+            system_by_root: HashMap::new(),
         };
         index.rebuild_indices();
         index
     }
 
     /// Build the index from a parsed [`RecordStore`] by walking the typed
-    /// `StarMapObject` pool. Returns an owned index — build once, share
-    /// `&Locations`.
+    /// `StarMapObject` pool, plus the `SSolarSystem` records for
+    /// [`system_of`](Self::system_of). Returns an owned index — build once,
+    /// share `&Locations`.
     pub fn build(store: &RecordStore) -> Self {
         let pools = &store.pools;
-        let locations = store
+        let by_guid = store
             .records
             .multi_feature
             .star_map_object
             .iter()
             .filter_map(|(&guid, &handle)| {
-                handle.get(pools).map(|obj| location_for(guid, obj, store))
-            });
-        Self::from_locations(locations)
+                handle
+                    .get(pools)
+                    .map(|obj| (guid, location_for(guid, obj, store)))
+            })
+            .collect();
+        let systems = store
+            .records
+            .multi_feature
+            .ssolar_system
+            .values()
+            .filter_map(|h| system_link(h.get(pools)?))
+            .collect();
+        Self::assemble(by_guid, systems)
+    }
+
+    /// The solar system a place is in: the `StarMapObject` that system's
+    /// `SSolarSystem.SolarSystemRecord` names (`PyroSolarSystem`). The
+    /// hierarchy does not reach it (it has no children); the join is the
+    /// star: a place belongs to the system whose `DefaultLocation` has the
+    /// same root. `None` for a place under no system's star, and for the
+    /// system location itself.
+    ///
+    /// ```no_run
+    /// # fn system(locations: &sc_locations::Locations, place: &sc_extract::Guid) {
+    /// if let Some(system) = locations.system_of(place) {
+    ///     println!("in {}", system.guid);
+    /// }
+    /// # }
+    /// ```
+    pub fn system_of(&self, guid: &Guid) -> Option<&Location> {
+        let root = self.ancestors(guid).last().map_or(*guid, |l| l.guid);
+        self.by_guid.get(self.system_by_root.get(&root)?)
     }
 
     /// Recompute `by_crc` and `children` from `by_guid`.
@@ -345,6 +396,22 @@ impl Locations {
         }
         self.by_crc = by_crc;
         self.children = children;
+        let mut system_by_root = HashMap::new();
+        for link in &self.systems {
+            if !self.by_guid.contains_key(&link.default_location) {
+                continue;
+            }
+            let root = self
+                .ancestors(&link.default_location)
+                .last()
+                .map_or(link.default_location, |l| l.guid);
+            if let Some(prev) = system_by_root.insert(root, link.system)
+                && prev != link.system
+            {
+                warn!(%root, %prev, new = %link.system, "two solar systems share a star");
+            }
+        }
+        self.system_by_root = system_by_root;
     }
 
     /// Resolve an EntityGraph wire CRC back to its location. The typed
@@ -449,23 +516,39 @@ fn location_for(guid: Guid, obj: &StarMapObject, store: &RecordStore) -> Locatio
     }
 }
 
+/// One `SSolarSystem` record's link, when it names both ends.
+fn system_link(ss: &SSolarSystem) -> Option<SystemLink> {
+    Some(SystemLink {
+        default_location: ss.default_location?,
+        system: ss.solar_system_record?,
+    })
+}
+
 /// [`sc_extract::RecordVisitor`] that builds a [`Locations`] in a bundled walk.
-/// Declares interest in `StarMapObject` records. Equivalent to
-/// [`Locations::build`] but fusible with other visitors in one pass.
+/// Declares interest in `StarMapObject` and `SSolarSystem` records.
+/// Equivalent to [`Locations::build`] but fusible with other visitors in one
+/// pass.
 #[derive(Default)]
 pub struct LocationsBuilder {
     locations: Vec<Location>,
+    systems: Vec<SystemLink>,
 }
 
 impl sc_extract::RecordVisitor for LocationsBuilder {
     type Output = Locations;
 
     fn interest(&self) -> sc_extract::Interest {
-        sc_extract::Interest::Types(&["StarMapObject"])
+        sc_extract::Interest::Types(&["StarMapObject", "SSolarSystem"])
     }
 
     fn visit(&mut self, item: sc_extract::VisitItem<'_>) {
         let store = item.store;
+        if let Some(handle) = SSolarSystem::lookup(&store.records, &item.guid) {
+            if let Some(link) = handle.get(&store.pools).and_then(system_link) {
+                self.systems.push(link);
+            }
+            return;
+        }
         let Some(handle) = StarMapObject::lookup(&store.records, &item.guid) else {
             return;
         };
@@ -476,7 +559,8 @@ impl sc_extract::RecordVisitor for LocationsBuilder {
     }
 
     fn finish(self) -> Locations {
-        Locations::from_locations(self.locations)
+        let by_guid = self.locations.into_iter().map(|l| (l.guid, l)).collect();
+        Locations::assemble(by_guid, self.systems)
     }
 }
 
@@ -563,6 +647,44 @@ mod tests {
         assert_eq!(kids, vec![planet]);
         let chain: Vec<Guid> = locs.ancestors(&lz).map(|l| l.guid).collect();
         assert_eq!(chain, vec![planet, sys]);
+    }
+
+    /// A place joins the system whose `DefaultLocation` shares its star; the
+    /// links survive a serde round trip.
+    #[test]
+    fn system_of_joins_through_the_star() {
+        let g = |b| Guid::from_bytes([b; 16]);
+        let (star, planet, lz, system) = (g(20), g(21), g(22), g(23));
+        let (other_star, other_moon) = (g(30), g(31));
+        let by_guid = [
+            loc(star, LocationKind::Star, None),
+            loc(planet, LocationKind::Planet, Some(star)),
+            loc(lz, LocationKind::LandingZone, Some(planet)),
+            loc(system, LocationKind::SolarSystem, None),
+            loc(other_star, LocationKind::Star, None),
+            loc(other_moon, LocationKind::Moon, Some(other_star)),
+        ]
+        .into_iter()
+        .map(|l| (l.guid, l))
+        .collect();
+        let locs = Locations::assemble(
+            by_guid,
+            vec![SystemLink {
+                default_location: lz,
+                system,
+            }],
+        );
+        for place in [lz, planet, star] {
+            assert_eq!(locs.system_of(&place).map(|l| l.guid), Some(system));
+        }
+        assert_eq!(locs.system_of(&other_moon), None);
+        assert_eq!(locs.system_of(&system), None);
+        assert_eq!(
+            Locations::from_locations(locs.values().cloned()).system_of(&lz),
+            None
+        );
+        let back: Locations = serde_json::from_str(&serde_json::to_string(&locs).unwrap()).unwrap();
+        assert_eq!(back.system_of(&planet).map(|l| l.guid), Some(system));
     }
 
     #[test]

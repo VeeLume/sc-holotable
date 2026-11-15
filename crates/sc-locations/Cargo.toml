@@ -9,7 +9,9 @@ rust-version.workspace = true
 # enums + locale + the class_crc bridge. The `starmap` feature is this crate's
 # whole closure (it pulls both record types), so consumers depend on sc-locations
 # alone and get a populated index.
-sc-extract = { workspace = true, features = ["starmap"] }
+# `ssolarsystem`: the SSolarSystem records, which link a system's star to
+# its SolarSystem location (Locations::system_of).
+sc-extract = { workspace = true, features = ["starmap", "ssolarsystem"] }
 serde = { workspace = true }
 tracing = { workspace = true }
 
