@@ -16,6 +16,8 @@ sc-extract = { workspace = true, features = [
     "entities-mineable",
 ] }
 sc-resources = { workspace = true }
+# QualityRoll::locations_at: a place's StarMapObject parent chain.
+sc-locations = { workspace = true }
 sc-tags = { workspace = true }
 sc-items-mining = { workspace = true }
 sc-items-ship-weapons = { workspace = true }

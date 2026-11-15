@@ -13,6 +13,10 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-mining`: quality per place.** `QualityRoll::locations_at(&Locations, place)` gives the location ids for a rock at a `StarMapObject`: the place, then its parents. `QualityRoll::source(element)` names where the element's distribution comes from, as a `QualitySource`: the location whose override applies, or `Default`. Places with the same source for every element a rock holds get the same odds, so a provider's places can be grouped by source. In LIVE 4.10 one provider of the 17 that serve several places splits: the Keeger belt, whose 30 placed `Rockcracker` clusters override Savrilium and Torite. A gap stays open: the `PyroSolarSystem` override (35 resources) is on no place's parent chain, and whether the client counts it is not proven. Probe: `sc-mining/examples/mining_quality_places_probe.rs`.
+
 ## [v0.49.0] - 2026-11-15
 
 ### Added

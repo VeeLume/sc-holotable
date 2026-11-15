@@ -3352,6 +3352,7 @@ dependencies = [
  "sc-items",
  "sc-items-mining",
  "sc-items-ship-weapons",
+ "sc-locations",
  "sc-resources",
  "sc-tags",
  "serde",

@@ -3,6 +3,7 @@
 use std::collections::BTreeMap;
 
 use sc_extract::{Guid, RecordCollection};
+use sc_locations::Locations;
 use sc_resources::{
     DistributionRef, LocationOverrideRef, Quality, QualityDistributionShape, QuantizationBand,
     QuantizationRef, Resources,
@@ -27,6 +28,48 @@ pub struct QualityRoll<'a> {
 }
 
 impl QualityRoll<'_> {
+    /// The location ids for a rock at `place` (a `StarMapObject`), most
+    /// specific first: the place, then its `parent` chain. Pass them as
+    /// [`locations`](Self::locations).
+    ///
+    /// The client asks its location system for the rock's runtime location
+    /// ids, which this chain stands in for. One known gap (LIVE 4.10): the
+    /// solar-system `StarMapObject` (`PyroSolarSystem`, which `SSolarSystem`
+    /// links to) is no body's parent, so the chain never reaches it, and
+    /// whether the client's list holds it is not proven; Pyro's system-wide
+    /// overrides are left out.
+    pub fn locations_at(locations: &Locations, place: &Guid) -> Vec<Guid> {
+        std::iter::once(*place)
+            .chain(locations.ancestors(place).map(|l| l.guid))
+            .collect()
+    }
+
+    /// Where `element`'s distribution comes from at these locations: the
+    /// location whose override applies, or the resource's default. Places
+    /// with the same source for every element a rock holds give the same
+    /// quality odds, so a caller can group a provider's places by it (the
+    /// groups can be finer than the odds: the Keeger belt's 30 `Rockcracker`
+    /// clusters are 30 override locations with one distribution). `None`
+    /// when the element's resource has no quality.
+    ///
+    /// ```no_run
+    /// # fn group(roll: &sc_mining::QualityRoll<'_>, ti: &sc_extract::Guid) {
+    /// match roll.source(ti) {
+    ///     Some(sc_mining::QualitySource::Override(at)) => println!("override at {at}"),
+    ///     Some(sc_mining::QualitySource::Default) => println!("default odds"),
+    ///     None => println!("no quality"),
+    /// }
+    /// # }
+    /// ```
+    pub fn source(&self, element: &Guid) -> Option<QualitySource> {
+        let resource = self.resources.get(&self.elements.get(element)?.resource?)?;
+        let wiring = resource.quality.as_ref()?;
+        Some(match self.overriding(wiring.location_override.as_ref()) {
+            Some((at, _)) => QualitySource::Override(at),
+            None => QualitySource::Default,
+        })
+    }
+
     /// One element entry's quality, as the client rolls it at spawn (LIVE
     /// 4.10): `Q` from the resource's distribution (the first matching
     /// location override, else the default); a normal one is truncated to
@@ -95,28 +138,48 @@ impl QualityRoll<'_> {
         location_override: Option<&'b LocationOverrideRef>,
         default: Option<&'b DistributionRef>,
     ) -> Option<&'b QualityDistributionShape> {
-        let entries = match location_override {
-            Some(LocationOverrideRef::Inline(entries)) => Some(entries.as_slice()),
-            Some(LocationOverrideRef::Record(g)) => self
-                .catalog
-                .location_override(g)
-                .map(|r| r.entries.as_slice()),
-            _ => None,
-        };
-        let overridden = entries.and_then(|entries| {
-            self.locations.iter().find_map(|loc| {
-                entries
-                    .iter()
-                    .find(|e| e.location == Some(*loc))
-                    .and_then(|e| e.distribution.as_ref())
-            })
-        });
+        let overridden = self.overriding(location_override).map(|(_, d)| d);
         match overridden.or(default)? {
             DistributionRef::Inline(shape) => Some(shape),
             DistributionRef::Record(g) => self.catalog.distribution(g)?.shape.as_ref(),
             DistributionRef::Other { .. } => None,
         }
     }
+}
+
+impl<'a> QualityRoll<'a> {
+    /// The first of [`locations`](Self::locations) an override lists with a
+    /// distribution, and that distribution.
+    fn overriding<'b>(
+        &self,
+        location_override: Option<&'b LocationOverrideRef>,
+    ) -> Option<(Guid, &'b DistributionRef)>
+    where
+        'a: 'b,
+    {
+        let entries = match location_override? {
+            LocationOverrideRef::Inline(entries) => entries.as_slice(),
+            LocationOverrideRef::Record(g) => self.catalog.location_override(g)?.entries.as_slice(),
+            LocationOverrideRef::Other { .. } => return None,
+        };
+        self.locations.iter().find_map(|loc| {
+            entries
+                .iter()
+                .find(|e| e.location == Some(*loc))
+                .and_then(|e| e.distribution.as_ref())
+                .map(|d| (*loc, d))
+        })
+    }
+}
+
+/// Where an element's quality distribution comes from (see
+/// [`QualityRoll::source`]).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum QualitySource {
+    /// The resource's own distribution.
+    Default,
+    /// The override listed for this location (a `StarMapObject` GUID).
+    Override(Guid),
 }
 
 /// `Q` from a distribution. The client's `CraftingQualityDistributionUniform`

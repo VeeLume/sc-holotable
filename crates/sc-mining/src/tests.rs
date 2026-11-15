@@ -1155,3 +1155,86 @@ fn beam_cut_keeps_draining_queue() {
     let rose = (cut..cut + 3).any(|i| trace.samples[i].power > trace.samples[i - 1].power);
     assert!(rose);
 }
+
+/// The first of the roll's locations an override lists decides; the rest
+/// fall back to the default.
+#[test]
+fn quality_source_follows_the_location_chain() {
+    use sc_resources::{
+        DistributionRef, LocationOverrideEntry, LocationOverrideRef, Quality,
+        QualityDistributionShape, Resource, ResourceQuality, Resources,
+    };
+    let normal = |mean| {
+        DistributionRef::Inline(QualityDistributionShape::Normal {
+            min: 0,
+            max: 1000,
+            mean,
+            stddev: 100.0,
+        })
+    };
+    let mut resources = Resources::new();
+    resources.insert(Resource {
+        guid: guid(9),
+        name_key: Default::default(),
+        description_key: Default::default(),
+        thumbnail_path: String::new(),
+        thumbnail_path_svg: String::new(),
+        rtt_thumbnail_entity_class: None,
+        refined_version: None,
+        validate_default_cargo_box: false,
+        density: None,
+        volatility: None,
+        quality: Some(ResourceQuality {
+            distribution: Some(normal(400.0)),
+            quantization: None,
+            location_override: Some(LocationOverrideRef::Inline(vec![
+                LocationOverrideEntry {
+                    location: Some(guid(20)),
+                    distribution: Some(normal(700.0)),
+                },
+                LocationOverrideEntry {
+                    location: Some(guid(21)),
+                    distribution: Some(normal(700.0)),
+                },
+            ])),
+        }),
+    });
+    let mut elements = Elements::new();
+    elements.insert(Element {
+        resource: Some(guid(9)),
+        ..element(1, 0.0, 0.0, 1.0)
+    });
+    let catalog = Quality::default();
+    let at = |locations: &[Guid]| {
+        let roll = QualityRoll {
+            elements: &elements,
+            resources: &resources,
+            catalog: &catalog,
+            locations,
+        };
+        (roll.source(&guid(1)), roll.odds(&guid(1), 1.0))
+    };
+    // A place under 20, a place that is 21, a place under neither.
+    let (a, b, c) = (
+        at(&[guid(30), guid(20)]),
+        at(&[guid(21), guid(20)]),
+        at(&[guid(31), guid(32)]),
+    );
+    assert_eq!(a.0, Some(QualitySource::Override(guid(20))));
+    assert_eq!(b.0, Some(QualitySource::Override(guid(21))));
+    assert_eq!(c.0, Some(QualitySource::Default));
+    // Two override locations with one distribution: two sources, one odds.
+    assert_eq!(a.1, b.1);
+    assert_ne!(a.1, c.1);
+    assert_eq!(at(&[]).0, Some(QualitySource::Default));
+    assert_eq!(
+        QualityRoll {
+            elements: &elements,
+            resources: &resources,
+            catalog: &catalog,
+            locations: &[],
+        }
+        .source(&guid(2)),
+        None
+    );
+}

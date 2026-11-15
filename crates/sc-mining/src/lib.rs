@@ -81,7 +81,7 @@ pub use blast::{BlastParams, FractureBlast};
 pub use composition::{Composition, Compositions, Part, PartOdds};
 pub use element::{Element, Elements};
 pub use fracture::{EntryOdds, PieceOdds};
-pub use quality::{QualityOdds, QualityRoll};
+pub use quality::{QualityOdds, QualityRoll, QualitySource};
 pub use rock::{Entry, Rock, Window};
 pub use rock_type::{Geometry, RockType, RockTypes};
 pub use ruleset::{HitConsistency, Ruleset, Rulesets};
