@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.51.0] - 2026-11-15
+
 ### Added
 
 - **`sc-locations`: `Locations::system_of(place)`.** Gives the solar-system `StarMapObject` a place belongs to (`StantonSolarSystem`, `PyroSolarSystem`, `NyxSolarSystem`). These records have no parent and no children, so the hierarchy never reached them. The join runs through the `SSolarSystem` records: a place belongs to the system whose `DefaultLocation` shares its star. `sc-locations` now enables the `ssolarsystem` feature, and `LocationsBuilder` visits `SSolarSystem` records as well.
