@@ -50,6 +50,7 @@ error policy.
 | `sc-items-armor`, `sc-items-fps-weapons`, `sc-items-ship-components`, `sc-items-ship-weapons` | Per-domain base-stat sheets. |
 | `sc-weapons` | Weapon + damage model. Legacy — superseded by the `sc-items-*` sheets for product stats. |
 | `sc-missions` | Contracts — `Mission` / `Missions` / `MissionPools` / `Encounter`. |
+| `sc-travel` | Travel between places: leg costs for a ship's drive, detours around bodies, routes across jump links. |
 
 `sc-holotable` is the umbrella crate: `build_foundations` fuses every
 foundational index into a single record walk, and `HolotableSnapshot` persists
@@ -67,7 +68,7 @@ them for fast load. `sc-extract-generated` is workspace-internal codegen output
 ## Layering
 
 ```
-  domain          sc-crafting   sc-weapons   sc-missions   sc-items-*
+  domain          sc-crafting   sc-weapons   sc-missions   sc-items-*   sc-travel
                         \             \           /           /
   foundational    sc-items  sc-tags  sc-manufacturers  sc-resources  sc-law  sc-locations  sc-gathering
                         \                      |                          /

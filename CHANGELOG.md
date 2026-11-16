@@ -20,6 +20,15 @@ pinned. Both tag kinds are monotonic and immutable.
 - **`sc-locations`: `Waypoint::anchor` and `Waypoint::local`.** These hold the system-level place a waypoint is authored under (the body an outpost or station sits on) and its exact offset in that place's frame. `Waypoints::distance` is now exact between two places under one anchor and between a place and its anchor. Also new: `Place::anchor()` and `ObjectContainers::anchor_frame()`.
 - **`sc-locations`: `QuantumTravel` gains `arrival_point_detection_offset` and `sub_point_radius_multiplier`.** Both are passed through raw; neither scales the orbital markers.
 - Probe `examples/travel_data.rs` re-proves all of the above on the installed build.
+- **`sc-travel`: new domain crate for travel between star-map places.** `Travel::build(&Datacore, &Waypoints, &Bodies, &JumpLinks)` gathers the graph; it is serde, so it can be cached per build. `Travel::leg(from, to, &Quantum)` costs one trip within a system:
+  - a direct quantum hop when the line is clear;
+  - a detour through the blocking body's orbital markers when another body's `obstructionRadius` is in the way;
+  - a spline hop between two places on one body.
+  
+  `Travel::path(from, to, &Quantum, usable)` finds the fastest route across systems through the jump links the caller marks `usable` (`|_| true` for all). This is the caller's choice, not the in-game opening of a jump point: the data can't say whether a link such as the temporary Stanton–Nyx one exists right now. Opening a jump point (alignment and tuning) is not in the tunnel time yet: the data has the rates but not how they combine into seconds. A `Route` is a list of `Hop`s (`Quantum` / `Spline` / `Tunnel`), each with metres, seconds, cooldown, quantum fuel and an `estimate` flag. Seconds are spool-up plus the client's travel envelope; the cooldown is waited between consecutive hops; calibration is not included. `Tunnel` reads the global tunnel record (entrance 15 km, tunnel 110 km, exit 8 km), and a tunnel hop runs at the drive's tunnel speed limit. That is a floor, since the tunnel is flown and no duration is authored. Probe `examples/travel_routes.rs`. Umbrella feature `travel`, module `sc_holotable::travel`, prelude exports `Travel`, `Route`, `Hop`, `HopKind`, `Stop` and `Tunnel`.
+- **`sc-items-ship-components`: `JumpDrive` sheet on `ShipComponentStats::jump`.** It carries `tunnel_forces`, `tunnel_speed_limit` (the forces record's `linearSpeedLimit`: 1200 m/s for S4 drives, 1000 for S1 to S3) and `fuel_usage_efficiency`.
+- **`sc-vehicles`: `Quantum` gains `jump_drive` and `tunnel_speed`.** Both come from the loadout's jump drive.
+- **`sc-holotable` prelude:** also exports `Bodies`, `Body`, `JumpLink`, `JumpLinks`, `Waypoint` and `Waypoints`.
 
 ## [v0.52.0] - 2026-11-16
 

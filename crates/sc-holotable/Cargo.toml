@@ -34,6 +34,7 @@ sc-missions = { workspace = true, optional = true }
 sc-acquisitions = { workspace = true, optional = true }
 sc-loot = { workspace = true, optional = true }
 sc-refining = { workspace = true, optional = true }
+sc-travel = { workspace = true, optional = true }
 serde = { workspace = true }
 
 [features]
@@ -78,6 +79,9 @@ loot = ["dep:sc-loot", "extract", "items", "tags"]
 # Refining processes, the refinery entity classes and the star-map places
 # object containers put them at.
 refining = ["dep:sc-refining", "extract", "locations"]
+# Travel between star-map places: leg costs for a ship's drive, detours
+# around bodies through their orbital markers, routes across jump links.
+travel = ["dep:sc-travel", "extract", "locations", "vehicles"]
 # Rock-side mining maths: rulesets, elements, rock properties, breakability,
 # the charge simulation, rock spawns and fracture trees; reads laser, module
 # and gadget stats.
@@ -99,7 +103,7 @@ missions-payout = ["missions", "sc-missions/payout"]
 foundations = ["extract", "items", "tags", "manufacturers", "resources", "law", "locations", "gathering"]
 
 # ── Aggregators ──────────────────────────────────────────────────────────────
-all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "law", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "mining-items", "mining", "crafting", "gathering", "visuals", "vehicles", "acquisitions", "loot", "refining", "foundations"]
+all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "law", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "mining-items", "mining", "crafting", "gathering", "visuals", "vehicles", "acquisitions", "loot", "refining", "travel", "foundations"]
 full = ["all-t1", "missions-payout"]
 
 [dev-dependencies]

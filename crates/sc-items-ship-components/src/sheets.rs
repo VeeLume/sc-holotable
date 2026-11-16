@@ -139,6 +139,19 @@ pub struct QuantumDrive {
     pub disconnect_range: f32,
 }
 
+/// `SCItemJumpDriveParams`: what a jump drive does inside a jump tunnel.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct JumpDrive {
+    /// `tunnelForces`: the `JumpTunnelForcesParams` record.
+    pub tunnel_forces: Option<Guid>,
+    /// That record's `linearSpeedLimit`, m/s: the top speed in a tunnel.
+    /// 1200 for S4 drives, 1000 for S1 to S3 on LIVE 4.10. The flight
+    /// tuning's own `maxSpeed` (1300) sits above it.
+    pub tunnel_speed_limit: Option<f32>,
+    /// `fuelUsageEfficiencyMultiplier`.
+    pub fuel_usage_efficiency: f32,
+}
+
 /// `SQuantumDriveParams`.
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct QuantumTravel {
@@ -468,6 +481,7 @@ pub(crate) struct Sheets {
     pub emitter: Option<ShieldEmitter>,
     pub armor: Option<VehicleArmor>,
     pub quantum: Option<QuantumDrive>,
+    pub jump: Option<JumpDrive>,
     pub thruster: Option<Thruster>,
     pub capacity: Option<CargoQuantity>,
     pub flight: Option<FlightControl>,
@@ -508,6 +522,23 @@ pub(crate) fn sheets(ecd: &EntityClassDefinition, store: &RecordStore) -> Sheets
             C::SCItemVehicleArmorParams(h) => out.armor = h.get(pools).map(|a| armor(a, pools)),
             C::SCItemQuantumDriveParams(h) => {
                 out.quantum = h.get(pools).and_then(|q| quantum(q, pools));
+            }
+            C::SCItemJumpDriveParams(h) => {
+                out.jump = h.get(pools).map(|j| JumpDrive {
+                    tunnel_forces: j.tunnel_forces,
+                    tunnel_speed_limit: j
+                        .tunnel_forces
+                        .and_then(|g| {
+                            store
+                                .records
+                                .multi_feature
+                                .jump_tunnel_forces_params
+                                .get(&g)
+                        })
+                        .and_then(|h| h.get(pools))
+                        .map(|f| f.linear_speed_limit),
+                    fuel_usage_efficiency: j.fuel_usage_efficiency_multiplier,
+                });
             }
             C::SCItemThrusterParams(h) => out.thruster = h.get(pools).map(|t| thruster(t, pools)),
             C::IFCSParams(h) => out.flight = h.get(pools).map(|f| flight(f, store)),

@@ -1,0 +1,21 @@
+[package]
+name = "sc-travel"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Domain crate: travel between star-map places. Places, bodies and jump
+# links come from sc-locations, the drive model from sc-vehicles.
+#   jumppoints   GlobalJumpTunnelHostParams (the tunnel's length)
+sc-extract = { workspace = true, features = ["jumppoints"] }
+sc-locations = { workspace = true }
+sc-vehicles = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }
+sc-items = { workspace = true }
+sc-items-ship-components = { workspace = true }
+serde_json = { workspace = true }

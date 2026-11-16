@@ -25,6 +25,7 @@ members = [
     "crates/sc-acquisitions",
     "crates/sc-loot",
     "crates/sc-refining",
+    "crates/sc-travel",
     "crates/sc-holotable",
     "tools/sc-generator",
     "tools/sc-regen",
@@ -58,6 +59,7 @@ sc-locations = { path = "crates/sc-locations" }
 sc-manufacturers = { path = "crates/sc-manufacturers" }
 sc-resources = { path = "crates/sc-resources" }
 sc-law = { path = "crates/sc-law" }
+sc-travel = { path = "crates/sc-travel" }
 sc-tags = { path = "crates/sc-tags" }
 sc-weapons = { path = "crates/sc-weapons" }
 sc-missions = { path = "crates/sc-missions" }

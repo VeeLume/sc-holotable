@@ -38,8 +38,9 @@ mod sheets;
 
 pub use sheets::{
     Afterburner, Ammo, Boost, ComponentHealth, Curve, DEFAULT_CAPACITOR_LEVEL, Distortion,
-    FlightControl, MinMax, MissileController, PerDamageType, QuantumDrive, QuantumTravel, Radar,
-    ShieldEmitter, ShieldGenerator, SignatureDetection, Thruster, VehicleArmor, component_health,
+    FlightControl, JumpDrive, MinMax, MissileController, PerDamageType, QuantumDrive,
+    QuantumTravel, Radar, ShieldEmitter, ShieldGenerator, SignatureDetection, Thruster,
+    VehicleArmor, component_health,
 };
 
 /// Which ship-component family a piece belongs to.
@@ -134,6 +135,9 @@ pub struct ShipComponentStats {
     /// Quantum drives.
     #[serde(default)]
     pub quantum: Option<QuantumDrive>,
+    /// Jump drives.
+    #[serde(default)]
+    pub jump: Option<JumpDrive>,
     /// Main and maneuvering thrusters.
     #[serde(default)]
     pub thruster: Option<Thruster>,
@@ -237,6 +241,7 @@ impl ShipComponents {
                     emitter: sheets.emitter,
                     armor: sheets.armor,
                     quantum: sheets.quantum,
+                    jump: sheets.jump,
                     thruster: sheets.thruster,
                     capacity: sheets.capacity,
                     flight: sheets.flight,

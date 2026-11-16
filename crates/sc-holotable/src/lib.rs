@@ -42,6 +42,7 @@
 //! | `acquisitions` | `acquisitions` | how a player comes by an item or vehicle: sources and mount evidence, obtainable / unobtainable / unknown (pulls `vehicles`, `crafting`, `missions`, `loot`) |
 //! | `loot` | `loot` | loot tables of both generations, what their entries pick, and the corpses, actors and world containers carrying them (pulls `items`, `tags`) |
 //! | `refining` | `refining` | refining processes and the star-map places with a refinery (pulls `locations`) |
+//! | `travel` | `travel` | leg costs for a ship's drive, detours around bodies, routes across jump links (pulls `locations`, `vehicles`) |
 //! | `mining-items` | `mining_items` | mining modules and gadgets, and the shared mining modifier types |
 //! | `mining` | `mining` | rock properties, breakability, the charge simulation, rock spawns and fracture trees (pulls `resources`, `tags`, `ship-weapons`, `mining-items`) |
 //! | `crafting` | `crafting` | blueprints + product stats (pulls `items`, `resources` and all four sheets) |
@@ -182,6 +183,14 @@ pub mod refining {
     pub use sc_refining::*;
 }
 
+#[cfg(feature = "travel")]
+pub mod travel {
+    //! Travel between star-map places ([`sc_travel`]): what a [`Route`]
+    //! costs a ship's drive, hop by hop, through the [`Travel`] graph of
+    //! places, bodies and jump links.
+    pub use sc_travel::*;
+}
+
 #[cfg(feature = "acquisitions")]
 pub mod acquisitions {
     //! How a player comes by an item or a vehicle ([`sc_acquisitions`]):
@@ -284,8 +293,8 @@ pub mod prelude {
     pub use sc_law::{ControlledSubstanceClass, Jurisdiction, Jurisdictions};
     #[cfg(feature = "locations")]
     pub use sc_locations::{
-        Location, LocationKind, Locations, ObjectContainers, Place, Placement, PlacementId,
-        Universe,
+        Bodies, Body, JumpLink, JumpLinks, Location, LocationKind, Locations, ObjectContainers,
+        Place, Placement, PlacementId, Universe, Waypoint, Waypoints,
     };
     #[cfg(feature = "loot")]
     pub use sc_loot::{LootPlacements, LootTable, LootTables, Lootable, Lootables};
@@ -310,6 +319,8 @@ pub mod prelude {
     };
     #[cfg(feature = "tags")]
     pub use sc_tags::Tags;
+    #[cfg(feature = "travel")]
+    pub use sc_travel::{Hop, HopKind, Route, Stop, Travel, Tunnel};
     #[cfg(feature = "vehicles")]
     pub use sc_vehicles::{
         Defense, Flight, ItemportModifiers, Loadout, NetworkParams, PortContainers, PowerNetwork,

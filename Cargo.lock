@@ -3218,6 +3218,7 @@ dependencies = [
  "sc-refining",
  "sc-resources",
  "sc-tags",
+ "sc-travel",
  "sc-vehicles",
  "sc-weapons",
  "serde",
@@ -3429,6 +3430,21 @@ version = "0.0.0"
 dependencies = [
  "sc-discovery",
  "sc-extract",
+ "serde",
+ "serde_json",
+ "tracing",
+]
+
+[[package]]
+name = "sc-travel"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-items",
+ "sc-items-ship-components",
+ "sc-locations",
+ "sc-vehicles",
  "serde",
  "serde_json",
  "tracing",

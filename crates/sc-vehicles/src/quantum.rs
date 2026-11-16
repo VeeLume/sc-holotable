@@ -23,6 +23,14 @@ pub struct Quantum {
     pub fuel_per_mm: f64,
     /// What the loadout's quantum fuel tanks hold, SCU.
     pub fuel_capacity: f64,
+    /// The loadout's jump drive, `None` without one (it cannot use a jump
+    /// point).
+    #[serde(default)]
+    pub jump_drive: Option<Guid>,
+    /// Top speed in a jump tunnel, m/s: the jump drive's tunnel-forces
+    /// `linearSpeedLimit` (1200 for S4, 1000 for S1 to S3 on LIVE 4.10).
+    #[serde(default)]
+    pub tunnel_speed: Option<f64>,
 }
 
 impl Quantum {
@@ -35,6 +43,7 @@ impl Quantum {
         profiles: &ResourceProfiles,
     ) -> Option<Self> {
         let mut drive = None;
+        let mut jump = None;
         let mut fuel_capacity = 0.0;
         for (_, item) in network_items(loadout, vehicles) {
             let Some(sheet) = components.get(&item) else {
@@ -44,6 +53,11 @@ impl Quantum {
                 && let Some(q) = &sheet.quantum
             {
                 drive = Some((item, q));
+            }
+            if jump.is_none()
+                && let Some(j) = &sheet.jump
+            {
+                jump = Some((item, j.tunnel_speed_limit.map(f64::from)));
             }
             if sheet.kind == ShipComponentKind::QuantumFuelTank {
                 fuel_capacity += sheet
@@ -69,6 +83,8 @@ impl Quantum {
             spline: q.spline,
             fuel_per_mm,
             fuel_capacity,
+            jump_drive: jump.map(|(g, _)| g),
+            tunnel_speed: jump.and_then(|(_, s)| s),
         })
     }
 
