@@ -251,14 +251,15 @@ impl<'u> Place<'u> {
     ///
     /// | Query | Exactness |
     /// |---|---|
-    /// | position of a body, moon, station (placed at system level) | exact — `Pos` is authored system-global |
+    /// | position of a body, moon, station (placed at system level) | exact — `Pos` is authored in the system root's frame, turned by its rotation where it has one (Pyro: −85.23°) |
     /// | chord / great-circle distance, bearing, distance to OMs, body-fixed lat/long — two points on the **same body** | exact — computed from the local vectors |
     /// | distance between surface points on **different** bodies | exact for ordering (± a body radius against ~10⁹ m) |
     /// | absolute position of one **surface** point | ± up to a body radius, and time-dependent |
     /// | anything sun-relative (time of day, "where is noon") | not recoverable — that *is* the missing rotation phase |
     ///
-    /// Harvested `Pos` values were cross-checked against starmap.space (which
-    /// keys by socpak `EntityCryGUID`, not DCB GUID): identical to the metre.
+    /// Cross-checked against starmap.space's containers (which key by socpak
+    /// `EntityCryGUID`, not DCB GUID; `examples/starmap_bodies.rs`): Stanton
+    /// and Pyro agree to the metre once Pyro's root rotation is applied.
     pub fn global_position(&self) -> Option<[f64; 3]> {
         self.placement
             .and_then(|id| self.universe.containers.global_position(id))

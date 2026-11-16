@@ -149,6 +149,12 @@ pub struct Placement {
     pub(crate) orbit: Option<Orbit>,
     /// A chain **leaf**: has a `starmapRecord` or a mission template.
     pub(crate) is_leaf: bool,
+    /// For a `*system.socpak` placement: the rotation `(w, x, y, z)` of the
+    /// top-level `<Child>` it nests under in `system.xml`, which the game
+    /// turns the authored `Pos` by (Pyro's star: −85.23° about Z). `None`
+    /// when that child is not rotated.
+    #[serde(default)]
+    pub(crate) frame: Option<[f64; 4]>,
 }
 
 impl Placement {
@@ -171,6 +177,13 @@ impl Placement {
     /// Raw socpak entity `Name` — the identity for a place with no star-map name.
     pub fn entity_name(&self) -> &str {
         &self.name
+    }
+    /// The entity's `EntityCryGUID`, lowercase and dashed as authored. Not
+    /// unique on its own (cloned containers reuse it); unique with
+    /// [`socpak`](Self::socpak). starmap.space keys its containers and POIs
+    /// by it.
+    pub fn entity_guid(&self) -> &str {
+        &self.disp
     }
     /// True when this placement has a `starmapRecord` or a mission template — a
     /// containment-chain leaf (has a mission DataSet CRC).
@@ -274,10 +287,12 @@ fn harvest_socpak<T>(
     // System nav-graph placements live in `.xml` members; decoding every
     // socpak's `.xml` would explode parse time, so gate on `/system/`.
     let allow_xml = sp_norm.contains("/system/");
+    let is_system = sp_norm.ends_with("system.socpak");
     let mut out = Harvested {
         placements: Vec::new(),
         found: Vec::new(),
     };
+    let mut frames: HashMap<Key, [f64; 4]> = HashMap::new();
     for m in 0..pak.len() {
         let member = pak.name(m).unwrap_or_default();
         let lower = member.to_ascii_lowercase();
@@ -290,10 +305,81 @@ fn harvest_socpak<T>(
         }
         let Ok(b) = pak.read(m) else { continue };
         let Ok(Some(root)) = decode(&b) else { continue };
+        if is_system && lower.ends_with("system.xml") {
+            system_frames(&root, None, &mut frames);
+        }
         harvest(&root, sp_norm, &mut out.placements);
         out.found.extend(visit(sp_norm, &member, &root));
     }
+    for p in &mut out.placements {
+        p.frame = frames.get(&p.key).copied();
+    }
     Some(out)
+}
+
+/// Walk a `system.xml`'s `<Child>` tree: every child below a rotated
+/// top-level child maps (by the GUID in its `label`) to that child's
+/// rotation. The entity `Pos` of such a placement is authored in the
+/// top-level child's frame; the game turns it by this rotation. Pyro's
+/// `pyrostar` carries −85.23° about Z; starmap.space and Murphy's
+/// Navigation Tool place every Pyro container exactly that much round.
+fn system_frames(node: &XmlNode, top: Option<[f64; 4]>, out: &mut HashMap<Key, [f64; 4]>) {
+    for c in &node.children {
+        if c.tag != "Child" {
+            system_frames(c, top, out);
+            continue;
+        }
+        match top {
+            // A top-level child: its rotation frames everything below it.
+            None => {
+                let rot = c
+                    .attr("rot")
+                    .and_then(quat)
+                    .filter(|q| (q[0].abs() - 1.0).abs() > 1e-9);
+                if rot.is_some() {
+                    system_frames(c, rot, out);
+                }
+            }
+            Some(q) => {
+                if let Some(key) = c
+                    .attr("label")
+                    .and_then(|l| l.rsplit_once('{'))
+                    .and_then(|(_, g)| std_key(g.trim_end_matches('}')))
+                {
+                    out.insert(key, q);
+                }
+                system_frames(c, top, out);
+            }
+        }
+    }
+}
+
+/// A `rot` attribute, `w,x,y,z`.
+fn quat(raw: &str) -> Option<[f64; 4]> {
+    let q: Vec<f64> = raw
+        .split(',')
+        .filter_map(|v| v.trim().parse().ok())
+        .collect();
+    (q.len() == 4).then(|| [q[0], q[1], q[2], q[3]])
+}
+
+/// `v` turned by the unit quaternion `q` (`w, x, y, z`).
+fn rotate(q: [f64; 4], v: [f64; 3]) -> [f64; 3] {
+    let (w, u) = (q[0], [q[1], q[2], q[3]]);
+    let cross = |a: [f64; 3], b: [f64; 3]| {
+        [
+            a[1] * b[2] - a[2] * b[1],
+            a[2] * b[0] - a[0] * b[2],
+            a[0] * b[1] - a[1] * b[0],
+        ]
+    };
+    let t = cross(u, v).map(|x| 2.0 * x);
+    let ut = cross(u, t);
+    [
+        v[0] + w * t[0] + ut[0],
+        v[1] + w * t[1] + ut[1],
+        v[2] + w * t[2] + ut[2],
+    ]
 }
 
 /// Index every placement entity in one decoded member tree into `out`.
@@ -357,6 +443,7 @@ fn harvest(root: &XmlNode, sp_norm: &str, out: &mut Vec<Placement>) {
             name: e.attr("Name").unwrap_or("").to_string(),
             pos,
             orbit,
+            frame: None,
         });
     }
 }
@@ -812,8 +899,12 @@ impl ObjectContainers {
                 acc[2] += p[2];
                 any = true;
             }
-            // A *system.socpak placement's Pos is the global base — stop here.
+            // A *system.socpak placement's Pos is the global base — stop here,
+            // turned into the game's frame when its system root is rotated.
             if self.placements[j].socpak.ends_with("system.socpak") {
+                if let Some(q) = self.placements[j].frame {
+                    acc = rotate(q, acc);
+                }
                 break;
             }
         }
