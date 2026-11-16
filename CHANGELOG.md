@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.54.0] - 2026-11-16
+
 ### Fixed
 
 - **`sc-locations`: Pyro positions are now in the game's frame.** `pyrosystem.xml` turns the whole system by −85.23° about Z (the `pyrostar` child's `rot`), and the entity `Pos` values don't include that turn. `ObjectContainers::global_position` (and with it `Place::global_position`, `Waypoint::position` and `Body::position`) now applies the top-level child's rotation of a system container, found by the GUID in each child's `label`. Pyro was off by 85.23° in bearing before; it now matches starmap.space to within about 1e-8 of the distance, the same as Stanton. Distances within a system, and so every `sc-travel` cost, are unchanged. Stanton and Nyx have no rotated root.
