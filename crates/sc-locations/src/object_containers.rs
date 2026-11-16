@@ -785,11 +785,14 @@ impl ObjectContainers {
     /// containment chain, stopping at the first `*system.socpak` placement.
     ///
     /// A placement in a `*system.socpak` (a body, moon, Lagrange point) already
-    /// carries a system-global `Pos`; one in a body/loc OC carries a `Pos` local
+    /// carries a system-global `Pos`, with every parent's rotation applied
+    /// (microTech's moons hang under a microTech turned 180° about Z in
+    /// `system.xml`; their entity `Pos` already accounts for it, and the
+    /// orbit components agree). One in a body/loc OC carries a `Pos` local
     /// to its parent's frame. So we add local offsets while walking up, then add
     /// the global base and stop — summing past it would double-count (a moon is
-    /// both a `*system.socpak` global *and* a logical child of its planet). Per-
-    /// level **rotation is ignored** — the error is bounded by a body radius
+    /// both a `*system.socpak` global *and* a logical child of its planet). Below
+    /// the system level, **rotation is ignored** — the error is bounded by a body radius
     /// (hundreds of km) against inter-body distances (billions of m), exact
     /// enough for ordering stops by distance, *not* for precise navigation.
     /// `None` if no level along the way has a `Pos`.

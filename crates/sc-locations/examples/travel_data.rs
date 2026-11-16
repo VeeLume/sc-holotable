@@ -6,6 +6,10 @@
 //!   Murphy's Navigation Tool (Stanton 4.0, Pyro 4.2 tables) to 50 m on the
 //!   bodies whose obstruction has not changed since;
 //! - every live body turns about `0,0,1` and has a radius and an atmosphere;
+//! - every Stanton moon's centre sits where its own orbit component says,
+//!   relative to its planet (catches a parent's rotation left out, as on
+//!   microTech's moons); Pyro's orbit components disagree with its
+//!   placements, so they are printed, not asserted;
 //! - Stanton–Pyro and Pyro–Nyx link both ways;
 //! - two outposts on one body are exactly as far apart as their authored
 //!   offsets say, and a station on a body is anchored to it.
@@ -112,6 +116,54 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     assert_eq!(checked, MURPHY_OM.len(), "a reference body is missing");
+
+    // Each body's centre against its own orbit component: the offset from
+    // the orbit parent must match `OrbitalRadius` and `OrbitalAngle` (from
+    // +X, in the system frame). A moon placed with its planet's rotation
+    // left out (sc-nav-data had microTech's moons 180° off) fails this.
+    let systems = ObjectContainers::systems(&assets, 0)?;
+    let mut orbits = 0;
+    for b in &sorted {
+        let Some((id, p)) = systems.iter().find(|(_, p)| {
+            p.starmap_guid() == Some(b.guid) && p.socpak().ends_with("system.socpak")
+        }) else {
+            continue;
+        };
+        let (Some(orbit), Some(parent)) = (p.orbit(), systems.parent_entity(id)) else {
+            continue;
+        };
+        let Some(origin) = systems.get(parent).position() else {
+            continue;
+        };
+        let (dx, dy) = (b.position[0] - origin[0], b.position[1] - origin[1]);
+        let radius = dx.hypot(dy);
+        let angle = dy.atan2(dx).to_degrees().rem_euclid(360.0);
+        let turn = (angle - orbit.angle.rem_euclid(360.0) + 540.0).rem_euclid(360.0) - 180.0;
+        println!(
+            "  {:<10} parent {:<28} {:>14.0} m at {:>7.2}°  orbit {:>14.0} m at {:>7.2}°",
+            b.short_id(),
+            systems.get(parent).entity_name(),
+            radius,
+            angle,
+            orbit.radius,
+            orbit.angle
+        );
+        // Only Stanton's orbit components describe the placements: Pyro's
+        // disagree by 13-30 % in radius and up to ~180° (LIVE 4.10), so they
+        // are no check there. The prefix only scopes this probe.
+        if b.short_id().starts_with("stanton") {
+            assert!(
+                (radius / orbit.radius - 1.0).abs() < 0.01 && turn.abs() < 1.0,
+                "{}: {radius:.0} m at {angle:.2}° vs orbit {:.0} m at {:.2}°",
+                b.short_id(),
+                orbit.radius,
+                orbit.angle
+            );
+            orbits += 1;
+        }
+    }
+    println!("{orbits} Stanton moons sit where their orbit says (1 %, 1°)");
+    assert!(orbits >= 12, "orbit check covered only {orbits} moons");
 
     let t = Instant::now();
     let links = JumpLinks::build(&assets)?;
