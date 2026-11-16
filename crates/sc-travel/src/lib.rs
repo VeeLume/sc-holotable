@@ -29,6 +29,15 @@
 //! ignore its rotation (off by at most a body radius), so any hop touching
 //! one is an estimate too, except between two places on the same body.
 //!
+//! Opening a jump point (alignment and tuning) is not in the tunnel hop: the
+//! data has the rates, not how they combine into seconds.
+//!
+//! # Many stops
+//!
+//! [`Tour`] lists stops (one place or any of several), their dwell, arrival
+//! overhead and ordering rules; [`Travel::order`] plans the fastest order
+//! into a [`Plan`] (see the [`order`] module).
+//!
 //! ```no_run
 //! # fn demo(travel: &sc_travel::Travel, drive: &sc_vehicles::Quantum,
 //! #         from: sc_extract::Guid, to: sc_extract::Guid) {
@@ -48,6 +57,9 @@ use sc_locations::{Bodies, Body, JumpLink, JumpLinks, Waypoint, Waypoints};
 use sc_vehicles::Quantum;
 use serde::{Deserialize, Serialize};
 use tracing::{info, warn};
+
+pub mod order;
+pub use order::{EXACT_STOPS, Plan, StopId, Tour, TourEnd, TourStop, Visit};
 
 /// The jump tunnel's geometry, m: `GlobalJumpTunnelHostParams` →
 /// `tunnelGenerationParams`. One record covers every jump point.
@@ -134,7 +146,7 @@ pub struct Route {
 impl Route {
     /// Distance, m.
     pub fn metres(&self) -> f64 {
-        self.hops.iter().map(|h| h.metres).sum()
+        self.hops.iter().fold(0.0, |t, h| t + h.metres)
     }
 
     /// Time, s: every hop, plus the cooldown of a quantum or spline hop that
@@ -144,14 +156,13 @@ impl Route {
             .hops
             .windows(2)
             .filter(|w| w[0].kind != HopKind::Tunnel && w[1].kind != HopKind::Tunnel)
-            .map(|w| w[0].cooldown)
-            .sum();
-        self.hops.iter().map(|h| h.seconds).sum::<f64>() + waits
+            .fold(0.0, |t, w| t + w[0].cooldown);
+        self.hops.iter().fold(waits, |t, h| t + h.seconds)
     }
 
     /// Quantum fuel, SCU.
     pub fn fuel(&self) -> f64 {
-        self.hops.iter().map(|h| h.fuel).sum()
+        self.hops.iter().fold(0.0, |t, h| t + h.fuel)
     }
 
     /// True when any hop is an estimate.

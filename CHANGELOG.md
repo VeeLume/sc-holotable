@@ -26,6 +26,15 @@ pinned. Both tag kinds are monotonic and immutable.
   - a spline hop between two places on one body.
   
   `Travel::path(from, to, &Quantum, usable)` finds the fastest route across systems through the jump links the caller marks `usable` (`|_| true` for all). This is the caller's choice, not the in-game opening of a jump point: the data can't say whether a link such as the temporary Stanton–Nyx one exists right now. Opening a jump point (alignment and tuning) is not in the tunnel time yet: the data has the rates but not how they combine into seconds. A `Route` is a list of `Hop`s (`Quantum` / `Spline` / `Tunnel`), each with metres, seconds, cooldown, quantum fuel and an `estimate` flag. Seconds are spool-up plus the client's travel envelope; the cooldown is waited between consecutive hops; calibration is not included. `Tunnel` reads the global tunnel record (entrance 15 km, tunnel 110 km, exit 8 km), and a tunnel hop runs at the drive's tunnel speed limit. That is a floor, since the tunnel is flown and no duration is authored. Probe `examples/travel_routes.rs`. Umbrella feature `travel`, module `sc_holotable::travel`, prelude exports `Travel`, `Route`, `Hop`, `HopKind`, `Stop` and `Tunnel`.
+- **`sc-travel`: `Travel::order` plans the fastest order for a set of stops.** A `Tour` is built with:
+  - `Tour::new(start)` or `Tour::anywhere()` for an open start, where the first stop costs no travel;
+  - `visit(place)` or `visit_any(&places)`, which add a stop and return its `StopId`; "any one of these" choices are solved together with the order;
+  - per stop: `.dwell(s)`, `.overhead(s)` and `.after(id)`;
+  - `require(before, after)`, usable whatever order the stops were added in, and `then(&[..])` for stages;
+  - `overhead(s)`, the arrival cost paid once per place arrival (consecutive stops at one place pay it once, and it is at least the drive's cooldown);
+  - `end_at(place)` / `end_at_start()` / `end_anywhere()`.
+
+  `order(&tour, &drive, usable)` returns a `Plan` of `Visit`s (stop, chosen place, route, `at` = seconds from the start, overhead, dwell) plus the finish route. It minimises total time. Up to `EXACT_STOPS` (12) stops it is exact: Held–Karp over the visited set and the last choice, tested against brute force. Beyond that, a greedy start from every first stop is improved by local search with random kicks; it matched the exact result on every random 9-stop test. `None` when a stop is unreachable or the rules form a cycle. Probe `examples/tour_plan.rs`: on LIVE, a shopping run puts two parts at the Lorville shop they share.
 - **`sc-items-ship-components`: `JumpDrive` sheet on `ShipComponentStats::jump`.** It carries `tunnel_forces`, `tunnel_speed_limit` (the forces record's `linearSpeedLimit`: 1200 m/s for S4 drives, 1000 for S1 to S3) and `fuel_usage_efficiency`.
 - **`sc-vehicles`: `Quantum` gains `jump_drive` and `tunnel_speed`.** Both come from the loadout's jump drive.
 - **`sc-holotable` prelude:** also exports `Bodies`, `Body`, `JumpLink`, `JumpLinks`, `Waypoint` and `Waypoints`.

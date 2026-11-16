@@ -320,7 +320,9 @@ pub mod prelude {
     #[cfg(feature = "tags")]
     pub use sc_tags::Tags;
     #[cfg(feature = "travel")]
-    pub use sc_travel::{Hop, HopKind, Route, Stop, Travel, Tunnel};
+    pub use sc_travel::{
+        Hop, HopKind, Plan, Route, Stop, StopId, Tour, TourEnd, Travel, Tunnel, Visit,
+    };
     #[cfg(feature = "vehicles")]
     pub use sc_vehicles::{
         Defense, Flight, ItemportModifiers, Loadout, NetworkParams, PortContainers, PowerNetwork,
