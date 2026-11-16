@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.53.0] - 2026-11-16
+
 ### Added
 
 - **`sc-locations`: `Bodies` / `Body`, every planet and moon with its geometry.** Fields: the `StarMapObject` GUID, the object container (`short_id()` gives `stanton1a`, an id only, never a join), system, system-global centre, `radius` (`planetRadius`), `rotation_period_h` (`planetRotationSpeed`), `axis` (`planetAxis`), `atmosphere_height` in metres (the body `.ale`'s `AtmoHeight`) and the star map's quantum radii. Each body container is joined to its `StarMapObject` through the system container's placement, never by file name. `Body::om_radius()` is `sqrt(2) * obstructionRadius + 10 km`. The game derives the orbital markers rather than storing them; this formula reproduces Murphy's Navigation Tool to within 50 m on 25 bodies. `Body::orbital_markers()` gives OM-1 to OM-6 in the body frame. Built with `Bodies::build(&AssetSource, &Locations)`; 28 bodies on LIVE 4.10. The spin phase is not in the data and stays the caller's.
