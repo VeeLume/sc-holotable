@@ -446,12 +446,26 @@ impl ObjectContainers {
     /// stations at the jump points). A fraction of [`cook`](Self::cook).
     /// Empty for a snapshot-backed [`AssetSource`].
     pub fn systems(assets: &AssetSource, depth: usize) -> Result<Self> {
+        let (graph, _) = Self::systems_with(assets, depth, |_, _, _| Vec::<()>::new())?;
+        Ok(graph)
+    }
+
+    /// [`systems`](Self::systems), handing every decoded member to `visit`
+    /// as [`walk`](Self::walk) does.
+    pub(crate) fn systems_with<T, F>(
+        assets: &AssetSource,
+        depth: usize,
+        visit: F,
+    ) -> Result<(Self, HashMap<String, Vec<T>>)>
+    where
+        T: Send,
+        F: Fn(&str, &str, &XmlNode) -> Vec<T> + Sync,
+    {
         let roots: Vec<String> = assets
             .find(|n| is_object_container(n) && n.to_ascii_lowercase().ends_with("system.socpak"))
             .map(|e| normalize_socpak_path(e.name))
             .collect();
-        let (graph, _) = Self::walk_levels(assets, &roots, depth, |_, _, _| Vec::<()>::new())?;
-        Ok(graph)
+        Self::walk_levels(assets, &roots, depth, visit)
     }
 
     /// [`walk`](Self::walk), descending at most `depth` levels below the
@@ -801,6 +815,43 @@ impl ObjectContainers {
             }
         }
         any.then_some(acc)
+    }
+
+    /// The system-level placement whose frame `id` is authored in, and `id`'s
+    /// offset in that frame (its `Pos` summed up to, not including, the
+    /// anchor). `None` for a placement that is itself system-level (a body,
+    /// moon, Lagrange or jump point) or whose chain never reaches one.
+    ///
+    /// The offset is exact in the anchor's own frame, so two places under the
+    /// same anchor are exactly as far apart as their offsets say, whatever
+    /// the body's rotation.
+    pub fn anchor_frame(&self, id: PlacementId) -> Option<(PlacementId, [f64; 3])> {
+        let chain = self.chain(id.0);
+        let anchor = chain
+            .iter()
+            .rposition(|&j| self.placements[j].socpak.ends_with("system.socpak"))?;
+        if anchor + 1 == chain.len() {
+            return None;
+        }
+        let mut local = [0.0f64; 3];
+        for &j in &chain[anchor + 1..] {
+            if let Some(p) = self.placements[j].pos {
+                for (l, v) in local.iter_mut().zip(p) {
+                    *l += v;
+                }
+            }
+        }
+        Some((PlacementId(chain[anchor]), local))
+    }
+
+    /// Placements whose storage key is the `EntityCryGUID` `cry` (any
+    /// rendering), across socpaks: cloned containers reuse them.
+    pub(crate) fn by_cry(&self, cry: &str) -> impl Iterator<Item = PlacementId> + '_ {
+        cry_key(cry)
+            .and_then(|k| self.by_key.get(&k))
+            .into_iter()
+            .flatten()
+            .map(|&i| PlacementId(i))
     }
 }
 

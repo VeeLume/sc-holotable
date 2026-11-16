@@ -264,6 +264,16 @@ impl<'u> Place<'u> {
             .and_then(|id| self.universe.containers.global_position(id))
     }
 
+    /// The system-level place this one is authored under, and its offset in
+    /// that place's own frame, m ([`ObjectContainers::anchor_frame`]). `None`
+    /// for a system-level place, or when the anchor names no
+    /// `StarMapObject`.
+    pub fn anchor(&self) -> Option<(Guid, [f64; 3])> {
+        let containers = &self.universe.containers;
+        let (anchor, local) = containers.anchor_frame(self.placement?)?;
+        Some((containers.get(anchor).starmap_guid()?, local))
+    }
+
     /// Position with parent fallback: own (global) position → the first *logical*
     /// ancestor (parent body) that has a global position. Good enough for ordering
     /// by which body a stop sits at, even when the stop itself isn't placed.

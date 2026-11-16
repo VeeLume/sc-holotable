@@ -51,9 +51,32 @@ pub struct Waypoint {
     pub kind: LocationKind,
     /// Its system: the star the star map roots it at (Stanton, Pyro, Nyx).
     pub system: Option<Guid>,
-    /// System-global position, m.
+    /// System-global position, m. Exact for a system-level place (a body, a
+    /// Lagrange or jump point); for one placed on a body, the body's
+    /// rotation is ignored (see the module docs).
     pub position: [f64; 3],
+    /// The system-level place this one is authored under (the body an
+    /// outpost or station sits on, the Lagrange point a rest stop is at).
+    /// `None` for a system-level place.
+    #[serde(default)]
+    pub anchor: Option<Guid>,
+    /// The offset from `anchor` in the anchor's own frame, m, as authored:
+    /// exact, so two places under one anchor are exactly as far apart as
+    /// their offsets say ([`Waypoints::distance`] uses it).
+    #[serde(default)]
+    pub local: Option<[f64; 3]>,
     pub quantum: QuantumTravel,
+}
+
+/// The system of a star-map place: the star the star map roots it at (the
+/// star or solar system itself for those).
+pub(crate) fn system_of(star_map: &crate::Locations, guid: &Guid) -> Option<Guid> {
+    star_map.ancestors(guid).last().map(|a| a.guid).or_else(|| {
+        star_map
+            .get(guid)
+            .filter(|l| matches!(l.kind, LocationKind::Star | LocationKind::SolarSystem))
+            .map(|l| l.guid)
+    })
 }
 
 impl Waypoint {
@@ -90,20 +113,20 @@ impl Waypoints {
             let Some(position) = universe.by_guid(*guid).and_then(|p| p.global_position()) else {
                 continue;
             };
-            // The star map roots each system at its star.
-            let system = star_map.ancestors(guid).last().map(|a| a.guid).or(matches!(
-                location.kind,
-                LocationKind::Star | LocationKind::SolarSystem
-            )
-            .then_some(*guid));
+            let (anchor, local) = universe
+                .by_guid(*guid)
+                .and_then(|p| p.anchor())
+                .map_or((None, None), |(a, l)| (Some(a), Some(l)));
             by_guid.insert(
                 *guid,
                 Waypoint {
                     guid: *guid,
                     name_key: location.name_key.clone(),
                     kind: location.kind.clone(),
-                    system,
+                    system: system_of(star_map, guid),
                     position,
+                    anchor,
+                    local,
                     quantum,
                 },
             );
@@ -113,14 +136,22 @@ impl Waypoints {
 
     /// Centre-to-centre distance between two waypoints, m; `None` across
     /// systems (each has its own frame) or for an unknown GUID.
+    ///
+    /// Exact between two places under the same anchor and between a place
+    /// and its anchor (both from the authored offsets); otherwise from the
+    /// system-global positions, off by at most the anchors' radii.
     pub fn distance(&self, a: &Guid, b: &Guid) -> Option<f64> {
         let (a, b) = (self.by_guid.get(a)?, self.by_guid.get(b)?);
         if a.system != b.system {
             return None;
         }
-        let d: f64 = (0..3)
-            .map(|i| (a.position[i] - b.position[i]).powi(2))
-            .sum();
+        let (p, q) = match (a.anchor, b.anchor, a.local, b.local) {
+            (Some(x), Some(y), Some(p), Some(q)) if x == y => (p, q),
+            (_, Some(y), _, Some(q)) if y == a.guid => ([0.0; 3], q),
+            (Some(x), _, Some(p), _) if x == b.guid => (p, [0.0; 3]),
+            _ => (a.position, b.position),
+        };
+        let d: f64 = (0..3).map(|i| (p[i] - q[i]).powi(2)).sum();
         Some(d.sqrt())
     }
 

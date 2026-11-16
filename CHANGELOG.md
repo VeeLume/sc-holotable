@@ -13,6 +13,14 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-locations`: `Bodies` / `Body`, every planet and moon with its geometry.** Fields: the `StarMapObject` GUID, the object container (`short_id()` gives `stanton1a`, an id only, never a join), system, system-global centre, `radius` (`planetRadius`), `rotation_period_h` (`planetRotationSpeed`), `axis` (`planetAxis`), `atmosphere_height` in metres (the body `.ale`'s `AtmoHeight`) and the star map's quantum radii. Each body container is joined to its `StarMapObject` through the system container's placement, never by file name. `Body::om_radius()` is `sqrt(2) * obstructionRadius + 10 km`. The game derives the orbital markers rather than storing them; this formula reproduces Murphy's Navigation Tool to within 50 m on 25 bodies. `Body::orbital_markers()` gives OM-1 to OM-6 in the body frame. Built with `Bodies::build(&AssetSource, &Locations)`; 28 bodies on LIVE 4.10. The spin phase is not in the data and stays the caller's.
+- **`sc-locations`: `JumpLinks` / `JumpLink { entry, exit }`, which jump point leads to which.** It is read from each jump point's `jumpGateSuperGuid` and joined by `EntityCryGUID` to the target system's placement and its `StarMapObject`. Built with `JumpLinks::build(&AssetSource)`. On LIVE 4.10 there are 6 links, every one with a link back: Stanton–Pyro, Pyro–Nyx, and the temporary Stanton–Nyx link at the Magnus and Castra sites. Whether a link is open is not in the data.
+- **`sc-locations`: `Waypoint::anchor` and `Waypoint::local`.** These hold the system-level place a waypoint is authored under (the body an outpost or station sits on) and its exact offset in that place's frame. `Waypoints::distance` is now exact between two places under one anchor and between a place and its anchor. Also new: `Place::anchor()` and `ObjectContainers::anchor_frame()`.
+- **`sc-locations`: `QuantumTravel` gains `arrival_point_detection_offset` and `sub_point_radius_multiplier`.** Both are passed through raw; neither scales the orbital markers.
+- Probe `examples/travel_data.rs` re-proves all of the above on the installed build.
+
 ## [v0.52.0] - 2026-11-16
 
 ### Added

@@ -57,6 +57,10 @@ mod universe;
 pub use universe::{Place, Universe};
 mod waypoints;
 pub use waypoints::{Waypoint, Waypoints};
+mod bodies;
+pub use bodies::{Bodies, Body, OM_OFFSET_M};
+mod jump_links;
+pub use jump_links::{JumpLink, JumpLinks};
 
 /// Typed location category, resolved from a `StarMapObjectType.name`. The known
 /// variants are the 21 type records observed in live DCB data; a value the
@@ -235,8 +239,18 @@ pub struct QuantumTravel {
     pub arrival_radius: f32,
     /// `obstructionRadius`: a route passing closer is blocked.
     pub obstruction_radius: f32,
-    /// `adoptionRadius`.
+    /// `adoptionRadius`. On a planet with moons it encloses them (Hurston
+    /// 128,354,900), so it is a parent zone, not the body's spin frame.
     pub adoption_radius: f32,
+    /// `arrivalPointDetectionOffset`. Varies per body (Hurston 10,000,
+    /// Crusader 200,000); not the 10 km in [`Body::om_radius`].
+    #[serde(default)]
+    pub arrival_point_detection_offset: f32,
+    /// `subPointRadiusMultiplier`: 1.5 on almost every object (Crusader
+    /// 1.512, stars 7.5 and 25). Its use is unknown: it does not scale the
+    /// orbital markers.
+    #[serde(default)]
+    pub sub_point_radius_multiplier: f32,
 }
 
 // `QuantumTravel` holds floats; equality on a location is still exact.
@@ -512,6 +526,8 @@ fn location_for(guid: Guid, obj: &StarMapObject, store: &RecordStore) -> Locatio
                 arrival_radius: q.arrival_radius,
                 obstruction_radius: q.obstruction_radius,
                 adoption_radius: q.adoption_radius,
+                arrival_point_detection_offset: q.arrival_point_detection_offset,
+                sub_point_radius_multiplier: q.sub_point_radius_multiplier,
             }),
     }
 }
