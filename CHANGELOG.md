@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.52.0] - 2026-11-16
+
 ### Added
 
 - **`sc-law`: new foundational crate with `Jurisdictions`.** It covers every `Jurisdiction` record: name key, parent and `respects_parent_laws`, prison flag, stolen-goods limit, contraband (`prohibited_resources` as `ResourceType` GUIDs, `prohibited_goods` as entity-class GUIDs) and `controlled_substances` (resources, commodities and the possession limit per class). Built with `Jurisdictions::build(&RecordStore)` or `JurisdictionsBuilder`, readable through `RecordCollection`. References stay GUIDs: the probe `examples/jurisdictions.rs` asserts that every resource reference resolves in `Resources` and every goods reference is an `EntityClassDefinition`. Parent laws are passed through raw; whether a parent's lists apply in game is unverified, so there is no inherited-law helper. Umbrella feature `law`, module `sc_holotable::law`, prelude exports `Jurisdiction`, `Jurisdictions` and `ControlledSubstanceClass`.
