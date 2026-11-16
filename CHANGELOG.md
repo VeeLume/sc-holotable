@@ -13,6 +13,15 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-law`: new foundational crate with `Jurisdictions`.** It covers every `Jurisdiction` record: name key, parent and `respects_parent_laws`, prison flag, stolen-goods limit, contraband (`prohibited_resources` as `ResourceType` GUIDs, `prohibited_goods` as entity-class GUIDs) and `controlled_substances` (resources, commodities and the possession limit per class). Built with `Jurisdictions::build(&RecordStore)` or `JurisdictionsBuilder`, readable through `RecordCollection`. References stay GUIDs: the probe `examples/jurisdictions.rs` asserts that every resource reference resolves in `Resources` and every goods reference is an `EntityClassDefinition`. Parent laws are passed through raw; whether a parent's lists apply in game is unverified, so there is no inherited-law helper. Umbrella feature `law`, module `sc_holotable::law`, prelude exports `Jurisdiction`, `Jurisdictions` and `ControlledSubstanceClass`.
+- **`sc-extract`: `RecordPath::short_name()`.** Returns the record name without its `Type.` prefix (`Jurisdiction.ArcCorp` reads `ArcCorp`). Use it as a label, never as a join key.
+
+### Changed
+
+- **`sc-holotable`: `Foundations` and `HolotableSnapshot` gain `jurisdictions`; `HOLOTABLE_COOK_VERSION` 9.** The `foundations` feature now pulls `law`. v8 snapshots are rejected and rebuilt.
+
 ## [v0.51.0] - 2026-11-15
 
 ### Added

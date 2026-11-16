@@ -38,6 +38,7 @@ error policy.
 | `sc-tags` | Tag tree (roots / ancestors / descendants). |
 | `sc-manufacturers` | Manufacturer registry (by GUID / by code). |
 | `sc-resources` | `ResourceType` catalog + refining graph + per-resource quality bridge. |
+| `sc-law` | Law-system jurisdictions: contraband, controlled substances, parent links. |
 | `sc-locations` | Typed `StarMapObject` surface + universe hierarchy. |
 | `sc-gathering` | Resource-gathering providers (mining / salvage / plants). |
 
@@ -68,7 +69,7 @@ them for fast load. `sc-extract-generated` is workspace-internal codegen output
 ```
   domain          sc-crafting   sc-weapons   sc-missions   sc-items-*
                         \             \           /           /
-  foundational    sc-items  sc-tags  sc-manufacturers  sc-resources  sc-locations  sc-gathering
+  foundational    sc-items  sc-tags  sc-manufacturers  sc-resources  sc-law  sc-locations  sc-gathering
                         \                      |                          /
   I/O-boundary                          sc-extract  ──►  svarog (re-exported escape hatch)
 

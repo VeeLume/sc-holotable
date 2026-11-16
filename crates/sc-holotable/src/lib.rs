@@ -34,6 +34,7 @@
 //! | `installs` | `install` | install discovery (no svarog, no p4k) |
 //! | `extract` | `asset` | `Datacore`, `AssetSource`, `LocaleMap`, snapshots |
 //! | `items` / `tags` / `manufacturers` / `resources` / `locations` | same names | the foundational record indices |
+//! | `law` | `law` | jurisdictions: contraband, controlled substances, parent links |
 //! | `gathering` | `gathering` | resource providers (pulls `locations`) |
 //! | `fps-weapons` / `armor` / `ship-components` / `ship-weapons` | `fps_weapons` … | per-item-type base-stat sheets |
 //! | `visuals` | `visuals` | render recipes and inventory presentation (orientation, light rig, palettes) |
@@ -100,6 +101,13 @@ pub mod tags {
 pub mod manufacturers {
     //! Manufacturer registry ([`sc_manufacturers`]).
     pub use sc_manufacturers::*;
+}
+
+#[cfg(feature = "law")]
+pub mod law {
+    //! Law-system jurisdictions ([`sc_law`]) — `Jurisdiction` records,
+    //! what each prohibits and which substances it controls.
+    pub use sc_law::*;
 }
 
 #[cfg(feature = "resources")]
@@ -272,6 +280,8 @@ pub mod prelude {
     pub use sc_items_visuals::{
         Garment, Garments, InventoryView, Outfit, Palettes, Visual, Visuals, ZoneState,
     };
+    #[cfg(feature = "law")]
+    pub use sc_law::{ControlledSubstanceClass, Jurisdiction, Jurisdictions};
     #[cfg(feature = "locations")]
     pub use sc_locations::{
         Location, LocationKind, Locations, ObjectContainers, Place, Placement, PlacementId,

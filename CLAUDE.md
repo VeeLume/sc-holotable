@@ -32,7 +32,7 @@ Load-bearing; deviating is a deliberate decision, not an accident. Rationale for
 `Cargo.toml` `members` is the authoritative crate list. By role:
 
 - **I/O-boundary** (fallible, own an `Error`): `sc-discovery` (standalone, no svarog), `sc-extract`; `sc-extract-generated` is workspace-internal generator output.
-- **Foundational** (build from `&RecordStore`): `sc-items`, `sc-tags`, `sc-manufacturers`, `sc-resources`, `sc-locations`, `sc-gathering`.
+- **Foundational** (build from `&RecordStore`): `sc-items`, `sc-tags`, `sc-manufacturers`, `sc-resources`, `sc-law`, `sc-locations`, `sc-gathering`.
 - **Domain** (build from `&Datacore` + indices): `sc-crafting`, `sc-items-{fps-weapons,armor,ship-components,ship-weapons}`, `sc-missions`, `sc-weapons` (legacy; still the only home of DPS maths).
 - **Umbrella**: `sc-holotable` — the recommended consumer dependency (features, `prelude`, `build_foundations`, `HolotableSnapshot`).
 - **Tools**: `sc-generator` (DCB schema → Rust), `sc-bench`, `sc-explorer` (TUI), `sc-cargo-viewer` (3D cargo-grid viewer), `sc-regen` (bindings watcher), `bench/bench.ps1`.

@@ -12,6 +12,7 @@ use sc_extract::{
 };
 use sc_gathering::Providers;
 use sc_items::{Items, ItemsBuilder};
+use sc_law::{Jurisdictions, JurisdictionsBuilder};
 use sc_locations::{Locations, LocationsBuilder};
 use sc_manufacturers::{Manufacturers, ManufacturersBuilder};
 use sc_resources::{Resources, ResourcesBuilder};
@@ -25,6 +26,7 @@ pub struct Foundations {
     pub tags: Tags,
     pub manufacturers: Manufacturers,
     pub resources: Resources,
+    pub jurisdictions: Jurisdictions,
     pub locations: Locations,
     pub paths: RecordPaths,
     /// Resource-gathering providers (mining/salvage/plants spine). Built after
@@ -39,12 +41,13 @@ pub struct Foundations {
 /// the walk is a full pass and the four type-readers ride along for free —
 /// strictly cheaper than five independent `X::build`s.
 pub fn build_foundations(datacore: &Datacore) -> Foundations {
-    let (items, tags, manufacturers, resources, locations, paths) =
+    let (items, tags, manufacturers, resources, jurisdictions, locations, paths) =
         BundledWalk::new(datacore).run((
             ItemsBuilder::default(),
             TagsBuilder::default(),
             ManufacturersBuilder::default(),
             ResourcesBuilder::default(),
+            JurisdictionsBuilder::default(),
             LocationsBuilder::default(),
             RecordPathsBuilder::default(),
         ));
@@ -56,6 +59,7 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
         tags,
         manufacturers,
         resources,
+        jurisdictions,
         locations,
         paths,
         gathering,
@@ -74,7 +78,8 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
 /// v7 (2026-10-21): `Location` gained `quantum`.
 /// v8 (2026-11-15): `Locations` persists the `SSolarSystem` links behind
 /// `system_of` (a v7 snapshot would load without them).
-pub const HOLOTABLE_COOK_VERSION: u32 = 8;
+/// v9 (2026-11-16): added optional `jurisdictions: Jurisdictions` field.
+pub const HOLOTABLE_COOK_VERSION: u32 = 9;
 
 /// A batteries-included bundle of cooked indices, serializable for fast load.
 ///
@@ -88,6 +93,7 @@ pub struct HolotableSnapshot {
     pub tags: Option<Tags>,
     pub manufacturers: Option<Manufacturers>,
     pub resources: Option<Resources>,
+    pub jurisdictions: Option<Jurisdictions>,
     pub locations: Option<Locations>,
     pub paths: Option<RecordPaths>,
     pub gathering: Option<Providers>,
@@ -101,6 +107,7 @@ impl HolotableSnapshot {
             tags: Some(f.tags.clone()),
             manufacturers: Some(f.manufacturers.clone()),
             resources: Some(f.resources.clone()),
+            jurisdictions: Some(f.jurisdictions.clone()),
             locations: Some(f.locations.clone()),
             paths: Some(f.paths.clone()),
             gathering: Some(f.gathering.clone()),
@@ -141,6 +148,7 @@ mod tests {
             tags: Some(Tags::new()),
             manufacturers: Some(Manufacturers::new()),
             resources: Some(Resources::new()),
+            jurisdictions: Some(Jurisdictions::new()),
             paths: Some(paths),
             ..Default::default()
         };
@@ -154,5 +162,6 @@ mod tests {
         assert!(loaded.tags.is_some());
         assert!(loaded.manufacturers.is_some());
         assert!(loaded.resources.is_some());
+        assert!(loaded.jurisdictions.is_some());
     }
 }

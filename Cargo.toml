@@ -18,6 +18,7 @@ members = [
     "crates/sc-gathering",
     "crates/sc-manufacturers",
     "crates/sc-resources",
+    "crates/sc-law",
     "crates/sc-tags",
     "crates/sc-weapons",
     "crates/sc-missions",
@@ -56,6 +57,7 @@ sc-vehicles = { path = "crates/sc-vehicles" }
 sc-locations = { path = "crates/sc-locations" }
 sc-manufacturers = { path = "crates/sc-manufacturers" }
 sc-resources = { path = "crates/sc-resources" }
+sc-law = { path = "crates/sc-law" }
 sc-tags = { path = "crates/sc-tags" }
 sc-weapons = { path = "crates/sc-weapons" }
 sc-missions = { path = "crates/sc-missions" }

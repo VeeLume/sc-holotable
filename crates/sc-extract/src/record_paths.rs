@@ -56,6 +56,22 @@ pub struct RecordPath {
     pub path: String,
 }
 
+impl RecordPath {
+    /// The record name without its `Type.` prefix: `Jurisdiction.ArcCorp`
+    /// reads `ArcCorp`. A label, never a join key (names are non-unique).
+    ///
+    /// ```no_run
+    /// # fn demo(paths: &sc_extract::RecordPaths, guid: &sc_extract::Guid) {
+    /// let label = paths.get(guid).map(|p| p.short_name());
+    /// # }
+    /// ```
+    pub fn short_name(&self) -> &str {
+        self.name
+            .split_once('.')
+            .map_or(self.name.as_str(), |(_, rest)| rest)
+    }
+}
+
 /// One node in the `/`-segment path trie. Stored in an arena
 /// ([`RecordPaths::nodes`]); children reference each other by index.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -377,5 +393,15 @@ mod tests {
                 .count(),
             2
         );
+    }
+
+    #[test]
+    fn short_name_strips_the_type_prefix() {
+        assert_eq!(
+            rref(g(1), "a.xml", "Jurisdiction.ArcCorp").short_name(),
+            "ArcCorp"
+        );
+        assert_eq!(rref(g(1), "a.xml", "A.b.c").short_name(), "b.c");
+        assert_eq!(rref(g(1), "a.xml", "Bare").short_name(), "Bare");
     }
 }

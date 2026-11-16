@@ -1,0 +1,18 @@
+[package]
+name = "sc-law"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# `lawsystem` decodes the Jurisdiction record type (and its inline
+# ControlledSubstanceClass elements) this crate walks.
+sc-extract = { workspace = true, features = ["lawsystem"] }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }
+# The probe checks every resource reference against the resource catalog.
+sc-resources = { workspace = true }
+serde_json = { workspace = true }
