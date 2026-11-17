@@ -17,12 +17,23 @@
 //! [`ProviderLocations::cook`] needs a **live** p4k. The join
 //! ([`ProviderLocations::compose`]) and the per-member extraction are
 //! unit-tested; the full cook is a p4k-time step.
+//!
+//! # Sites and their markers
+//!
+//! [`ProviderLocations::sites_of`] lists every placement that carries a
+//! provider (a [`Site`]): where it is and the place it resolves to. A ring
+//! or belt field in an unnamed segment resolves to its system's **star**,
+//! which no quantum travel targets. For such a site, [`Site::markers`] names
+//! the places in the same segment: on LIVE 4.10 the Glaciem Ring's asteroid
+//! clusters and mining bases, the Keeger Belt's breaker stations. Those are
+//! where a run in the ring starts. A field directly under the star, outside
+//! any segment (the Aaron Halo), has none.
 
 use std::collections::HashMap;
 
 use sc_extract::object_container::XmlNode;
 use sc_extract::{AssetSource, Guid, RecordStore, Result};
-use sc_locations::{ObjectContainers, normalize_socpak_path};
+use sc_locations::{ObjectContainers, PlacementId, normalize_socpak_path};
 use serde::{Deserialize, Serialize};
 
 /// `StarMapObject` ↔ `HarvestableProviderPreset` GUID, both directions.
@@ -32,11 +43,31 @@ pub struct ProviderLocations {
     by_location: HashMap<Guid, Vec<Guid>>,
     /// provider GUID → the places it applies to (1:many — reused socpaks).
     by_provider: HashMap<Guid, Vec<Guid>>,
+    /// provider GUID → every placement that carries it.
+    #[serde(default)]
+    sites: HashMap<Guid, Vec<Site>>,
+}
+
+/// One placement that carries a provider: a field, a body, an asteroid base.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Site {
+    /// The place it resolves to (the [`ProviderLocations::providers_at`] key).
+    pub place: Guid,
+    /// System-global position of the placement, m (the field's centre, or
+    /// the body's).
+    pub position: Option<[f64; 3]>,
+    /// When `place` is the system's star (a ring or belt field in an
+    /// unnamed segment): the named places in that segment, in GUID order.
+    /// Intersect with `sc_locations::Waypoints` for the quantum targets a
+    /// run starts from. A segment can hold none (one Glaciem segment holds
+    /// only a QV Logistics Station), so a route to a provider takes the
+    /// union over its sites. Empty otherwise.
+    pub markers: Vec<Guid>,
 }
 
 impl ProviderLocations {
     /// Bump when the cooked layout changes (for `ProcessedSnapshot` gating).
-    pub const COOK_SCHEMA_VERSION: u32 = 2;
+    pub const COOK_SCHEMA_VERSION: u32 = 3;
 
     /// Cook from a live p4k: walk the object containers of every solar system
     /// the `MegaMap` records list (only what they include, read in parallel)
@@ -82,7 +113,14 @@ impl ProviderLocations {
         {
             list.sort_by_key(Guid::to_string);
         }
+        pl.sites = sites(containers, socpak_providers);
         pl
+    }
+
+    /// Every placement that carries `provider` ([`Site`]); empty for an
+    /// unknown one.
+    pub fn sites_of(&self, provider: &Guid) -> &[Site] {
+        self.sites.get(provider).map(Vec::as_slice).unwrap_or(&[])
     }
 
     /// The providers that apply at a place (`StarMapObject` GUID).
@@ -109,6 +147,66 @@ impl ProviderLocations {
     pub fn is_empty(&self) -> bool {
         self.by_location.is_empty()
     }
+}
+
+/// The [`Site`]s of every provider: each placement including a provider
+/// socpak, the place it resolves to (the nearest named placement up its
+/// containment chain), and, when that is the chain's root (the star), the
+/// named places under the same top-level segment.
+fn sites(
+    containers: &ObjectContainers,
+    socpak_providers: &HashMap<String, Vec<Guid>>,
+) -> HashMap<Guid, Vec<Site>> {
+    // Named placements by their top-level segment (the chain's second link).
+    let mut by_segment: HashMap<PlacementId, Vec<Guid>> = HashMap::new();
+    for (id, p) in containers.iter() {
+        let Some(g) = p.starmap_guid() else { continue };
+        let chain = containers.chain_of(id);
+        if let Some(&segment) = chain.get(1) {
+            let named = by_segment.entry(segment).or_default();
+            if !named.contains(&g) {
+                named.push(g);
+            }
+        }
+    }
+    for named in by_segment.values_mut() {
+        named.sort_by_key(Guid::to_string);
+    }
+    let mut out: HashMap<Guid, Vec<Site>> = HashMap::new();
+    for (socpak, providers) in socpak_providers {
+        for &id in containers.nesting(socpak) {
+            let chain = containers.chain_of(id);
+            let Some(named) = chain
+                .iter()
+                .rposition(|&c| containers.get(c).starmap_guid().is_some())
+            else {
+                continue;
+            };
+            let place = containers.get(chain[named]).starmap_guid().expect("named");
+            let markers = match (named, chain.get(1)) {
+                (0, Some(segment)) => by_segment.get(segment).cloned().unwrap_or_default(),
+                _ => Vec::new(),
+            };
+            let site = Site {
+                place,
+                position: containers.global_position(id),
+                markers,
+            };
+            for &provider in providers {
+                out.entry(provider).or_default().push(site.clone());
+            }
+        }
+    }
+    for list in out.values_mut() {
+        list.sort_by(|a, b| {
+            a.place.to_string().cmp(&b.place.to_string()).then(
+                a.position
+                    .partial_cmp(&b.position)
+                    .unwrap_or(std::cmp::Ordering::Equal),
+            )
+        });
+    }
+    out
 }
 
 /// The object containers of every solar system the `MegaMap` records list
@@ -299,5 +397,39 @@ mod tests {
         assert_eq!(pl.providers_at(&g_(BELT)), [g_(P_BODY), g_(P_CLOUD)]);
         assert_eq!(pl.locations_of(&g_(CLIO)), [g_(CLAIM_A), g_(CLAIM_B)]);
         assert_eq!(pl.len(), 3);
+    }
+
+    const STAR: &str = "66666666-6666-6666-6666-666666666666";
+    const BASE: &str = "77777777-7777-7777-7777-777777777777";
+    const BODY: &str = "88888888-8888-8888-8888-888888888888";
+
+    /// A cloud in an unnamed segment resolves to the star and gets the named
+    /// places in its segment as markers; a field on a named body resolves to
+    /// the body and needs none.
+    #[test]
+    fn sites_mark_star_fields_with_their_segment() {
+        let g = graph(serde_json::json!([
+            placement(1, "sys.socpak", "star.socpak", Some(STAR), None),
+            placement(2, "sys.socpak", "segment.socpak", None, Some(1)),
+            placement(3, "segment.socpak", "cloud.socpak", None, None),
+            placement(4, "segment.socpak", "base.socpak", Some(BASE), None),
+            placement(5, "sys.socpak", "body.socpak", Some(BODY), Some(1)),
+            placement(6, "body.socpak", "field.socpak", None, None),
+        ]));
+        let g_ = |s: &str| s.parse::<Guid>().unwrap();
+        let providers = HashMap::from([
+            ("cloud.socpak".to_string(), vec![g_(P_CLOUD)]),
+            ("field.socpak".to_string(), vec![g_(P_BODY)]),
+        ]);
+        let pl = ProviderLocations::compose(&g, &providers);
+        let cloud = pl.sites_of(&g_(P_CLOUD));
+        assert_eq!(cloud.len(), 1);
+        assert_eq!(
+            (cloud[0].place, cloud[0].markers.as_slice()),
+            (g_(STAR), [g_(BASE)].as_slice())
+        );
+        let field = pl.sites_of(&g_(P_BODY));
+        assert_eq!((field[0].place, field[0].markers.len()), (g_(BODY), 0));
+        assert!(pl.sites_of(&g_(BASE)).is_empty());
     }
 }

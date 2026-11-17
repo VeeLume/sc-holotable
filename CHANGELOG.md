@@ -13,6 +13,10 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-gathering`: `ProviderLocations::sites_of(provider)` and `Site`.** These list every placement that carries a provider, with the place it resolves to and its system-global position. Ring and belt fields in unnamed segments resolve to their system's star, which quantum travel can't target. For those, `Site::markers` names the places in the same segment, where a run starts. On LIVE 4.10 the Glaciem Ring's markers include Levski, and the Keeger Belt's include the People's Service Stations. The Aaron Halo's field sits outside any segment and has none. Intersect the markers with `Waypoints` for quantum targets, and take the union over a provider's sites. `COOK_SCHEMA_VERSION` 3. Probe `examples/entry_markers_probe.rs`.
+
 ## [v0.54.0] - 2026-11-16
 
 ### Fixed
