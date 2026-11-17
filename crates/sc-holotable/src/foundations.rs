@@ -79,7 +79,9 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
 /// v8 (2026-11-15): `Locations` persists the `SSolarSystem` links behind
 /// `system_of` (a v7 snapshot would load without them).
 /// v9 (2026-11-16): added optional `jurisdictions: Jurisdictions` field.
-pub const HOLOTABLE_COOK_VERSION: u32 = 9;
+/// v10 (2026-11-17): `Resource::groups` and `Item::resource_container` (a v9
+/// snapshot would load with them empty).
+pub const HOLOTABLE_COOK_VERSION: u32 = 10;
 
 /// A batteries-included bundle of cooked indices, serializable for fast load.
 ///

@@ -19,6 +19,8 @@ sc-extract = { workspace = true, features = [
     "itemresourcenetwork",
 ] }
 sc-items = { workspace = true }
+# `Resource` groups: which holds take which ore or salvage (`Storage::capacity_for`).
+sc-resources = { workspace = true }
 # Render recipes: a loadout assembled for drawing (`scene`).
 sc-items-visuals = { workspace = true }
 # Component sheets (thrust, flight controller) for the derived flight stats.

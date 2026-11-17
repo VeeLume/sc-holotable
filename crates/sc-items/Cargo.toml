@@ -11,6 +11,9 @@ rust-version.workspace = true
 # crate's typed walk reaches — sc-items owns its feature closure so consumers
 # depend on it alone and get a populated cache.
 sc-extract = { workspace = true, features = ["entities-scitem", "inventorycontainers"] }
+# `ResourceContainer`: what a mining pod, salvage hold or fuel tank holds and
+# takes, in sc-resources' units and resource / group GUIDs.
+sc-resources = { workspace = true }
 serde = { workspace = true }
 tracing = { workspace = true }
 

@@ -3231,6 +3231,7 @@ version = "0.0.0"
 dependencies = [
  "sc-discovery",
  "sc-extract",
+ "sc-resources",
  "sc-tags",
  "serde",
  "serde_json",
@@ -3459,6 +3460,7 @@ dependencies = [
  "sc-items",
  "sc-items-ship-components",
  "sc-items-visuals",
+ "sc-resources",
  "sc-weapons",
  "serde",
  "tracing",

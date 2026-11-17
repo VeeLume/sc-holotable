@@ -50,6 +50,7 @@ use sc_extract::generated::{
     SAttachableComponentParams, SEntityBasePhysicsControllerParamsPtr,
 };
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, RecordStore};
+pub use sc_resources::ResourceContainer;
 use serde::{Deserialize, Serialize};
 use tracing::warn;
 
@@ -144,6 +145,10 @@ pub struct Item {
     /// inventory.
     #[serde(default)]
     pub occupancy: Option<f64>,
+    /// Its `ResourceContainer` component: what a mining pod, salvage hold or
+    /// fuel tank holds and takes.
+    #[serde(default)]
+    pub resource_container: Option<ResourceContainer>,
 }
 
 impl Item {
@@ -357,6 +362,12 @@ fn item_for(ecd: &EntityClassDefinition, store: &RecordStore) -> Option<Item> {
             .inventory_occupancy_volume
             .as_ref()
             .and_then(|v| inventory::scu(v, pools)),
+        resource_container: ecd.components.iter().find_map(|c| match c {
+            DataForgeComponentParamsPtr::ResourceContainer(h) => h
+                .get(pools)
+                .map(|rc| ResourceContainer::from_raw(rc, pools)),
+            _ => None,
+        }),
     })
 }
 
@@ -470,6 +481,7 @@ mod tests {
             mass: None,
             inventory: None,
             occupancy: None,
+            resource_container: None,
         }
     }
 

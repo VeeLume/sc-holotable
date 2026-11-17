@@ -1,5 +1,6 @@
-//! What a vehicle stores: cargo grids, storage lockers, suit lockers and
-//! weapon racks, from its loadout and the entities its interior places.
+//! What a vehicle stores: cargo grids, storage lockers, suit lockers,
+//! weapon racks and resource holds (mining pods, salvage storage), from its
+//! loadout and the entities its interior places.
 //!
 //! Read from LIVE 4.10. Cargo grids and storage are items with an
 //! inventory ([`sc_items::Inventory`]): an open container is a grid, a
@@ -15,7 +16,8 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use sc_extract::generated::{EItemSubType, EItemType};
 use sc_extract::{Guid, PortType, RecordCollection};
-use sc_items::{Inventory, InventoryKind, Items};
+use sc_items::{Inventory, InventoryKind, Items, ResourceContainer};
+use sc_resources::Resource;
 use serde::{Deserialize, Serialize};
 
 use crate::{Mounted, PlacedEntity, Port, PortContainers, Transform, Vehicle, Vehicles};
@@ -34,6 +36,40 @@ pub struct Storage {
     /// Entities whose ports take personal weapons (fire-extinguisher
     /// cabinets among them: their one slot takes a gadget).
     pub weapon_racks: Vec<Rack>,
+    /// Resource holds: mining pods, salvage storage.
+    #[serde(default)]
+    pub holds: Vec<Hold>,
+}
+
+impl Storage {
+    /// How much of `resource` the holds take together, SCU: the ore hold
+    /// for a mineral, the salvage hold for scrap. LIVE 4.10 stock: Prospector
+    /// 32 (4 × 8), MOLE 96 (8 × 12), Golem 32 (2 × 16), ROC 1.2.
+    pub fn capacity_for(&self, resource: &Resource) -> f64 {
+        self.holds
+            .iter()
+            .filter(|h| h.container.accepts(resource))
+            .map(Hold::scu)
+            .sum::<f64>()
+            + 0.0
+    }
+}
+
+/// A resource hold: an item with a `ResourceContainer` that is no fuel
+/// tank. A mining pod takes raw minerals and unrefined ores, a salvage hold
+/// recycled material; a stowed, collapsed pod holds 0.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Hold {
+    pub place: Place,
+    pub item: Guid,
+    pub container: ResourceContainer,
+}
+
+impl Hold {
+    /// Its capacity, SCU (0 for a unit that does not convert).
+    pub fn scu(&self) -> f64 {
+        self.container.scu().unwrap_or(0.0)
+    }
 }
 
 /// Where a stored thing sits.
@@ -202,6 +238,19 @@ impl Storage {
                 }),
                 InventoryKind::Other => {}
             }
+        }
+        if let Some(i) = items.get(&item)
+            && let Some(rc) = &i.resource_container
+            && !matches!(
+                i.item_type,
+                EItemType::FuelTank | EItemType::QuantumFuelTank | EItemType::ExternalFuelTank
+            )
+        {
+            self.holds.push(Hold {
+                place: place.clone(),
+                item,
+                container: rc.clone(),
+            });
         }
         let Some(container) = containers.get(&item) else {
             return;

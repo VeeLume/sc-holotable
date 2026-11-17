@@ -39,7 +39,7 @@
 
 use std::collections::HashMap;
 
-use sc_extract::generated::{RecordLookup, ResourceType, SBaseCargoUnitPtr};
+use sc_extract::generated::{RecordLookup, ResourceType, ResourceTypeGroup, SBaseCargoUnitPtr};
 use sc_extract::{DataPools, Guid, LocaleKey, RecordStore};
 use serde::{Deserialize, Serialize};
 
@@ -201,6 +201,12 @@ pub struct Resource {
     /// the distribution / quantization / location-override refs. `Record` refs
     /// resolve against the [`Quality`] catalog. `None` for most resources.
     pub quality: Option<ResourceQuality>,
+    /// Every `ResourceTypeGroup` that holds this resource, directly or
+    /// through a sub-group (`UnrefinedOres`, `Raw_Minerals`, …), in GUID
+    /// order. Containers accept resources by group: see
+    /// [`ResourceContainer::accepts`].
+    #[serde(default)]
+    pub groups: Vec<Guid>,
     // `default_cargo_containers: Option<Handle<SResourceTypeDefaultCargoContainers>>`
     // on the raw record is an inline nested struct (Handle, not Guid). Not
     // surfaced — add when a consumer needs cargo-box defaults.
@@ -228,7 +234,7 @@ impl Resources {
             let Some(rt) = handle.get(pools) else {
                 continue;
             };
-            catalog.insert(resource_for(guid, rt, pools));
+            catalog.insert(resource_for(guid, rt, store));
         }
         catalog
     }
@@ -265,8 +271,10 @@ impl sc_extract::RecordCollection for Resources {
 
 /// Project one typed `ResourceType` into a [`Resource`]. Shared by
 /// [`Resources::build`] and [`ResourcesBuilder`].
-fn resource_for(guid: Guid, rt: &ResourceType, pools: &DataPools) -> Resource {
+fn resource_for(guid: Guid, rt: &ResourceType, store: &RecordStore) -> Resource {
+    let pools = &store.pools;
     Resource {
+        groups: groups_of(guid, store),
         guid,
         name_key: rt.display_name.clone(),
         description_key: rt.description.clone(),
@@ -278,6 +286,94 @@ fn resource_for(guid: Guid, rt: &ResourceType, pools: &DataPools) -> Resource {
         density: extract_density(rt, pools),
         volatility: extract_volatility(rt, pools),
         quality: quality::resource_quality_for(rt, pools),
+    }
+}
+
+/// Every `ResourceTypeGroup` that holds `resource`: the groups listing it in
+/// `resources`, then every group listing one of those in `groups`, until no
+/// new group turns up.
+fn groups_of(resource: Guid, store: &RecordStore) -> Vec<Guid> {
+    let groups: Vec<(Guid, &ResourceTypeGroup)> = store
+        .records
+        .multi_feature
+        .resource_type_group
+        .iter()
+        .filter_map(|(&g, h)| Some((g, h.get(&store.pools)?)))
+        .collect();
+    let mut out: Vec<Guid> = groups
+        .iter()
+        .filter(|(_, g)| g.resources.contains(&resource))
+        .map(|(g, _)| *g)
+        .collect();
+    let mut i = 0;
+    while i < out.len() {
+        let child = out[i];
+        for (g, group) in &groups {
+            if group.groups.contains(&child) && !out.contains(g) {
+                out.push(*g);
+            }
+        }
+        i += 1;
+    }
+    out.sort_by_key(Guid::to_string);
+    out
+}
+
+/// What a `ResourceContainer` holds and takes: a mining pod, a salvage
+/// hold, a fuel tank. The resources are `ResourceType` GUIDs, the groups
+/// `ResourceTypeGroup` GUIDs.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ResourceContainer {
+    /// `capacity`.
+    pub capacity: CargoQuantity,
+    /// `inclusiveResources`.
+    pub resources: Vec<Guid>,
+    /// `inclusiveGroups`.
+    pub groups: Vec<Guid>,
+    /// `exclusiveResources`.
+    pub excluded_resources: Vec<Guid>,
+    /// `exclusiveGroups`.
+    pub excluded_groups: Vec<Guid>,
+}
+
+impl ResourceContainer {
+    /// Project a raw `ResourceContainer` component.
+    pub fn from_raw(rc: &sc_extract::generated::ResourceContainer, pools: &DataPools) -> Self {
+        Self {
+            capacity: rc
+                .capacity
+                .as_ref()
+                .map_or(CargoQuantity::Standard(0.0), |p| {
+                    CargoQuantity::from_ptr(p, pools)
+                }),
+            resources: rc.inclusive_resources.clone(),
+            groups: rc.inclusive_groups.clone(),
+            excluded_resources: rc.exclusive_resources.clone(),
+            excluded_groups: rc.exclusive_groups.clone(),
+        }
+    }
+
+    /// It takes `resource`: listed itself or through one of its
+    /// [`groups`](Resource::groups), and not excluded either way.
+    pub fn accepts(&self, resource: &Resource) -> bool {
+        let listed = |list: &[Guid]| {
+            list.contains(&resource.guid) || resource.groups.iter().any(|g| list.contains(g))
+        };
+        let excluded = self.excluded_resources.contains(&resource.guid)
+            || resource
+                .groups
+                .iter()
+                .any(|g| self.excluded_groups.contains(g));
+        !excluded && (listed(&self.resources) || listed(&self.groups))
+    }
+
+    /// The capacity in SCU, to the game's own resolution (µSCU, so a 1.2 SCU
+    /// pod reads 1.2, not its `f32` 1.2000000476…); `None` for a unit
+    /// [`CargoQuantity`] can't convert.
+    pub fn scu(&self) -> Option<f64> {
+        self.capacity
+            .to_scu()
+            .map(|s| (f64::from(s) * 1e6).round() / 1e6)
     }
 }
 
@@ -350,7 +446,7 @@ impl sc_extract::RecordVisitor for ResourcesBuilder {
         let Some(rt) = handle.get(&store.pools) else {
             return;
         };
-        self.inner.insert(resource_for(item.guid, rt, &store.pools));
+        self.inner.insert(resource_for(item.guid, rt, store));
     }
 
     fn finish(self) -> Resources {
@@ -381,7 +477,33 @@ mod tests {
             }),
             volatility: None,
             quality: None,
+            groups: Vec::new(),
         }
+    }
+
+    /// A container takes a resource it lists, one in a group it lists,
+    /// and nothing it excludes.
+    #[test]
+    fn container_accepts_by_resource_and_group() {
+        let (ore, ores, raw) = (g(1), g(10), g(11));
+        let mut gold = make(ore, "gold", None);
+        gold.groups = vec![ores, raw];
+        let ice = make(g(2), "ice", None);
+        let pod = ResourceContainer {
+            capacity: CargoQuantity::Standard(8.0),
+            resources: vec![g(2)],
+            groups: vec![ores],
+            excluded_resources: Vec::new(),
+            excluded_groups: Vec::new(),
+        };
+        assert!(pod.accepts(&gold) && pod.accepts(&ice));
+        assert!(!pod.accepts(&make(g(3), "fuel", None)));
+        assert_eq!(pod.scu(), Some(8.0));
+        let picky = ResourceContainer {
+            excluded_groups: vec![raw],
+            ..pod
+        };
+        assert!(!picky.accepts(&gold) && picky.accepts(&ice));
     }
 
     #[test]

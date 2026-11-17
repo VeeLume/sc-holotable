@@ -225,6 +225,7 @@ mod tests {
             mass: None,
             inventory: None,
             occupancy: None,
+            resource_container: None,
         }
     }
 

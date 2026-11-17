@@ -685,6 +685,7 @@ fn chance_at_quality() {
         validate_default_cargo_box: false,
         density: None,
         volatility: None,
+        groups: Vec::new(),
         quality: Some(ResourceQuality {
             distribution: Some(DistributionRef::Inline(QualityDistributionShape::Normal {
                 min: 0,
@@ -1184,6 +1185,7 @@ fn quality_source_follows_the_location_chain() {
         validate_default_cargo_box: false,
         density: None,
         volatility: None,
+        groups: Vec::new(),
         quality: Some(ResourceQuality {
             distribution: Some(normal(400.0)),
             quantization: None,

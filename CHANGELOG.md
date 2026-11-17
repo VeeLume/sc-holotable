@@ -16,6 +16,13 @@ pinned. Both tag kinds are monotonic and immutable.
 ### Added
 
 - **`sc-gathering`: `ProviderLocations::sites_of(provider)` and `Site`.** These list every placement that carries a provider, with the place it resolves to and its system-global position. Ring and belt fields in unnamed segments resolve to their system's star, which quantum travel can't target. For those, `Site::markers` names the places in the same segment, where a run starts. On LIVE 4.10 the Glaciem Ring's markers include Levski, and the Keeger Belt's include the People's Service Stations. The Aaron Halo's field sits outside any segment and has none. Intersect the markers with `Waypoints` for quantum targets, and take the union over a provider's sites. `COOK_SCHEMA_VERSION` 3. Probe `examples/entry_markers_probe.rs`.
+- **`sc-vehicles`: resource holds, `Storage::holds` and `Storage::capacity_for(&Resource)`.** A `Hold` is a loadout item with a `ResourceContainer` that isn't a fuel tank: a mining pod, a salvage hold. `capacity_for` sums the holds that accept a resource, by the resource itself or by one of its groups. LIVE 4.10 stock: Prospector 32 SCU of ore (4 pods of 8), MOLE 96 (8 of 12; stowed pods hold 0), Golem 32 (2 of 16), ROC 1.2, ROC-DS 3.4; Reclaimer 448 SCU of salvage, Vulture 16. Probe `examples/ore_holds_probe.rs`.
+- **`sc-resources`: `ResourceContainer` and `Resource::groups`.** `ResourceContainer` is what a container holds and takes: capacity, included and excluded resources and groups, `accepts(&Resource)` and `scu()` (rounded to µSCU). `Resource::groups` lists every `ResourceTypeGroup` that holds the resource, directly or through a sub-group.
+- **`sc-items`: `Item::resource_container`.** It holds the item's `ResourceContainer` component; sc-items now depends on sc-resources.
+
+### Changed
+
+- **`sc-holotable`: `HOLOTABLE_COOK_VERSION` 10.** v9 snapshots lack `Resource::groups` and `Item::resource_container`; they are rejected and rebuilt.
 
 ## [v0.54.0] - 2026-11-16
 
