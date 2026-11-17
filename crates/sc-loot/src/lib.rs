@@ -78,11 +78,13 @@
 //! ```
 
 mod chance;
+mod drops;
 mod placement;
 
 use std::collections::{HashMap, HashSet};
 
 pub use chance::{DropChance, MAX_RESULTS, Odds};
+pub use drops::{Drop, DropSource, Drops};
 pub use placement::{LootPlacement, LootPlacements, Placed};
 pub use sc_extract::RecordCollection;
 use sc_extract::generated as dcb;
