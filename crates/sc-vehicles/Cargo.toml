@@ -32,3 +32,5 @@ tracing = { workspace = true }
 
 [dev-dependencies]
 sc-discovery = { workspace = true }
+# ore_pods_probe: which ore pods are crafted.
+sc-crafting = { workspace = true }
