@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.57.0] - 2026-11-17
+
 ### Added
 
 - **`sc-loot`: `Drops`, where every item drops.** `Drops::build(&tables, &lootables, &placements, &items, runs)` simulates every lootable config once per container it fills and indexes the results by item. `drops.get(&item)` lists `Drop { source, chance, expected }`, most likely first, where `chance` is the chance one fill yields the item. `Drops::source(&drop)` gives the `DropSource`: the lootable, the config index, the container entity and its capacity, and the `StarMapObject`s it sits at with counts (empty for NPC, mission, event and underground-facility loot). On LIVE 4.10 at 2,000 fills it takes about 6 s and covers 3,729 items, 3,650 of them placed on the star map. Probe `examples/drops_probe.rs`.
