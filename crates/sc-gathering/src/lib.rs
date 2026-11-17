@@ -30,7 +30,7 @@ mod mineable;
 mod mode;
 mod provider;
 
-pub use location::{ProviderLocations, Site};
+pub use location::{ProviderLocations, Ring, Site};
 pub use mineable::{Deposit, DepositPart};
 pub use mode::GatheringMode;
 pub use provider::{Cluster, ClusterBand, GatherableElement, Provider, ProviderGroup};

@@ -26,8 +26,14 @@
 //! which no quantum travel targets. For such a site, [`Site::markers`] names
 //! the places in the same segment: on LIVE 4.10 the Glaciem Ring's asteroid
 //! clusters and mining bases, the Keeger Belt's breaker stations. Those are
-//! where a run in the ring starts. A field directly under the star, outside
-//! any segment (the Aaron Halo), has none.
+//! where a run in the ring starts.
+//!
+//! A ring field that is one entity with its own shape (`AsteroidRing`, its
+//! `SAsteroidRingComponentParams`) carries a [`Ring`], and its markers are
+//! also the named places inside that ring. The Aaron Halo sits directly
+//! under Stanton's star, outside any segment; its ring (19.60 to 21.39 Gm,
+//! 10 Mm deep) holds the Wikelo Emporium Selo Station, the halo's one
+//! quantum marker on LIVE 4.10, where players start a halo run.
 
 use std::collections::HashMap;
 
@@ -57,17 +63,56 @@ pub struct Site {
     /// the body's).
     pub position: Option<[f64; 3]>,
     /// When `place` is the system's star (a ring or belt field in an
-    /// unnamed segment): the named places in that segment, in GUID order.
-    /// Intersect with `sc_locations::Waypoints` for the quantum targets a
-    /// run starts from. A segment can hold none (one Glaciem segment holds
-    /// only a QV Logistics Station), so a route to a provider takes the
-    /// union over its sites. Empty otherwise.
+    /// unnamed segment): the named places in that segment, and for a field
+    /// with a [`Ring`] the named places inside it, in GUID order. Intersect
+    /// with `sc_locations::Waypoints` for the quantum targets a run starts
+    /// from. A segment can hold none (one Glaciem segment holds only a QV
+    /// Logistics Station), so a route to a provider takes the union over its
+    /// sites. Empty otherwise.
     pub markers: Vec<Guid>,
+    /// The field's own ring shape, when it is an `AsteroidRing` entity,
+    /// centred on `position` (the system's origin when that is `None`).
+    #[serde(default)]
+    pub ring: Option<Ring>,
+    /// The named places up its containment chain, nearest first: `place`,
+    /// then what holds it, up to the star (a mining claim: the claim, `ARC
+    /// L3-A`, `ARC L3`, Stanton). The first one in `sc_locations::Waypoints`
+    /// is where quantum travel gets closest; the rest of the way to
+    /// `position` is flown. On LIVE 4.10, 203 places with providers are no
+    /// quantum target themselves, most of them private mining claims.
+    #[serde(default)]
+    pub anchors: Vec<Guid>,
+}
+
+/// An asteroid ring's shape (`SAsteroidRingComponentParams`), m: the band
+/// between two radii around its centre, `depth` thick about its plane.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct Ring {
+    /// `innerRadiusKm`, in m.
+    pub inner_radius: f64,
+    /// `outerRadiusKm`, in m.
+    pub outer_radius: f64,
+    /// `depthKm`, in m: the full thickness.
+    pub depth: f64,
+}
+
+impl Ring {
+    /// `offset` (from the ring's centre, in its frame) lies inside the band.
+    pub fn contains(&self, offset: [f64; 3]) -> bool {
+        let r = offset[0].hypot(offset[1]);
+        r >= self.inner_radius && r <= self.outer_radius && offset[2].abs() <= self.depth / 2.0
+    }
+}
+
+/// What the cook's walk finds in one socpak member.
+enum Found {
+    Provider(Guid),
+    Ring(Ring),
 }
 
 impl ProviderLocations {
     /// Bump when the cooked layout changes (for `ProcessedSnapshot` gating).
-    pub const COOK_SCHEMA_VERSION: u32 = 3;
+    pub const COOK_SCHEMA_VERSION: u32 = 4;
 
     /// Cook from a live p4k: walk the object containers of every solar system
     /// the `MegaMap` records list (only what they include, read in parallel)
@@ -80,12 +125,34 @@ impl ProviderLocations {
     /// [`cook`](Self::cook) from other root socpaks (any path rendering): one
     /// system, or every object container to check the walk misses nothing.
     pub fn cook_from(assets: &AssetSource, roots: &[String]) -> Result<Self> {
-        let (containers, providers) = ObjectContainers::walk(assets, roots, provider_presets)?;
-        Ok(Self::compose(&containers, &providers))
+        let (containers, found) = ObjectContainers::walk(assets, roots, |s, m, root| {
+            let mut out: Vec<Found> = provider_presets(s, m, root)
+                .into_iter()
+                .map(Found::Provider)
+                .collect();
+            out.extend(ring_shape(m, root).map(Found::Ring));
+            out
+        })?;
+        let mut providers: HashMap<String, Vec<Guid>> = HashMap::new();
+        let mut rings: HashMap<String, Ring> = HashMap::new();
+        for (socpak, list) in found {
+            for f in list {
+                match f {
+                    Found::Provider(g) => providers.entry(socpak.clone()).or_default().push(g),
+                    Found::Ring(r) => {
+                        rings.entry(socpak.clone()).or_insert(r);
+                    }
+                }
+            }
+        }
+        let mut pl = Self::compose(&containers, &providers);
+        pl.sites = sites(&containers, &providers, &rings);
+        Ok(pl)
     }
 
     /// Pure join: providers per socpak (normalized path) ⊕ the placement graph
-    /// ⇒ place ↔ provider.
+    /// ⇒ place ↔ provider. Sites carry no [`Ring`]s ([`cook_from`](Self::cook_from)
+    /// reads them).
     pub fn compose(
         containers: &ObjectContainers,
         socpak_providers: &HashMap<String, Vec<Guid>>,
@@ -113,7 +180,7 @@ impl ProviderLocations {
         {
             list.sort_by_key(Guid::to_string);
         }
-        pl.sites = sites(containers, socpak_providers);
+        pl.sites = sites(containers, socpak_providers, &HashMap::new());
         pl
     }
 
@@ -152,13 +219,17 @@ impl ProviderLocations {
 /// The [`Site`]s of every provider: each placement including a provider
 /// socpak, the place it resolves to (the nearest named placement up its
 /// containment chain), and, when that is the chain's root (the star), the
-/// named places under the same top-level segment.
+/// named places under the same top-level segment and inside the socpak's
+/// [`Ring`].
 fn sites(
     containers: &ObjectContainers,
     socpak_providers: &HashMap<String, Vec<Guid>>,
+    rings: &HashMap<String, Ring>,
 ) -> HashMap<Guid, Vec<Site>> {
-    // Named placements by their top-level segment (the chain's second link).
+    // Named placements by their top-level segment (the chain's second link),
+    // and by their root with their position.
     let mut by_segment: HashMap<PlacementId, Vec<Guid>> = HashMap::new();
+    let mut by_root: HashMap<PlacementId, Vec<(Guid, [f64; 3])>> = HashMap::new();
     for (id, p) in containers.iter() {
         let Some(g) = p.starmap_guid() else { continue };
         let chain = containers.chain_of(id);
@@ -168,12 +239,18 @@ fn sites(
                 named.push(g);
             }
         }
+        if !rings.is_empty()
+            && let (Some(&root), Some(pos)) = (chain.first(), containers.global_position(id))
+        {
+            by_root.entry(root).or_default().push((g, pos));
+        }
     }
     for named in by_segment.values_mut() {
         named.sort_by_key(Guid::to_string);
     }
     let mut out: HashMap<Guid, Vec<Site>> = HashMap::new();
     for (socpak, providers) in socpak_providers {
+        let ring = rings.get(socpak).copied();
         for &id in containers.nesting(socpak) {
             let chain = containers.chain_of(id);
             let Some(named) = chain
@@ -183,14 +260,39 @@ fn sites(
                 continue;
             };
             let place = containers.get(chain[named]).starmap_guid().expect("named");
-            let markers = match (named, chain.get(1)) {
+            let position = containers.global_position(id);
+            let mut markers = match (named, chain.get(1)) {
                 (0, Some(segment)) => by_segment.get(segment).cloned().unwrap_or_default(),
                 _ => Vec::new(),
             };
+            // A ring at the star: the named places inside it. A placement
+            // with no `Pos` up its chain sits at the system's origin.
+            if let (0, Some(r)) = (named, ring) {
+                let centre = position.unwrap_or([0.0; 3]);
+                for (g, p) in by_root.get(&chain[0]).into_iter().flatten() {
+                    let offset = [p[0] - centre[0], p[1] - centre[1], p[2] - centre[2]];
+                    if *g != place && r.contains(offset) && !markers.contains(g) {
+                        markers.push(*g);
+                    }
+                }
+                markers.sort_by_key(Guid::to_string);
+            }
+            let mut anchors: Vec<Guid> = Vec::new();
+            for g in chain[..=named]
+                .iter()
+                .rev()
+                .filter_map(|&c| containers.get(c).starmap_guid())
+            {
+                if !anchors.contains(&g) {
+                    anchors.push(g);
+                }
+            }
             let site = Site {
                 place,
-                position: containers.global_position(id),
+                position,
                 markers,
+                ring,
+                anchors,
             };
             for &provider in providers {
                 out.entry(provider).or_default().push(site.clone());
@@ -234,6 +336,24 @@ fn solar_system_roots(store: &RecordStore) -> Vec<String> {
     }
     roots.sort();
     roots
+}
+
+/// The first `SAsteroidRingComponentParams` in a socpak member (an
+/// `AsteroidRing` entity's field shape), km converted to m.
+fn ring_shape(member: &str, root: &XmlNode) -> Option<Ring> {
+    let member = member.to_ascii_lowercase();
+    if !(member.ends_with("pivot.entxml") || member.ends_with(".soc") || member.ends_with(".pla")) {
+        return None;
+    }
+    let c = root
+        .descendants()
+        .find(|n| n.attr("__type") == Some("SAsteroidRingComponentParams"))?;
+    let km = |key: &str| -> Option<f64> { Some(c.attr(key)?.trim().parse::<f64>().ok()? * 1000.0) };
+    Some(Ring {
+        inner_radius: km("innerRadiusKm")?,
+        outer_radius: km("outerRadiusKm")?,
+        depth: km("depthKm")?,
+    })
 }
 
 /// Every non-null `HarvestableProviderComponent.preset` in a socpak member.
@@ -399,6 +519,21 @@ mod tests {
         assert_eq!(pl.len(), 3);
     }
 
+    /// The Aaron Halo's shape takes the Wikelo Selo Station's offset (20.196
+    /// Gm, in the plane) and leaves out Crusader's (19.149 Gm) and a point
+    /// above the band.
+    #[test]
+    fn ring_contains_the_band_only() {
+        let halo = Ring {
+            inner_radius: 19_597_600_000.0,
+            outer_radius: 21_392_800_000.0,
+            depth: 10_000_000.0,
+        };
+        assert!(halo.contains([14_281e6, 14_281e6, 0.0])); // ~20.196 Gm
+        assert!(!halo.contains([19_149e6, 0.0, 0.0]));
+        assert!(!halo.contains([20_196e6, 0.0, 6e6]));
+    }
+
     const STAR: &str = "66666666-6666-6666-6666-666666666666";
     const BASE: &str = "77777777-7777-7777-7777-777777777777";
     const BODY: &str = "88888888-8888-8888-8888-888888888888";
@@ -428,8 +563,10 @@ mod tests {
             (cloud[0].place, cloud[0].markers.as_slice()),
             (g_(STAR), [g_(BASE)].as_slice())
         );
+        assert_eq!(cloud[0].anchors, [g_(STAR)]);
         let field = pl.sites_of(&g_(P_BODY));
         assert_eq!((field[0].place, field[0].markers.len()), (g_(BODY), 0));
+        assert_eq!(field[0].anchors, [g_(BODY), g_(STAR)]);
         assert!(pl.sites_of(&g_(BASE)).is_empty());
     }
 }

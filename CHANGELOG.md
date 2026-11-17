@@ -13,6 +13,14 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-gathering`: `Site::anchors` and `Site::ring` (with `Ring`).**
+  - `anchors` lists the named places up a site's containment chain, nearest first. The first one in `Waypoints` is where quantum travel gets closest. On LIVE 4.10 that reaches 163 sites with no quantum target of their own, most of them private mining claims under a Lagrange point.
+  - `ring` is the field's own shape when it's an `AsteroidRing` entity (`SAsteroidRingComponentParams`: inner and outer radius, depth). `Ring::contains` tests an offset against it.
+  - A star-resolved site with a ring also gets the named places inside the ring as `markers`. The Aaron Halo (19.60–21.39 Gm, 10 Mm deep) now marks the Wikelo Emporium Selo Station and CRU L2.
+  - What's still unreachable by quantum travel: Nyx's QV Extraction Stations, which have no target above or beside them. `COOK_SCHEMA_VERSION` 4. Probe `examples/entry_markers_probe.rs` (census of how quantum travel reaches every site).
+
 ## [v0.55.0] - 2026-11-17
 
 ### Added
