@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.56.0] - 2026-11-17
+
 ### Added
 
 - **`sc-gathering`: `Site::anchors` and `Site::ring` (with `Ring`).**
