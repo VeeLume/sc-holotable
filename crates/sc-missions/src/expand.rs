@@ -148,9 +148,14 @@ pub struct Mission {
     /// `ContractResults.contractBuyInAmount` — upfront cost to accept (0 when
     /// free). A payout-formula input and a displayable cost.
     pub buy_in: i32,
-    /// `ContractResults.timeToComplete` minutes — the contract's time budget
-    /// (0 when none). A payout-formula input. (Stored as a bare `Single` in
-    /// minutes; not seconds — verified against the DCB raw values.)
+    /// `ContractResults.timeToComplete` minutes (0 when none): how long the
+    /// payout assumes the mission takes. A `Calculated` reward is an hourly
+    /// rate from the difficulty times these minutes (`UecCurve`, behind the
+    /// `payout` feature; `uec_validate` reproduces SCMDB payouts with it), so this is the design's duration
+    /// estimate, not a measured one and not an enforced deadline. 4,597 of
+    /// 5,192 missions carry one on LIVE 4.10 (`mission_time_budget`).
+    /// (Stored as a bare `Single` in minutes; not seconds — verified against
+    /// the DCB raw values.)
     pub time_to_complete: f32,
 
     /// `ActiveContractSettings.canBeShared` on the contract's template,

@@ -56,3 +56,7 @@ payout = ["sc-extract/gamemode"]
 [[example]]
 name = "uec_validate"
 required-features = ["payout"]
+
+[[example]]
+name = "mission_time_budget"
+required-features = ["payout"]

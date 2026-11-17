@@ -14,7 +14,7 @@
 
 use std::collections::BTreeSet;
 
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, RecordCollection};
 use sc_missions::{Missions, RewardAmount, UecCurve};
 
 /// Known SCMDB payouts the maintainer provided (title substring → aUEC).
