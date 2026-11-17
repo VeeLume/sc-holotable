@@ -13,6 +13,15 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-loot`: `Drops`, where every item drops.** `Drops::build(&tables, &lootables, &placements, &items, runs)` simulates every lootable config once per container it fills and indexes the results by item. `drops.get(&item)` lists `Drop { source, chance, expected }`, most likely first, where `chance` is the chance one fill yields the item. `Drops::source(&drop)` gives the `DropSource`: the lootable, the config index, the container entity and its capacity, and the `StarMapObject`s it sits at with counts (empty for NPC, mission, event and underground-facility loot). On LIVE 4.10 at 2,000 fills it takes about 6 s and covers 3,729 items, 3,650 of them placed on the star map. Probe `examples/drops_probe.rs`.
+- **`sc-mining`: `Spawner::time` and `RockTime`, how long a setup takes per rock.** For a rock type it gives the simulated time to the first fracture with a `Player` (quantiles, plus the share that timed out), the setup's extraction rate in SCU/s and each collectable rock's SCU over that rate. Further cracks on pieces, flying between rocks and scanning are not counted. Example: the Golem with the Pitman (Focus III + Rieger-C3) on common iron asteroids takes a median 44 s to fracture and 98 s to extract. These are simulated numbers, not timed in game (`mining_spawn_probe`).
+
+### Changed
+
+- **`sc-missions`: `Mission::time_to_complete` is documented as the duration the payout assumes.** A Calculated reward is the difficulty's hourly rate times these minutes. `uec_validate` reproduces 18 of 19 SCMDB payouts and builds again; the new probe `mission_time_budget` shows the spread.
+
 ## [v0.56.0] - 2026-11-17
 
 ### Added

@@ -24,7 +24,8 @@ use sc_items::Items;
 use sc_items_mining::MiningModules;
 use sc_items_ship_weapons::ShipWeapons;
 use sc_mining::{
-    Compositions, Elements, Laser, RockTypes, Rulesets, Setup, Shape, Shapes, Spawner,
+    Compositions, Elements, Laser, Player, RockTypes, Rulesets, Setup, Shape, Shapes, SimConfig,
+    Spawner,
 };
 use sc_resources::Resources;
 use sc_tags::Tags;
@@ -203,6 +204,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
         let survey = spawner.survey(&golem, 5000);
         println!("{label} ({}):\n  {survey:?}", name(guid));
+        let time = spawner.time(&golem, &Player::default(), &SimConfig::default(), 500);
+        println!("  {time:?}");
+        // Every collectable rock takes some extraction; a fracture takes
+        // at least one tick and at most the attempt's limit.
+        assert!(time.extract_scu_per_s > 0.0, "the Pitman extracts");
+        assert!(time.extract_s.p10 > 0.0 && time.extract_s.p10 <= time.extract_s.p90);
+        if time.fracture_s.p50.is_finite() {
+            let limit = SimConfig::default().max_time_s;
+            assert!(time.fracture_s.p10 > 0.0 && time.fracture_s.p90 <= limit);
+        }
     }
     Ok(())
 }

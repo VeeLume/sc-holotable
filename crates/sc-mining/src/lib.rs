@@ -92,7 +92,7 @@ pub use sim::{
     Pool, Sample, SimConfig, Throttle, Trace, View, difficulty, hit_consistency, simulate,
     simulate_timeline,
 };
-pub use spawn::{Quantiles, Shapes, Spawn, Spawner, Survey};
+pub use spawn::{Quantiles, RockTime, Shapes, Spawn, Spawner, Survey};
 
 /// Re-export the canonical accessor trait so consumers can bring the
 /// `get` / `iter` / `len` / `values` surface into scope alongside the collections.

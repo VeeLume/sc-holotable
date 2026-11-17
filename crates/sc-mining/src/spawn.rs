@@ -8,7 +8,8 @@ use tracing::warn;
 
 use crate::sim::Rng;
 use crate::{
-    Compositions, Elements, ModifiedRock, Rock, RockType, RockTypes, Ruleset, Setup, Shape,
+    Compositions, Elements, ModifiedRock, Outcome, Player, Rock, RockType, RockTypes, Ruleset,
+    Setup, Shape, SimConfig, hit_consistency, simulate,
 };
 
 /// The fracture trees of every rock mesh, keyed by geometry path.
@@ -113,6 +114,111 @@ impl Spawner<'_> {
     /// thousand give shares to about a percent).
     pub fn survey(&self, setup: &Setup, runs: u32) -> Survey {
         Survey::of(&self.spawns(runs), self.ruleset, self.elements, setup)
+    }
+
+    /// How long `setup` takes per rock of this type, over `runs` rolled
+    /// rocks: one simulated attempt per rock with `player` steering
+    /// ([`simulate`](crate::simulate), seeds `config.seed + i`), and the
+    /// extraction at the hit consistency a steady beam reaches with
+    /// `config.aim_scatter_m` scatter. See [`RockTime`] for what it leaves
+    /// out.
+    ///
+    /// ```no_run
+    /// # fn time(spawner: sc_mining::Spawner<'_>, setup: &sc_mining::Setup) {
+    /// use sc_mining::{Player, SimConfig};
+    ///
+    /// let t = spawner.time(setup, &Player::default(), &SimConfig::default(), 500);
+    /// println!(
+    ///     "fracture {:.0} s, extraction {:.0} s (medians)",
+    ///     t.fracture_s.p50, t.extract_s.p50
+    /// );
+    /// # }
+    /// ```
+    pub fn time(&self, setup: &Setup, player: &Player, config: &SimConfig, runs: u32) -> RockTime {
+        RockTime::of(&self.spawns(runs), self.ruleset, setup, player, config)
+    }
+}
+
+/// How long a setup takes per rock, over a set of rolled rocks.
+///
+/// Per rock that needs a fracture the time is that of the **first**
+/// fracture of the whole rock; pieces still too big take more (how many:
+/// [`Survey::cracks`]). Extraction is the rock's whole SCU over the setup's
+/// rate, an upper bound since an overcharge loses pieces. Flying between
+/// rocks, scanning and positioning are not in the data and not counted.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub struct RockTime {
+    pub rocks: u32,
+    /// Over the breakable rocks that need a fracture: the simulated time to
+    /// the first fracture, s.
+    pub fracture_s: Quantiles,
+    /// Share of those attempts that did not fracture within
+    /// [`SimConfig::max_time_s`] (left out of `fracture_s`).
+    pub timed_out: f32,
+    /// The setup's extraction rate, SCU per second (every laser's
+    /// [`Laser::extraction_scu_per_s`](crate::Laser::extraction_scu_per_s)
+    /// added).
+    pub extract_scu_per_s: f32,
+    /// Over the rocks the setup can collect (breakable or absorbable whole):
+    /// their SCU over the extraction rate, s. `NaN` without an extraction
+    /// beam.
+    pub extract_s: Quantiles,
+}
+
+impl RockTime {
+    pub fn of(
+        spawns: &[Spawn],
+        ruleset: &Ruleset,
+        setup: &Setup,
+        player: &Player,
+        config: &SimConfig,
+    ) -> Self {
+        let consistency = hit_consistency(
+            &ruleset.hit_consistency,
+            f32::INFINITY,
+            config.aim_scatter_m,
+        );
+        let rate: f32 = setup
+            .lasers
+            .iter()
+            .map(|l| l.extraction_scu_per_s(ruleset, consistency))
+            .sum();
+        let (mut fractures, mut extracts) = (Vec::new(), Vec::new());
+        let (mut attempts, mut timed_out) = (0u32, 0u32);
+        for (i, spawn) in spawns.iter().enumerate() {
+            let whole = spawn.rock.is_absorbable(ruleset);
+            let mined = ModifiedRock::new(ruleset, &spawn.rock, setup);
+            if !whole && !mined.is_breakable(ruleset) {
+                continue;
+            }
+            if rate > 0.0 {
+                extracts.push(spawn.rock.scu / rate);
+            }
+            if whole {
+                continue;
+            }
+            attempts += 1;
+            let run = SimConfig {
+                seed: config.seed.wrapping_add(i as u64),
+                record: false,
+                ..*config
+            };
+            match simulate(&mined, ruleset, &mut player.clone(), &run).outcome {
+                Outcome::Fractured { time_s, .. } => fractures.push(time_s),
+                Outcome::TimedOut => timed_out += 1,
+            }
+        }
+        Self {
+            rocks: spawns.len() as u32,
+            fracture_s: Quantiles::of(fractures),
+            timed_out: if attempts > 0 {
+                timed_out as f32 / attempts as f32
+            } else {
+                0.0
+            },
+            extract_scu_per_s: rate,
+            extract_s: Quantiles::of(extracts),
+        }
     }
 }
 

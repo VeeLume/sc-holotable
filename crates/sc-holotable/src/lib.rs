@@ -297,13 +297,15 @@ pub mod prelude {
         Place, Placement, PlacementId, Universe, Waypoint, Waypoints,
     };
     #[cfg(feature = "loot")]
-    pub use sc_loot::{LootPlacements, LootTable, LootTables, Lootable, Lootables};
+    pub use sc_loot::{
+        Drop, DropSource, Drops, LootPlacements, LootTable, LootTables, Lootable, Lootables,
+    };
     #[cfg(feature = "manufacturers")]
     pub use sc_manufacturers::{Manufacturer, Manufacturers};
     #[cfg(feature = "mining")]
     pub use sc_mining::{
-        Composition, Compositions, Element, Elements, Entry, Laser, ModifiedRock, Rock, RockType,
-        RockTypes, Ruleset, Rulesets, Setup, Shape, Shapes, Spawner, Survey,
+        Composition, Compositions, Element, Elements, Entry, Laser, ModifiedRock, Rock, RockTime,
+        RockType, RockTypes, Ruleset, Rulesets, Setup, Shape, Shapes, Spawner, Survey,
     };
     #[cfg(feature = "missions")]
     pub use sc_missions::Missions;
