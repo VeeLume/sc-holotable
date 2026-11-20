@@ -3,9 +3,11 @@
 #
 # On every push to main it looks for regen commits (subject
 # "chore(datacore): regenerate bindings (SC <label>)", as sc-regen writes it;
-# squash, merge or rebase alike) and tags each LIVE or hotfix one
-# datacore/<label>. A PTU regen is never tagged. A label whose changelist is
-# lower than the newest datacore tag fails the job: tags only move forward.
+# squash, merge or rebase alike) and tags each one whose oldest build is LIVE
+# or hotfix datacore/<label>. A union regen covers LIVE and a newer PTU
+# ("SC <live> + <ptu>") and is tagged datacore/<live>+<ptu>; a PTU-only regen
+# is never tagged. A label whose newest changelist is lower than the newest
+# datacore tag's fails the job: tags only move forward.
 # When a regen was tagged, a release follows. "Run workflow"
 # (workflow_dispatch) cuts a release by hand for work without a regen.
 #
@@ -78,14 +80,16 @@ jobs:
 
           git log --reverse --format='%H %s' "$range" | while read -r sha subject; do
             # The label comes from a commit subject: accept only the shape
-            # sc-regen writes (e.g. 4.10.2-live.12881860), nothing else.
-            label=$(sed -nE 's/^chore\(datacore\): regenerate bindings \(SC ([0-9][0-9A-Za-z.]*-[a-z]+\.[0-9]+)\).*/\1/p' <<< "$subject")
+            # sc-regen writes (e.g. 4.10.2-live.12881860, or a union
+            # "4.10.3-live.13165946 + 5.0.0-ptu.13228337"), nothing else.
+            build='[0-9][0-9A-Za-z.]*-[a-z]+\.[0-9]+'
+            label=$(sed -nE "s/^chore\(datacore\): regenerate bindings \(SC ($build( \+ $build)*)\).*/\1/p" <<< "$subject")
             [ -n "$label" ] || continue
-            if ! grep -qE -- '-(live|hotfix)\.[0-9]+$' <<< "$label"; then
-              echo "skip $label: not a LIVE or hotfix build"
+            if ! grep -qE -- '-(live|hotfix)\.[0-9]+$' <<< "${label%% + *}"; then
+              echo "skip $label: does not cover a LIVE or hotfix build"
               continue
             fi
-            tag="datacore/$label"
+            tag="datacore/${label// + /+}"
             if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
               echo "skip $tag: exists"
               continue

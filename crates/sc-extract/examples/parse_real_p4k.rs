@@ -4,20 +4,22 @@
 //! [`sc_extract::Datacore`] session keeps the [`DataCoreDatabase`] alive
 //! for raw queries after high-level parsing.
 //!
+//! Exits non-zero when the build has record types the bindings don't know.
+//!
 //! Usage:
 //!
 //! ```bash
 //! # Auto-discover primary installation (standard config, no graph):
-//! cargo run -p sc-extract --profile dev-opt --example parse_real_p4k
+//! cargo run -p sc-extract --release --features full --example parse_real_p4k
 //!
 //! # Explicit path:
-//! cargo run -p sc-extract --profile dev-opt --example parse_real_p4k -- "C:/Games/StarCitizen/LIVE/Data.p4k"
+//! cargo run -p sc-extract --release --features full --example parse_real_p4k -- "C:/Games/StarCitizen/LIVE/Data.p4k"
 //!
 //! # Full extraction including reference graph:
-//! cargo run -p sc-extract --profile dev-opt --example parse_real_p4k -- --all
+//! cargo run -p sc-extract --release --features full --example parse_real_p4k -- --all
 //!
 //! # Pattern 4: datacore-only (empty AssetData → no display names):
-//! cargo run -p sc-extract --profile dev-opt --example parse_real_p4k -- --no-assets
+//! cargo run -p sc-extract --release --features full --example parse_real_p4k -- --no-assets
 //! ```
 
 use std::path::PathBuf;
@@ -173,6 +175,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     match assets.default_profile_xml() {
         Ok(bytes) => println!("  defaultProfile : {} bytes", bytes.len()),
         Err(e) => println!("  defaultProfile : not found ({e})"),
+    }
+
+    // Stale bindings: the build has record types the generated code doesn't
+    // know. A release parse skips them, so only this exit code shows it;
+    // `sc-regen` runs this probe on every build a regen covers.
+    let unknown = datacore.unknown_record_types();
+    if !unknown.is_empty() {
+        let list: Vec<String> = unknown
+            .iter()
+            .map(|t| format!("{} ({} records)", t.name, t.records))
+            .collect();
+        return Err(format!(
+            "{} record types the bindings don't know: {}",
+            unknown.len(),
+            list.join(", ")
+        )
+        .into());
     }
 
     println!();

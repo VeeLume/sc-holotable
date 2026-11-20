@@ -2,27 +2,34 @@
 //!
 //! A Windows scheduled task runs it every few hours. Each run:
 //!
-//! 1. Finds the newest Star Citizen build installed, by the changelist in
-//!    its `build_manifest.id`. Only installs whose launcher label matches
+//! 1. Picks the builds to cover ([`Window`]): the newest LIVE (or hotfix)
+//!    build installed, plus the newest PTU or EPTU build when one is newer.
+//!    The bindings are their union, so the release cut while a patch is on
+//!    PTU already reads it, and the apps keep working on patch day whether
+//!    or not this machine is on. Builds are ordered by the changelist in
+//!    their `build_manifest.id`. Only installs whose launcher label matches
 //!    that changelist count: a folder renamed between channels (LIVE moved
 //!    to PTU to seed a patch) is skipped until the launcher has patched it.
 //!    So is an install the launcher left half-patched
 //!    (`Installation::patch_state`). While the launcher has a run open on
 //!    any install, the run waits for it to end (up to two hours), so a patch
 //!    started right after boot is regenerated as soon as it lands. The check
-//!    runs again once the generator has read `Data.p4k`, and a change in
+//!    runs again once the generator has read the `Data.p4k`s, and a change in
 //!    between fails the run.
-//! 2. Stops if that build is no newer than the newest `datacore/*` tag, if
-//!    a PR for it already exists (open, merged or closed), or if the game is
-//!    running (checked again after waiting out a patch). A stop is not a
-//!    failure: the next run tries again, and only failures raise a toast.
+//! 2. Stops if the newest `datacore/*` tag already covers every build
+//!    ([`Window::covered_by`]), if a PR for these builds already exists
+//!    (open, merged or closed), or if the game is running (checked again
+//!    after waiting out a patch). A stop is not a failure: the next run
+//!    tries again, and only failures raise a toast.
 //! 3. Regenerates in its own worktree (`%LOCALAPPDATA%\sc-regen\worktree`,
-//!    reset to `origin/main`), never in a development checkout: generator,
-//!    fmt, clippy `--fix` on the generated crate, one commit on
-//!    `regen/<label>`.
-//! 4. Runs `cargo test --workspace` and the smoke examples, pushes the
-//!    branch and opens a PR whose body reports what changed. The PR is a
-//!    draft when a check failed or the build is not LIVE.
+//!    reset to `origin/main`), never in a development checkout: generator
+//!    (one `--p4k` per build, oldest first), fmt, clippy `--fix` on the
+//!    generated crate, one commit on `regen/<label>`, where a union's label
+//!    joins its builds' labels with `+`.
+//! 4. Runs `cargo test --workspace`, the smoke examples and `parse_real_p4k`
+//!    on every build, pushes the branch and opens a PR whose body reports
+//!    what changed. The PR is a draft when a check failed or no LIVE build
+//!    is covered.
 //! 5. Merges the PR itself when the regen is safe
 //!    ([`report::auto_merge_blockers`]): it gets the `auto-merge` label,
 //!    `sc-regen` waits for GitHub CI and squash-merges. The push to `main`
@@ -37,6 +44,7 @@
 //! sc-regen --repo <path> --now       # also when a tag or PR already covers the build
 //! sc-regen --repo <path> --dry-run   # report the decision, change nothing
 //! sc-regen --repo <path> --now --no-publish   # full local run, stop before push and PR
+//! sc-regen --repo <path> --now --no-publish --base my-branch   # same, off an unpushed branch
 //! ```
 //!
 //! The full output of the last run is in `%LOCALAPPDATA%\sc-regen\last-run.log`,
@@ -56,7 +64,7 @@ use sc_discovery::Channel;
 use tracing::{info, warn};
 use tracing_subscriber::fmt::writer::MakeWriterExt as _;
 
-use report::{Bindings, BuildInfo, Check};
+use report::{Bindings, BuildInfo, Check, GameBuild};
 
 const GENERATED: &str = "crates/sc-extract-generated/src/generated";
 
@@ -66,9 +74,15 @@ struct Options {
     dry_run: bool,
     no_publish: bool,
     schedule: bool,
+    /// What the worktree is reset to; anything but `origin/main` only with
+    /// `--no-publish`, since the PR targets `main`.
+    base: String,
 }
 
-/// The newest installed build, as the regen will name it.
+const DEFAULT_BASE: &str = "origin/main";
+
+/// One installed build, as the regen names it.
+#[derive(Clone, Debug, PartialEq)]
 struct Build {
     label: String,
     changelist: u64,
@@ -81,12 +95,71 @@ impl Build {
         matches!(self.channel, Channel::Live | Channel::Hotfix)
     }
 
+    /// A build on its way to LIVE. Not Tech Preview: those test server tech,
+    /// and their schema need not ship, so their types would linger in the
+    /// bindings without a LIVE build ever having them.
+    fn is_preview(&self) -> bool {
+        matches!(self.channel, Channel::Ptu | Channel::Eptu)
+    }
+}
+
+/// The builds one regen covers, oldest first: the newest LIVE build, then
+/// the newest preview build if it is newer. Without a LIVE install, the
+/// newest build alone; such a regen is a draft and never tagged.
+#[derive(Debug, PartialEq)]
+struct Window {
+    builds: Vec<Build>,
+}
+
+impl Window {
+    fn from_builds(mut builds: Vec<Build>) -> Option<Window> {
+        builds.sort_by_key(|b| b.changelist);
+        let Some(live) = builds.iter().rposition(Build::is_live) else {
+            return builds.pop().map(|b| Window { builds: vec![b] });
+        };
+        let live_changelist = builds[live].changelist;
+        let preview = builds
+            .iter()
+            .rposition(|b| b.is_preview() && b.changelist > live_changelist)
+            // Remove the later index first so `live` stays valid.
+            .map(|i| builds.remove(i));
+        let mut window = vec![builds.remove(live)];
+        window.extend(preview);
+        Some(Window { builds: window })
+    }
+
+    /// Covers a LIVE build, so it may merge itself and gets tagged.
+    fn is_live(&self) -> bool {
+        self.builds[0].is_live()
+    }
+
+    fn labels(&self) -> Vec<&str> {
+        self.builds.iter().map(|b| b.label.as_str()).collect()
+    }
+
+    /// `4.10.3-live.13165946 + 5.0.0-ptu.13228337`; the release workflow
+    /// reads this shape back from the commit subject.
+    fn label(&self) -> String {
+        self.labels().join(" + ")
+    }
+
     fn branch(&self) -> String {
-        format!("regen/{}", self.label)
+        format!("regen/{}", self.labels().join("+"))
     }
 
     fn commit_message(&self) -> String {
-        format!("chore(datacore): regenerate bindings (SC {})", self.label)
+        format!("chore(datacore): regenerate bindings (SC {})", self.label())
+    }
+
+    /// Whether the newest tag's builds (`tagged`, as changelists) already
+    /// cover every build here: each is one of them or older than all of
+    /// them. Leaving one out is no reason to regenerate: an uninstalled PTU
+    /// must not take its types out of the bindings again.
+    fn covered_by(&self, tagged: &[u64]) -> bool {
+        let oldest = tagged.iter().min();
+        self.builds
+            .iter()
+            .all(|b| tagged.contains(&b.changelist) || oldest.is_some_and(|o| b.changelist < *o))
     }
 }
 
@@ -96,7 +169,8 @@ fn main() -> ExitCode {
         Err(e) => {
             eprintln!("sc-regen: {e}");
             eprintln!(
-                "usage: sc-regen [schedule] [--repo <path>] [--now] [--dry-run] [--no-publish]"
+                "usage: sc-regen [schedule] [--repo <path>] [--now] [--dry-run] [--no-publish] \
+                 [--base <ref>]"
             );
             return ExitCode::from(2);
         }
@@ -166,6 +240,7 @@ fn parse_args() -> Result<Options, String> {
         dry_run: false,
         no_publish: false,
         schedule: false,
+        base: DEFAULT_BASE.to_string(),
     };
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
@@ -175,8 +250,12 @@ fn parse_args() -> Result<Options, String> {
             "--now" => options.now = true,
             "--dry-run" => options.dry_run = true,
             "--no-publish" => options.no_publish = true,
+            "--base" => options.base = args.next().ok_or("--base requires a ref")?,
             other => return Err(format!("unknown argument: {other}")),
         }
+    }
+    if options.base != DEFAULT_BASE && !options.no_publish {
+        return Err("--base needs --no-publish: a published regen targets main".into());
     }
     // Not `canonicalize`: on Windows it yields a `\\?\` path, which then
     // lands in the scheduled task's command line.
@@ -196,17 +275,20 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
     if !options.now && !options.dry_run && windows::game_running() {
         return Ok("game running; skipped until the next run".into());
     }
-    let build = match pick_build(options)? {
-        Pick::Build(build) => build,
+    let window = match pick_window(options)? {
+        Pick::Window(window) => window,
         Pick::Skip(why) => return Ok(why),
     };
-    info!(
-        label = %build.label,
-        channel = %build.channel,
-        changelist = build.changelist,
-        p4k = %build.p4k.display(),
-        "newest installed build"
-    );
+    for build in &window.builds {
+        info!(
+            label = %build.label,
+            channel = %build.channel,
+            changelist = build.changelist,
+            p4k = %build.p4k.display(),
+            "covering build"
+        );
+    }
+    let label = window.label();
 
     let repo = &options.repo;
     git(
@@ -216,80 +298,80 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
     )?;
     let previous_tag = newest_datacore_tag(repo)?;
     if !options.now {
-        if let Some((tag, changelist)) = &previous_tag
-            && build.changelist <= *changelist
+        if let Some((tag, tagged)) = &previous_tag
+            && window.covered_by(tagged)
         {
-            return Ok(format!(
-                "{} is covered by {tag}; nothing to do",
-                build.label
-            ));
+            return Ok(format!("{label} is covered by {tag}; nothing to do"));
         }
-        if let Some(pr) = find_pr(repo, &build.branch())? {
+        if let Some(pr) = find_pr(repo, &window.branch())? {
             if pr.open && pr.auto_merge && !options.dry_run {
                 // Only the commit this machine pushed may be merged; the
                 // worktree's branch still holds it from the interrupted run.
                 let pushed = capture(
                     Command::new("git")
                         .args(["rev-parse", "--verify", "--quiet"])
-                        .arg(format!("refs/heads/{}", build.branch()))
+                        .arg(format!("refs/heads/{}", window.branch()))
                         .current_dir(state.join("worktree")),
                 );
                 let Ok(pushed) = pushed else {
                     return Ok(format!(
-                        "{} has {} but no local record of the pushed commit; left for review",
-                        build.label, pr.url
+                        "{label} has {} but no local record of the pushed commit; left for review",
+                        pr.url
                     ));
                 };
                 info!(pr = %pr.url, "resuming the merge of an open auto-merge PR");
-                return land(repo, &pr.url, pushed.trim(), &build, log);
+                return land(repo, &pr.url, pushed.trim(), &window, log);
             }
-            return Ok(format!(
-                "{} already has {}; nothing to do",
-                build.label, pr.url
-            ));
+            return Ok(format!("{label} already has {}; nothing to do", pr.url));
         }
     }
     if options.dry_run {
         return Ok(format!(
-            "dry run: would regenerate {} (previous tag {})",
-            build.label,
+            "dry run: would regenerate {label} (previous tag {})",
             previous_tag.as_ref().map_or("none", |(t, _)| t.as_str())
         ));
     }
 
     let worktree = state.join("worktree");
-    prepare_worktree(repo, &worktree, &build.branch(), log)?;
+    prepare_worktree(repo, &worktree, &window.branch(), &options.base, log)?;
     let generated = worktree.join(GENERATED);
     let before = Bindings::read(&generated)?;
 
     info!("running sc-generator");
-    let p4k = build.p4k.to_string_lossy().into_owned();
-    cargo(
-        &worktree,
-        &[
-            "run",
-            "-p",
-            "sc-generator",
-            "--release",
-            "--",
-            "--p4k",
-            &p4k,
-        ],
-        log,
-    )?;
+    let p4ks: Vec<String> = window
+        .builds
+        .iter()
+        .map(|b| b.p4k.to_string_lossy().into_owned())
+        .collect();
+    let mut generator = vec!["run", "-p", "sc-generator", "--release", "--"];
+    for p4k in &p4ks {
+        generator.extend(["--p4k", p4k.as_str()]);
+    }
+    cargo(&worktree, &generator, log)?;
     // The launcher rewrites Data.p4k in place; a patch that started while the
     // generator read it leaves bindings from a torn file.
     // An install the launcher has a run open on drops out of the survey's
-    // builds, so a patch on it shows as a different newest build.
-    match Survey::take().map(Survey::newest) {
-        Ok(Some(now)) if now.label == build.label && now.p4k == build.p4k => {}
+    // builds, so a patch on it shows as a different window.
+    match Survey::take().map(|s| Window::from_builds(s.builds)) {
+        Ok(Some(now)) if now == window => {}
         _ => {
             return Err(format!(
-                "{} changed while the generator read it (did the launcher start patching?); \
-                 the next run retries",
-                build.label
+                "{label} changed while the generator read it (did the launcher start patching?); \
+                 the next run retries"
             ));
         }
+    }
+    // A generator from before multi-build support takes only the last
+    // `--p4k`; its bindings must not go out under a union's name and tag.
+    let generated_builds = report::generated_builds(&generated)?;
+    if generated_builds != window.labels() {
+        return Err(format!(
+            "the generator on {} wrote bindings for [{}], not [{}]: it predates \
+             multi-build support or labels builds differently",
+            options.base,
+            generated_builds.join(", "),
+            window.labels().join(", ")
+        ));
     }
     cargo(&worktree, &["fmt", "--all"], log)?;
     info!("clippy --fix on the generated crate");
@@ -318,11 +400,11 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
     git(&worktree, &["add", "crates/sc-extract-generated"], log)?;
     git(
         &worktree,
-        &["commit", "--quiet", "-m", &build.commit_message()],
+        &["commit", "--quiet", "-m", &window.commit_message()],
         log,
     )?;
 
-    let checks = [
+    let mut checks = vec![
         check(
             &worktree,
             "cargo test --workspace",
@@ -356,23 +438,49 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
             log,
         ),
     ];
+    // The smoke examples above read the LIVE install. This one parses each
+    // covered build and fails on a record type the bindings don't know.
+    for (build, p4k) in window.builds.iter().zip(&p4ks) {
+        checks.push(check(
+            &worktree,
+            &format!("parse_real_p4k {}", build.label),
+            &[
+                "run",
+                "-p",
+                "sc-extract",
+                "--release",
+                "--features",
+                "full",
+                "--example",
+                "parse_real_p4k",
+                "--",
+                p4k,
+            ],
+            log,
+        ));
+    }
     let all_passed = checks.iter().all(|c| c.passed);
 
     let info = BuildInfo {
-        label: &build.label,
-        channel: &build.channel.to_string(),
-        changelist: build.changelist,
+        builds: window
+            .builds
+            .iter()
+            .map(|b| GameBuild {
+                label: &b.label,
+                channel: b.channel.to_string(),
+                changelist: b.changelist,
+            })
+            .collect(),
         previous_tag: previous_tag.as_ref().map(|(t, _)| t.as_str()),
     };
-    let blockers = report::auto_merge_blockers(build.is_live(), &before, &after, &checks);
+    let blockers = report::auto_merge_blockers(window.is_live(), &before, &after, &checks);
     let body = report::pr_body(&info, &before, &after, &checks, &blockers);
     let body_file = state.join("pr-body.md");
     std::fs::write(&body_file, &body).map_err(|e| format!("writing the PR body: {e}"))?;
 
     if options.no_publish {
         return Ok(format!(
-            "regenerated {} locally (checks {}, {}); PR body in {}",
-            build.label,
+            "regenerated {label} locally (checks {}, {}); PR body in {}",
             if all_passed { "passed" } else { "FAILED" },
             if blockers.is_empty() {
                 "would auto-merge"
@@ -387,7 +495,7 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
         ensure_auto_merge_label(&worktree)?;
     }
 
-    let branch = build.branch();
+    let branch = window.branch();
     let mut push = vec!["push", "--quiet", "-u", "origin", branch.as_str()];
     if options.now {
         push.push("--force");
@@ -400,7 +508,7 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
         push.push("--no-verify");
     }
     git(&worktree, &push, log)?;
-    let title = build.commit_message();
+    let title = window.commit_message();
     let body_path = body_file.to_string_lossy().into_owned();
     let mut pr = vec![
         "pr",
@@ -414,7 +522,7 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
         "--body-file",
         &body_path,
     ];
-    let draft = !all_passed || !build.is_live();
+    let draft = !all_passed || !window.is_live();
     if draft {
         pr.push("--draft");
     }
@@ -430,14 +538,13 @@ fn run(options: &Options, state: &Path, log: &File) -> Result<String, String> {
                 .args(["rev-parse", "HEAD"])
                 .current_dir(&worktree),
         )?;
-        return land(&worktree, &url, pushed.trim(), &build, log);
+        return land(&worktree, &url, pushed.trim(), &window, log);
     }
     let summary = format!(
-        "regen PR for {} opened for review ({}): {url}",
-        build.label,
+        "regen PR for {label} opened for review ({}): {url}",
         blockers.join("; ")
     );
-    windows::notify(&format!("Bindings for {}", build.label), &summary);
+    windows::notify(&format!("Bindings for {label}"), &summary);
     Ok(summary)
 }
 
@@ -455,7 +562,14 @@ const REQUIRED_CHECK: &str = "ci / check";
 /// only `pushed`, the commit this run (or the interrupted one) pushed: a PR
 /// whose head moved, or one from a fork, is left alone whatever its label.
 /// The label is the off switch, so it is read again right before merging.
-fn land(dir: &Path, url: &str, pushed: &str, build: &Build, log: &File) -> Result<String, String> {
+fn land(
+    dir: &Path,
+    url: &str,
+    pushed: &str,
+    window: &Window,
+    log: &File,
+) -> Result<String, String> {
+    let label = window.label();
     info!(pr = url, "waiting for GitHub CI");
     match wait_for_ci(dir, url) {
         Ci::Passed => {}
@@ -466,17 +580,13 @@ fn land(dir: &Path, url: &str, pushed: &str, build: &Build, log: &File) -> Resul
                     .args(["pr", "edit", url, "--remove-label", AUTO_MERGE_LABEL])
                     .current_dir(dir),
             );
-            let summary = format!(
-                "regen PR for {}: GitHub CI failed, left for review: {url}",
-                build.label
-            );
-            windows::notify(&format!("Bindings for {}", build.label), &summary);
+            let summary = format!("regen PR for {label}: GitHub CI failed, left for review: {url}");
+            windows::notify(&format!("Bindings for {label}"), &summary);
             return Ok(summary);
         }
         Ci::TimedOut => {
             return Ok(format!(
-                "regen PR for {}: GitHub CI still running; the next run merges it: {url}",
-                build.label
+                "regen PR for {label}: GitHub CI still running; the next run merges it: {url}"
             ));
         }
     }
@@ -485,14 +595,12 @@ fn land(dir: &Path, url: &str, pushed: &str, build: &Build, log: &File) -> Resul
     };
     if !(pr.open && pr.auto_merge && !pr.draft) {
         return Ok(format!(
-            "regen PR for {} is no longer marked {AUTO_MERGE_LABEL}; left for review: {url}",
-            build.label
+            "regen PR for {label} is no longer marked {AUTO_MERGE_LABEL}; left for review: {url}"
         ));
     }
     if pr.fork || pr.head != pushed {
         return Ok(format!(
-            "regen PR for {} no longer points at the pushed commit {pushed}; left for review: {url}",
-            build.label
+            "regen PR for {label} no longer points at the pushed commit {pushed}; left for review: {url}"
         ));
     }
     // `--match-head-commit` makes GitHub refuse the merge if the head moved
@@ -513,16 +621,14 @@ fn land(dir: &Path, url: &str, pushed: &str, build: &Build, log: &File) -> Resul
     // checkout to `main`, which the development checkout holds.
     if let Err(e) = git(
         dir,
-        &["push", "--quiet", "origin", "--delete", &build.branch()],
+        &["push", "--quiet", "origin", "--delete", &window.branch()],
         log,
     ) {
         warn!("deleting the merged branch: {e}");
     }
-    let summary = format!(
-        "regen PR for {} merged; the release workflow tags and releases it: {url}",
-        build.label
-    );
-    windows::notify(&format!("Bindings for {}", build.label), &summary);
+    let summary =
+        format!("regen PR for {label} merged; the release workflow tags and releases it: {url}");
+    windows::notify(&format!("Bindings for {label}"), &summary);
     Ok(summary)
 }
 
@@ -687,27 +793,22 @@ impl Survey {
         }
         Ok(survey)
     }
-
-    /// The newest settled build.
-    fn newest(self) -> Option<Build> {
-        self.builds.into_iter().max_by_key(|b| b.changelist)
-    }
 }
 
-/// Which build a run regenerates, or why it does nothing this time.
+/// Which builds a run regenerates from, or why it does nothing this time.
 enum Pick {
-    Build(Build),
+    Window(Window),
     Skip(String),
 }
 
-/// The newest installed build that carries a launcher label for the build
-/// actually on disk, once no launcher run is open on any install.
+/// The [`Window`] over the installs that carry a launcher label for the
+/// build actually on disk, once no launcher run is open on any install.
 ///
 /// An open run is waited out (up to [`PATCH_WAIT`]) rather than skipped:
-/// the build it installs is the one to regenerate. A run that ends with the
+/// the build it installs is one to regenerate. A run that ends with the
 /// game started, a patch that outlasts the wait, or installs the launcher
 /// left half-patched are skips, not failures; the next run tries again.
-fn pick_build(options: &Options) -> Result<Pick, String> {
+fn pick_window(options: &Options) -> Result<Pick, String> {
     let deadline = Instant::now() + PATCH_WAIT;
     let mut waited = false;
     let survey = loop {
@@ -747,26 +848,38 @@ fn pick_build(options: &Options) -> Result<Pick, String> {
             survey.unusable.join(", ")
         )));
     }
-    survey
-        .newest()
-        .map(Pick::Build)
+    Window::from_builds(survey.builds)
+        .map(Pick::Window)
         .ok_or_else(|| "no Star Citizen install found".into())
 }
 
-/// The `datacore/*` tag with the highest changelist (its trailing number).
-fn newest_datacore_tag(repo: &Path) -> Result<Option<(String, u64)>, String> {
+/// The `datacore/*` tag with the highest changelist, with the changelists
+/// of every build it covers.
+fn newest_datacore_tag(repo: &Path) -> Result<Option<(String, Vec<u64>)>, String> {
     let tags = capture(
         Command::new("git")
             .args(["tag", "--list", "datacore/*"])
             .current_dir(repo),
     )?;
-    Ok(tags
-        .lines()
+    Ok(newest_tag(&tags))
+}
+
+/// The changelists a `datacore/*` tag covers, one per build label (the
+/// number after the last `.`); a union tag joins its labels with `+`.
+fn tag_changelists(tag: &str) -> Option<Vec<u64>> {
+    tag.strip_prefix("datacore/")?
+        .split('+')
+        .map(|label| label.rsplit_once('.')?.1.parse().ok())
+        .collect()
+}
+
+fn newest_tag(tags: &str) -> Option<(String, Vec<u64>)> {
+    tags.lines()
         .filter_map(|t| {
-            let changelist = t.rsplit_once('.')?.1.parse::<u64>().ok()?;
-            Some((t.to_string(), changelist))
+            let changelists = tag_changelists(t.trim())?;
+            Some((t.trim().to_string(), changelists))
         })
-        .max_by_key(|(_, cl)| *cl))
+        .max_by_key(|(_, cls)| cls.iter().copied().max())
 }
 
 /// A regen PR as `gh` reports it.
@@ -824,36 +937,28 @@ fn view_pr(dir: &Path, url: &str) -> Result<Option<Pr>, String> {
     Ok(Pr::parse(&out))
 }
 
-/// Create the worktree on first use, then reset it to `origin/main` on a
-/// fresh `branch`. Ignored files (the `target/` dir) survive, so later runs
-/// build incrementally.
-fn prepare_worktree(repo: &Path, worktree: &Path, branch: &str, log: &File) -> Result<(), String> {
+/// Create the worktree on first use, then reset it to `base` (normally
+/// `origin/main`) on a fresh `branch`. Ignored files (the `target/` dir)
+/// survive, so later runs build incrementally.
+fn prepare_worktree(
+    repo: &Path,
+    worktree: &Path,
+    branch: &str,
+    base: &str,
+    log: &File,
+) -> Result<(), String> {
     let path = worktree.to_string_lossy().into_owned();
     if !worktree.join(".git").exists() {
         git(repo, &["worktree", "prune"], log)?;
         git(
             repo,
-            &[
-                "worktree",
-                "add",
-                "--quiet",
-                "--detach",
-                &path,
-                "origin/main",
-            ],
+            &["worktree", "add", "--quiet", "--detach", &path, base],
             log,
         )?;
     }
     git(
         worktree,
-        &[
-            "checkout",
-            "--quiet",
-            "--force",
-            "-B",
-            branch,
-            "origin/main",
-        ],
+        &["checkout", "--quiet", "--force", "-B", branch, base],
         log,
     )?;
     git(worktree, &["clean", "--quiet", "-fd"], log)?;
@@ -1010,6 +1115,104 @@ mod tests {
         assert!(!fork.open && !fork.auto_merge && fork.fork);
         assert!(Pr::parse("").is_none());
         assert!(Pr::parse("https://github.com/o/r/pull/2 OPEN false true").is_none());
+    }
+
+    fn build(channel: Channel, changelist: u64) -> Build {
+        let name = format!("{channel}").to_lowercase();
+        Build {
+            label: format!("1.0.0-{name}.{changelist}"),
+            changelist,
+            channel,
+            p4k: PathBuf::from(format!("C:/SC/{name}/Data.p4k")),
+        }
+    }
+
+    fn changelists(window: &Window) -> Vec<u64> {
+        window.builds.iter().map(|b| b.changelist).collect()
+    }
+
+    #[test]
+    fn the_window_is_live_plus_a_newer_preview() {
+        use Channel::*;
+        let window = |builds| Window::from_builds(builds).unwrap();
+        // PTU ahead of LIVE: both, oldest first.
+        let w = window(vec![build(Ptu, 20), build(Live, 10)]);
+        assert_eq!(changelists(&w), [10, 20]);
+        assert!(w.is_live());
+        // A stale PTU behind LIVE drops out.
+        assert_eq!(
+            changelists(&window(vec![build(Ptu, 5), build(Live, 10)])),
+            [10]
+        );
+        // The newest preview of several; Tech Preview never counts.
+        let w = window(vec![
+            build(Live, 10),
+            build(Ptu, 20),
+            build(Eptu, 30),
+            build(TechPreview, 40),
+        ]);
+        assert_eq!(changelists(&w), [10, 30]);
+        // A hotfix newer than LIVE is the LIVE side.
+        assert_eq!(
+            changelists(&window(vec![build(Live, 10), build(Hotfix, 12)])),
+            [12]
+        );
+        // No LIVE install: the newest build alone, not live.
+        let w = window(vec![build(Ptu, 20), build(TechPreview, 40)]);
+        assert_eq!(changelists(&w), [40]);
+        assert!(!w.is_live());
+        assert!(Window::from_builds(Vec::new()).is_none());
+    }
+
+    #[test]
+    fn a_union_names_every_build() {
+        let w =
+            Window::from_builds(vec![build(Channel::Live, 10), build(Channel::Ptu, 20)]).unwrap();
+        assert_eq!(w.label(), "1.0.0-live.10 + 1.0.0-ptu.20");
+        assert_eq!(w.branch(), "regen/1.0.0-live.10+1.0.0-ptu.20");
+        assert_eq!(
+            w.commit_message(),
+            "chore(datacore): regenerate bindings (SC 1.0.0-live.10 + 1.0.0-ptu.20)"
+        );
+    }
+
+    #[test]
+    fn reads_union_tags() {
+        assert_eq!(
+            tag_changelists("datacore/4.10.3-live.13165946+5.0.0-ptu.13228337"),
+            Some(vec![13165946, 13228337])
+        );
+        assert_eq!(
+            tag_changelists("datacore/4.9.0-live.12344265"),
+            Some(vec![12344265])
+        );
+        assert_eq!(tag_changelists("datacore/garbage"), None);
+        let tags = "datacore/4.10.3-live.30\ndatacore/4.10.3-live.30+5.0.0-ptu.40\ndatacore/4.9.0-live.20\n";
+        assert_eq!(
+            newest_tag(tags),
+            Some(("datacore/4.10.3-live.30+5.0.0-ptu.40".into(), vec![30, 40]))
+        );
+    }
+
+    #[test]
+    fn coverage_follows_the_tagged_builds() {
+        use Channel::*;
+        let window = |builds| Window::from_builds(builds).unwrap();
+        let tagged = [30, 40];
+        // Exactly the tagged builds, or the PTU uninstalled since: covered.
+        assert!(window(vec![build(Live, 30), build(Ptu, 40)]).covered_by(&tagged));
+        assert!(window(vec![build(Live, 30)]).covered_by(&tagged));
+        // PTU promoted to LIVE under the same changelist: covered.
+        assert!(window(vec![build(Live, 40)]).covered_by(&tagged));
+        // A new PTU build, a LIVE hotfix, or LIVE moving on: not covered.
+        assert!(!window(vec![build(Live, 30), build(Ptu, 45)]).covered_by(&tagged));
+        assert!(!window(vec![build(Live, 35), build(Ptu, 40)]).covered_by(&tagged));
+        assert!(!window(vec![build(Live, 50)]).covered_by(&tagged));
+        // Older than every tagged build (tagged elsewhere): covered.
+        assert!(window(vec![build(Live, 20)]).covered_by(&tagged));
+        // The plain single-build tag keeps its old meaning.
+        assert!(window(vec![build(Live, 30)]).covered_by(&[30]));
+        assert!(!window(vec![build(Live, 30), build(Ptu, 40)]).covered_by(&[30]));
     }
 
     #[test]
