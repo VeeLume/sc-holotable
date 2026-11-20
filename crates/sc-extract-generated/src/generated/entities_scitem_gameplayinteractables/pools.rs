@@ -14,12 +14,22 @@ use super::super::*;
 /// Pool storage for the `entities-scitem-gameplayinteractables` feature.
 #[derive(Default)]
 pub struct EntitiesScitemGameplayinteractablesPools {
+    pub soffset_position_params: Vec<Option<SOffsetPositionParams>>,
     pub spawner_prerequisite_or: Vec<Option<SpawnerPrerequisite_OR>>,
+    pub sentity_itemport_context: Vec<Option<SEntityItemportContext>>,
     pub delivery_locker_component_params: Vec<Option<DeliveryLockerComponentParams>>,
+    pub mission_board_type_career: Vec<Option<MissionBoardType_Career>>,
+    pub mission_board_type_notice: Vec<Option<MissionBoardType_Notice>>,
+    pub entity_component_mission_board_uiprovider:
+        Vec<Option<EntityComponentMissionBoardUIProvider>>,
     pub sweighted_reward_entry: Vec<Option<SWeightedRewardEntry>>,
     pub sreward_generator_component_params: Vec<Option<SRewardGeneratorComponentParams>>,
     pub sspawner_analytics_event_gameplay_trigger:
         Vec<Option<SSpawnerAnalyticsEventGameplayTrigger>>,
+    pub gameplay_trigger_target_type_item_port_name:
+        Vec<Option<GameplayTrigger_TargetType_ItemPortName>>,
+    pub gameplay_trigger_executor_set_interaction_state_by_tag:
+        Vec<Option<GameplayTrigger_Executor_SetInteractionState_ByTag>>,
     pub self_interaction_trigger: Vec<Option<SelfInteractionTrigger>>,
     pub gameplay_trigger_physics_set_parameter_proxy_state:
         Vec<Option<GameplayTrigger_Physics_SetParameter_ProxyState>>,

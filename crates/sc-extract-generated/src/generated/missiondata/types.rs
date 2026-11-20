@@ -18,6 +18,252 @@ use svarog_datacore::{Instance, Value};
 
 use super::super::*;
 
+/// DCB type: `MissionLocationClasses`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct MissionLocationClasses {
+    /// `locationClasses` (Reference (array))
+    pub location_classes: Vec<CigGuid>,
+}
+
+impl Pooled for MissionLocationClasses {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.missiondata.mission_location_classes
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.missiondata.mission_location_classes
+    }
+}
+
+impl<'a> Extract<'a> for MissionLocationClasses {
+    const TYPE_NAME: &'static str = "MissionLocationClasses";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_classes: inst
+                .get_array("locationClasses")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `MissionLocationSizes`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct MissionLocationSizes {
+    /// `locationSizes` (Reference (array))
+    pub location_sizes: Vec<CigGuid>,
+}
+
+impl Pooled for MissionLocationSizes {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.missiondata.mission_location_sizes
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.missiondata.mission_location_sizes
+    }
+}
+
+impl<'a> Extract<'a> for MissionLocationSizes {
+    const TYPE_NAME: &'static str = "MissionLocationSizes";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_sizes: inst
+                .get_array("locationSizes")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `MissionLocationFunctions`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct MissionLocationFunctions {
+    /// `locationFunctions` (Reference (array))
+    pub location_functions: Vec<CigGuid>,
+}
+
+impl Pooled for MissionLocationFunctions {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.missiondata.mission_location_functions
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.missiondata.mission_location_functions
+    }
+}
+
+impl<'a> Extract<'a> for MissionLocationFunctions {
+    const TYPE_NAME: &'static str = "MissionLocationFunctions";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_functions: inst
+                .get_array("locationFunctions")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ContractScope_Item`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct ContractScope_Item {
+    /// `displayName` (Locale)
+    pub display_name: LocaleKey,
+    /// `icon` (String)
+    pub icon: String,
+}
+
+impl Pooled for ContractScope_Item {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.missiondata.contract_scope_item
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.missiondata.contract_scope_item
+    }
+}
+
+impl<'a> Extract<'a> for ContractScope_Item {
+    const TYPE_NAME: &'static str = "ContractScope_Item";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            display_name: inst
+                .get_str("displayName")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            icon: inst.get_str("icon").map(String::from).unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ContractScopeGlobalParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct ContractScopeGlobalParams {
+    /// `location` (StrongPointer)
+    pub location: Option<Handle<ContractScope_Item>>,
+    /// `cluster` (StrongPointer)
+    pub cluster: Option<Handle<ContractScope_Item>>,
+    /// `sector` (StrongPointer)
+    pub sector: Option<Handle<ContractScope_Item>>,
+    /// `planetaryBody` (StrongPointer)
+    pub planetary_body: Option<Handle<ContractScope_Item>>,
+    /// `planetarySystem` (StrongPointer)
+    pub planetary_system: Option<Handle<ContractScope_Item>>,
+    /// `solarSystem` (StrongPointer)
+    pub solar_system: Option<Handle<ContractScope_Item>>,
+    /// `universe` (StrongPointer)
+    pub universe: Option<Handle<ContractScope_Item>>,
+}
+
+impl Pooled for ContractScopeGlobalParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.missiondata.contract_scope_global_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.missiondata.contract_scope_global_params
+    }
+}
+
+impl<'a> Extract<'a> for ContractScopeGlobalParams {
+    const TYPE_NAME: &'static str = "ContractScopeGlobalParams";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            location: match inst.get("location") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ContractScope_Item>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            cluster: match inst.get("cluster") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ContractScope_Item>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            sector: match inst.get("sector") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ContractScope_Item>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            planetary_body: match inst.get("planetaryBody") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ContractScope_Item>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            planetary_system: match inst.get("planetarySystem") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ContractScope_Item>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            solar_system: match inst.get("solarSystem") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ContractScope_Item>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            universe: match inst.get("universe") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ContractScope_Item>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `EntityClusterId`
 pub struct EntityClusterId {}
 
@@ -140,155 +386,6 @@ impl<'a> Extract<'a> for MissionVariableInteger {
     }
 }
 
-/// DCB type: `LocationResourceSlot`
-pub struct LocationResourceSlot {
-    /// `resourceSlotTag` (Reference)
-    pub resource_slot_tag: Option<CigGuid>,
-    /// `autoConsumeIfPlayerAtLocation` (Boolean)
-    pub auto_consume_if_player_at_location: bool,
-}
-
-impl Pooled for LocationResourceSlot {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.missiondata.location_resource_slot
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.missiondata.location_resource_slot
-    }
-}
-
-impl<'a> Extract<'a> for LocationResourceSlot {
-    const TYPE_NAME: &'static str = "LocationResourceSlot";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            resource_slot_tag: inst
-                .get("resourceSlotTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            auto_consume_if_player_at_location: inst
-                .get_bool("autoConsumeIfPlayerAtLocation")
-                .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `LocationEntityType_StaticEntity`
-/// Inherits from: `LocationEntityType_Base`
-pub struct LocationEntityType_StaticEntity {}
-
-impl Pooled for LocationEntityType_StaticEntity {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.missiondata.location_entity_type_static_entity
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.missiondata.location_entity_type_static_entity
-    }
-}
-
-impl<'a> Extract<'a> for LocationEntityType_StaticEntity {
-    const TYPE_NAME: &'static str = "LocationEntityType_StaticEntity";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
-    }
-}
-
-/// DCB type: `ModuleLocationEntities_Static`
-/// Inherits from: `ModuleLocationEntities`
-pub struct ModuleLocationEntities_Static {
-    /// `debugName` (String)
-    pub debug_name: String,
-    /// `requiredForInit` (Boolean)
-    pub required_for_init: bool,
-    /// `optional` (Boolean)
-    pub optional: bool,
-    /// `entityDeclarations` (Reference (array))
-    pub entity_declarations: Vec<CigGuid>,
-}
-
-impl Pooled for ModuleLocationEntities_Static {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.missiondata.module_location_entities_static
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.missiondata.module_location_entities_static
-    }
-}
-
-impl<'a> Extract<'a> for ModuleLocationEntities_Static {
-    const TYPE_NAME: &'static str = "ModuleLocationEntities_Static";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_for_init: inst.get_bool("requiredForInit").unwrap_or_default(),
-            optional: inst.get_bool("optional").unwrap_or_default(),
-            entity_declarations: inst
-                .get_array("entityDeclarations")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `ModuleDeclarationType_Mission`
-/// Inherits from: `ModuleDeclarationType_Base`
-pub struct ModuleDeclarationType_Mission {
-    /// `requiredLocationModules` (Reference (array))
-    pub required_location_modules: Vec<CigGuid>,
-    /// `requiredResourceSlot` (Reference)
-    pub required_resource_slot: Option<CigGuid>,
-    /// `pausesLocationNPCAutospawns` (Boolean)
-    pub pauses_location_npcautospawns: bool,
-}
-
-impl Pooled for ModuleDeclarationType_Mission {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.missiondata.module_declaration_type_mission
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.missiondata.module_declaration_type_mission
-    }
-}
-
-impl<'a> Extract<'a> for ModuleDeclarationType_Mission {
-    const TYPE_NAME: &'static str = "ModuleDeclarationType_Mission";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            required_location_modules: inst
-                .get_array("requiredLocationModules")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
-            required_resource_slot: inst
-                .get("requiredResourceSlot")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            pauses_location_npcautospawns: inst
-                .get_bool("pausesLocationNPCAutospawns")
-                .unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `ModuleDeclarationType_Location`
 /// Inherits from: `ModuleDeclarationType_Base`
 pub struct ModuleDeclarationType_Location {
@@ -310,48 +407,6 @@ impl<'a> Extract<'a> for ModuleDeclarationType_Location {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             is_persistent: inst.get_bool("isPersistent").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `VariableDeclaration_LocationEntities`
-/// Inherits from: `VariableDeclaration_Base`
-pub struct VariableDeclaration_LocationEntities {
-    /// `subsumptionVariableName` (String)
-    pub subsumption_variable_name: String,
-    /// `locationEntities` (WeakPointer (array))
-    pub location_entities: Vec<ModuleLocationEntitiesPtr>,
-}
-
-impl Pooled for VariableDeclaration_LocationEntities {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.missiondata.variable_declaration_location_entities
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.missiondata.variable_declaration_location_entities
-    }
-}
-
-impl<'a> Extract<'a> for VariableDeclaration_LocationEntities {
-    const TYPE_NAME: &'static str = "VariableDeclaration_LocationEntities";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            subsumption_variable_name: inst
-                .get_str("subsumptionVariableName")
-                .map(String::from)
-                .unwrap_or_default(),
-            location_entities: inst
-                .get_array("locationEntities")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(ModuleLocationEntitiesPtr::from_ref(b, r))
-                        }
-                        _ => None,
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
         }
     }
 }

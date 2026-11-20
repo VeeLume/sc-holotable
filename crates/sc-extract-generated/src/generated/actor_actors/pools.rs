@@ -14,8 +14,6 @@ use super::super::*;
 /// Pool storage for the `actor-actors` feature.
 #[derive(Default)]
 pub struct ActorActorsPools {
-    pub sdynamic_group_component_params: Vec<Option<SDynamicGroupComponentParams>>,
-    pub activity_behavior_component_params: Vec<Option<ActivityBehaviorComponentParams>>,
     pub terrain_trash_cleanup_component_params: Vec<Option<TerrainTrashCleanupComponentParams>>,
     pub sactor_death_pose_variant: Vec<Option<SActorDeathPoseVariant>>,
     pub sactor_static_collider_death_behaviour: Vec<Option<SActorStaticColliderDeathBehaviour>>,

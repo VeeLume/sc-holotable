@@ -226,8 +226,6 @@ impl<'a> Extract<'a> for SSalvageRepairHighlightParams {
 pub struct SSalvageRepairCardParams {
     /// `cardLerpSpeed` (Single)
     pub card_lerp_speed: f32,
-    /// `attachPointLerpSpeed` (Single)
-    pub attach_point_lerp_speed: f32,
     /// `closingTransitionTime` (Single)
     pub closing_transition_time: f32,
     /// `nearDistance` (Single)
@@ -236,6 +234,9 @@ pub struct SSalvageRepairCardParams {
     pub default_screen_pos: Option<Handle<Vec2>>,
     /// `maxDistScreenPosScale` (Single)
     pub max_dist_screen_pos_scale: f32,
+    /// `attachPointLerpSpeed` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub attach_point_lerp_speed: f32,
 }
 
 impl Pooled for SSalvageRepairCardParams {
@@ -256,7 +257,6 @@ impl<'a> Extract<'a> for SSalvageRepairCardParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             card_lerp_speed: inst.get_f32("cardLerpSpeed").unwrap_or_default(),
-            attach_point_lerp_speed: inst.get_f32("attachPointLerpSpeed").unwrap_or_default(),
             closing_transition_time: inst.get_f32("closingTransitionTime").unwrap_or_default(),
             near_distance: inst.get_f32("nearDistance").unwrap_or_default(),
             default_screen_pos: match inst.get("defaultScreenPos") {
@@ -267,6 +267,7 @@ impl<'a> Extract<'a> for SSalvageRepairCardParams {
                 _ => None,
             },
             max_dist_screen_pos_scale: inst.get_f32("maxDistScreenPosScale").unwrap_or_default(),
+            attach_point_lerp_speed: inst.get_f32("attachPointLerpSpeed").unwrap_or_default(),
         }
     }
 }

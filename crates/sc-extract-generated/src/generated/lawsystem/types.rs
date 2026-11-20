@@ -20,6 +20,7 @@ use super::super::*;
 
 /// DCB type: `SecurityClearanceTokenData_Instance`
 /// Inherits from: `SecurityClearanceTokenData`
+#[deprecated(note = "no record in 5.0.0-ptu.13228337 uses this type")]
 pub struct SecurityClearanceTokenData_Instance {
     /// `conditionFailedTag` (Reference)
     pub condition_failed_tag: Option<CigGuid>,

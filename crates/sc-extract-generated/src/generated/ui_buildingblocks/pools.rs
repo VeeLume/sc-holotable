@@ -16,8 +16,6 @@ use super::super::*;
 pub struct UiBuildingblocksPools {
     pub bindings_operations_waveform_shape_triangle:
         Vec<Option<BindingsOperations_WaveformShapeTriangle>>,
-    pub bindings_operations_waveform_shape_sawtooth:
-        Vec<Option<BindingsOperations_WaveformShapeSawtooth>>,
     pub building_blocks_bindings_color_from_number_rgba:
         Vec<Option<BuildingBlocks_BindingsColorFromNumberRGBA>>,
     pub building_blocks_field_modifier_enumerated_type_max_height_behavior:

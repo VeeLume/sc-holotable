@@ -7,13 +7,11 @@
 //
 // Any hand edits will be lost on the next run.
 
-//! Feature module: `densityclasses`
+//! Feature module: `aimotive`
 
-mod index;
 mod pools;
 mod types;
 
-pub use index::*;
 pub use pools::*;
 #[allow(unused_imports)]
 pub use types::*;

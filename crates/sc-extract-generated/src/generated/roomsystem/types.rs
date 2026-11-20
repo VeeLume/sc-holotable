@@ -1667,6 +1667,7 @@ impl<'a> Extract<'a> for RadiationBehavior_AsteroidInverseSquareSurfaceRadiation
 }
 
 /// DCB type: `WeatherEffects_Atmosphere_Property`
+#[deprecated(note = "no record in 5.0.0-ptu.13228337 uses this type")]
 pub struct WeatherEffects_Atmosphere_Property {
     /// `type` (EnumChoice)
     pub r#type: AtmosphereStatePropertyType,
@@ -1701,13 +1702,15 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_Property {
 
 /// DCB type: `WeatherEffects_Atmosphere_MultiPropertyValue`
 /// Inherits from: `WeatherEffects_Atmosphere`
+#[deprecated(note = "no record in 5.0.0-ptu.13228337 uses this type")]
 pub struct WeatherEffects_Atmosphere_MultiPropertyValue {
     /// `spaceLoopEffect` (Class)
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
-    /// `causesPuddles` (Boolean)
-    pub causes_puddles: bool,
     /// `properties` (Class (array))
     pub properties: Vec<Handle<WeatherEffects_Atmosphere_Property>>,
+    /// `causesPuddles` (Boolean)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub causes_puddles: bool,
 }
 
 impl Pooled for WeatherEffects_Atmosphere_MultiPropertyValue {
@@ -1736,7 +1739,6 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_MultiPropertyValue {
                 }
                 _ => None,
             },
-            causes_puddles: inst.get_bool("causesPuddles").unwrap_or_default(),
             properties: inst
                 .get_array("properties")
                 .map(|arr| {
@@ -1758,6 +1760,77 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_MultiPropertyValue {
                     .collect()
                 })
                 .unwrap_or_default(),
+            causes_puddles: inst.get_bool("causesPuddles").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `WeatherEffects_Atmosphere_PlanetRain`
+/// Inherits from: `WeatherEffects_Atmosphere`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct WeatherEffects_Atmosphere_PlanetRain {
+    /// `spaceLoopEffect` (Class)
+    pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
+}
+
+impl Pooled for WeatherEffects_Atmosphere_PlanetRain {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.roomsystem.weather_effects_atmosphere_planet_rain
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.roomsystem.weather_effects_atmosphere_planet_rain
+    }
+}
+
+impl<'a> Extract<'a> for WeatherEffects_Atmosphere_PlanetRain {
+    const TYPE_NAME: &'static str = "WeatherEffects_Atmosphere_PlanetRain";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            space_loop_effect: match inst.get("spaceLoopEffect") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<WeatherEffects_SpaceLoopEffect>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `WeatherEffects_Atmosphere_PlanetSnow`
+/// Inherits from: `WeatherEffects_Atmosphere`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct WeatherEffects_Atmosphere_PlanetSnow {
+    /// `spaceLoopEffect` (Class)
+    pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
+}
+
+impl Pooled for WeatherEffects_Atmosphere_PlanetSnow {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.roomsystem.weather_effects_atmosphere_planet_snow
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.roomsystem.weather_effects_atmosphere_planet_snow
+    }
+}
+
+impl<'a> Extract<'a> for WeatherEffects_Atmosphere_PlanetSnow {
+    const TYPE_NAME: &'static str = "WeatherEffects_Atmosphere_PlanetSnow";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            space_loop_effect: match inst.get("spaceLoopEffect") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<WeatherEffects_SpaceLoopEffect>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
         }
     }
 }

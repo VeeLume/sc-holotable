@@ -51,6 +51,8 @@ pub struct RoomsystemPools {
     pub weather_effects_atmosphere_property: Vec<Option<WeatherEffects_Atmosphere_Property>>,
     pub weather_effects_atmosphere_multi_property_value:
         Vec<Option<WeatherEffects_Atmosphere_MultiPropertyValue>>,
+    pub weather_effects_atmosphere_planet_rain: Vec<Option<WeatherEffects_Atmosphere_PlanetRain>>,
+    pub weather_effects_atmosphere_planet_snow: Vec<Option<WeatherEffects_Atmosphere_PlanetSnow>>,
     pub weather_effects_atmosphere_gas_cloud_optical_density:
         Vec<Option<WeatherEffects_Atmosphere_GasCloudOpticalDensity>>,
 }

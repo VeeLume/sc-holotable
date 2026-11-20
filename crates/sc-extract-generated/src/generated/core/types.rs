@@ -2096,6 +2096,48 @@ impl<'a> Extract<'a> for DefaultBlueprintSelection_Base {
     }
 }
 
+/// DCB type: `CraftingModifierType_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct CraftingModifierType_Base {}
+
+impl Pooled for CraftingModifierType_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.crafting_modifier_type_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.crafting_modifier_type_base
+    }
+}
+
+impl<'a> Extract<'a> for CraftingModifierType_Base {
+    const TYPE_NAME: &'static str = "CraftingModifierType_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `CraftingModifierCondition_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct CraftingModifierCondition_Base {}
+
+impl Pooled for CraftingModifierCondition_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.crafting_modifier_condition_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.crafting_modifier_condition_base
+    }
+}
+
+impl<'a> Extract<'a> for CraftingModifierCondition_Base {
+    const TYPE_NAME: &'static str = "CraftingModifierCondition_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `CraftingQualityDistribution_Base`
 pub struct CraftingQualityDistribution_Base {}
 
@@ -2130,6 +2172,27 @@ impl Pooled for CraftingQualityDistribution_Base_NonRef {
 
 impl<'a> Extract<'a> for CraftingQualityDistribution_Base_NonRef {
     const TYPE_NAME: &'static str = "CraftingQualityDistribution_Base_NonRef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `CraftingQualityLocationOverrideEntry_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct CraftingQualityLocationOverrideEntry_Base {}
+
+impl Pooled for CraftingQualityLocationOverrideEntry_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.crafting_quality_location_override_entry_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.crafting_quality_location_override_entry_base
+    }
+}
+
+impl<'a> Extract<'a> for CraftingQualityLocationOverrideEntry_Base {
+    const TYPE_NAME: &'static str = "CraftingQualityLocationOverrideEntry_Base";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }
@@ -2442,8 +2505,34 @@ impl<'a> Extract<'a> for EntityClassStaticDataParams {
     }
 }
 
+/// DCB type: `SHazardAreaPositionParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SHazardAreaPositionParams {}
+
+impl Pooled for SHazardAreaPositionParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.shazard_area_position_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.shazard_area_position_params
+    }
+}
+
+impl<'a> Extract<'a> for SHazardAreaPositionParams {
+    const TYPE_NAME: &'static str = "SHazardAreaPositionParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `SHazardAreaShapeParams`
-pub struct SHazardAreaShapeParams {}
+pub struct SHazardAreaShapeParams {
+    /// `positionParams` (StrongPointer)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub position_params: Option<SHazardAreaPositionParamsPtr>,
+}
 
 impl Pooled for SHazardAreaShapeParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -2456,8 +2545,15 @@ impl Pooled for SHazardAreaShapeParams {
 
 impl<'a> Extract<'a> for SHazardAreaShapeParams {
     const TYPE_NAME: &'static str = "SHazardAreaShapeParams";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            position_params: match inst.get("positionParams") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(SHazardAreaPositionParamsPtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+        }
     }
 }
 
@@ -3536,6 +3632,27 @@ impl<'a> Extract<'a> for EntityComponentHealth_SBaseSequencerTask {
     }
 }
 
+/// DCB type: `HierarchicalContextualData`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct HierarchicalContextualData {}
+
+impl Pooled for HierarchicalContextualData {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.hierarchical_contextual_data
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.hierarchical_contextual_data
+    }
+}
+
+impl<'a> Extract<'a> for HierarchicalContextualData {
+    const TYPE_NAME: &'static str = "HierarchicalContextualData";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `HitBehaviorBase`
 pub struct HitBehaviorBase {}
 
@@ -4394,6 +4511,27 @@ impl<'a> Extract<'a> for LootV3SecondaryChoicesRecordRef_Base {
     }
 }
 
+/// DCB type: `LootV3SecondaryChoiceLayer_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LootV3SecondaryChoiceLayer_Base {}
+
+impl Pooled for LootV3SecondaryChoiceLayer_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.loot_v3_secondary_choice_layer_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.loot_v3_secondary_choice_layer_base
+    }
+}
+
+impl<'a> Extract<'a> for LootV3SecondaryChoiceLayer_Base {
+    const TYPE_NAME: &'static str = "LootV3SecondaryChoiceLayer_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `LootV3SecondaryChoiceEntrySelector_Base`
 pub struct LootV3SecondaryChoiceEntrySelector_Base {}
 
@@ -4427,6 +4565,70 @@ impl Pooled for QuantityRange_Base {
 
 impl<'a> Extract<'a> for QuantityRange_Base {
     const TYPE_NAME: &'static str = "QuantityRange_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LootTheme_NoRef`
+/// Inherits from: `LootTheme_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LootTheme_NoRef {}
+
+impl Pooled for LootTheme_NoRef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.loot_theme_no_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.loot_theme_no_ref
+    }
+}
+
+impl<'a> Extract<'a> for LootTheme_NoRef {
+    const TYPE_NAME: &'static str = "LootTheme_NoRef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LootThemeSelector_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LootThemeSelector_Base {}
+
+impl Pooled for LootThemeSelector_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.loot_theme_selector_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.loot_theme_selector_base
+    }
+}
+
+impl<'a> Extract<'a> for LootThemeSelector_Base {
+    const TYPE_NAME: &'static str = "LootThemeSelector_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LootSubThemeModifier_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LootSubThemeModifier_Base {}
+
+impl Pooled for LootSubThemeModifier_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.loot_sub_theme_modifier_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.loot_sub_theme_modifier_base
+    }
+}
+
+impl<'a> Extract<'a> for LootSubThemeModifier_Base {
+    const TYPE_NAME: &'static str = "LootSubThemeModifier_Base";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }
@@ -4503,6 +4705,48 @@ impl Pooled for VisibilityConditionDef {
 
 impl<'a> Extract<'a> for VisibilityConditionDef {
     const TYPE_NAME: &'static str = "VisibilityConditionDef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `AutoSpawnClass`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct AutoSpawnClass {}
+
+impl Pooled for AutoSpawnClass {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.auto_spawn_class
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.auto_spawn_class
+    }
+}
+
+impl<'a> Extract<'a> for AutoSpawnClass {
+    const TYPE_NAME: &'static str = "AutoSpawnClass";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `AutoSpawnsData`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct AutoSpawnsData {}
+
+impl Pooled for AutoSpawnsData {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.auto_spawns_data
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.auto_spawns_data
+    }
+}
+
+impl<'a> Extract<'a> for AutoSpawnsData {
+    const TYPE_NAME: &'static str = "AutoSpawnsData";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }
@@ -4679,6 +4923,132 @@ impl<'a> Extract<'a> for HaulingOrder_OrOption_Base {
     }
 }
 
+/// DCB type: `LocationCondition_LocationClassBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_LocationClassBase {}
+
+impl Pooled for LocationCondition_LocationClassBase {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.location_condition_location_class_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.location_condition_location_class_base
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_LocationClassBase {
+    const TYPE_NAME: &'static str = "LocationCondition_LocationClassBase";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LocationCondition_LocationSizeBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_LocationSizeBase {}
+
+impl Pooled for LocationCondition_LocationSizeBase {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.location_condition_location_size_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.location_condition_location_size_base
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_LocationSizeBase {
+    const TYPE_NAME: &'static str = "LocationCondition_LocationSizeBase";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LocationCondition_LocationFunctionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_LocationFunctionBase {}
+
+impl Pooled for LocationCondition_LocationFunctionBase {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.location_condition_location_function_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.location_condition_location_function_base
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_LocationFunctionBase {
+    const TYPE_NAME: &'static str = "LocationCondition_LocationFunctionBase";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LocationCondition_FactionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_FactionBase {}
+
+impl Pooled for LocationCondition_FactionBase {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.location_condition_faction_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.location_condition_faction_base
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_FactionBase {
+    const TYPE_NAME: &'static str = "LocationCondition_FactionBase";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LocationCondition_OtherLocationBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_OtherLocationBase {}
+
+impl Pooled for LocationCondition_OtherLocationBase {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.location_condition_other_location_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.location_condition_other_location_base
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_OtherLocationBase {
+    const TYPE_NAME: &'static str = "LocationCondition_OtherLocationBase";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LocationCondition_RelativeLocationBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_RelativeLocationBase {}
+
+impl Pooled for LocationCondition_RelativeLocationBase {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.location_condition_relative_location_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.location_condition_relative_location_base
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_RelativeLocationBase {
+    const TYPE_NAME: &'static str = "LocationCondition_RelativeLocationBase";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `MissionFlowConditionBase`
 pub struct MissionFlowConditionBase {}
 
@@ -4755,6 +5125,27 @@ impl<'a> Extract<'a> for BaseDataSetMatchCondition {
     }
 }
 
+/// DCB type: `SpawnClosetSearchOptionsBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SpawnClosetSearchOptionsBase {}
+
+impl Pooled for SpawnClosetSearchOptionsBase {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.spawn_closet_search_options_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.spawn_closet_search_options_base
+    }
+}
+
+impl<'a> Extract<'a> for SpawnClosetSearchOptionsBase {
+    const TYPE_NAME: &'static str = "SpawnClosetSearchOptionsBase";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `LocationEntityType_Base`
 pub struct LocationEntityType_Base {}
 
@@ -4769,6 +5160,27 @@ impl Pooled for LocationEntityType_Base {
 
 impl<'a> Extract<'a> for LocationEntityType_Base {
     const TYPE_NAME: &'static str = "LocationEntityType_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `ModuleLocationEntitiesAcquiringStrategy_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct ModuleLocationEntitiesAcquiringStrategy_Base {}
+
+impl Pooled for ModuleLocationEntitiesAcquiringStrategy_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.module_location_entities_acquiring_strategy_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.module_location_entities_acquiring_strategy_base
+    }
+}
+
+impl<'a> Extract<'a> for ModuleLocationEntitiesAcquiringStrategy_Base {
+    const TYPE_NAME: &'static str = "ModuleLocationEntitiesAcquiringStrategy_Base";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }
@@ -4845,6 +5257,27 @@ impl Pooled for ObjectiveRewardContributionBase {
 
 impl<'a> Extract<'a> for ObjectiveRewardContributionBase {
     const TYPE_NAME: &'static str = "ObjectiveRewardContributionBase";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `MissionBoardType_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct MissionBoardType_Base {}
+
+impl Pooled for MissionBoardType_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.mission_board_type_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.mission_board_type_base
+    }
+}
+
+impl<'a> Extract<'a> for MissionBoardType_Base {
+    const TYPE_NAME: &'static str = "MissionBoardType_Base";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }

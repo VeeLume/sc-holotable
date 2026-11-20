@@ -42,35 +42,6 @@ impl<'a> Extract<'a> for BindingsOperations_WaveformShapeTriangle {
     }
 }
 
-/// DCB type: `BindingsOperations_WaveformShapeSawtooth`
-/// Inherits from: `BindingsOperations_WaveformShapeBase`
-pub struct BindingsOperations_WaveformShapeSawtooth {
-    /// `isReversed` (Boolean)
-    pub is_reversed: bool,
-}
-
-impl Pooled for BindingsOperations_WaveformShapeSawtooth {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_sawtooth
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_sawtooth
-    }
-}
-
-impl<'a> Extract<'a> for BindingsOperations_WaveformShapeSawtooth {
-    const TYPE_NAME: &'static str = "BindingsOperations_WaveformShapeSawtooth";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            is_reversed: inst.get_bool("isReversed").unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `BuildingBlocks_BindingsColorFromNumberRGBA`
 /// Inherits from: `BuildingBlocks_BindingsColorBase`
 pub struct BuildingBlocks_BindingsColorFromNumberRGBA {

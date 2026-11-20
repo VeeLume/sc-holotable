@@ -60,11 +60,41 @@ pub struct ContractsPools {
     pub hauling_order_resource_unlimited_drop_off:
         Vec<Option<HaulingOrder_ResourceUnlimitedDropOff>>,
     pub hauling_order_entity_classes: Vec<Option<HaulingOrder_EntityClasses>>,
+    pub hauling_order_collect_only: Vec<Option<HaulingOrder_CollectOnly>>,
     pub hauling_order_entity_class: Vec<Option<HaulingOrder_EntityClass>>,
     pub hauling_order_mission_item: Vec<Option<HaulingOrder_MissionItem>>,
     pub hauling_order_mission_item_drop_off: Vec<Option<HaulingOrder_MissionItemDropOff>>,
     pub hauling_order_or_option_and: Vec<Option<HaulingOrder_OrOption_And>>,
     pub hauling_order_content_or: Vec<Option<HaulingOrderContent_Or>>,
+    pub location_condition_required_location_class:
+        Vec<Option<LocationCondition_RequiredLocationClass>>,
+    pub location_condition_required_location_classes:
+        Vec<Option<LocationCondition_RequiredLocationClasses>>,
+    pub location_condition_required_location_size:
+        Vec<Option<LocationCondition_RequiredLocationSize>>,
+    pub location_condition_excluded_location_size:
+        Vec<Option<LocationCondition_ExcludedLocationSize>>,
+    pub location_condition_required_location_sizes:
+        Vec<Option<LocationCondition_RequiredLocationSizes>>,
+    pub location_condition_excluded_location_sizes:
+        Vec<Option<LocationCondition_ExcludedLocationSizes>>,
+    pub location_condition_required_location_function:
+        Vec<Option<LocationCondition_RequiredLocationFunction>>,
+    pub location_condition_excluded_location_function:
+        Vec<Option<LocationCondition_ExcludedLocationFunction>>,
+    pub location_condition_required_location_functions:
+        Vec<Option<LocationCondition_RequiredLocationFunctions>>,
+    pub location_condition_excluded_location_functions:
+        Vec<Option<LocationCondition_ExcludedLocationFunctions>>,
+    pub location_condition_required_faction_hostility:
+        Vec<Option<LocationCondition_RequiredFactionHostility>>,
+    pub location_condition_excluded_faction_hostility:
+        Vec<Option<LocationCondition_ExcludedFactionHostility>>,
+    pub location_condition_not_location: Vec<Option<LocationCondition_NotLocation>>,
+    pub location_condition_not_locations: Vec<Option<LocationCondition_NotLocations>>,
+    pub location_condition_same_scope: Vec<Option<LocationCondition_SameScope>>,
+    pub location_condition_different_scope: Vec<Option<LocationCondition_DifferentScope>>,
+    pub mission_property_value_scoped_location: Vec<Option<MissionPropertyValue_ScopedLocation>>,
     pub mission_flow_condition_all_tokens_state: Vec<Option<MissionFlowCondition_AllTokensState>>,
     pub mission_flow_condition_any_tokens_state: Vec<Option<MissionFlowCondition_AnyTokensState>>,
     pub mission_flow_condition_on_mission_start: Vec<Option<MissionFlowCondition_OnMissionStart>>,
@@ -72,8 +102,13 @@ pub struct ContractsPools {
     pub mission_random_phase_entry: Vec<Option<MissionRandomPhaseEntry>>,
     pub mission_flow_action_pick_random_mission_phase:
         Vec<Option<MissionFlowAction_PickRandomMissionPhase>>,
+    pub mission_random_action_entry: Vec<Option<MissionRandomActionEntry>>,
+    pub mission_flow_action_pick_random_action: Vec<Option<MissionFlowAction_PickRandomAction>>,
+    pub mission_flow_action_multiple_actions: Vec<Option<MissionFlowAction_MultipleActions>>,
     pub mission_property_value_locations: Vec<Option<MissionPropertyValue_Locations>>,
     pub mission_property_value_hauling_orders: Vec<Option<MissionPropertyValue_HaulingOrders>>,
+    pub spawn_closet_search_options_tags: Vec<Option<SpawnClosetSearchOptions_Tags>>,
+    pub mission_property_value_auto_spawns: Vec<Option<MissionPropertyValue_AutoSpawns>>,
     pub objective_handler_near_location: Vec<Option<ObjectiveHandler_NearLocation>>,
     pub objective_handler_transit_to_instance: Vec<Option<ObjectiveHandler_TransitToInstance>>,
     pub contract_generator_handler_pvpbounty_def:

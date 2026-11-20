@@ -64,6 +64,10 @@ pub struct ContractGeneratorHandler_LinearSeries {
     pub work_in_progress: bool,
     /// `debugName` (String)
     pub debug_name: String,
+    /// `localGeneratorParams` (StrongPointer)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
@@ -93,6 +97,15 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_LinearSeries {
                 .get_str("debugName")
                 .map(String::from)
                 .unwrap_or_default(),
+            local_generator_params: match inst.get("localGeneratorParams") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<LocalContractGeneratorParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
             required_active_scenarios: inst
                 .get_array("required_active_scenarios")
                 .map(|arr| {
@@ -154,6 +167,10 @@ pub struct ContractGeneratorHandler_TutorialSeriesDef {
     pub work_in_progress: bool,
     /// `debugName` (String)
     pub debug_name: String,
+    /// `localGeneratorParams` (StrongPointer)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
@@ -187,6 +204,15 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_TutorialSeriesDef {
                 .get_str("debugName")
                 .map(String::from)
                 .unwrap_or_default(),
+            local_generator_params: match inst.get("localGeneratorParams") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<LocalContractGeneratorParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
             required_active_scenarios: inst
                 .get_array("required_active_scenarios")
                 .map(|arr| {
@@ -248,6 +274,10 @@ pub struct ContractGeneratorHandler_List {
     pub work_in_progress: bool,
     /// `debugName` (String)
     pub debug_name: String,
+    /// `localGeneratorParams` (StrongPointer)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
@@ -277,6 +307,15 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_List {
                 .get_str("debugName")
                 .map(String::from)
                 .unwrap_or_default(),
+            local_generator_params: match inst.get("localGeneratorParams") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<LocalContractGeneratorParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
             required_active_scenarios: inst
                 .get_array("required_active_scenarios")
                 .map(|arr| {
@@ -338,6 +377,10 @@ pub struct ContractGeneratorHandler_Legacy {
     pub work_in_progress: bool,
     /// `debugName` (String)
     pub debug_name: String,
+    /// `localGeneratorParams` (StrongPointer)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
@@ -367,6 +410,15 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_Legacy {
                 .get_str("debugName")
                 .map(String::from)
                 .unwrap_or_default(),
+            local_generator_params: match inst.get("localGeneratorParams") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<LocalContractGeneratorParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
             required_active_scenarios: inst
                 .get_array("required_active_scenarios")
                 .map(|arr| {
@@ -740,6 +792,10 @@ pub struct ContractGeneratorHandler_Career {
     pub work_in_progress: bool,
     /// `debugName` (String)
     pub debug_name: String,
+    /// `localGeneratorParams` (StrongPointer)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
@@ -775,6 +831,15 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_Career {
                 .get_str("debugName")
                 .map(String::from)
                 .unwrap_or_default(),
+            local_generator_params: match inst.get("localGeneratorParams") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<LocalContractGeneratorParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
             required_active_scenarios: inst
                 .get_array("required_active_scenarios")
                 .map(|arr| {
@@ -1418,6 +1483,10 @@ pub struct ContractResult_CompletionTags {
     pub mission_results: Vec<bool>,
     /// `completionTags` (Class (array))
     pub completion_tags: Vec<Handle<ContractResult_CompletionTag>>,
+    /// `splitPointsForParty` (Boolean)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub split_points_for_party: bool,
 }
 
 impl Pooled for ContractResult_CompletionTags {
@@ -1456,6 +1525,7 @@ impl<'a> Extract<'a> for ContractResult_CompletionTags {
                     .collect()
                 })
                 .unwrap_or_default(),
+            split_points_for_party: inst.get_bool("splitPointsForParty").unwrap_or_default(),
         }
     }
 }
@@ -2384,6 +2454,90 @@ impl<'a> Extract<'a> for HaulingOrder_EntityClasses {
     }
 }
 
+/// DCB type: `HaulingOrder_CollectOnly`
+/// Inherits from: `HaulingOrderBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct HaulingOrder_CollectOnly {
+    /// `pickUpLocation` (WeakPointer)
+    pub pick_up_location: Option<ObjectivePropertyBasePtr>,
+    /// `dropOffLocation` (WeakPointer)
+    pub drop_off_location: Option<ObjectivePropertyBasePtr>,
+    /// `pickUpTargetTypes` (Reference (array))
+    pub pick_up_target_types: Vec<CigGuid>,
+    /// `dropOffTargetTypes` (Reference (array))
+    pub drop_off_target_types: Vec<CigGuid>,
+    /// `item` (WeakPointer)
+    pub item: Option<ObjectivePropertyBasePtr>,
+    /// `minAmount` (Int32)
+    pub min_amount: i32,
+    /// `maxAmount` (Int32)
+    pub max_amount: i32,
+}
+
+impl Pooled for HaulingOrder_CollectOnly {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.hauling_order_collect_only
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.hauling_order_collect_only
+    }
+}
+
+impl<'a> Extract<'a> for HaulingOrder_CollectOnly {
+    const TYPE_NAME: &'static str = "HaulingOrder_CollectOnly";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            pick_up_location: match inst.get("pickUpLocation") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            drop_off_location: match inst.get("dropOffLocation") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            pick_up_target_types: inst
+                .get_array("pickUpTargetTypes")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            drop_off_target_types: inst
+                .get_array("dropOffTargetTypes")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            item: match inst.get("item") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            min_amount: inst.get_i32("minAmount").unwrap_or_default(),
+            max_amount: inst.get_i32("maxAmount").unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `HaulingOrder_EntityClass`
 /// Inherits from: `HaulingOrderBase`
 pub struct HaulingOrder_EntityClass {
@@ -2712,6 +2866,653 @@ impl<'a> Extract<'a> for HaulingOrderContent_Or {
     }
 }
 
+/// DCB type: `LocationCondition_RequiredLocationClass`
+/// Inherits from: `LocationCondition_LocationClassBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_RequiredLocationClass {
+    /// `locationClass` (Reference)
+    pub location_class: Option<CigGuid>,
+}
+
+impl Pooled for LocationCondition_RequiredLocationClass {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_required_location_class
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_required_location_class
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_RequiredLocationClass {
+    const TYPE_NAME: &'static str = "LocationCondition_RequiredLocationClass";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_class: inst
+                .get("locationClass")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_RequiredLocationClasses`
+/// Inherits from: `LocationCondition_LocationClassBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_RequiredLocationClasses {
+    /// `locationClasses` (Reference (array))
+    pub location_classes: Vec<CigGuid>,
+}
+
+impl Pooled for LocationCondition_RequiredLocationClasses {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_required_location_classes
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_required_location_classes
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_RequiredLocationClasses {
+    const TYPE_NAME: &'static str = "LocationCondition_RequiredLocationClasses";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_classes: inst
+                .get_array("locationClasses")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_RequiredLocationSize`
+/// Inherits from: `LocationCondition_LocationSizeBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_RequiredLocationSize {
+    /// `locationSize` (Reference)
+    pub location_size: Option<CigGuid>,
+}
+
+impl Pooled for LocationCondition_RequiredLocationSize {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_required_location_size
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_required_location_size
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_RequiredLocationSize {
+    const TYPE_NAME: &'static str = "LocationCondition_RequiredLocationSize";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_size: inst
+                .get("locationSize")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_ExcludedLocationSize`
+/// Inherits from: `LocationCondition_LocationSizeBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_ExcludedLocationSize {
+    /// `locationSize` (Reference)
+    pub location_size: Option<CigGuid>,
+}
+
+impl Pooled for LocationCondition_ExcludedLocationSize {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_excluded_location_size
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_excluded_location_size
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_ExcludedLocationSize {
+    const TYPE_NAME: &'static str = "LocationCondition_ExcludedLocationSize";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_size: inst
+                .get("locationSize")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_RequiredLocationSizes`
+/// Inherits from: `LocationCondition_LocationSizeBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_RequiredLocationSizes {
+    /// `locationSizes` (Reference (array))
+    pub location_sizes: Vec<CigGuid>,
+}
+
+impl Pooled for LocationCondition_RequiredLocationSizes {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_required_location_sizes
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_required_location_sizes
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_RequiredLocationSizes {
+    const TYPE_NAME: &'static str = "LocationCondition_RequiredLocationSizes";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_sizes: inst
+                .get_array("locationSizes")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_ExcludedLocationSizes`
+/// Inherits from: `LocationCondition_LocationSizeBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_ExcludedLocationSizes {
+    /// `locationSizes` (Reference (array))
+    pub location_sizes: Vec<CigGuid>,
+}
+
+impl Pooled for LocationCondition_ExcludedLocationSizes {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_excluded_location_sizes
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_excluded_location_sizes
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_ExcludedLocationSizes {
+    const TYPE_NAME: &'static str = "LocationCondition_ExcludedLocationSizes";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_sizes: inst
+                .get_array("locationSizes")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_RequiredLocationFunction`
+/// Inherits from: `LocationCondition_LocationFunctionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_RequiredLocationFunction {
+    /// `locationFunction` (Reference)
+    pub location_function: Option<CigGuid>,
+}
+
+impl Pooled for LocationCondition_RequiredLocationFunction {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .contracts
+            .location_condition_required_location_function
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .contracts
+            .location_condition_required_location_function
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_RequiredLocationFunction {
+    const TYPE_NAME: &'static str = "LocationCondition_RequiredLocationFunction";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_function: inst
+                .get("locationFunction")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_ExcludedLocationFunction`
+/// Inherits from: `LocationCondition_LocationFunctionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_ExcludedLocationFunction {
+    /// `locationFunction` (Reference)
+    pub location_function: Option<CigGuid>,
+}
+
+impl Pooled for LocationCondition_ExcludedLocationFunction {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .contracts
+            .location_condition_excluded_location_function
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .contracts
+            .location_condition_excluded_location_function
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_ExcludedLocationFunction {
+    const TYPE_NAME: &'static str = "LocationCondition_ExcludedLocationFunction";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_function: inst
+                .get("locationFunction")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_RequiredLocationFunctions`
+/// Inherits from: `LocationCondition_LocationFunctionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_RequiredLocationFunctions {
+    /// `locationFunctions` (Reference (array))
+    pub location_functions: Vec<CigGuid>,
+}
+
+impl Pooled for LocationCondition_RequiredLocationFunctions {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .contracts
+            .location_condition_required_location_functions
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .contracts
+            .location_condition_required_location_functions
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_RequiredLocationFunctions {
+    const TYPE_NAME: &'static str = "LocationCondition_RequiredLocationFunctions";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_functions: inst
+                .get_array("locationFunctions")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_ExcludedLocationFunctions`
+/// Inherits from: `LocationCondition_LocationFunctionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_ExcludedLocationFunctions {
+    /// `locationFunctions` (Reference (array))
+    pub location_functions: Vec<CigGuid>,
+}
+
+impl Pooled for LocationCondition_ExcludedLocationFunctions {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .contracts
+            .location_condition_excluded_location_functions
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .contracts
+            .location_condition_excluded_location_functions
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_ExcludedLocationFunctions {
+    const TYPE_NAME: &'static str = "LocationCondition_ExcludedLocationFunctions";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_functions: inst
+                .get_array("locationFunctions")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_RequiredFactionHostility`
+/// Inherits from: `LocationCondition_FactionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_RequiredFactionHostility {
+    /// `hostility` (EnumChoice)
+    pub hostility: ReactionType,
+}
+
+impl Pooled for LocationCondition_RequiredFactionHostility {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .contracts
+            .location_condition_required_faction_hostility
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .contracts
+            .location_condition_required_faction_hostility
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_RequiredFactionHostility {
+    const TYPE_NAME: &'static str = "LocationCondition_RequiredFactionHostility";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            hostility: ReactionType::from_dcb_str(inst.get_str("hostility").unwrap_or("")),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_ExcludedFactionHostility`
+/// Inherits from: `LocationCondition_FactionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_ExcludedFactionHostility {
+    /// `hostility` (EnumChoice)
+    pub hostility: ReactionType,
+}
+
+impl Pooled for LocationCondition_ExcludedFactionHostility {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .contracts
+            .location_condition_excluded_faction_hostility
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .contracts
+            .location_condition_excluded_faction_hostility
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_ExcludedFactionHostility {
+    const TYPE_NAME: &'static str = "LocationCondition_ExcludedFactionHostility";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            hostility: ReactionType::from_dcb_str(inst.get_str("hostility").unwrap_or("")),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_NotLocation`
+/// Inherits from: `LocationCondition_OtherLocationBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_NotLocation {
+    /// `location` (WeakPointer)
+    pub location: Option<Handle<MissionProperty>>,
+}
+
+impl Pooled for LocationCondition_NotLocation {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_not_location
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_not_location
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_NotLocation {
+    const TYPE_NAME: &'static str = "LocationCondition_NotLocation";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            location: match inst.get("location") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<MissionProperty>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_NotLocations`
+/// Inherits from: `LocationCondition_OtherLocationBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_NotLocations {
+    /// `locations` (WeakPointer (array))
+    pub locations: Vec<Handle<MissionProperty>>,
+}
+
+impl Pooled for LocationCondition_NotLocations {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_not_locations
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_not_locations
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_NotLocations {
+    const TYPE_NAME: &'static str = "LocationCondition_NotLocations";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            locations: inst
+                .get_array("locations")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(b.alloc_nested::<MissionProperty>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_SameScope`
+/// Inherits from: `LocationCondition_RelativeLocationBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_SameScope {
+    /// `scope` (EnumChoice)
+    pub scope: ContractScope,
+    /// `location` (WeakPointer)
+    pub location: Option<Handle<MissionProperty>>,
+}
+
+impl Pooled for LocationCondition_SameScope {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_same_scope
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_same_scope
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_SameScope {
+    const TYPE_NAME: &'static str = "LocationCondition_SameScope";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            scope: ContractScope::from_dcb_str(inst.get_str("scope").unwrap_or("")),
+            location: match inst.get("location") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<MissionProperty>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_DifferentScope`
+/// Inherits from: `LocationCondition_RelativeLocationBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_DifferentScope {
+    /// `scope` (EnumChoice)
+    pub scope: ContractScope,
+    /// `location` (WeakPointer)
+    pub location: Option<Handle<MissionProperty>>,
+}
+
+impl Pooled for LocationCondition_DifferentScope {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.location_condition_different_scope
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.location_condition_different_scope
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_DifferentScope {
+    const TYPE_NAME: &'static str = "LocationCondition_DifferentScope";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            scope: ContractScope::from_dcb_str(inst.get_str("scope").unwrap_or("")),
+            location: match inst.get("location") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<MissionProperty>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `MissionPropertyValue_ScopedLocation`
+/// Inherits from: `BaseMissionPropertyValue`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct MissionPropertyValue_ScopedLocation {
+    /// `factionFilter` (StrongPointer)
+    pub faction_filter: Option<LocationCondition_FactionBasePtr>,
+    /// `locationClassFilter` (StrongPointer)
+    pub location_class_filter: Option<LocationCondition_LocationClassBasePtr>,
+    /// `locationSizeFilter` (StrongPointer)
+    pub location_size_filter: Option<LocationCondition_LocationSizeBasePtr>,
+    /// `locationFunctionFilter` (StrongPointer)
+    pub location_function_filter: Option<LocationCondition_LocationFunctionBasePtr>,
+    /// `otherLocationFilter` (StrongPointer)
+    pub other_location_filter: Option<LocationCondition_OtherLocationBasePtr>,
+    /// `relativeLocationFilter` (StrongPointer)
+    pub relative_location_filter: Option<LocationCondition_RelativeLocationBasePtr>,
+}
+
+impl Pooled for MissionPropertyValue_ScopedLocation {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.mission_property_value_scoped_location
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.mission_property_value_scoped_location
+    }
+}
+
+impl<'a> Extract<'a> for MissionPropertyValue_ScopedLocation {
+    const TYPE_NAME: &'static str = "MissionPropertyValue_ScopedLocation";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            faction_filter: match inst.get("factionFilter") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(LocationCondition_FactionBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            location_class_filter: match inst.get("locationClassFilter") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(LocationCondition_LocationClassBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            location_size_filter: match inst.get("locationSizeFilter") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(LocationCondition_LocationSizeBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            location_function_filter: match inst.get("locationFunctionFilter") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(LocationCondition_LocationFunctionBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            other_location_filter: match inst.get("otherLocationFilter") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(LocationCondition_OtherLocationBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            relative_location_filter: match inst.get("relativeLocationFilter") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(LocationCondition_RelativeLocationBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `MissionFlowCondition_AllTokensState`
 /// Inherits from: `MissionFlowConditionBase`
 pub struct MissionFlowCondition_AllTokensState {
@@ -2901,6 +3702,123 @@ impl<'a> Extract<'a> for MissionFlowAction_PickRandomMissionPhase {
     }
 }
 
+/// DCB type: `MissionRandomActionEntry`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct MissionRandomActionEntry {
+    /// `action` (StrongPointer)
+    pub action: Option<MissionFlowActionBasePtr>,
+    /// `probability` (Single)
+    pub probability: f32,
+}
+
+impl Pooled for MissionRandomActionEntry {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.mission_random_action_entry
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.mission_random_action_entry
+    }
+}
+
+impl<'a> Extract<'a> for MissionRandomActionEntry {
+    const TYPE_NAME: &'static str = "MissionRandomActionEntry";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            action: match inst.get("action") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(MissionFlowActionBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            probability: inst.get_f32("probability").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `MissionFlowAction_PickRandomAction`
+/// Inherits from: `MissionFlowActionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct MissionFlowAction_PickRandomAction {
+    /// `actions` (Class (array))
+    pub actions: Vec<Handle<MissionRandomActionEntry>>,
+}
+
+impl Pooled for MissionFlowAction_PickRandomAction {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.mission_flow_action_pick_random_action
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.mission_flow_action_pick_random_action
+    }
+}
+
+impl<'a> Extract<'a> for MissionFlowAction_PickRandomAction {
+    const TYPE_NAME: &'static str = "MissionFlowAction_PickRandomAction";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            actions: inst
+                .get_array("actions")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<MissionRandomActionEntry>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MissionRandomActionEntry>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `MissionFlowAction_MultipleActions`
+/// Inherits from: `MissionFlowActionBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct MissionFlowAction_MultipleActions {
+    /// `actions` (StrongPointer (array))
+    pub actions: Vec<MissionFlowActionBasePtr>,
+}
+
+impl Pooled for MissionFlowAction_MultipleActions {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.mission_flow_action_multiple_actions
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.mission_flow_action_multiple_actions
+    }
+}
+
+impl<'a> Extract<'a> for MissionFlowAction_MultipleActions {
+    const TYPE_NAME: &'static str = "MissionFlowAction_MultipleActions";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            actions: inst
+                .get_array("actions")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(MissionFlowActionBasePtr::from_ref(b, r))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `MissionPropertyValue_Locations`
 /// Inherits from: `MissionPropertyValue_Location`
 pub struct MissionPropertyValue_Locations {
@@ -2908,14 +3826,15 @@ pub struct MissionPropertyValue_Locations {
     pub match_conditions: Vec<BaseDataSetMatchConditionPtr>,
     /// `resourceTags` (Reference (array))
     pub resource_tags: Vec<CigGuid>,
-    /// `logErrorOnSearchFail` (Boolean)
-    pub log_error_on_search_fail: bool,
     /// `minLocationsToFind` (Int32)
     pub min_locations_to_find: i32,
     /// `maxLocationsToFind` (Int32)
     pub max_locations_to_find: i32,
     /// `failIfMinAmountNotFound` (Boolean)
     pub fail_if_min_amount_not_found: bool,
+    /// `logErrorOnSearchFail` (Boolean)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub log_error_on_search_fail: bool,
 }
 
 impl Pooled for MissionPropertyValue_Locations {
@@ -2956,12 +3875,12 @@ impl<'a> Extract<'a> for MissionPropertyValue_Locations {
                     .collect()
                 })
                 .unwrap_or_default(),
-            log_error_on_search_fail: inst.get_bool("logErrorOnSearchFail").unwrap_or_default(),
             min_locations_to_find: inst.get_i32("minLocationsToFind").unwrap_or_default(),
             max_locations_to_find: inst.get_i32("maxLocationsToFind").unwrap_or_default(),
             fail_if_min_amount_not_found: inst
                 .get_bool("failIfMinAmountNotFound")
                 .unwrap_or_default(),
+            log_error_on_search_fail: inst.get_bool("logErrorOnSearchFail").unwrap_or_default(),
         }
     }
 }
@@ -2998,6 +3917,86 @@ impl<'a> Extract<'a> for MissionPropertyValue_HaulingOrders {
                     .collect()
                 })
                 .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `SpawnClosetSearchOptions_Tags`
+/// Inherits from: `SpawnClosetSearchOptionsBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SpawnClosetSearchOptions_Tags {
+    /// `closetPositiveTags` (Class)
+    pub closet_positive_tags: Option<Handle<TagList>>,
+    /// `closetNegativeTags` (Class)
+    pub closet_negative_tags: Option<Handle<TagList>>,
+}
+
+impl Pooled for SpawnClosetSearchOptions_Tags {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.spawn_closet_search_options_tags
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.spawn_closet_search_options_tags
+    }
+}
+
+impl<'a> Extract<'a> for SpawnClosetSearchOptions_Tags {
+    const TYPE_NAME: &'static str = "SpawnClosetSearchOptions_Tags";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            closet_positive_tags: match inst.get("closetPositiveTags") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+            closet_negative_tags: match inst.get("closetNegativeTags") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `MissionPropertyValue_AutoSpawns`
+/// Inherits from: `BaseMissionPropertyValue`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct MissionPropertyValue_AutoSpawns {
+    /// `autoSpawns` (Reference)
+    pub auto_spawns: Option<CigGuid>,
+    /// `searchOptions` (StrongPointer)
+    pub search_options: Option<SpawnClosetSearchOptionsBasePtr>,
+}
+
+impl Pooled for MissionPropertyValue_AutoSpawns {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.mission_property_value_auto_spawns
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.mission_property_value_auto_spawns
+    }
+}
+
+impl<'a> Extract<'a> for MissionPropertyValue_AutoSpawns {
+    const TYPE_NAME: &'static str = "MissionPropertyValue_AutoSpawns";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            auto_spawns: inst
+                .get("autoSpawns")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            search_options: match inst.get("searchOptions") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(SpawnClosetSearchOptionsBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
         }
     }
 }
@@ -3193,6 +4192,10 @@ pub struct ContractGeneratorHandler_PVPBountyDef {
     pub work_in_progress: bool,
     /// `debugName` (String)
     pub debug_name: String,
+    /// `localGeneratorParams` (StrongPointer)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
@@ -3224,6 +4227,15 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_PVPBountyDef {
                 .get_str("debugName")
                 .map(String::from)
                 .unwrap_or_default(),
+            local_generator_params: match inst.get("localGeneratorParams") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<LocalContractGeneratorParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
             required_active_scenarios: inst
                 .get_array("required_active_scenarios")
                 .map(|arr| {

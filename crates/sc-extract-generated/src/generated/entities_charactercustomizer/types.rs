@@ -1527,6 +1527,14 @@ pub struct SCharacterCustomizerControlParams {
     pub rotate_camera: bool,
     /// `stepTransitionTime` (Single)
     pub step_transition_time: f32,
+    /// `vrZoomedOutStereoStrength` (Single)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub vr_zoomed_out_stereo_strength: f32,
+    /// `vrZoomedInStereoStrength` (Single)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub vr_zoomed_in_stereo_strength: f32,
 }
 
 impl Pooled for SCharacterCustomizerControlParams {
@@ -1582,6 +1590,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerControlParams {
                 .unwrap_or_default(),
             rotate_camera: inst.get_bool("rotateCamera").unwrap_or_default(),
             step_transition_time: inst.get_f32("stepTransitionTime").unwrap_or_default(),
+            vr_zoomed_out_stereo_strength: inst
+                .get_f32("vrZoomedOutStereoStrength")
+                .unwrap_or_default(),
+            vr_zoomed_in_stereo_strength: inst
+                .get_f32("vrZoomedInStereoStrength")
+                .unwrap_or_default(),
         }
     }
 }

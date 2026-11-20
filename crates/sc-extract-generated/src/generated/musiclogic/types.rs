@@ -312,6 +312,14 @@ pub struct MusicLogicConfig {
     pub trigger_parent_music_area_on_leave: bool,
     /// `numHostilesOnRadar` (Reference)
     pub num_hostiles_on_radar: Option<CigGuid>,
+    /// `debugSwitches` (Class (array))
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub debug_switches: Vec<Handle<AudioSwitch>>,
+    /// `isTrespassingParameter` (Reference)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub is_trespassing_parameter: Option<CigGuid>,
 }
 
 impl Pooled for MusicLogicConfig {
@@ -395,6 +403,27 @@ impl<'a> Extract<'a> for MusicLogicConfig {
                 .unwrap_or_default(),
             num_hostiles_on_radar: inst
                 .get("numHostilesOnRadar")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            debug_switches: inst
+                .get_array("debugSwitches")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AudioSwitch>(
+                            Instance::from_inline_data(b.db, struct_index, data),
+                            false,
+                        )),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AudioSwitch>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            is_trespassing_parameter: inst
+                .get("isTrespassingParameter")
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
         }

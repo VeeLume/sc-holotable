@@ -7,11 +7,13 @@
 //
 // Any hand edits will be lost on the next run.
 
-//! Feature module: `entities-basebuilding`
+//! Feature module: `autospawn`
 
+mod index;
 mod pools;
 mod types;
 
+pub use index::*;
 pub use pools::*;
 #[allow(unused_imports)]
 pub use types::*;

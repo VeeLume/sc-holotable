@@ -33,6 +33,8 @@ pub struct DataPools {
     pub actor_quantumtravelcameraeffects: super::actor_quantumtravelcameraeffects::ActorQuantumtravelcameraeffectsPools,
     #[cfg(feature = "aiglobalsettings")]
     pub aiglobalsettings: super::aiglobalsettings::AiglobalsettingsPools,
+    #[cfg(feature = "aimotive")]
+    pub aimotive: super::aimotive::AimotivePools,
     #[cfg(feature = "aiprofile")]
     pub aiprofile: super::aiprofile::AiprofilePools,
     #[cfg(feature = "aiwavecollection")]
@@ -41,6 +43,8 @@ pub struct DataPools {
     pub analytics: super::analytics::AnalyticsPools,
     #[cfg(feature = "audio")]
     pub audio: super::audio::AudioPools,
+    #[cfg(feature = "autospawn")]
+    pub autospawn: super::autospawn::AutospawnPools,
     #[cfg(feature = "awardservice")]
     pub awardservice: super::awardservice::AwardservicePools,
     #[cfg(feature = "cameras")]
@@ -77,8 +81,6 @@ pub struct DataPools {
     pub crafting: super::crafting::CraftingPools,
     #[cfg(feature = "creatures")]
     pub creatures: super::creatures::CreaturesPools,
-    #[cfg(feature = "densityclasses")]
-    pub densityclasses: super::densityclasses::DensityclassesPools,
     #[cfg(feature = "dialoguecontentbank")]
     pub dialoguecontentbank: super::dialoguecontentbank::DialoguecontentbankPools,
     #[cfg(feature = "dynamiccameraeffects")]
@@ -103,8 +105,6 @@ pub struct DataPools {
     pub entities_attachableobjectcontainerspawner: super::entities_attachableobjectcontainerspawner::EntitiesAttachableobjectcontainerspawnerPools,
     #[cfg(feature = "entities-audio")]
     pub entities_audio: super::entities_audio::EntitiesAudioPools,
-    #[cfg(feature = "entities-basebuilding")]
-    pub entities_basebuilding: super::entities_basebuilding::EntitiesBasebuildingPools,
     #[cfg(feature = "entities-breakablerock")]
     pub entities_breakablerock: super::entities_breakablerock::EntitiesBreakablerockPools,
     #[cfg(feature = "entities-capturearea")]
@@ -269,6 +269,8 @@ pub struct DataPools {
     pub entities_scitem_weapons: super::entities_scitem_weapons::EntitiesScitemWeaponsPools,
     #[cfg(feature = "entities-shadowregionentity")]
     pub entities_shadowregionentity: super::entities_shadowregionentity::EntitiesShadowregionentityPools,
+    #[cfg(feature = "entities-shiptraffic")]
+    pub entities_shiptraffic: super::entities_shiptraffic::EntitiesShiptrafficPools,
     #[cfg(feature = "entities-shopkiosk")]
     pub entities_shopkiosk: super::entities_shopkiosk::EntitiesShopkioskPools,
     #[cfg(feature = "entities-slotspawnpoint")]
@@ -343,6 +345,8 @@ pub struct DataPools {
     pub hardwaremouse: super::hardwaremouse::HardwaremousePools,
     #[cfg(feature = "harvestable")]
     pub harvestable: super::harvestable::HarvestablePools,
+    #[cfg(feature = "hcdgrouppreset")]
+    pub hcdgrouppreset: super::hcdgrouppreset::HcdgrouppresetPools,
     #[cfg(feature = "hudparams")]
     pub hudparams: super::hudparams::HudparamsPools,
     #[cfg(feature = "ifcs")]

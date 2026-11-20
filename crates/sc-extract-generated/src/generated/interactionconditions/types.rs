@@ -55,6 +55,84 @@ impl<'a> Extract<'a> for InteractionConditionCanAffordItem {
     }
 }
 
+/// DCB type: `InteractionConditionEntityIsInZeroG`
+/// Inherits from: `InteractionConditionParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct InteractionConditionEntityIsInZeroG {
+    /// `conditionDisplay` (StrongPointer)
+    pub condition_display: Option<Handle<ConditionDisplayParams>>,
+}
+
+impl Pooled for InteractionConditionEntityIsInZeroG {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .interactionconditions
+            .interaction_condition_entity_is_in_zero_g
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .interactionconditions
+            .interaction_condition_entity_is_in_zero_g
+    }
+}
+
+impl<'a> Extract<'a> for InteractionConditionEntityIsInZeroG {
+    const TYPE_NAME: &'static str = "InteractionConditionEntityIsInZeroG";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            condition_display: match inst.get("conditionDisplay") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ConditionDisplayParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `InteractionConditionEntityIsInAtmosphere`
+/// Inherits from: `InteractionConditionParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct InteractionConditionEntityIsInAtmosphere {
+    /// `conditionDisplay` (StrongPointer)
+    pub condition_display: Option<Handle<ConditionDisplayParams>>,
+}
+
+impl Pooled for InteractionConditionEntityIsInAtmosphere {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .interactionconditions
+            .interaction_condition_entity_is_in_atmosphere
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .interactionconditions
+            .interaction_condition_entity_is_in_atmosphere
+    }
+}
+
+impl<'a> Extract<'a> for InteractionConditionEntityIsInAtmosphere {
+    const TYPE_NAME: &'static str = "InteractionConditionEntityIsInAtmosphere";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            condition_display: match inst.get("conditionDisplay") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ConditionDisplayParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `InteractionConditionCanBeBodyDragged`
 /// Inherits from: `InteractionConditionParams`
 pub struct InteractionConditionCanBeBodyDragged {

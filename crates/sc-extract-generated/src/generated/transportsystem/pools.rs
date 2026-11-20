@@ -22,6 +22,7 @@ pub struct TransportsystemPools {
     pub transport_destination_categories: Vec<Option<TransportDestinationCategories>>,
     pub transport_icon_type: Vec<Option<TransportIconType>>,
     pub transport_icon_types: Vec<Option<TransportIconTypes>>,
+    pub transport_vehicle_access_interface: Vec<Option<TransportVehicleAccessInterface>>,
     pub transport_carriage_generic_announcement: Vec<Option<TransportCarriageGenericAnnouncement>>,
     pub transport_carriage_destination_announcement:
         Vec<Option<TransportCarriageDestinationAnnouncement>>,
