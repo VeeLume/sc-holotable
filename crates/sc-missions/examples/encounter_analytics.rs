@@ -441,7 +441,9 @@ fn section_5_faction_var_crosstab(rows: &[Row<'_>]) {
             .filter(|((v, _), _)| v == *var)
             .map(|((_, f), c)| (*f, *c))
             .collect();
-        row.sort_by_key(|e| std::cmp::Reverse(e.1));
+        // Ties by name: `counts` is a HashMap, and a regression baseline
+        // must not change from run to run.
+        row.sort_by_key(|e| (std::cmp::Reverse(e.1), e.0));
         let formatted: Vec<String> = row
             .iter()
             .take(3)
