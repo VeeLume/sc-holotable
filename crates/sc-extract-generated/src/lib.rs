@@ -33,6 +33,10 @@
 //! generation time — see `tools/sc-generator/src/emit.rs`.
 
 #![allow(clippy::too_many_arguments)]
+// Bindings generated from several builds mark what the newest build dropped
+// as `#[deprecated]` for consumers; the generated code itself must still
+// build, pool and dispatch those items.
+#![allow(deprecated)]
 
 mod builder;
 mod extract;

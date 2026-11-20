@@ -7,13 +7,14 @@
 //!
 //! Feature classification is done by `crate::features::classify_features`.
 
-use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, VecDeque};
+use std::collections::{BTreeMap, BTreeSet, HashSet, VecDeque};
 use std::fmt::Write as _;
 
 use svarog_datacore::structs::DataCorePropertyDefinition;
 use svarog_datacore::{DataCoreDatabase, DataType};
 
-use crate::features::{FeatureAssignment, FeatureMap};
+use crate::features::FeatureAssignment;
+use crate::model::{FieldDef, FieldTarget, Model, StructDef};
 use crate::naming::{sanitize_field_name, sanitize_struct_name, sanitize_variant_name};
 use crate::pipeline::Metadata;
 
@@ -327,26 +328,86 @@ pub const DORMANT_MODULE: &str = "dormant";
 
 pub fn compute_feature_assignment_map(
     emitted_names: &EmittedStructNames,
-    feature_map: &FeatureMap,
+    model: &Model,
 ) -> FeatureAssignmentMap {
     let mut out = FeatureAssignmentMap::new();
-    for &struct_idx in emitted_names.keys() {
-        let feature_name = match feature_map
-            .struct_feature
-            .get(struct_idx as usize)
-            .and_then(|a| a.as_ref())
-        {
-            Some(FeatureAssignment::Core) => "core".to_string(),
-            Some(FeatureAssignment::Dormant) => DORMANT_MODULE.to_string(),
-            Some(FeatureAssignment::Single(f)) => f.clone(),
-            Some(FeatureAssignment::Multi(_)) => MULTI_FEATURE_MODULE.to_string(),
-            // Orphan fallback (unreachable in practice — every emitted
-            // type is classified somewhere). Park it in core.
-            None => "core".to_string(),
+    for &id in emitted_names.keys() {
+        let feature_name = match &model.structs[&id].assignment {
+            FeatureAssignment::Core => "core".to_string(),
+            FeatureAssignment::Dormant => DORMANT_MODULE.to_string(),
+            FeatureAssignment::Single(f) => f.clone(),
+            FeatureAssignment::Multi(_) => MULTI_FEATURE_MODULE.to_string(),
         };
-        out.insert(struct_idx, feature_name);
+        out.insert(id, feature_name);
     }
     out
+}
+
+/// Emitted Rust names for the model's structs, deduplicated in id order.
+pub fn compute_model_struct_names(model: &Model) -> EmittedStructNames {
+    let mut out: EmittedStructNames = BTreeMap::new();
+    let mut seen: HashSet<String> = HashSet::new();
+    for (&id, s) in &model.structs {
+        let name = sanitize_struct_name(&s.raw_name);
+        if name.is_empty() || !seen.insert(name.clone()) {
+            continue;
+        }
+        out.insert(id, name);
+    }
+    out
+}
+
+/// Polymorphic bases of the model: declared pointer targets with at least
+/// one emitted descendant. Same rule as [`compute_poly_bases`].
+pub fn compute_model_poly_bases(model: &Model, emitted_names: &EmittedStructNames) -> PolyBaseSet {
+    let mut out: PolyBaseSet = BTreeSet::new();
+    for &id in emitted_names.keys() {
+        for f in &model.structs[&id].fields {
+            if !matches!(f.data_type, DataType::StrongPointer | DataType::WeakPointer) {
+                continue;
+            }
+            let FieldTarget::Struct(Some(target)) = &f.target else {
+                continue;
+            };
+            let Some(tid) = model.id(target) else {
+                continue;
+            };
+            if !emitted_names.contains_key(&tid) {
+                continue;
+            }
+            if let Some(kids) = model.descendants.get(&tid)
+                && kids.iter().any(|k| emitted_names.contains_key(k))
+            {
+                out.insert(tid);
+            }
+        }
+    }
+    out
+}
+
+/// Rust field names of a struct, disambiguating DCB names that differ only
+/// in case (`R` / `r` → `r`, `r_2`).
+pub fn field_rust_names(s: &StructDef) -> Vec<String> {
+    let mut seen: HashSet<String> = HashSet::new();
+    s.fields
+        .iter()
+        .map(|f| {
+            let base = sanitize_field_name(&f.orig_name);
+            let mut name = base.clone();
+            let mut n = 2u32;
+            while !seen.insert(name.clone()) {
+                name = format!("{base}_{n}");
+                n += 1;
+            }
+            name
+        })
+        .collect()
+}
+
+/// Name of the enum emitted for a field whose target type differs between
+/// builds.
+pub fn shape_enum_name(struct_name: &str, field_name: &str) -> String {
+    format!("{struct_name}_{field_name}")
 }
 
 /// Build a map from struct index → optional `#[cfg(...)]` attribute.
@@ -362,18 +423,11 @@ pub fn compute_feature_assignment_map(
 /// are inherited from the `#[cfg(feature = "…")]` on their module's
 /// declaration at the top level (`pub mod X;` in `generated/mod.rs`).
 /// Emitting per-type cfgs for those would be redundant and noisy.
-pub fn compute_feature_cfg_map(
-    emitted_names: &EmittedStructNames,
-    feature_map: &FeatureMap,
-) -> FeatureCfgMap {
+pub fn compute_feature_cfg_map(emitted_names: &EmittedStructNames, model: &Model) -> FeatureCfgMap {
     let mut out = FeatureCfgMap::new();
     for &struct_idx in emitted_names.keys() {
-        let cfg = match feature_map
-            .struct_feature
-            .get(struct_idx as usize)
-            .and_then(|a| a.as_ref())
-        {
-            Some(FeatureAssignment::Multi(features)) if !features.is_empty() => {
+        let cfg = match &model.structs[&struct_idx].assignment {
+            FeatureAssignment::Multi(features) if !features.is_empty() => {
                 let parts: Vec<String> = features
                     .iter()
                     .map(|f| format!("feature = \"{f}\""))
@@ -392,26 +446,24 @@ pub fn compute_feature_cfg_map(
 /// Emit a feature's `types.rs` file: struct definitions + Extract + Pooled impls.
 #[allow(clippy::too_many_arguments)]
 pub fn emit_feature_types(
-    db: &DataCoreDatabase,
+    model: &Model,
     feature_name: &str,
     struct_indices: &[u32],
     emitted_names: &EmittedStructNames,
     pool_fields: &PoolFieldNames,
     poly_bases: &PolyBaseSet,
     feature_cfgs: &FeatureCfgMap,
-    cache: &PropertyCache<'_>,
 ) -> String {
     let mut out = types_file_header(feature_name);
     for &struct_idx in struct_indices {
         emit_struct(
-            db,
+            model,
             struct_idx,
             emitted_names,
             pool_fields,
             poly_bases,
             feature_cfgs,
             feature_name,
-            cache,
             &mut out,
         );
     }
@@ -428,13 +480,13 @@ pub fn emit_feature_types(
 /// `Instance::type_name()` rather than raw `struct_index`, keeping the
 /// dispatch stable across game patches where struct ordering may drift.
 pub fn emit_poly_enums_file(
-    db: &DataCoreDatabase,
+    model: &Model,
     poly_bases: &PolyBaseSet,
     emitted_names: &EmittedStructNames,
-    descendants: &DescendantMap,
     feature_assignments: &FeatureAssignmentMap,
     feature_cfgs: &FeatureCfgMap,
 ) -> String {
+    let descendants = &model.descendants;
     let mut out = String::new();
     out.push_str(FILE_HEADER);
     out.push_str("//! Polymorphic-base tagged enums.\n");
@@ -450,7 +502,7 @@ pub fn emit_poly_enums_file(
 
     for &base_idx in poly_bases {
         emit_poly_enum(
-            db,
+            model,
             base_idx,
             emitted_names,
             descendants,
@@ -460,13 +512,119 @@ pub fn emit_poly_enums_file(
         );
     }
 
+    // Shape enums: fields whose target type differs between the builds in
+    // the window. Absent from single-build output.
+    for (&id, s) in &model.structs {
+        let Some(struct_name) = emitted_names.get(&id) else {
+            continue;
+        };
+        for (f, field_name) in s.fields.iter().zip(field_rust_names(s)) {
+            let FieldTarget::Shape(targets) = &f.target else {
+                continue;
+            };
+            let variants: Vec<(u32, &String, &str)> = targets
+                .iter()
+                .filter_map(|raw| {
+                    let (tid, name) = target_name(model, emitted_names, raw)?;
+                    Some((tid, name, raw.as_str()))
+                })
+                .collect();
+            emit_shape_enum(
+                model,
+                &shape_enum_name(struct_name, &field_name),
+                s,
+                f,
+                &variants,
+                feature_assignments,
+                feature_cfgs,
+                &mut out,
+            );
+        }
+    }
+
     out
+}
+
+/// The cfg a reference to type `idx` must carry: its own Multi cfg, else
+/// its module's gate.
+fn variant_cfg_for(
+    idx: u32,
+    feature_assignments: &FeatureAssignmentMap,
+    feature_cfgs: &FeatureCfgMap,
+) -> String {
+    if let Some(Some(c)) = feature_cfgs.get(&idx) {
+        return c.clone();
+    }
+    let feature = feature_assignments
+        .get(&idx)
+        .map(String::as_str)
+        .unwrap_or("core");
+    feature_module_cfg(feature).unwrap_or_default()
+}
+
+/// Emit one shape enum: a field whose declared target type differs between
+/// builds. One variant per target type, dispatched on the runtime type name.
+#[allow(clippy::too_many_arguments)]
+fn emit_shape_enum(
+    model: &Model,
+    enum_name: &str,
+    s: &StructDef,
+    f: &FieldDef,
+    variants: &[(u32, &String, &str)],
+    feature_assignments: &FeatureAssignmentMap,
+    feature_cfgs: &FeatureCfgMap,
+    out: &mut String,
+) {
+    let _ = writeln!(
+        out,
+        "/// Field `{}.{}`, whose target type differs between builds",
+        s.raw_name, f.orig_name
+    );
+    let _ = writeln!(out, "/// ({}).", model.labels(model.all_bits()));
+    out.push_str("///\n");
+    out.push_str("/// Each variant is one target type; the runtime type name picks it.\n");
+    out.push_str("#[derive(Debug, Clone)]\n");
+    let _ = writeln!(out, "pub enum {enum_name} {{");
+    for (tid, name, _) in variants {
+        let cfg = variant_cfg_for(*tid, feature_assignments, feature_cfgs);
+        if !cfg.is_empty() {
+            let _ = writeln!(out, "    {cfg}");
+        }
+        let _ = writeln!(out, "    {name}(Handle<{name}>),");
+    }
+    out.push_str("    /// A target type the generator does not know, or whose feature is off.\n");
+    out.push_str("    Unknown { struct_index: u32 },\n");
+    out.push_str("}\n\n");
+
+    let _ = writeln!(out, "impl {enum_name} {{");
+    out.push_str("    #[allow(dead_code)]\n");
+    out.push_str(
+        "    pub(crate) fn from_instance<'a>(b: &mut Builder<'a>, inst: svarog_datacore::Instance<'a>, pooled: bool) -> Self {\n",
+    );
+    out.push_str("        match inst.type_name() {\n");
+    for (tid, name, raw) in variants {
+        let cfg = variant_cfg_for(*tid, feature_assignments, feature_cfgs);
+        let cfg_prefix = if cfg.is_empty() {
+            String::new()
+        } else {
+            format!("{cfg} ")
+        };
+        let escaped = raw.replace('\\', "\\\\").replace('"', "\\\"");
+        let _ = writeln!(
+            out,
+            "            {cfg_prefix}Some(\"{escaped}\") => Self::{name}(b.alloc_nested::<{name}>(inst, pooled)),",
+        );
+    }
+    out.push_str("            _ => Self::Unknown { struct_index: inst.struct_index() },\n");
+    out.push_str("        }\n");
+    out.push_str("    }\n");
+    out.push_str("}\n\n");
 }
 
 /// Emit one polymorphic-base tagged enum + `from_ref` dispatch helper into
 /// the shared `poly_enums.rs` file.
 fn emit_poly_enum(
-    db: &DataCoreDatabase,
+    model: &Model,
     base_idx: u32,
     emitted_names: &EmittedStructNames,
     descendants: &DescendantMap,
@@ -477,9 +635,7 @@ fn emit_poly_enum(
     let Some(base_name) = emitted_names.get(&base_idx) else {
         return;
     };
-    let Some(base_raw) = db.struct_name(base_idx as usize) else {
-        return;
-    };
+    let base_raw = model.structs[&base_idx].raw_name.as_str();
     let enum_name = format!("{base_name}Ptr");
 
     // Resolve the per-variant cfg attribute. A variant's cfg must match
@@ -490,35 +646,27 @@ fn emit_poly_enum(
     // - Single-feature types: the feature's own cfg, because the whole
     //   feature module is gated at `pub mod X;` in `generated/mod.rs`.
     // - Core and `multi-feature` module types: no cfg.
-    let variant_cfg = |idx: u32| -> String {
-        if let Some(Some(c)) = feature_cfgs.get(&idx) {
-            return c.clone();
-        }
-        let feature = feature_assignments
-            .get(&idx)
-            .map(String::as_str)
-            .unwrap_or("core");
-        feature_module_cfg(feature).unwrap_or_default()
-    };
+    let variant_cfg = |idx: u32| variant_cfg_for(idx, feature_assignments, feature_cfgs);
 
     // Build variant list: (type_name, cfg_attr_or_empty, raw DCB name).
     // Includes the base itself as its own variant plus every emitted
     // descendant.
     let mut variants: Vec<(String, String, String)> = Vec::new();
+    let mut deprecated: Vec<Option<String>> = Vec::new();
     variants.push((
         base_name.clone(),
         variant_cfg(base_idx),
         base_raw.to_string(),
     ));
+    deprecated.push(model.struct_deprecation(&model.structs[&base_idx]));
     if let Some(kids) = descendants.get(&base_idx) {
         for &k in kids {
             let Some(kid_name) = emitted_names.get(&k) else {
                 continue;
             };
-            let Some(kid_raw) = db.struct_name(k as usize) else {
-                continue;
-            };
-            variants.push((kid_name.clone(), variant_cfg(k), kid_raw.to_string()));
+            let kid = &model.structs[&k];
+            variants.push((kid_name.clone(), variant_cfg(k), kid.raw_name.clone()));
+            deprecated.push(model.struct_deprecation(kid));
         }
     }
 
@@ -531,7 +679,10 @@ fn emit_poly_enum(
     out.push_str("/// `Unknown { struct_index, instance_index }`.\n");
     out.push_str("#[derive(Debug, Clone)]\n");
     let _ = writeln!(out, "pub enum {enum_name} {{");
-    for (type_name, cfg, _) in &variants {
+    for ((type_name, cfg, _), note) in variants.iter().zip(&deprecated) {
+        if let Some(note) = note {
+            let _ = writeln!(out, "    #[deprecated(note = {})]", quote_string(note));
+        }
         if !cfg.is_empty() {
             let _ = writeln!(out, "    {cfg}");
         }
@@ -612,7 +763,6 @@ pub fn emit_feature_pools(
 /// for symmetry and to cover the theoretical case of a record type being
 /// reachable from multiple features' closures.
 pub fn emit_feature_index(
-    _db: &DataCoreDatabase,
     feature_name: &str,
     record_struct_indices: &[u32],
     emitted_names: &EmittedStructNames,
@@ -786,30 +936,18 @@ pub fn emit_top_record_index(features_with_index: &[String]) -> String {
 
 /// Emit `RecordStore` + `seed_database` with cfg'd dispatch.
 pub fn emit_record_store(
-    db: &DataCoreDatabase,
+    model: &Model,
     emitted_names: &EmittedStructNames,
     _pool_fields: &PoolFieldNames,
     feature_assignments: &FeatureAssignmentMap,
     feature_cfgs: &FeatureCfgMap,
 ) -> String {
-    // Discover record types.
-    let mut record_struct_indices: Vec<u32> = Vec::new();
-    let mut seen: HashSet<u32> = HashSet::new();
-    for record in db.records() {
-        let struct_idx = record.struct_index;
-        if struct_idx < 0 {
-            continue;
-        }
-        let struct_idx = struct_idx as u32;
-        if !seen.insert(struct_idx) {
-            continue;
-        }
-        if !emitted_names.contains_key(&struct_idx) {
-            continue;
-        }
-        record_struct_indices.push(struct_idx);
-    }
-    record_struct_indices.sort_unstable();
+    // Record types: emitted structs with top-level records in any build.
+    let record_struct_indices: Vec<u32> = emitted_names
+        .keys()
+        .copied()
+        .filter(|id| model.structs[id].records != 0)
+        .collect();
 
     // Build entries: (struct_idx, type_name, field_name, feature_name,
     // cfg_attr_string). cfg_attr_string is the resolved `#[cfg(...)]`
@@ -959,7 +1097,7 @@ pub fn emit_record_store(
         out.push_str("        const KNOWN_RECORD_TYPE_NAMES: &[&str] = &[\n");
         let mut known_names: Vec<&str> = entries
             .iter()
-            .filter_map(|(idx, _, _, _, _)| db.struct_name(*idx as usize))
+            .map(|(idx, _, _, _, _)| model.structs[idx].raw_name.as_str())
             .collect();
         known_names.sort_unstable();
         known_names.dedup();
@@ -1045,7 +1183,10 @@ pub fn emit_record_store(
 }
 
 /// Emit the top-level `mod.rs` with cfg'd feature module includes.
-pub fn emit_top_mod(feature_names: &[String], feature_map: &FeatureMap) -> String {
+pub fn emit_top_mod(
+    feature_names: &[String],
+    parent_features: &BTreeMap<String, Vec<String>>,
+) -> String {
     let mut out = String::new();
     out.push_str(FILE_HEADER);
     out.push_str("//! Machine-generated DataCore schema bindings.\n");
@@ -1096,7 +1237,7 @@ pub fn emit_top_mod(feature_names: &[String], feature_map: &FeatureMap) -> Strin
         }
     }
     // Parent features
-    for (parent, children) in &feature_map.parent_features {
+    for (parent, children) in parent_features {
         let _ = writeln!(out, "// parent: {parent} = [{}]", children.join(", "));
     }
 
@@ -1107,7 +1248,7 @@ pub fn emit_top_mod(feature_names: &[String], feature_map: &FeatureMap) -> Strin
 /// associated function per enum that maps raw DCB strings back to the
 /// Rust variant (falling through to `Unrecognized(String)` for values
 /// not present at generation time).
-pub fn emit_enums(db: &DataCoreDatabase) -> String {
+pub fn emit_enums(model: &Model) -> String {
     const FALLBACK_VARIANT: &str = "Unrecognized";
 
     let mut out = String::new();
@@ -1115,16 +1256,12 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
     out.push_str("#![allow(non_camel_case_types, dead_code)]\n\n");
 
     let mut emitted: HashSet<String> = HashSet::new();
-    for enum_idx in 0..db.enum_definitions().len() {
-        let Some(name) = db.enum_name(enum_idx) else {
-            continue;
-        };
+    for e in &model.enums {
+        let name = e.raw_name.as_str();
         let sanitized = sanitize_struct_name(name);
         if sanitized.is_empty() || !emitted.insert(sanitized.clone()) {
             continue;
         }
-        let def = &db.enum_definitions()[enum_idx];
-        let values = db.enum_options(def);
 
         // Collect (raw DCB value, sanitized Rust variant) pairs, applying
         // the same collision-skip logic as before. We pass over the list
@@ -1133,13 +1270,15 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
         let mut variant_names: HashSet<String> = HashSet::new();
         variant_names.insert(FALLBACK_VARIANT.to_string());
         let mut kept_variants: Vec<(&str, String)> = Vec::new();
-        for value in &values {
+        let mut kept_builds: Vec<crate::model::BuildSet> = Vec::new();
+        for (value, builds) in &e.values {
             let raw: &str = value;
             let variant = sanitize_variant_name(raw);
             if variant.is_empty() || !variant_names.insert(variant.clone()) {
                 continue;
             }
             kept_variants.push((raw, variant));
+            kept_builds.push(*builds);
         }
 
         let _ = writeln!(out, "/// DCB enum: `{name}`");
@@ -1148,8 +1287,15 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
         if kept_variants.is_empty() {
             out.push_str("    Empty,\n");
         } else {
-            for (raw, variant) in &kept_variants {
+            for ((raw, variant), builds) in kept_variants.iter().zip(&kept_builds) {
                 let _ = writeln!(out, "    /// DCB value: `{raw}`");
+                if let Some(doc) = model.new_only_doc(*builds) {
+                    let _ = writeln!(out, "    ///\n    /// {doc}");
+                }
+                if model.is_multi_build() && builds & model.newest_bit() == 0 {
+                    let note = format!("absent from {}", model.newest_label());
+                    let _ = writeln!(out, "    #[deprecated(note = {})]", quote_string(&note));
+                }
                 let _ = writeln!(out, "    {variant},");
             }
         }
@@ -1211,10 +1357,21 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
 }
 
 /// Emit `metadata.rs`.
-pub fn emit_metadata(m: &Metadata) -> String {
+pub fn emit_metadata(m: &Metadata, builds: &[String]) -> String {
     let mut out = String::new();
     out.push_str(FILE_HEADER);
-    out.push_str("//! Version and provenance constants for the generated module.\n\n");
+    out.push_str("//! Version and provenance constants for the generated module.\n");
+    out.push_str("//!\n");
+    out.push_str("//! The single-build constants describe the newest build in the window.\n\n");
+    out.push_str("/// Every build the bindings cover, oldest first.\n");
+    out.push_str("pub const GENERATED_BUILDS: &[&str] = &[");
+    for (i, b) in builds.iter().enumerate() {
+        if i > 0 {
+            out.push_str(", ");
+        }
+        out.push_str(&quote_string(b));
+    }
+    out.push_str("];\n");
     let _ = writeln!(
         out,
         "pub const GENERATED_GAME_VERSION: &str = {};",
@@ -1279,19 +1436,17 @@ fn types_file_header(feature_name: &str) -> String {
 
 #[allow(clippy::too_many_arguments)]
 fn emit_struct(
-    db: &DataCoreDatabase,
+    model: &Model,
     struct_idx: u32,
     emitted_names: &EmittedStructNames,
     pool_fields: &PoolFieldNames,
     poly_bases: &PolyBaseSet,
     feature_cfgs: &FeatureCfgMap,
     feature_name: &str,
-    cache: &PropertyCache<'_>,
     out: &mut String,
 ) {
-    let Some(raw_name) = db.struct_name(struct_idx as usize) else {
-        return;
-    };
+    let def = &model.structs[&struct_idx];
+    let raw_name = def.raw_name.as_str();
     let name = sanitize_struct_name(raw_name);
     if name.is_empty() {
         return;
@@ -1306,51 +1461,35 @@ fn emit_struct(
         .and_then(|c| c.as_deref())
         .unwrap_or("");
 
-    let def = &db.struct_definitions()[struct_idx as usize];
-    let props = &cache[struct_idx as usize];
-
+    // Two DCB fields can legitimately differ only in case (e.g. `R` and
+    // `r` on `TorusFieldGeom`); `field_rust_names` suffixes the later one
+    // (`r_2`). Field names are opaque to consumers, so that is safe.
     let mut fields: Vec<FieldInfo> = Vec::new();
-    let mut seen_field_names: HashMap<String, String> = HashMap::new();
-    for prop in props {
-        let Some(orig_name) = db.property_name(prop) else {
-            continue;
-        };
-        if orig_name.is_empty() {
-            continue;
-        }
-        let base_field_name = sanitize_field_name(orig_name);
-        // Two DCB fields can legitimately differ only in case (e.g.
-        // `R` and `r` on `TorusFieldGeom`), which both sanitize to the
-        // same snake_case identifier. Rather than panic and require a
-        // generator-wide fix, append a numeric suffix so the later
-        // field becomes `r_2`, `r_3`, etc. The field names are already
-        // opaque to consumers — they read through typed struct access —
-        // so the disambiguation is safe.
-        let mut field_name = base_field_name.clone();
-        let mut disambiguator = 2u32;
-        while seen_field_names.contains_key(&field_name) {
-            field_name = format!("{base_field_name}_{disambiguator}");
-            disambiguator += 1;
-        }
-        seen_field_names.insert(field_name.clone(), orig_name.to_string());
-        let rust_type = rust_type_for(db, prop, emitted_names, poly_bases);
-        let expr = extract_expr(db, prop, orig_name, emitted_names, poly_bases);
+    for (f, field_name) in def.fields.iter().zip(field_rust_names(def)) {
+        let shape = shape_enum_name(&name, &field_name);
+        let rust_type = rust_type_for(model, f, emitted_names, poly_bases, &shape);
+        let expr = extract_expr(model, f, emitted_names, poly_bases, &shape);
         fields.push(FieldInfo {
-            orig_name: orig_name.to_string(),
+            orig_name: f.orig_name.clone(),
             field_name,
             rust_type,
             expr,
-            data_type: prop.get_data_type(),
-            is_array: prop.is_array(),
+            data_type: Some(f.data_type),
+            is_array: f.is_array,
+            builds: f.builds,
         });
     }
 
     // Struct definition
     let _ = writeln!(out, "/// DCB type: `{raw_name}`");
-    if def.parent_type_index >= 0
-        && let Some(parent_name) = db.struct_name(def.parent_type_index as usize)
-    {
+    if let Some(parent_name) = &def.parent {
         let _ = writeln!(out, "/// Inherits from: `{parent_name}`");
+    }
+    if let Some(doc) = model.new_only_doc(def.builds) {
+        let _ = writeln!(out, "///\n/// {doc}");
+    }
+    if let Some(note) = model.struct_deprecation(def) {
+        let _ = writeln!(out, "#[deprecated(note = {})]", quote_string(&note));
     }
     if !cfg_attr.is_empty() {
         let _ = writeln!(out, "{cfg_attr}");
@@ -1360,6 +1499,17 @@ fn emit_struct(
         let dt = f.data_type.map(|d| d.as_str()).unwrap_or("unknown");
         let array_tag = if f.is_array { " (array)" } else { "" };
         let _ = writeln!(out, "    /// `{}` ({dt}{array_tag})", f.orig_name);
+        // Field markers only where the field's builds differ from its
+        // struct's; a whole new or dropped struct is marked once, above.
+        if f.builds != def.builds {
+            if let Some(doc) = model.new_only_doc(f.builds) {
+                let _ = writeln!(out, "    ///\n    /// {doc}");
+            }
+            if f.builds & model.newest_bit() == 0 {
+                let note = format!("absent from {}", model.newest_label());
+                let _ = writeln!(out, "    #[deprecated(note = {})]", quote_string(&note));
+            }
+        }
         let _ = writeln!(out, "    pub {}: {},", f.field_name, f.rust_type);
     }
     let _ = writeln!(out, "}}\n");
@@ -1415,6 +1565,7 @@ struct FieldInfo {
     expr: String,
     data_type: Option<DataType>,
     is_array: bool,
+    builds: crate::model::BuildSet,
 }
 
 // ── Naming helpers ────────────────────────────────────────────────────────
@@ -1466,149 +1617,138 @@ fn feature_module_cfg(feature: &str) -> Option<String> {
 
 // ── Type mapping ──────────────────────────────────────────────────────────
 
-/// For an `EnumChoice` property, resolve the Rust type name of the
-/// generated enum by looking up the DCB enum index (which is stashed in
-/// `prop.struct_index` — the same field is dual-used for enum-typed
-/// properties, see svarog's c_header.rs).
-///
-/// Returns `None` when the enum index is out of range or the sanitized
-/// type name is empty; callers should fall back to `String` in that case
-/// so code generation stays robust across schema oddities.
-fn enum_type_name(db: &DataCoreDatabase, prop: &DataCorePropertyDefinition) -> Option<String> {
-    let enum_idx = prop.struct_index as usize;
-    let name = db.enum_name(enum_idx)?;
-    let sanitized = sanitize_struct_name(name);
-    if sanitized.is_empty() {
-        None
-    } else {
-        Some(sanitized)
-    }
+/// Struct id and emitted Rust name of a struct-kind target.
+fn target_name<'n>(
+    model: &Model,
+    emitted_names: &'n EmittedStructNames,
+    raw: &str,
+) -> Option<(u32, &'n String)> {
+    let id = model.id(raw)?;
+    emitted_names.get(&id).map(|n| (id, n))
 }
 
 fn rust_type_for(
-    db: &DataCoreDatabase,
-    prop: &DataCorePropertyDefinition,
+    model: &Model,
+    f: &FieldDef,
     emitted_names: &EmittedStructNames,
     poly_bases: &PolyBaseSet,
+    shape: &str,
 ) -> String {
-    let data_type = prop.get_data_type();
-    let is_array = prop.is_array();
-
-    let elem_type: String = match data_type {
-        Some(DataType::Boolean) => "bool".into(),
-        Some(DataType::SByte) | Some(DataType::Int16) | Some(DataType::Int32) => "i32".into(),
-        Some(DataType::Int64) => "i64".into(),
-        Some(DataType::Byte) | Some(DataType::UInt16) | Some(DataType::UInt32) => "u32".into(),
-        Some(DataType::UInt64) => "u64".into(),
-        Some(DataType::Single) => "f32".into(),
-        Some(DataType::Double) => "f64".into(),
-        Some(DataType::String) => "String".into(),
-        Some(DataType::Locale) => "LocaleKey".into(),
-        Some(DataType::EnumChoice) => enum_type_name(db, prop).unwrap_or_else(|| "String".into()),
-        Some(DataType::Guid) => "CigGuid".into(),
-        Some(DataType::Class) => {
-            // Inline Class is monomorphic (wire format has no discriminator).
-            let target_idx = prop.struct_index as u32;
-            match emitted_names.get(&target_idx) {
-                Some(name) => format!("Handle<{name}>"),
+    let elem_type: String = match f.data_type {
+        DataType::Boolean => "bool".into(),
+        DataType::SByte | DataType::Int16 | DataType::Int32 => "i32".into(),
+        DataType::Int64 => "i64".into(),
+        DataType::Byte | DataType::UInt16 | DataType::UInt32 => "u32".into(),
+        DataType::UInt64 => "u64".into(),
+        DataType::Single => "f32".into(),
+        DataType::Double => "f64".into(),
+        DataType::String => "String".into(),
+        DataType::Locale => "LocaleKey".into(),
+        DataType::EnumChoice => match &f.target {
+            FieldTarget::Enum(Some(ty)) => ty.clone(),
+            _ => "String".into(),
+        },
+        DataType::Guid => "CigGuid".into(),
+        DataType::Class | DataType::StrongPointer | DataType::WeakPointer => match &f.target {
+            FieldTarget::Shape(_) => shape.to_string(),
+            // Inline Class is monomorphic (wire format has no discriminator);
+            // pointers whose declared target has emitted descendants use the
+            // generated tagged enum.
+            FieldTarget::Struct(Some(raw)) => match target_name(model, emitted_names, raw) {
+                Some((id, name)) if f.data_type != DataType::Class && poly_bases.contains(&id) => {
+                    format!("{name}Ptr")
+                }
+                Some((_, name)) => format!("Handle<{name}>"),
                 None => "CigGuid".into(),
-            }
-        }
-        Some(DataType::StrongPointer) | Some(DataType::WeakPointer) => {
-            // Pointers can be polymorphic. If the declared target has
-            // emitted descendants, use the generated tagged enum.
-            let target_idx = prop.struct_index as u32;
-            match emitted_names.get(&target_idx) {
-                Some(name) if poly_bases.contains(&target_idx) => format!("{name}Ptr"),
-                Some(name) => format!("Handle<{name}>"),
-                None => "CigGuid".into(),
-            }
-        }
-        Some(DataType::Reference) => "CigGuid".into(),
-        None => {
-            let idx = { prop.struct_index };
-            panic!(
-                "sc-generator: unknown DataType on property `{}` (struct_index {idx}). \
-                 svarog's DataType enum may have grown a new variant — update \
-                 rust_type_for/extract_expr to handle it.",
-                db.property_name(prop).unwrap_or("<unknown>"),
-            )
-        }
+            },
+            _ => "CigGuid".into(),
+        },
+        DataType::Reference => "CigGuid".into(),
     };
 
-    if is_array {
+    if f.is_array {
         format!("Vec<{elem_type}>")
     } else {
-        match data_type {
-            Some(DataType::Class) | Some(DataType::StrongPointer) | Some(DataType::WeakPointer) => {
-                format!("Option<{elem_type}>")
-            }
-            Some(DataType::Reference) => format!("Option<{elem_type}>"),
+        match f.data_type {
+            DataType::Class
+            | DataType::StrongPointer
+            | DataType::WeakPointer
+            | DataType::Reference => format!("Option<{elem_type}>"),
             _ => elem_type,
         }
     }
 }
 
 fn extract_expr(
-    db: &DataCoreDatabase,
-    prop: &DataCorePropertyDefinition,
-    orig_name: &str,
+    model: &Model,
+    f: &FieldDef,
     emitted_names: &EmittedStructNames,
     poly_bases: &PolyBaseSet,
+    shape: &str,
 ) -> String {
-    let data_type = prop.get_data_type();
-    let is_array = prop.is_array();
-    let escaped = orig_name.replace('\\', "\\\\").replace('"', "\\\"");
+    let escaped = f.orig_name.replace('\\', "\\\\").replace('"', "\\\"");
 
-    if is_array {
-        return array_expr(db, prop, &escaped, emitted_names, poly_bases);
+    if f.is_array {
+        return array_expr(model, f, &escaped, emitted_names, poly_bases, shape);
     }
 
-    match data_type {
-        Some(DataType::Boolean) => format!("inst.get_bool(\"{escaped}\").unwrap_or_default()"),
-        Some(DataType::SByte) | Some(DataType::Int16) | Some(DataType::Int32) => {
+    match f.data_type {
+        DataType::Boolean => format!("inst.get_bool(\"{escaped}\").unwrap_or_default()"),
+        DataType::SByte | DataType::Int16 | DataType::Int32 => {
             format!("inst.get_i32(\"{escaped}\").unwrap_or_default()")
         }
-        Some(DataType::Int64) => format!("inst.get_i64(\"{escaped}\").unwrap_or_default()"),
-        Some(DataType::Byte) | Some(DataType::UInt16) | Some(DataType::UInt32) => {
+        DataType::Int64 => format!("inst.get_i64(\"{escaped}\").unwrap_or_default()"),
+        DataType::Byte | DataType::UInt16 | DataType::UInt32 => {
             format!("inst.get_u32(\"{escaped}\").unwrap_or_default()")
         }
-        Some(DataType::UInt64) => {
+        DataType::UInt64 => {
             format!("inst.get(\"{escaped}\").and_then(|v| v.as_u64()).unwrap_or_default()")
         }
-        Some(DataType::Single) => format!("inst.get_f32(\"{escaped}\").unwrap_or_default()"),
-        Some(DataType::Double) => format!("inst.get_f64(\"{escaped}\").unwrap_or_default()"),
-        Some(DataType::String) => {
+        DataType::Single => format!("inst.get_f32(\"{escaped}\").unwrap_or_default()"),
+        DataType::Double => format!("inst.get_f64(\"{escaped}\").unwrap_or_default()"),
+        DataType::String => {
             format!("inst.get_str(\"{escaped}\").map(String::from).unwrap_or_default()")
         }
-        Some(DataType::Locale) => {
+        DataType::Locale => {
             format!("inst.get_str(\"{escaped}\").map(LocaleKey::from).unwrap_or_default()")
         }
-        Some(DataType::EnumChoice) => match enum_type_name(db, prop) {
-            Some(ty) => {
+        DataType::EnumChoice => match &f.target {
+            FieldTarget::Enum(Some(ty)) => {
                 format!("{ty}::from_dcb_str(inst.get_str(\"{escaped}\").unwrap_or(\"\"))")
             }
-            None => {
-                // Unresolvable enum type — keep the legacy String fallback
-                // so codegen stays robust on schema oddities.
-                format!("inst.get_str(\"{escaped}\").map(String::from).unwrap_or_default()")
-            }
+            // Unresolvable enum type — keep the String fallback so codegen
+            // stays robust on schema oddities.
+            _ => format!("inst.get_str(\"{escaped}\").map(String::from).unwrap_or_default()"),
         },
-        Some(DataType::Guid) => format!("inst.get_guid(\"{escaped}\").unwrap_or_default()"),
-        Some(DataType::Class) => {
+        DataType::Guid => format!("inst.get_guid(\"{escaped}\").unwrap_or_default()"),
+        DataType::Class => {
+            if let FieldTarget::Shape(_) = f.target {
+                return format!(
+                    "match inst.get(\"{escaped}\") {{\n                Some(Value::Class {{ struct_index, data }}) => Some({shape}::from_instance(b, Instance::from_inline_data(b.db, struct_index, data), false)),\n                _ => None,\n            }}"
+                );
+            }
             // Inline Class: monomorphic. Handle only Value::Class variant;
             // ClassRef/pointer variants are impossible here by wire format.
-            let target_idx = prop.struct_index as u32;
-            let Some(target_name) = emitted_names.get(&target_idx) else {
+            let FieldTarget::Struct(Some(raw)) = &f.target else {
+                return "None".into();
+            };
+            let Some((_, target_name)) = target_name(model, emitted_names, raw) else {
                 return "None".into();
             };
             format!(
                 "match inst.get(\"{escaped}\") {{\n                Some(Value::Class {{ struct_index, data }}) => Some(b.alloc_nested::<{target_name}>(Instance::from_inline_data(b.db, struct_index, data), false)),\n                _ => None,\n            }}"
             )
         }
-        Some(DataType::StrongPointer) | Some(DataType::WeakPointer) => {
-            let target_idx = prop.struct_index as u32;
-            let Some(target_name) = emitted_names.get(&target_idx) else {
+        DataType::StrongPointer | DataType::WeakPointer => {
+            if let FieldTarget::Shape(_) = f.target {
+                return format!(
+                    "match inst.get(\"{escaped}\") {{\n                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some({shape}::from_instance(b, b.db.instance(r.struct_index, r.instance_index), true)),\n                _ => None,\n            }}"
+                );
+            }
+            let FieldTarget::Struct(Some(raw)) = &f.target else {
+                return "None".into();
+            };
+            let Some((target_idx, target_name)) = target_name(model, emitted_names, raw) else {
                 return "None".into();
             };
             if poly_bases.contains(&target_idx) {
@@ -1621,89 +1761,86 @@ fn extract_expr(
                 )
             }
         }
-        Some(DataType::Reference) => {
+        DataType::Reference => {
             format!("inst.get(\"{escaped}\").and_then(|v| v.as_record_ref()).map(|r| r.guid)")
-        }
-        None => {
-            let idx = { prop.struct_index };
-            panic!(
-                "sc-generator: unknown DataType on property `{orig_name}` (struct_index {idx}). \
-                 svarog's DataType enum may have grown a new variant — update \
-                 rust_type_for/extract_expr to handle it."
-            )
         }
     }
 }
 
 fn array_expr(
-    db: &DataCoreDatabase,
-    prop: &DataCorePropertyDefinition,
+    model: &Model,
+    f: &FieldDef,
     escaped: &str,
     emitted_names: &EmittedStructNames,
     poly_bases: &PolyBaseSet,
+    shape: &str,
 ) -> String {
-    let data_type = prop.get_data_type();
-    let inner = match data_type {
-        Some(DataType::Boolean) => "v.as_bool()".to_string(),
-        Some(DataType::SByte) | Some(DataType::Int16) | Some(DataType::Int32) => {
-            "v.as_i32()".to_string()
-        }
-        Some(DataType::Int64) => "v.as_i64()".to_string(),
-        Some(DataType::Byte) | Some(DataType::UInt16) | Some(DataType::UInt32) => {
-            "v.as_u32()".to_string()
-        }
-        Some(DataType::UInt64) => "v.as_u64()".to_string(),
-        Some(DataType::Single) => "v.as_f32()".to_string(),
-        Some(DataType::Double) => "v.as_f64()".to_string(),
-        Some(DataType::String) => "v.as_str().map(String::from)".to_string(),
-        Some(DataType::Locale) => "v.as_str().map(LocaleKey::from)".to_string(),
-        Some(DataType::EnumChoice) => match enum_type_name(db, prop) {
-            Some(ty) => format!("v.as_str().map({ty}::from_dcb_str)"),
-            None => "v.as_str().map(String::from)".to_string(),
+    let inner = match f.data_type {
+        DataType::Boolean => "v.as_bool()".to_string(),
+        DataType::SByte | DataType::Int16 | DataType::Int32 => "v.as_i32()".to_string(),
+        DataType::Int64 => "v.as_i64()".to_string(),
+        DataType::Byte | DataType::UInt16 | DataType::UInt32 => "v.as_u32()".to_string(),
+        DataType::UInt64 => "v.as_u64()".to_string(),
+        DataType::Single => "v.as_f32()".to_string(),
+        DataType::Double => "v.as_f64()".to_string(),
+        DataType::String => "v.as_str().map(String::from)".to_string(),
+        DataType::Locale => "v.as_str().map(LocaleKey::from)".to_string(),
+        DataType::EnumChoice => match &f.target {
+            FieldTarget::Enum(Some(ty)) => format!("v.as_str().map({ty}::from_dcb_str)"),
+            _ => "v.as_str().map(String::from)".to_string(),
         },
-        Some(DataType::Guid) => "v.as_guid()".to_string(),
-        Some(DataType::Reference) => {
+        DataType::Guid => "v.as_guid()".to_string(),
+        DataType::Reference => {
             "if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }".to_string()
         }
-        Some(DataType::Class) => {
-            // Array Class elements are monomorphic (all elements of the
-            // declared type, fixed stride). ClassRef is the only variant
-            // we see for these.
-            let target_idx = prop.struct_index as u32;
-            let Some(target_name) = emitted_names.get(&target_idx) else {
-                return format!(
-                    "{{ let _ = inst.get_array(\"{escaped}\"); Vec::<CigGuid>::new() }}"
-                );
-            };
-            format!(
-                "match v {{\n                        Value::Class {{ struct_index, data }} => Some(b.alloc_nested::<{target_name}>(Instance::from_inline_data(b.db, struct_index, data), false)),\n                        Value::ClassRef(r) => Some(b.alloc_nested::<{target_name}>(b.db.instance(r.struct_index, r.instance_index), true)),\n                        _ => None,\n                    }}"
-            )
-        }
-        Some(DataType::StrongPointer) | Some(DataType::WeakPointer) => {
-            let target_idx = prop.struct_index as u32;
-            let Some(target_name) = emitted_names.get(&target_idx) else {
-                return format!(
-                    "{{ let _ = inst.get_array(\"{escaped}\"); Vec::<CigGuid>::new() }}"
-                );
-            };
-            if poly_bases.contains(&target_idx) {
+        DataType::Class => {
+            if let FieldTarget::Shape(_) = f.target {
                 format!(
-                    "match v {{\n                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some({target_name}Ptr::from_ref(b, r)),\n                        _ => None,\n                    }}"
+                    "match v {{\n                        Value::Class {{ struct_index, data }} => Some({shape}::from_instance(b, Instance::from_inline_data(b.db, struct_index, data), false)),\n                        Value::ClassRef(r) => Some({shape}::from_instance(b, b.db.instance(r.struct_index, r.instance_index), true)),\n                        _ => None,\n                    }}"
                 )
             } else {
+                // Array Class elements are monomorphic (all elements of the
+                // declared type, fixed stride). ClassRef is the only variant
+                // we see for these.
+                let target = match &f.target {
+                    FieldTarget::Struct(Some(raw)) => target_name(model, emitted_names, raw),
+                    _ => None,
+                };
+                let Some((_, target_name)) = target else {
+                    return format!(
+                        "{{ let _ = inst.get_array(\"{escaped}\"); Vec::<CigGuid>::new() }}"
+                    );
+                };
                 format!(
-                    "match v {{\n                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<{target_name}>(b.db.instance(r.struct_index, r.instance_index), true)),\n                        _ => None,\n                    }}"
+                    "match v {{\n                        Value::Class {{ struct_index, data }} => Some(b.alloc_nested::<{target_name}>(Instance::from_inline_data(b.db, struct_index, data), false)),\n                        Value::ClassRef(r) => Some(b.alloc_nested::<{target_name}>(b.db.instance(r.struct_index, r.instance_index), true)),\n                        _ => None,\n                    }}"
                 )
             }
         }
-        None => {
-            let idx = { prop.struct_index };
-            panic!(
-                "sc-generator: unknown DataType on array property `{}` (struct_index {idx}). \
-                 svarog's DataType enum may have grown a new variant — update \
-                 rust_type_for/extract_expr/array_expr to handle it.",
-                db.property_name(prop).unwrap_or("<unknown>"),
-            )
+        DataType::StrongPointer | DataType::WeakPointer => {
+            if let FieldTarget::Shape(_) = f.target {
+                format!(
+                    "match v {{\n                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some({shape}::from_instance(b, b.db.instance(r.struct_index, r.instance_index), true)),\n                        _ => None,\n                    }}"
+                )
+            } else {
+                let target = match &f.target {
+                    FieldTarget::Struct(Some(raw)) => target_name(model, emitted_names, raw),
+                    _ => None,
+                };
+                let Some((target_idx, target_name)) = target else {
+                    return format!(
+                        "{{ let _ = inst.get_array(\"{escaped}\"); Vec::<CigGuid>::new() }}"
+                    );
+                };
+                if poly_bases.contains(&target_idx) {
+                    format!(
+                        "match v {{\n                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some({target_name}Ptr::from_ref(b, r)),\n                        _ => None,\n                    }}"
+                    )
+                } else {
+                    format!(
+                        "match v {{\n                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<{target_name}>(b.db.instance(r.struct_index, r.instance_index), true)),\n                        _ => None,\n                    }}"
+                    )
+                }
+            }
         }
     };
     format!(

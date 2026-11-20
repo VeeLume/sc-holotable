@@ -114,9 +114,6 @@ pub struct FeatureMap {
     /// Feature assignment for each struct index.
     pub struct_feature: Vec<Option<FeatureAssignment>>,
 
-    /// All leaf feature names (these contain actual types).
-    pub feature_names: Vec<String>,
-
     /// Parent feature name → child feature names it enables.
     pub parent_features: BTreeMap<String, Vec<String>>,
 }
@@ -328,7 +325,6 @@ pub fn classify_features(
 
     FeatureMap {
         struct_feature,
-        feature_names,
         parent_features,
     }
 }

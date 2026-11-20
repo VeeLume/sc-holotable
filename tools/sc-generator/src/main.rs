@@ -10,14 +10,18 @@
 //! ```text
 //! cargo run -p sc-generator --release
 //! cargo run -p sc-generator --release -- --p4k "C:\Games\StarCitizen\LIVE\Data.p4k"
+//! cargo run -p sc-generator --release -- --p4k "C:\Games\StarCitizen\LIVE\Data.p4k" --p4k "C:\Games\StarCitizen\PTU\Data.p4k"
 //! ```
 //!
 //! Without `--p4k`, the generator auto-discovers the primary LIVE install
-//! via `sc-discovery` and uses its `Data.p4k`.
+//! via `sc-discovery` and uses its `Data.p4k`. Several `--p4k`, oldest
+//! first, generate the union of those builds so one release reads all of
+//! them; the merge rules and build markers are in the `model` module docs.
+//! With one `--p4k` the output is byte-identical to a single-build run.
 //!
 //! Optional flags:
 //!
-//! - `--p4k <path>`       — override auto-discovery with an explicit P4K path
+//! - `--p4k <path>`       — override auto-discovery with an explicit P4K path; repeatable
 //! - `--out-dir <path>`   — override the default `crates/sc-extract-generated/src/generated/`
 //! - `--check`            — parse everything but don't write files; for CI
 //!
@@ -96,6 +100,7 @@ use std::process::ExitCode;
 mod closure;
 mod emit;
 mod features;
+mod model;
 mod naming;
 mod pipeline;
 
@@ -148,7 +153,7 @@ fn main() -> ExitCode {
 
 fn parse_args() -> Result<RunOptions, String> {
     let mut args = std::env::args().skip(1);
-    let mut p4k: Option<PathBuf> = None;
+    let mut p4ks: Vec<PathBuf> = Vec::new();
     let mut out_dir: Option<PathBuf> = None;
     let mut check_only = false;
     let mut dump_refs = false;
@@ -157,7 +162,7 @@ fn parse_args() -> Result<RunOptions, String> {
         match arg.as_str() {
             "--p4k" => {
                 let v = args.next().ok_or("--p4k requires a value")?;
-                p4k = Some(PathBuf::from(v));
+                p4ks.push(PathBuf::from(v));
             }
             "--out-dir" => {
                 let v = args.next().ok_or("--out-dir requires a value")?;
@@ -173,14 +178,13 @@ fn parse_args() -> Result<RunOptions, String> {
         }
     }
 
-    let p4k = match p4k {
-        Some(path) => path,
-        None => autodiscover_p4k()?,
-    };
+    if p4ks.is_empty() {
+        p4ks.push(autodiscover_p4k()?);
+    }
     let out_dir = out_dir.unwrap_or_else(default_out_dir);
 
     Ok(RunOptions {
-        p4k,
+        p4ks,
         out_dir,
         check_only,
         dump_refs,
@@ -242,10 +246,12 @@ fn default_out_dir() -> PathBuf {
 }
 
 fn print_usage() {
-    eprintln!("Usage: sc-generator [--p4k <path>] [--out-dir <path>] [--check]");
+    eprintln!("Usage: sc-generator [--p4k <path>]... [--out-dir <path>] [--check]");
     eprintln!();
     eprintln!("Arguments:");
-    eprintln!("  --p4k <path>       Path to Data.p4k to generate from.");
+    eprintln!("  --p4k <path>       Path to Data.p4k to generate from. Repeat it to");
+    eprintln!("                     cover several builds, oldest first (LIVE, then");
+    eprintln!("                     PTU): the bindings are their union.");
     eprintln!("                     When omitted, auto-discovered via sc-discovery");
     eprintln!("                     (primary / LIVE channel).");
     eprintln!("  --out-dir <path>   Where to write generated files");

@@ -10,11 +10,13 @@ use svarog_p4k::P4kArchive;
 
 use crate::emit;
 use crate::features;
+use crate::model;
 
 /// Command-line options for a single generator run.
 #[derive(Debug, Clone)]
 pub struct RunOptions {
-    pub p4k: PathBuf,
+    /// One `Data.p4k` per build in the window, oldest first, newest last.
+    pub p4ks: Vec<PathBuf>,
     pub out_dir: PathBuf,
     pub check_only: bool,
     pub dump_refs: bool,
@@ -60,33 +62,23 @@ pub enum Error {
         #[source]
         source: std::io::Error,
     },
+
+    #[error("fields changed kind between the builds and need a decision:\n{0}")]
+    Conflicts(String),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-/// Run the generator end-to-end: open P4K, extract DCB, emit files.
+/// Run the generator end-to-end: analyse every build, merge, emit files.
 pub fn run(options: &RunOptions) -> Result<Summary> {
     let start = Instant::now();
 
-    tracing::info!(path = %options.p4k.display(), "opening P4K archive");
-    let archive = P4kArchive::open(&options.p4k).map_err(|source| Error::P4kOpen {
-        path: options.p4k.clone(),
-        source,
-    })?;
-
-    tracing::info!("locating Game2.dcb inside archive");
-    let dcb_bytes = extract_dcb(&archive)?;
-    tracing::info!(bytes = dcb_bytes.len(), "extracted Game2.dcb");
-
-    tracing::info!("parsing DataCore");
-    let db = DataCoreDatabase::parse(&dcb_bytes).map_err(Error::DcbParse)?;
-
-    let struct_count = db.struct_definitions().len();
-    let enum_count = db.enum_definitions().len();
-    tracing::info!(struct_count, enum_count, "DataCore parsed");
-
-    // Read version metadata from the install directory next to Data.p4k.
-    let metadata = load_metadata(&options.p4k, struct_count, enum_count);
+    let mut builds = Vec::with_capacity(options.p4ks.len());
+    for p4k in &options.p4ks {
+        builds.push(analyse_build(p4k)?);
+    }
+    let newest = &builds.last().expect("at least one --p4k").metadata;
+    let (struct_count, enum_count) = (newest.struct_count, newest.enum_count);
 
     if options.check_only {
         tracing::info!("--check mode: skipping file writes");
@@ -97,11 +89,24 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         });
     }
 
-    // Ensure output directory exists.
-    std::fs::create_dir_all(&options.out_dir).map_err(|source| Error::CreateDir {
-        path: options.out_dir.clone(),
-        source,
+    tracing::info!(builds = builds.len(), "merging builds");
+    let model = model::merge(builds).map_err(|conflicts| {
+        Error::Conflicts(
+            conflicts
+                .iter()
+                .map(|c| {
+                    format!(
+                        "  {}.{}: {}",
+                        c.struct_name,
+                        c.field,
+                        c.shapes.join("  vs  ")
+                    )
+                })
+                .collect::<Vec<_>>()
+                .join("\n"),
+        )
     })?;
+    tracing::info!(builds = ?model.builds, structs = model.structs.len(), "model merged");
 
     // Clean the output directory completely — feature-scoped layout replaces
     // the old alphabetical bucket layout.
@@ -116,88 +121,18 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         source,
     })?;
 
-    // Compute shared tables.
-    //
-    // The inherited-property cache is built once up front and passed to
-    // every later phase that needs to read fields. Reachability BFS,
-    // polymorphic base detection, feature classification, closure walks,
-    // and per-struct emit all read from this single table instead of
-    // re-walking parent chains each time.
-    tracing::info!("building inherited-property cache");
-    let property_cache = emit::build_property_cache(&db);
-
-    let descendants = emit::compute_descendants(&db);
-    // Reachability is a pipeline-level fact — computed once here and
-    // shared by `compute_emitted_struct_names` (via `reachable`) and the
-    // feature classifier (via `reachable_indices` derived from
-    // `emitted_names`). Previously this BFS was hidden inside
-    // `compute_emitted_struct_names`.
-    let reachable_structs =
-        emit::compute_reachable_struct_indices(&db, &descendants, &property_cache);
-    let emitted_names = emit::compute_emitted_struct_names(&db, &reachable_structs);
+    let emitted_names = emit::compute_model_struct_names(&model);
     let pool_fields = emit::compute_pool_field_names(&emitted_names);
-    let poly_bases = emit::compute_poly_bases(&emitted_names, &descendants, &property_cache);
-    tracing::info!(
-        poly_bases = poly_bases.len(),
-        "computed polymorphic base set"
-    );
-
-    // Role-based promotion: polymorphic bases whose *full* inherited
-    // property set is empty are compiled unconditionally in `core`.
-    // Using the full inheritance-resolved field count (not just `own`)
-    // guarantees the emitted struct body is truly empty and carries no
-    // transitive references to other types, which is what makes
-    // unconditional compilation safe (no cascade). In practice most of
-    // the 336 empty-own bases also have empty-full, so the resulting set
-    // should be within ~5% of the Core bucket's size.
-    let promoted: std::collections::HashSet<u32> = poly_bases
-        .iter()
-        .copied()
-        .filter(|&idx| property_cache[idx as usize].is_empty())
-        .collect();
-    tracing::info!(
-        promoted = promoted.len(),
-        "computed role-based unconditional promotion set (empty poly bases, full inheritance)"
-    );
-
-    // Classify types into features.
-    tracing::info!("classifying types into features");
-    let reachable: std::collections::HashSet<usize> =
-        emitted_names.keys().map(|&idx| idx as usize).collect();
-    tracing::info!("building GUID → instance lookup for Reference resolution");
-    let guid_lookup = crate::closure::build_guid_lookup(&db);
-    let feature_rules = features::FeatureRules::default();
-    let mut dangling_refs: std::collections::HashSet<svarog_common::CigGuid> =
-        std::collections::HashSet::new();
-    let feature_map = features::classify_features(
-        &db,
-        &reachable,
-        &guid_lookup,
-        &promoted,
-        &feature_rules,
-        &property_cache,
-        &mut dangling_refs,
-    );
-    if !dangling_refs.is_empty() {
-        tracing::warn!(
-            dangling_ref_count = dangling_refs.len(),
-            "some Reference fields pointed at GUIDs not present in the record map; \
-             see earlier per-GUID warnings. svarog's own export walker also skips \
-             these, so generation continues."
-        );
-    }
-    let feature_assignments = emit::compute_feature_assignment_map(&emitted_names, &feature_map);
-    let feature_cfgs = emit::compute_feature_cfg_map(&emitted_names, &feature_map);
+    let poly_bases = emit::compute_model_poly_bases(&model, &emitted_names);
+    let feature_assignments = emit::compute_feature_assignment_map(&emitted_names, &model);
+    let feature_cfgs = emit::compute_feature_cfg_map(&emitted_names, &model);
     let multi_count = feature_cfgs.values().filter(|c| c.is_some()).count();
     tracing::info!(
+        poly_bases = poly_bases.len(),
         multi_assigned_types = multi_count,
-        "computed per-type cfg map (Multi assignments)"
-    );
-
-    tracing::info!(
-        features = feature_map.feature_names.len(),
-        parent_features = feature_map.parent_features.len(),
-        "feature classification complete"
+        features = model.feature_names.len(),
+        parent_features = model.parent_features.len(),
+        "emission tables ready"
     );
 
     // Build the list of all feature module names. Three synthetic
@@ -217,7 +152,7 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         emit::MULTI_FEATURE_MODULE.to_string(),
         emit::DORMANT_MODULE.to_string(),
     ];
-    for f in &feature_map.feature_names {
+    for f in &model.feature_names {
         if !all_features.contains(f) {
             all_features.push(f.clone());
         }
@@ -237,14 +172,12 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         indices.sort_unstable();
     }
 
-    // Discover record types.
-    let mut record_struct_indices: std::collections::HashSet<u32> =
-        std::collections::HashSet::new();
-    for record in db.records() {
-        if record.struct_index >= 0 && emitted_names.contains_key(&(record.struct_index as u32)) {
-            record_struct_indices.insert(record.struct_index as u32);
-        }
-    }
+    // Record types: emitted structs with top-level records in any build.
+    let record_struct_indices: std::collections::HashSet<u32> = emitted_names
+        .keys()
+        .copied()
+        .filter(|id| model.structs[id].records != 0)
+        .collect();
 
     // Emit per-feature directories.
     //
@@ -280,14 +213,13 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
 
         // types.rs
         let types_src = emit::emit_feature_types(
-            &db,
+            &model,
             feature,
             &indices,
             &emitted_names,
             &pool_fields,
             &poly_bases,
             &feature_cfgs,
-            &property_cache,
         );
         write_file(&feature_dir.join("types.rs"), &types_src)?;
 
@@ -310,7 +242,6 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         let has_index = !feature_record_indices.is_empty();
         if has_index {
             if let Some(index_src) = emit::emit_feature_index(
-                &db,
                 feature,
                 &feature_record_indices,
                 &emitted_names,
@@ -328,16 +259,15 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
 
     // Top-level files.
     tracing::info!("emitting enums.rs");
-    write_file(&options.out_dir.join("enums.rs"), &emit::emit_enums(&db))?;
+    write_file(&options.out_dir.join("enums.rs"), &emit::emit_enums(&model))?;
 
     tracing::info!("emitting poly_enums.rs");
     write_file(
         &options.out_dir.join("poly_enums.rs"),
         &emit::emit_poly_enums_file(
-            &db,
+            &model,
             &poly_bases,
             &emitted_names,
-            &descendants,
             &feature_assignments,
             &feature_cfgs,
         ),
@@ -359,7 +289,7 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
     write_file(
         &options.out_dir.join("record_store.rs"),
         &emit::emit_record_store(
-            &db,
+            &model,
             &emitted_names,
             &pool_fields,
             &feature_assignments,
@@ -370,13 +300,13 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
     tracing::info!("emitting metadata.rs");
     write_file(
         &options.out_dir.join("metadata.rs"),
-        &emit::emit_metadata(&metadata),
+        &emit::emit_metadata(&model.metadata, &model.builds),
     )?;
 
     tracing::info!("emitting mod.rs");
     write_file(
         &options.out_dir.join("mod.rs"),
-        &emit::emit_top_mod(&features_emitted, &feature_map),
+        &emit::emit_top_mod(&features_emitted, &model.parent_features),
     )?;
 
     // Update Cargo.toml [features] sections.
@@ -399,7 +329,11 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         .collect();
 
     if let Some(gen_dir) = generated_crate_dir {
-        update_cargo_features(&gen_dir.join("Cargo.toml"), &cargo_features, &feature_map)?;
+        update_cargo_features(
+            &gen_dir.join("Cargo.toml"),
+            &cargo_features,
+            &model.parent_features,
+        )?;
 
         // sc-extract lives alongside sc-extract-generated under crates/.
         let extract_cargo = gen_dir
@@ -408,7 +342,7 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         if let Some(extract_path) = extract_cargo
             && extract_path.exists()
         {
-            update_sc_extract_features(&extract_path, &cargo_features, &feature_map)?;
+            update_sc_extract_features(&extract_path, &cargo_features, &model.parent_features)?;
         }
     }
 
@@ -419,6 +353,115 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         enum_count,
         out_dir: options.out_dir.clone(),
     })
+}
+
+/// Parse one build and run the per-build analysis (reachability, feature
+/// closures, polymorphic bases), returning its name-keyed model.
+fn analyse_build(p4k: &Path) -> Result<model::BuildModel> {
+    tracing::info!(path = %p4k.display(), "opening P4K archive");
+    let archive = P4kArchive::open(p4k).map_err(|source| Error::P4kOpen {
+        path: p4k.to_path_buf(),
+        source,
+    })?;
+
+    tracing::info!("locating Game2.dcb inside archive");
+    let dcb_bytes = extract_dcb(&archive)?;
+    tracing::info!(bytes = dcb_bytes.len(), "extracted Game2.dcb");
+
+    tracing::info!("parsing DataCore");
+    let db = DataCoreDatabase::parse(&dcb_bytes).map_err(Error::DcbParse)?;
+
+    let struct_count = db.struct_definitions().len();
+    let enum_count = db.enum_definitions().len();
+    tracing::info!(struct_count, enum_count, "DataCore parsed");
+
+    // Read version metadata from the install directory next to Data.p4k.
+    let metadata = load_metadata(p4k, struct_count, enum_count);
+    let label = build_label(p4k);
+    tracing::info!(%label, "analysing build");
+
+    // The inherited-property cache is built once up front and passed to
+    // every later phase that needs to read fields: reachability BFS,
+    // polymorphic base detection, feature classification and closure
+    // walks all read from this single table.
+    let property_cache = emit::build_property_cache(&db);
+    let descendants = emit::compute_descendants(&db);
+    let reachable_structs =
+        emit::compute_reachable_struct_indices(&db, &descendants, &property_cache);
+    let emitted_names = emit::compute_emitted_struct_names(&db, &reachable_structs);
+    let poly_bases = emit::compute_poly_bases(&emitted_names, &descendants, &property_cache);
+
+    // Role-based promotion: polymorphic bases whose *full* inherited
+    // property set is empty are compiled unconditionally in `core`.
+    // Using the full inheritance-resolved field count (not just `own`)
+    // guarantees the emitted struct body is truly empty and carries no
+    // transitive references to other types, which is what makes
+    // unconditional compilation safe (no cascade).
+    let promoted: std::collections::HashSet<u32> = poly_bases
+        .iter()
+        .copied()
+        .filter(|&idx| property_cache[idx as usize].is_empty())
+        .collect();
+
+    tracing::info!("classifying types into features");
+    let reachable: std::collections::HashSet<usize> =
+        emitted_names.keys().map(|&idx| idx as usize).collect();
+    let guid_lookup = crate::closure::build_guid_lookup(&db);
+    let feature_rules = features::FeatureRules::default();
+    let mut dangling_refs: std::collections::HashSet<svarog_common::CigGuid> =
+        std::collections::HashSet::new();
+    let feature_map = features::classify_features(
+        &db,
+        &reachable,
+        &guid_lookup,
+        &promoted,
+        &feature_rules,
+        &property_cache,
+        &mut dangling_refs,
+    );
+    if !dangling_refs.is_empty() {
+        tracing::warn!(
+            dangling_ref_count = dangling_refs.len(),
+            "some Reference fields pointed at GUIDs not present in the record map; \
+             see earlier per-GUID warnings. svarog's own export walker also skips \
+             these, so generation continues."
+        );
+    }
+
+    Ok(model::lower(
+        &db,
+        label,
+        metadata,
+        &emitted_names,
+        &descendants,
+        &feature_map,
+        &property_cache,
+    ))
+}
+
+/// The build's launcher label (`4.10.3-live.13165946`), the same name the
+/// regen tags use. Falls back to the manifest-derived label when the
+/// install is not one sc-discovery knows, and to the path otherwise.
+fn build_label(p4k: &Path) -> String {
+    let root = p4k.parent().unwrap_or(Path::new("."));
+    let same = |a: &Path, b: &Path| match (a.canonicalize(), b.canonicalize()) {
+        (Ok(a), Ok(b)) => a == b,
+        _ => false,
+    };
+    if let Ok(installs) = sc_discovery::discover()
+        && let Some(install) = installs.into_iter().find(|i| same(&i.root, root))
+    {
+        if let Some(label) = install.launcher_version_label.clone() {
+            return label;
+        }
+        if let Some(label) = install.launcher_version_string_derived() {
+            return label;
+        }
+    }
+    sc_discovery::Installation::from_root(root)
+        .ok()
+        .and_then(|i| i.launcher_version_string_derived())
+        .unwrap_or_else(|| root.display().to_string())
 }
 
 /// Metadata baked into the generated `metadata.rs` file.
@@ -486,7 +529,7 @@ fn write_file(path: &Path, contents: &str) -> Result<()> {
 fn update_cargo_features(
     cargo_path: &Path,
     all_features: &[String],
-    feature_map: &crate::features::FeatureMap,
+    parent_features: &std::collections::BTreeMap<String, Vec<String>>,
 ) -> Result<()> {
     let content = std::fs::read_to_string(cargo_path).map_err(|source| Error::WriteFile {
         path: cargo_path.to_path_buf(),
@@ -527,7 +570,7 @@ fn update_cargo_features(
     // Parent features (aliases). Skip any that collide with a leaf name
     // — the leaf definition below is authoritative, and Cargo rejects
     // duplicate keys in [features].
-    for (parent, children) in &feature_map.parent_features {
+    for (parent, children) in parent_features {
         if leaf_features.contains(&parent) {
             continue;
         }
@@ -537,7 +580,7 @@ fn update_cargo_features(
         let _ = write!(out, "{parent} = [");
         let valid_children: Vec<&String> = children
             .iter()
-            .filter(|c| leaf_features.contains(c) || feature_map.parent_features.contains_key(*c))
+            .filter(|c| leaf_features.contains(c) || parent_features.contains_key(*c))
             .collect();
         for (i, child) in valid_children.iter().enumerate() {
             if i > 0 {
@@ -565,7 +608,7 @@ fn update_cargo_features(
 fn update_sc_extract_features(
     cargo_path: &Path,
     all_features: &[String],
-    feature_map: &crate::features::FeatureMap,
+    parent_features: &std::collections::BTreeMap<String, Vec<String>>,
 ) -> Result<()> {
     let content = std::fs::read_to_string(cargo_path).map_err(|source| Error::WriteFile {
         path: cargo_path.to_path_buf(),
@@ -599,7 +642,7 @@ fn update_sc_extract_features(
 
     // Parent features forward to their children in sc-extract-generated.
     // Skip names that collide with a leaf so the leaf forward wins.
-    for (parent, children) in &feature_map.parent_features {
+    for (parent, children) in parent_features {
         if all_features.iter().any(|f| f == parent) {
             continue;
         }
@@ -649,8 +692,9 @@ fn update_sc_extract_features(
 /// will parse them as non-null and we will see them as "dangling"
 /// references. This diagnostic confirms or refutes that theory.
 pub fn run_dump_refs(options: &RunOptions) -> Result<()> {
-    let archive = P4kArchive::open(&options.p4k).map_err(|source| Error::P4kOpen {
-        path: options.p4k.clone(),
+    let p4k = &options.p4ks[0];
+    let archive = P4kArchive::open(p4k).map_err(|source| Error::P4kOpen {
+        path: p4k.clone(),
         source,
     })?;
     let dcb_bytes = extract_dcb(&archive)?;
