@@ -73,7 +73,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // VariableDeclaration_LocationEntities — subsumptionVariableName.
     let mut subs: Vec<String> = Vec::new();
     for v in pools
-        .missiondata
+        .multi_feature
         .variable_declaration_location_entities
         .iter()
         .flatten()
@@ -87,7 +87,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut debugs: Vec<String> = Vec::new();
     let mut ndecl = 0usize;
     for m in pools
-        .missiondata
+        .multi_feature
         .module_location_entities_static
         .iter()
         .flatten()
@@ -105,7 +105,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!(
         "VariableDeclaration_LocationEntities: {} (subsumption names: {} distinct)",
         pools
-            .missiondata
+            .multi_feature
             .variable_declaration_location_entities
             .iter()
             .flatten()
@@ -115,7 +115,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!(
         "ModuleLocationEntities_Static: {} (debug names: {} distinct, entityDeclarations: {})",
         pools
-            .missiondata
+            .multi_feature
             .module_location_entities_static
             .iter()
             .flatten()

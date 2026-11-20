@@ -1146,6 +1146,10 @@ impl Reader<'_> {
                     .into_iter()
                     .collect()
             }
+            // 4.10 data only: 5.0 has no multi-layer records and builds its
+            // layers through `LootV3SecondaryChoicesLayer`, which this crate
+            // does not read yet. Kept while 4.10 is in the binding window.
+            #[allow(deprecated)]
             LootV3SecondaryChoicesRecordRef_BasePtr::LootV3SecondaryChoicesRecordRef_MultiLayer(h) => {
                 h.get(self.pools)
                     .and_then(|r| r.multi_layer_record)

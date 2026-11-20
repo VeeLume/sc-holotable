@@ -14,7 +14,7 @@ use crate::Guid;
 use crate::asset_data::AssetData;
 use crate::assets::AssetSource;
 use crate::error::{Error, Result};
-use crate::generated::metadata::{GENERATED_CHANGELIST, GENERATED_GAME_BRANCH};
+use crate::generated::metadata::GENERATED_BUILDS;
 use crate::generated::{Builder, Handle, RecordLookup, RecordStore, UnknownRecordType};
 use crate::svarog_datacore::DataCoreDatabase;
 
@@ -149,22 +149,20 @@ impl Datacore {
     }
 }
 
-/// Name the game build the bindings came from on every parse, and warn when
+/// Name the game builds the bindings came from on every parse, and warn when
 /// the DCB has record types they don't know.
 fn log_binding_drift(unknown: &[UnknownRecordType]) {
-    let bindings_changelist = GENERATED_CHANGELIST.unwrap_or("-");
+    let bindings = GENERATED_BUILDS.join(" + ");
     if unknown.is_empty() {
         tracing::info!(
-            bindings_branch = GENERATED_GAME_BRANCH,
-            bindings_changelist,
+            bindings,
             "generated bindings know every record type in this DCB"
         );
         return;
     }
     let names: Vec<&str> = unknown.iter().map(|t| t.name.as_str()).collect();
     tracing::warn!(
-        bindings_branch = GENERATED_GAME_BRANCH,
-        bindings_changelist,
+        bindings,
         unknown_types = unknown.len(),
         skipped_records = unknown.iter().map(|t| t.records).sum::<usize>(),
         ?names,

@@ -143,6 +143,8 @@ fn poly_kind(p: &sc_extract::generated::BaseMissionPropertyValuePtr) -> &'static
         P::MissionPropertyValue_Reward(_) => "Reward",
         P::MissionPropertyValue_DeliveryOrder(_) => "DeliveryOrder",
         P::MissionPropertyValue_StarMapLocation(_) => "StarMapLocation",
+        P::MissionPropertyValue_ScopedLocation(_) => "ScopedLocation",
+        P::MissionPropertyValue_AutoSpawns(_) => "AutoSpawns",
         P::Unknown { .. } => "Unknown",
     }
 }
