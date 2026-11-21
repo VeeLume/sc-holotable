@@ -11113,6 +11113,8 @@ pub enum BuildingBlocks_NodePtr {
     BindingsOperation_BooleanFromStringIsEmpty(Handle<BindingsOperation_BooleanFromStringIsEmpty>),
     #[cfg(any(
         feature = "actor-actors",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-suit",
         feature = "entities-ui",
         feature = "entitlementpolicies",
@@ -13845,6 +13847,7 @@ pub enum BuildingBlocks_NodePtr {
     BuildingBlocks_BindingsNumberVariable(Handle<BuildingBlocks_BindingsNumberVariable>),
     #[cfg(any(
         feature = "contracts",
+        feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
         feature = "ui-buildingblocks"
@@ -16468,7 +16471,15 @@ pub enum BuildingBlocks_NodePtr {
     BindingsOperations_StringFromIntegerSwitchCanvas(
         Handle<BindingsOperations_StringFromIntegerSwitchCanvas>,
     ),
-    #[cfg(feature = "dormant")]
+    #[cfg(any(
+        feature = "actor-actors",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
+        feature = "entitlementpolicies",
+        feature = "player",
+        feature = "ui-buildingblocks",
+        feature = "ui-graphs"
+    ))]
     BindingsOperations_StringFromIntegerSwitchFontStyle(
         Handle<BindingsOperations_StringFromIntegerSwitchFontStyle>,
     ),
@@ -23065,6 +23076,8 @@ impl BuildingBlocks_NodePtr {
             }
             #[cfg(any(
                 feature = "actor-actors",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-suit",
                 feature = "entities-ui",
                 feature = "entitlementpolicies",
@@ -25869,6 +25882,7 @@ impl BuildingBlocks_NodePtr {
             }
             #[cfg(any(
                 feature = "contracts",
+                feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-ships",
                 feature = "entities-spaceships",
                 feature = "ui-buildingblocks"
@@ -28580,7 +28594,15 @@ impl BuildingBlocks_NodePtr {
                     b.alloc_nested::<BindingsOperations_StringFromIntegerSwitchCanvas>(inst, true),
                 )
             }
-            #[cfg(feature = "dormant")]
+            #[cfg(any(
+                feature = "actor-actors",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
+                feature = "entitlementpolicies",
+                feature = "player",
+                feature = "ui-buildingblocks",
+                feature = "ui-graphs"
+            ))]
             Some("BindingsOperations_StringFromIntegerSwitchFontStyle") => {
                 Self::BindingsOperations_StringFromIntegerSwitchFontStyle(
                     b.alloc_nested::<BindingsOperations_StringFromIntegerSwitchFontStyle>(
@@ -35241,6 +35263,8 @@ pub enum BuildingBlocks_BindingsBooleanBasePtr {
     BindingsOperation_BooleanFromStringIsEmpty(Handle<BindingsOperation_BooleanFromStringIsEmpty>),
     #[cfg(any(
         feature = "actor-actors",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-suit",
         feature = "entities-ui",
         feature = "entitlementpolicies",
@@ -37440,6 +37464,8 @@ impl BuildingBlocks_BindingsBooleanBasePtr {
             }
             #[cfg(any(
                 feature = "actor-actors",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-suit",
                 feature = "entities-ui",
                 feature = "entitlementpolicies",
@@ -41578,6 +41604,7 @@ pub enum BuildingBlocks_BindingsNumberBasePtr {
     BuildingBlocks_BindingsNumberVariable(Handle<BuildingBlocks_BindingsNumberVariable>),
     #[cfg(any(
         feature = "contracts",
+        feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
         feature = "ui-buildingblocks"
@@ -43654,6 +43681,7 @@ impl BuildingBlocks_BindingsNumberBasePtr {
             }
             #[cfg(any(
                 feature = "contracts",
+                feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-ships",
                 feature = "entities-spaceships",
                 feature = "ui-buildingblocks"
@@ -46588,7 +46616,15 @@ pub enum BuildingBlocks_BindingsStringBasePtr {
     BindingsOperations_StringFromIntegerSwitchCanvas(
         Handle<BindingsOperations_StringFromIntegerSwitchCanvas>,
     ),
-    #[cfg(feature = "dormant")]
+    #[cfg(any(
+        feature = "actor-actors",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
+        feature = "entitlementpolicies",
+        feature = "player",
+        feature = "ui-buildingblocks",
+        feature = "ui-graphs"
+    ))]
     BindingsOperations_StringFromIntegerSwitchFontStyle(
         Handle<BindingsOperations_StringFromIntegerSwitchFontStyle>,
     ),
@@ -47882,7 +47918,15 @@ impl BuildingBlocks_BindingsStringBasePtr {
                     b.alloc_nested::<BindingsOperations_StringFromIntegerSwitchCanvas>(inst, true),
                 )
             }
-            #[cfg(feature = "dormant")]
+            #[cfg(any(
+                feature = "actor-actors",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
+                feature = "entitlementpolicies",
+                feature = "player",
+                feature = "ui-buildingblocks",
+                feature = "ui-graphs"
+            ))]
             Some("BindingsOperations_StringFromIntegerSwitchFontStyle") => {
                 Self::BindingsOperations_StringFromIntegerSwitchFontStyle(
                     b.alloc_nested::<BindingsOperations_StringFromIntegerSwitchFontStyle>(
@@ -118573,6 +118617,7 @@ pub enum DataForgeComponentParamsPtr {
         feature = "entities-destruction",
         feature = "entities-entityspawners",
         feature = "entities-mineable",
+        feature = "entities-scitem-characters",
         feature = "entities-scitem-cuttables",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
@@ -128493,6 +128538,7 @@ pub enum DataForgeComponentParamsPtr {
         feature = "aiwavecollection",
         feature = "contracts",
         feature = "entities-groundvehicles",
+        feature = "entities-scitem-consumables",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-ships",
@@ -132443,6 +132489,8 @@ pub enum DataForgeComponentParamsPtr {
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -135579,10 +135627,10 @@ pub enum DataForgeComponentParamsPtr {
     PlanetSpawnedEntityParams(Handle<PlanetSpawnedEntityParams>),
     #[cfg(feature = "dormant")]
     CraterModifierComponentParams(Handle<CraterModifierComponentParams>),
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     #[cfg(feature = "entities-environment")]
     SEntityComponentManagedEntityRegionParams(Handle<SEntityComponentManagedEntityRegionParams>),
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     #[cfg(feature = "entities-environment")]
     SEntityComponentManagedEntityZoneParams(Handle<SEntityComponentManagedEntityZoneParams>),
     /// Runtime pointer to a subclass whose feature was disabled at
@@ -135697,7 +135745,7 @@ impl DataForgeComponentParamsPtr {
             #[cfg(any(feature = "entities-physics", feature = "entities-scitem-ships"))] Some("ConstraintParams") => Self::ConstraintParams(b.alloc_nested::<ConstraintParams>(inst, true)),
             #[cfg(feature = "entities-physics")] Some("DeadBodyParams") => Self::DeadBodyParams(b.alloc_nested::<DeadBodyParams>(inst, true)),
             #[cfg(any(feature = "entities-scitem-harvestables", feature = "harvestable"))] Some("SEntityComponentDecalParams") => Self::SEntityComponentDecalParams(b.alloc_nested::<SEntityComponentDecalParams>(inst, true)),
-            #[cfg(any(feature = "actor-actors", feature = "ammoparams", feature = "commsnotifications", feature = "contracts", feature = "crafting", feature = "entities-destruction", feature = "entities-entityspawners", feature = "entities-mineable", feature = "entities-scitem-cuttables", feature = "entities-scitem-doors", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-salvageablerepairable", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-slotspawnpoint", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entitlementpolicies", feature = "gamemode", feature = "harvestable", feature = "level", feature = "loadoutkits", feature = "megamap", feature = "player", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("DissolveParams") => Self::DissolveParams(b.alloc_nested::<DissolveParams>(inst, true)),
+            #[cfg(any(feature = "actor-actors", feature = "ammoparams", feature = "commsnotifications", feature = "contracts", feature = "crafting", feature = "entities-destruction", feature = "entities-entityspawners", feature = "entities-mineable", feature = "entities-scitem-characters", feature = "entities-scitem-cuttables", feature = "entities-scitem-doors", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-salvageablerepairable", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-slotspawnpoint", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entitlementpolicies", feature = "gamemode", feature = "harvestable", feature = "level", feature = "loadoutkits", feature = "megamap", feature = "player", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("DissolveParams") => Self::DissolveParams(b.alloc_nested::<DissolveParams>(inst, true)),
             #[cfg(feature = "dormant")] Some("DynamicEditorVariablesComponentParams") => Self::DynamicEditorVariablesComponentParams(b.alloc_nested::<DynamicEditorVariablesComponentParams>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "commsnotifications", feature = "contracts", feature = "crewmanifest", feature = "entities-animentity_character", feature = "entities-audio", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-spaceships", feature = "entities-test", feature = "entitlementpolicies", feature = "globalcommsnotificationparams", feature = "harvestable", feature = "missionbroker", feature = "missiongiver", feature = "npcpool", feature = "ui-buildingblocks"))] Some("SCDynamicLightingRigComponentParams") => Self::SCDynamicLightingRigComponentParams(b.alloc_nested::<SCDynamicLightingRigComponentParams>(inst, true)),
             #[cfg(feature = "entities-audio")] Some("EntityAudioControllerRtpcSubscriberParams") => Self::EntityAudioControllerRtpcSubscriberParams(b.alloc_nested::<EntityAudioControllerRtpcSubscriberParams>(inst, true)),
@@ -136182,7 +136230,7 @@ impl DataForgeComponentParamsPtr {
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatus_aibosssuper", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammobox", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "commsnotificationstages", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "dev", feature = "elevatorbase_teleportnode", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_attachable", feature = "entities-animentity_attachable_espr_prowler_glass", feature = "entities-animentity_attachable_espr_prowler_glass_copilot", feature = "entities-animentity_attachable_espr_talon_glass", feature = "entities-animentity_character", feature = "entities-animentity_toggleable", feature = "entities-area", feature = "entities-asd", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-booth_table_centered_seats", feature = "entities-buildingblocksscreens", feature = "entities-carryable_damage_sensitive_canister", feature = "entities-carryabletemplate", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-defendarea_inareaassignment", feature = "entities-destruction", feature = "entities-dev", feature = "entities-displayscreens", feature = "entities-energysource", feature = "entities-entityspawners", feature = "entities-environment", feature = "entities-environmentscreen", feature = "entities-explosion_triggerable_mortar_soo", feature = "entities-fakesmokegrenade_oneshot", feature = "entities-fan_prisonbroken", feature = "entities-fronthud_center", feature = "entities-fronthud_displaymanager", feature = "entities-fronthud_left", feature = "entities-fronthud_right", feature = "entities-fronthud_top", feature = "entities-geomentity_interactablelinked", feature = "entities-groundvehicles", feature = "entities-hackable", feature = "entities-haulingentityclass", feature = "entities-hazardzones", feature = "entities-ht_table_bar_1_a", feature = "entities-irradiatedhazardzone", feature = "entities-kiosk_mercury_anniversary_slides_16x9", feature = "entities-ledgeobjectusable", feature = "entities-lights", feature = "entities-mastercontrollerentities", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-others", feature = "entities-physicalizedjobboard", feature = "entities-physics", feature = "entities-rastar", feature = "entities-roomsystem", feature = "entities-salvagable", feature = "entities-scitem-access", feature = "entities-scitem-actormovables", feature = "entities-scitem-airlocks", feature = "entities-scitem-ammocrates", feature = "entities-scitem-arenacommander", feature = "entities-scitem-atc", feature = "entities-scitem-audiolog", feature = "entities-scitem-beer_can", feature = "entities-scitem-bottle_liquor", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-chipsets", feature = "entities-scitem-consumables", feature = "entities-scitem-controlpanels", feature = "entities-scitem-counter_shop_2m_casaba_b", feature = "entities-scitem-counter_shop_2m_casaba_c", feature = "entities-scitem-counter_shop_2m_casaba_d", feature = "entities-scitem-cuttables", feature = "entities-scitem-decals", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-energy", feature = "entities-scitem-environments", feature = "entities-scitem-externalinventory", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-freightelevators", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-glass_alcohol", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-innerthought_dummies", feature = "entities-scitem-itembanks", feature = "entities-scitem-lerpmoveentity", feature = "entities-scitem-locations", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-morrowtour", feature = "entities-scitem-navigationlinks", feature = "entities-scitem-nonusables", feature = "entities-scitem-openableobject", feature = "entities-scitem-orbgn", feature = "entities-scitem-placeholder", feature = "entities-scitem-prop", feature = "entities-scitem-prototypeentities", feature = "entities-scitem-proximityvolumes", feature = "entities-scitem-salvageablerepairable", feature = "entities-scitem-satellite_power_plant_test", feature = "entities-scitem-scitemdisplayscreen", feature = "entities-scitem-shelve_invisible_4x4", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-simpleanimators", feature = "entities-scitem-simpleopenableobject_ammo_box_generic", feature = "entities-scitem-simpleopenableobject_bathroom_shower", feature = "entities-scitem-simpleopenableobject_bathroom_sink", feature = "entities-scitem-simpleopenableobject_bathroom_storage", feature = "entities-scitem-simpleopenableobject_bathroom_toilet", feature = "entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a", feature = "entities-scitem-simpleopenableobject_col_a_shutters_a", feature = "entities-scitem-simpleopenableobject_col_a_shutters_b", feature = "entities-scitem-simpleopenableobject_col_a_shutters_c", feature = "entities-scitem-simpleopenableobject_col_a_shutters_d", feature = "entities-scitem-simpleopenableobject_habmodule_foldingtable", feature = "entities-scitem-simpleopenableobject_habmodule_kitchendoor", feature = "entities-scitem-simpleopenableobject_habmodule_storagedoor", feature = "entities-scitem-simpleopenableobject_habmodule_storagetray", feature = "entities-scitem-simpleopenableobject_habmodule_toiletdoor", feature = "entities-scitem-simpleopenableobject_screenarticulated", feature = "entities-scitem-simpleopenableobject_template", feature = "entities-scitem-simplestool", feature = "entities-scitem-simpletoilet", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-stool_template", feature = "entities-scitem-storage", feature = "entities-scitem-storagecage", feature = "entities-scitem-suit", feature = "entities-scitem-tablet", feature = "entities-scitem-tablet_small", feature = "entities-scitem-template", feature = "entities-scitem-template_cuttableinteractable", feature = "entities-scitem-template_cuttableinteractable_surfacerelay", feature = "entities-scitem-test_mug_carryable", feature = "entities-scitem-test_ruto_projector", feature = "entities-scitem-test_shelf", feature = "entities-scitem-test_shelf_missionblackboxdropoff", feature = "entities-scitem-test_station_power_plant", feature = "entities-scitem-testinteractionstatemachine", feature = "entities-scitem-toggleableentities", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weaponmounts", feature = "entities-scitem-weapons", feature = "entities-shipselectorkiosk", feature = "entities-shipselectorkiosk_genatc02", feature = "entities-shipselectorkiosk_grimhex", feature = "entities-shipselectorkiosk_groundvehiclesonly", feature = "entities-shipselectorkiosk_hangar_hightech_1_a", feature = "entities-shipselectorkiosk_hangar_lowtech_1_a", feature = "entities-shipselectorkiosk_hangar_lowtech_1_b", feature = "entities-shipselectorkiosk_hangar_lowtech_2_a", feature = "entities-shipselectorkiosk_hangar_lowtech_2_b", feature = "entities-shipselectorkiosk_levski", feature = "entities-shipselectorkiosk_levskiground", feature = "entities-shipselectorkiosk_levskiships", feature = "entities-shipselectorkiosk_lorville", feature = "entities-shipselectorkiosk_lorvilleground", feature = "entities-shipselectorkiosk_newbab", feature = "entities-shipselectorkiosk_outpostground", feature = "entities-shipselectorkiosk_pyro", feature = "entities-shipselectorkiosk_shipsonly", feature = "entities-shipselectorkiosk_shipsonly_area18", feature = "entities-shipselectorkiosk_shipsonly_orison", feature = "entities-shipselectorkiosk_shipsonly_reststop", feature = "entities-shipselectorkiosk_test", feature = "entities-shipselectorkiosk_v001", feature = "entities-shipselectorkiosk_v002", feature = "entities-shopkiosk", feature = "entities-shoppingkiosk", feature = "entities-slotspawnpoint", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-spawncloset", feature = "entities-spawncloset_ships", feature = "entities-spawncloset_ships_javelin", feature = "entities-stormbreaker_pylon_hatch", feature = "entities-table_booth_circularbar_direct_8_seat", feature = "entities-table_booth_utilitarian_4_seat", feature = "entities-terminal_boarding_1_a", feature = "entities-test", feature = "entities-trackview", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "genericmobiterminals", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "mining", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "missionscenarios", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "transitsystem", feature = "transportsystem", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas", feature = "vendingmachine_2"))] Some("SEntityInteractableParams") => Self::SEntityInteractableParams(b.alloc_nested::<SEntityInteractableParams>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatus_aibosssuper", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "commsnotificationstages", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "dev", feature = "elevatorbase_teleportnode", feature = "entities-animentity_attachable", feature = "entities-animentity_attachable_espr_prowler_glass", feature = "entities-animentity_attachable_espr_prowler_glass_copilot", feature = "entities-animentity_attachable_espr_talon_glass", feature = "entities-animentity_character", feature = "entities-animentity_toggleable", feature = "entities-area", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-dev", feature = "entities-displayscreens", feature = "entities-entityspawners", feature = "entities-fan_prisonbroken", feature = "entities-fronthud_center", feature = "entities-fronthud_displaymanager", feature = "entities-fronthud_left", feature = "entities-fronthud_right", feature = "entities-fronthud_top", feature = "entities-geomentity_interactablelinked", feature = "entities-groundvehicles", feature = "entities-hackable", feature = "entities-handholdobject_linkable", feature = "entities-haulingentityclass", feature = "entities-lights", feature = "entities-mastercontrollerentities", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-physicalizedjobboard", feature = "entities-roomsystem", feature = "entities-scitem-access", feature = "entities-scitem-actormovables", feature = "entities-scitem-airlocks", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-chipsets", feature = "entities-scitem-consumables", feature = "entities-scitem-controlpanels", feature = "entities-scitem-decals", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-energy", feature = "entities-scitem-environments", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-lerpmoveentity", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-orbgn", feature = "entities-scitem-placeholder", feature = "entities-scitem-prop", feature = "entities-scitem-prototypeentities", feature = "entities-scitem-proximityvolumes", feature = "entities-scitem-salvageablerepairable", feature = "entities-scitem-satellite_power_plant_test", feature = "entities-scitem-ship_weapon_ammo_racks", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-simpleanimators", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-storage", feature = "entities-scitem-storagecage", feature = "entities-scitem-suit", feature = "entities-scitem-test_station_power_plant", feature = "entities-scitem-toggleableentities", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weaponmounts", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-spawncloset", feature = "entities-spawncloset_ships", feature = "entities-spawncloset_ships_javelin", feature = "entities-test", feature = "entities-tilesocket", feature = "entities-trackview", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "npcpool", feature = "player", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "transitsystem", feature = "transportsystem", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("SInteractionLinkParams") => Self::SInteractionLinkParams(b.alloc_nested::<SInteractionLinkParams>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatus_aibosssuper", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammobox", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "commsnotificationstages", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "dev", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_attachable", feature = "entities-animentity_attachable_espr_prowler_glass", feature = "entities-animentity_attachable_espr_prowler_glass_copilot", feature = "entities-animentity_attachable_espr_talon_glass", feature = "entities-animentity_character", feature = "entities-animentity_toggleable", feature = "entities-area", feature = "entities-asd", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-buildingblocksscreens", feature = "entities-carryable_damage_sensitive_canister", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-defendarea_inareaassignment", feature = "entities-destruction", feature = "entities-dev", feature = "entities-displayscreens", feature = "entities-energysource", feature = "entities-entityspawners", feature = "entities-environment", feature = "entities-environmentscreen", feature = "entities-explosion_triggerable_mortar_soo", feature = "entities-fakesmokegrenade_oneshot", feature = "entities-fan_prisonbroken", feature = "entities-fronthud_center", feature = "entities-fronthud_displaymanager", feature = "entities-fronthud_left", feature = "entities-fronthud_right", feature = "entities-fronthud_top", feature = "entities-groundvehicles", feature = "entities-hackable", feature = "entities-haulingentityclass", feature = "entities-hazardzones", feature = "entities-irradiatedhazardzone", feature = "entities-kiosk_mercury_anniversary_slides_16x9", feature = "entities-lights", feature = "entities-mastercontrollerentities", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-others", feature = "entities-physicalizedjobboard", feature = "entities-rastar", feature = "entities-roomsystem", feature = "entities-salvagable", feature = "entities-scitem-access", feature = "entities-scitem-actormovables", feature = "entities-scitem-airlocks", feature = "entities-scitem-arenacommander", feature = "entities-scitem-atc", feature = "entities-scitem-audiolog", feature = "entities-scitem-beer_can", feature = "entities-scitem-bottle_liquor", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-chipsets", feature = "entities-scitem-consumables", feature = "entities-scitem-controlpanels", feature = "entities-scitem-cuttables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-energy", feature = "entities-scitem-environments", feature = "entities-scitem-externalinventory", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-glass_alcohol", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-locations", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-nonusables", feature = "entities-scitem-openableobject", feature = "entities-scitem-orbgn", feature = "entities-scitem-placeholder", feature = "entities-scitem-prop", feature = "entities-scitem-prototypeentities", feature = "entities-scitem-salvageablerepairable", feature = "entities-scitem-scitemdisplayscreen", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-simpleanimators", feature = "entities-scitem-simpleopenableobject_ammo_box_generic", feature = "entities-scitem-simpleopenableobject_bathroom_shower", feature = "entities-scitem-simpleopenableobject_bathroom_sink", feature = "entities-scitem-simpleopenableobject_bathroom_storage", feature = "entities-scitem-simpleopenableobject_bathroom_toilet", feature = "entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a", feature = "entities-scitem-simpleopenableobject_col_a_shutters_a", feature = "entities-scitem-simpleopenableobject_col_a_shutters_b", feature = "entities-scitem-simpleopenableobject_col_a_shutters_c", feature = "entities-scitem-simpleopenableobject_col_a_shutters_d", feature = "entities-scitem-simpleopenableobject_habmodule_foldingtable", feature = "entities-scitem-simpleopenableobject_habmodule_kitchendoor", feature = "entities-scitem-simpleopenableobject_habmodule_storagedoor", feature = "entities-scitem-simpleopenableobject_habmodule_storagetray", feature = "entities-scitem-simpleopenableobject_habmodule_toiletdoor", feature = "entities-scitem-simpleopenableobject_screenarticulated", feature = "entities-scitem-simpleopenableobject_template", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-storage", feature = "entities-scitem-storagecage", feature = "entities-scitem-suit", feature = "entities-scitem-template", feature = "entities-scitem-template_cuttableinteractable", feature = "entities-scitem-template_cuttableinteractable_surfacerelay", feature = "entities-scitem-test_mug_carryable", feature = "entities-scitem-test_ruto_projector", feature = "entities-scitem-testinteractionstatemachine", feature = "entities-scitem-toggleableentities", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weaponmounts", feature = "entities-scitem-weapons", feature = "entities-shipselectorkiosk", feature = "entities-shipselectorkiosk_genatc02", feature = "entities-shipselectorkiosk_grimhex", feature = "entities-shipselectorkiosk_groundvehiclesonly", feature = "entities-shipselectorkiosk_hangar_hightech_1_a", feature = "entities-shipselectorkiosk_hangar_lowtech_1_a", feature = "entities-shipselectorkiosk_hangar_lowtech_1_b", feature = "entities-shipselectorkiosk_hangar_lowtech_2_a", feature = "entities-shipselectorkiosk_hangar_lowtech_2_b", feature = "entities-shipselectorkiosk_levski", feature = "entities-shipselectorkiosk_levskiground", feature = "entities-shipselectorkiosk_levskiships", feature = "entities-shipselectorkiosk_lorville", feature = "entities-shipselectorkiosk_lorvilleground", feature = "entities-shipselectorkiosk_newbab", feature = "entities-shipselectorkiosk_outpostground", feature = "entities-shipselectorkiosk_pyro", feature = "entities-shipselectorkiosk_shipsonly", feature = "entities-shipselectorkiosk_shipsonly_area18", feature = "entities-shipselectorkiosk_shipsonly_orison", feature = "entities-shipselectorkiosk_shipsonly_reststop", feature = "entities-shipselectorkiosk_test", feature = "entities-shipselectorkiosk_v001", feature = "entities-shipselectorkiosk_v002", feature = "entities-slotspawnpoint", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-stormbreaker_pylon_hatch", feature = "entities-terminal_boarding_1_a", feature = "entities-test", feature = "entities-trackview", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "genericmobiterminals", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "mining", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "missionscenarios", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "transitsystem", feature = "transportsystem", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("SInteractionStateMachineParams") => Self::SInteractionStateMachineParams(b.alloc_nested::<SInteractionStateMachineParams>(inst, true)),
-            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "contracts", feature = "entities-groundvehicles", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-ships", feature = "entities-scitem-vehicles", feature = "entities-spaceships", feature = "entitlementpolicies"))] Some("SInventoryParams") => Self::SInventoryParams(b.alloc_nested::<SInventoryParams>(inst, true)),
+            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "contracts", feature = "entities-groundvehicles", feature = "entities-scitem-consumables", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-ships", feature = "entities-scitem-vehicles", feature = "entities-spaceships", feature = "entitlementpolicies"))] Some("SInventoryParams") => Self::SInventoryParams(b.alloc_nested::<SInventoryParams>(inst, true)),
             #[cfg(feature = "dormant")] Some("SCItemExpiryComponentParams") => Self::SCItemExpiryComponentParams(b.alloc_nested::<SCItemExpiryComponentParams>(inst, true)),
             #[cfg(feature = "dormant")] Some("ItemPortHostComponentParams") => Self::ItemPortHostComponentParams(b.alloc_nested::<ItemPortHostComponentParams>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatus_aibosssuper", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammobox", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "character", feature = "commsnotifications", feature = "commsnotificationstages", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "creatures", feature = "crewmanifest", feature = "elevatorbase_teleportnode", feature = "entities-animatedcharacterstatue_aloprat", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_quasigrazer", feature = "entities-animatedcharacterstatue_template", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_attachable", feature = "entities-animentity_attachable_espr_prowler_glass", feature = "entities-animentity_attachable_espr_prowler_glass_copilot", feature = "entities-animentity_attachable_espr_talon_glass", feature = "entities-animentity_character", feature = "entities-animentity_floatinghead_charactercustomizer", feature = "entities-animentity_floatinghead_charactercustomizer_dnalib", feature = "entities-animentity_floatinghead_charactercustomizer_featurelib", feature = "entities-area", feature = "entities-attachableobjectcontainerspawner", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-booth_table_centered_seats", feature = "entities-camerasourcefuelnozzle", feature = "entities-carryable_damage_sensitive_canister", feature = "entities-charactercustomizer", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-destruction", feature = "entities-dev", feature = "entities-displayscreens", feature = "entities-energysource", feature = "entities-entityspawners", feature = "entities-environment", feature = "entities-environmentscreen", feature = "entities-fakesmokegrenade_oneshot", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-helpers", feature = "entities-ht_table_bar_1_a", feature = "entities-jumppoints", feature = "entities-legacyitems", feature = "entities-lights", feature = "entities-locationtemplate", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-physicalizedjobboard", feature = "entities-physics", feature = "entities-rastar", feature = "entities-roomsystem", feature = "entities-salvagable", feature = "entities-scitem-access", feature = "entities-scitem-actormovables", feature = "entities-scitem-aimodule_atc", feature = "entities-scitem-aimodule_atc_grimhex", feature = "entities-scitem-aimodule_atc_levskiatc01", feature = "entities-scitem-aimodule_atc_lorvilleatc01", feature = "entities-scitem-aimodule_atc_newbabbage", feature = "entities-scitem-aimodule_atc_newbabbageatc01", feature = "entities-scitem-aimodule_atc_orisonatc01", feature = "entities-scitem-aimodule_atc_systematc01", feature = "entities-scitem-aimodule_cargo", feature = "entities-scitem-aimodule_collector", feature = "entities-scitem-aimodule_genatc02", feature = "entities-scitem-aimodule_pyro", feature = "entities-scitem-aimodule_silent_atc", feature = "entities-scitem-airlocks", feature = "entities-scitem-ammocrates", feature = "entities-scitem-atc", feature = "entities-scitem-atc_datamanager", feature = "entities-scitem-atc_datamanager_outpostplatinumbay", feature = "entities-scitem-atc_datamanager_port_lawful", feature = "entities-scitem-atc_datamanager_port_semilawful", feature = "entities-scitem-atc_datamanager_port_unlawful", feature = "entities-scitem-atc_operatoraimodule", feature = "entities-scitem-bar_mmhc_glass_coke_empty", feature = "entities-scitem-beer_can", feature = "entities-scitem-bottle_liquor", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-chipsets", feature = "entities-scitem-consumables", feature = "entities-scitem-controlpanels", feature = "entities-scitem-cuttables", feature = "entities-scitem-decals", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-energy", feature = "entities-scitem-environments", feature = "entities-scitem-externalinventory", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-freightelevators", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-glass_alcohol", feature = "entities-scitem-glass_tumbler_1_a", feature = "entities-scitem-glass_tumbler_2_a", feature = "entities-scitem-handcuffs", feature = "entities-scitem-harvestables", feature = "entities-scitem-holoui", feature = "entities-scitem-human", feature = "entities-scitem-innerthought_dummies", feature = "entities-scitem-itembanks", feature = "entities-scitem-janitormob", feature = "entities-scitem-lightgroupitem", feature = "entities-scitem-lightgrouppowereditem", feature = "entities-scitem-locations", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-morrowtour", feature = "entities-scitem-navigationlinks", feature = "entities-scitem-nonusables", feature = "entities-scitem-openableobject", feature = "entities-scitem-orbgn", feature = "entities-scitem-placeholder", feature = "entities-scitem-prop", feature = "entities-scitem-prototypeentities", feature = "entities-scitem-remoteconnectionreceiver", feature = "entities-scitem-rotationsimple", feature = "entities-scitem-salvageablerepairable", feature = "entities-scitem-satellite_power_plant_test", feature = "entities-scitem-scitem_debris", feature = "entities-scitem-scitemdisplayscreen", feature = "entities-scitem-shelve_invisible_4x4", feature = "entities-scitem-ship_weapon_ammo_racks", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-simpleanimators", feature = "entities-scitem-simpleopenableobject_ammo_box_generic", feature = "entities-scitem-simpleopenableobject_bathroom_shower", feature = "entities-scitem-simpleopenableobject_bathroom_sink", feature = "entities-scitem-simpleopenableobject_bathroom_storage", feature = "entities-scitem-simpleopenableobject_bathroom_toilet", feature = "entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a", feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a", feature = "entities-scitem-simpleopenableobject_col_a_shutters_a", feature = "entities-scitem-simpleopenableobject_col_a_shutters_b", feature = "entities-scitem-simpleopenableobject_col_a_shutters_c", feature = "entities-scitem-simpleopenableobject_col_a_shutters_d", feature = "entities-scitem-simpleopenableobject_habmodule_foldingtable", feature = "entities-scitem-simpleopenableobject_habmodule_kitchendoor", feature = "entities-scitem-simpleopenableobject_habmodule_storagedoor", feature = "entities-scitem-simpleopenableobject_habmodule_storagetray", feature = "entities-scitem-simpleopenableobject_habmodule_toiletdoor", feature = "entities-scitem-simpleopenableobject_screenarticulated", feature = "entities-scitem-simpleopenableobject_template", feature = "entities-scitem-simplestool", feature = "entities-scitem-simpletoilet", feature = "entities-scitem-spawers", feature = "entities-scitem-spawning", feature = "entities-scitem-starmarine", feature = "entities-scitem-stool_template", feature = "entities-scitem-storage", feature = "entities-scitem-storagecage", feature = "entities-scitem-suit", feature = "entities-scitem-tablet", feature = "entities-scitem-tablet_small", feature = "entities-scitem-template", feature = "entities-scitem-test_gadget", feature = "entities-scitem-test_mug", feature = "entities-scitem-test_mug_carryable", feature = "entities-scitem-test_ruto_projector", feature = "entities-scitem-test_shelf", feature = "entities-scitem-test_shelf_missionblackboxdropoff", feature = "entities-scitem-test_station_power_plant", feature = "entities-scitem-testinteractionstatemachine", feature = "entities-scitem-ui_environmentscreen_phoenix_attractanim", feature = "entities-scitem-ui_environmentscreen_phoenix_attractanim_small", feature = "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom", feature = "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top", feature = "entities-scitem-ui_environmentscreen_phoenix_interactionpanel", feature = "entities-scitem-ui_flash_screen", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weaponmounts", feature = "entities-scitem-weapons", feature = "entities-screen_9x16_1_a", feature = "entities-shipselectorkiosk", feature = "entities-shipselectorkiosk_genatc02", feature = "entities-shipselectorkiosk_grimhex", feature = "entities-shipselectorkiosk_groundvehiclesonly", feature = "entities-shipselectorkiosk_hangar_hightech_1_a", feature = "entities-shipselectorkiosk_hangar_lowtech_1_a", feature = "entities-shipselectorkiosk_hangar_lowtech_1_b", feature = "entities-shipselectorkiosk_hangar_lowtech_2_a", feature = "entities-shipselectorkiosk_hangar_lowtech_2_b", feature = "entities-shipselectorkiosk_levski", feature = "entities-shipselectorkiosk_levskiground", feature = "entities-shipselectorkiosk_levskiships", feature = "entities-shipselectorkiosk_lorville", feature = "entities-shipselectorkiosk_lorvilleground", feature = "entities-shipselectorkiosk_newbab", feature = "entities-shipselectorkiosk_outpostground", feature = "entities-shipselectorkiosk_pyro", feature = "entities-shipselectorkiosk_shipsonly", feature = "entities-shipselectorkiosk_shipsonly_area18", feature = "entities-shipselectorkiosk_shipsonly_orison", feature = "entities-shipselectorkiosk_shipsonly_reststop", feature = "entities-shipselectorkiosk_test", feature = "entities-shipselectorkiosk_v001", feature = "entities-shipselectorkiosk_v002", feature = "entities-shopkiosk", feature = "entities-shoppingkiosk", feature = "entities-slotspawnpoint", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-stormbreaker_pylon_hatch", feature = "entities-table_booth_circularbar_direct_8_seat", feature = "entities-table_booth_utilitarian_4_seat", feature = "entities-test", feature = "entities-ui", feature = "entities-vehicleobjectcontainer", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "mining", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "missionscenarios", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "prop", feature = "reputation", feature = "resourcetypedatabase", feature = "rsi_polaris_kaboos_exterior", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "transitsystem", feature = "transponder", feature = "transportsystem", feature = "ui-buildingblocks", feature = "ui-frontend", feature = "ui-graphs", feature = "ui-itemkiosk", feature = "ui-itempreview_config", feature = "ui-mobiglas", feature = "vendingmachine_2"))] Some("SAttachableComponentParams") => Self::SAttachableComponentParams(b.alloc_nested::<SAttachableComponentParams>(inst, true)),
@@ -136364,7 +136412,7 @@ impl DataForgeComponentParamsPtr {
             #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "commsnotifications", feature = "contracts", feature = "crewmanifest", feature = "entities-animentity_character", feature = "entities-audio", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-atc", feature = "entities-scitem-commsreceiver", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-ships", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "globalcommsnotificationparams", feature = "harvestable", feature = "journalentry", feature = "missionbroker", feature = "missiongiver", feature = "missionscenarios", feature = "npcpool", feature = "player", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("SCRTTCameraParams") => Self::SCRTTCameraParams(b.alloc_nested::<SCRTTCameraParams>(inst, true)),
             #[cfg(feature = "dormant")] Some("SCItemDockingControllerParams") => Self::SCItemDockingControllerParams(b.alloc_nested::<SCItemDockingControllerParams>(inst, true)),
             #[cfg(feature = "dormant")] Some("SCMeleeWeaponParams") => Self::SCMeleeWeaponParams(b.alloc_nested::<SCMeleeWeaponParams>(inst, true)),
-            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-carryables", feature = "entities-scitem-consumables", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-spaceships", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "harvestable", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("SMeleeWeaponComponentParams") => Self::SMeleeWeaponComponentParams(b.alloc_nested::<SMeleeWeaponComponentParams>(inst, true)),
+            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-carryables", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-spaceships", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "harvestable", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("SMeleeWeaponComponentParams") => Self::SMeleeWeaponComponentParams(b.alloc_nested::<SMeleeWeaponComponentParams>(inst, true)),
             #[cfg(feature = "dormant")] Some("AnimationComponentParams") => Self::AnimationComponentParams(b.alloc_nested::<AnimationComponentParams>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-animentity_character", feature = "entities-area", feature = "entities-audio", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-dev", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-ships", feature = "entities-scitem-spawers", feature = "entities-scitem-suit", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weapons", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "npcpool", feature = "player", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("SCItemShipComputerParams") => Self::SCItemShipComputerParams(b.alloc_nested::<SCItemShipComputerParams>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "contracts", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-ships", feature = "entities-spaceships", feature = "entities-ui", feature = "entitlementpolicies", feature = "player", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("SSCItemSelfDestructComponentParams") => Self::SSCItemSelfDestructComponentParams(b.alloc_nested::<SSCItemSelfDestructComponentParams>(inst, true)),
@@ -140540,6 +140588,8 @@ pub enum SSequencerCarryableTaskParamsPtr {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-lootables",
@@ -140591,6 +140641,8 @@ pub enum SSequencerCarryableTaskParamsPtr {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -140631,6 +140683,8 @@ pub enum SSequencerCarryableTaskParamsPtr {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-lootables",
@@ -140676,6 +140730,8 @@ pub enum SSequencerCarryableTaskParamsPtr {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -140713,6 +140769,8 @@ pub enum SSequencerCarryableTaskParamsPtr {
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-starmarine",
@@ -140750,6 +140808,8 @@ pub enum SSequencerCarryableTaskParamsPtr {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
@@ -140823,6 +140883,8 @@ impl SSequencerCarryableTaskParamsPtr {
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
                 feature = "entities-scitem-consumables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-lootables",
@@ -140882,6 +140944,8 @@ impl SSequencerCarryableTaskParamsPtr {
                 feature = "entities-haulingentityclass",
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -140926,6 +140990,8 @@ impl SSequencerCarryableTaskParamsPtr {
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
                 feature = "entities-scitem-consumables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-lootables",
@@ -140975,6 +141041,8 @@ impl SSequencerCarryableTaskParamsPtr {
                 feature = "entities-haulingentityclass",
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -141016,6 +141084,8 @@ impl SSequencerCarryableTaskParamsPtr {
                 feature = "entities-entityspawners",
                 feature = "entities-groundvehicles",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-starmarine",
@@ -141055,6 +141125,8 @@ impl SSequencerCarryableTaskParamsPtr {
                 feature = "entities-haulingentityclass",
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-doors",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
@@ -143822,6 +143894,8 @@ pub enum SSequencerDefTaskParamsPtr {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-lootables",
@@ -143873,6 +143947,8 @@ pub enum SSequencerDefTaskParamsPtr {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -143913,6 +143989,8 @@ pub enum SSequencerDefTaskParamsPtr {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-lootables",
@@ -143958,6 +144036,8 @@ pub enum SSequencerDefTaskParamsPtr {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -143995,6 +144075,8 @@ pub enum SSequencerDefTaskParamsPtr {
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-starmarine",
@@ -144032,6 +144114,8 @@ pub enum SSequencerDefTaskParamsPtr {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
@@ -146068,6 +146152,8 @@ impl SSequencerDefTaskParamsPtr {
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
                 feature = "entities-scitem-consumables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-lootables",
@@ -146127,6 +146213,8 @@ impl SSequencerDefTaskParamsPtr {
                 feature = "entities-haulingentityclass",
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -146171,6 +146259,8 @@ impl SSequencerDefTaskParamsPtr {
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
                 feature = "entities-scitem-consumables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-lootables",
@@ -146220,6 +146310,8 @@ impl SSequencerDefTaskParamsPtr {
                 feature = "entities-haulingentityclass",
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -146261,6 +146353,8 @@ impl SSequencerDefTaskParamsPtr {
                 feature = "entities-entityspawners",
                 feature = "entities-groundvehicles",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-starmarine",
@@ -146300,6 +146394,8 @@ impl SSequencerDefTaskParamsPtr {
                 feature = "entities-haulingentityclass",
                 feature = "entities-scitem-carryables",
                 feature = "entities-scitem-characters",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-doors",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
@@ -154796,6 +154892,7 @@ pub enum SEntityTraversingExecuteNodeBasePtr {
     #[cfg(any(
         feature = "contracts",
         feature = "entities-scitem-doors",
+        feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
         feature = "entities-scitem-storage",
         feature = "entities-scitem-usables",
@@ -154891,7 +154988,7 @@ impl SEntityTraversingExecuteNodeBasePtr {
         match inst.type_name() {
             Some("SEntityTraversingExecuteNodeBase") => Self::SEntityTraversingExecuteNodeBase(b.alloc_nested::<SEntityTraversingExecuteNodeBase>(inst, true)),
             #[cfg(any(feature = "aiwavecollection", feature = "contracts", feature = "crafting", feature = "entities-decorations", feature = "entities-dev", feature = "entities-displayscreens", feature = "entities-groundvehicles", feature = "entities-salvagable", feature = "entities-scitem-access", feature = "entities-scitem-airlocks", feature = "entities-scitem-chipsets", feature = "entities-scitem-controlpanels", feature = "entities-scitem-doors", feature = "entities-scitem-flair", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-orbgn", feature = "entities-scitem-salvageablerepairable", feature = "entities-scitem-ships", feature = "entities-scitem-spawers", feature = "entities-scitem-storage", feature = "entities-scitem-storagecage", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weaponmounts", feature = "entities-scitem-weapons", feature = "entities-spaceships", feature = "entitlementpolicies"))] Some("SInteractionLinkExecuteCreateInteractionLinkNode") => Self::SInteractionLinkExecuteCreateInteractionLinkNode(b.alloc_nested::<SInteractionLinkExecuteCreateInteractionLinkNode>(inst, true)),
-            #[cfg(any(feature = "contracts", feature = "entities-scitem-doors", feature = "entities-scitem-ships", feature = "entities-scitem-storage", feature = "entities-scitem-usables", feature = "entities-spaceships", feature = "entitlementpolicies"))] Some("SInverseInteractionLinkExecuteCreateInteractionLinkNode") => Self::SInverseInteractionLinkExecuteCreateInteractionLinkNode(b.alloc_nested::<SInverseInteractionLinkExecuteCreateInteractionLinkNode>(inst, true)),
+            #[cfg(any(feature = "contracts", feature = "entities-scitem-doors", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-ships", feature = "entities-scitem-storage", feature = "entities-scitem-usables", feature = "entities-spaceships", feature = "entitlementpolicies"))] Some("SInverseInteractionLinkExecuteCreateInteractionLinkNode") => Self::SInverseInteractionLinkExecuteCreateInteractionLinkNode(b.alloc_nested::<SInverseInteractionLinkExecuteCreateInteractionLinkNode>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "commsnotifications", feature = "contracts", feature = "crewmanifest", feature = "entities-animentity_character", feature = "entities-audio", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-storage", feature = "entities-spaceships", feature = "entities-test", feature = "entitlementpolicies", feature = "globalcommsnotificationparams", feature = "missionbroker", feature = "missiongiver", feature = "npcpool", feature = "ui-buildingblocks"))] Some("STaggedInverseInteractionLinkExecuteCreateInteractionLinkNode") => Self::STaggedInverseInteractionLinkExecuteCreateInteractionLinkNode(b.alloc_nested::<STaggedInverseInteractionLinkExecuteCreateInteractionLinkNode>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "contracts", feature = "entities-decorations", feature = "entities-entityspawners", feature = "entities-hackable", feature = "entities-scitem-chipsets", feature = "entities-scitem-controlpanels", feature = "entities-scitem-doors", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-prototypeentities", feature = "entities-scitem-ships", feature = "entities-scitem-simpleanimators", feature = "entities-scitem-storage", feature = "entities-scitem-usables", feature = "entities-spaceships", feature = "entities-ui", feature = "entitlementpolicies", feature = "player", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("SEntityTraversingNodeExecuteLinkAllTaggedInteractions") => Self::SEntityTraversingNodeExecuteLinkAllTaggedInteractions(b.alloc_nested::<SEntityTraversingNodeExecuteLinkAllTaggedInteractions>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "contracts", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-spaceships", feature = "entities-ui", feature = "entitlementpolicies", feature = "player", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("SEntityTraversingNodeExecuteLinkUIVendor") => Self::SEntityTraversingNodeExecuteLinkUIVendor(b.alloc_nested::<SEntityTraversingNodeExecuteLinkUIVendor>(inst, true)),
@@ -158246,6 +158343,8 @@ pub enum SHighlightBehaviorNodeParamsPtr {
         feature = "entities-groundvehicles",
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -158631,6 +158730,8 @@ impl SHighlightBehaviorNodeParamsPtr {
                 feature = "entities-groundvehicles",
                 feature = "entities-haulingentityclass",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -161678,6 +161779,8 @@ pub enum InteractionConditionParamsPtr {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-flair",
         feature = "entities-scitem-fps_devices",
@@ -161956,6 +162059,8 @@ pub enum InteractionConditionParamsPtr {
         feature = "entities-scitem-actormovables",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
@@ -162380,6 +162485,8 @@ pub enum InteractionConditionParamsPtr {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-flair",
         feature = "entities-scitem-fps_devices",
         feature = "entities-scitem-gameplayinteractables",
@@ -163219,6 +163326,8 @@ pub enum InteractionConditionParamsPtr {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-flair",
         feature = "entities-scitem-fps_devices",
@@ -163598,7 +163707,7 @@ impl InteractionConditionParamsPtr {
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_character", feature = "entities-area", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-dev", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-scitem-actormovables", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-prop", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-storage", feature = "entities-scitem-storagecage", feature = "entities-scitem-suit", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "interactionconditions", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("InteractionConditionAND") => Self::InteractionConditionAND(b.alloc_nested::<InteractionConditionAND>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "contracts", feature = "crafting", feature = "entities-entityspawners", feature = "entities-scitem-characters", feature = "entities-scitem-doors", feature = "entities-scitem-missionstorage", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-usables", feature = "entities-scitem-weaponmounts", feature = "entities-spaceships", feature = "entitlementpolicies", feature = "gamemode", feature = "harvestable", feature = "interactionconditions", feature = "level", feature = "loadoutkits", feature = "megamap"))] Some("InteractionConditionNAND") => Self::InteractionConditionNAND(b.alloc_nested::<InteractionConditionNAND>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "commsnotificationstages", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_character", feature = "entities-area", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-dev", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-scitem-actormovables", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-orbgn", feature = "entities-scitem-prop", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-storage", feature = "entities-scitem-storagecage", feature = "entities-scitem-suit", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "interactionconditions", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "transitsystem", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("InteractionConditionNOT") => Self::InteractionConditionNOT(b.alloc_nested::<InteractionConditionNOT>(inst, true)),
-            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-doors", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weapons", feature = "entities-spaceships", feature = "entities-test", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "harvestable", feature = "interactionconditions", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("InteractionConditionCheckActorState") => Self::InteractionConditionCheckActorState(b.alloc_nested::<InteractionConditionCheckActorState>(inst, true)),
+            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weapons", feature = "entities-spaceships", feature = "entities-test", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "harvestable", feature = "interactionconditions", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("InteractionConditionCheckActorState") => Self::InteractionConditionCheckActorState(b.alloc_nested::<InteractionConditionCheckActorState>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "commsnotifications", feature = "contracts", feature = "entities-scitem-gameplayinteractables", feature = "missionbroker", feature = "missiongiver"))] Some("InteractionConditionEntityTag") => Self::InteractionConditionEntityTag(b.alloc_nested::<InteractionConditionEntityTag>(inst, true)),
             #[cfg(feature = "dormant")] Some("InteractionConditionItemPower") => Self::InteractionConditionItemPower(b.alloc_nested::<InteractionConditionItemPower>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatus_aibosssuper", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammobox", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_character", feature = "entities-area", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-carryable_damage_sensitive_canister", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-destruction", feature = "entities-dev", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-locations", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-prop", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-suit", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "interactionconditions", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "mining", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "missionscenarios", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("IneractionConditionUserNotInUsable") => Self::IneractionConditionUserNotInUsable(b.alloc_nested::<IneractionConditionUserNotInUsable>(inst, true)),
@@ -163608,7 +163717,7 @@ impl InteractionConditionParamsPtr {
             #[cfg(feature = "dormant")] Some("InteractionConditionSecurityClearanceToken") => Self::InteractionConditionSecurityClearanceToken(b.alloc_nested::<InteractionConditionSecurityClearanceToken>(inst, true)),
             #[cfg(feature = "entities-scitem-doors")] Some("InteractionConditionEligibleForPrisonRelease") => Self::InteractionConditionEligibleForPrisonRelease(b.alloc_nested::<InteractionConditionEligibleForPrisonRelease>(inst, true)),
             #[cfg(feature = "entities-scitem-doors")] Some("InteractionConditionAccessReservedRoom") => Self::InteractionConditionAccessReservedRoom(b.alloc_nested::<InteractionConditionAccessReservedRoom>(inst, true)),
-            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-basebuilding", feature = "entities-decorations", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-actormovables", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-doors", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "harvestable", feature = "interactionconditions", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("InteractionConditionGameMode") => Self::InteractionConditionGameMode(b.alloc_nested::<InteractionConditionGameMode>(inst, true)),
+            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-basebuilding", feature = "entities-decorations", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-scitem-actormovables", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "harvestable", feature = "interactionconditions", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("InteractionConditionGameMode") => Self::InteractionConditionGameMode(b.alloc_nested::<InteractionConditionGameMode>(inst, true)),
             #[cfg(any(feature = "entities-scitem-actormovables", feature = "entities-scitem-usables", feature = "interactionconditions"))] Some("InteractionConditionUsableNotInMotion") => Self::InteractionConditionUsableNotInMotion(b.alloc_nested::<InteractionConditionUsableNotInMotion>(inst, true)),
             #[cfg(any(feature = "entities-scitem-usables", feature = "interactionconditions"))] Some("InteractionConditionDraggedActorNotDead") => Self::InteractionConditionDraggedActorNotDead(b.alloc_nested::<InteractionConditionDraggedActorNotDead>(inst, true)),
             #[cfg(any(feature = "entities-scitem-usables", feature = "interactionconditions"))] Some("InteractionConditionDraggedActorIsPlayer") => Self::InteractionConditionDraggedActorIsPlayer(b.alloc_nested::<InteractionConditionDraggedActorIsPlayer>(inst, true)),
@@ -163627,7 +163736,7 @@ impl InteractionConditionParamsPtr {
             #[cfg(feature = "interactionconditions")] Some("InteractionConditionEntityIsInAtmosphere") => Self::InteractionConditionEntityIsInAtmosphere(b.alloc_nested::<InteractionConditionEntityIsInAtmosphere>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatus_aibosssuper", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_character", feature = "entities-area", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-destruction", feature = "entities-dev", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-locations", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-prop", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-suit", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "interactionconditions", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "mining", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "missionscenarios", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("InteractionConditionCheckItemWeight") => Self::InteractionConditionCheckItemWeight(b.alloc_nested::<InteractionConditionCheckItemWeight>(inst, true)),
             #[cfg(any(feature = "entities-entityspawners", feature = "entities-scitem-actormovables", feature = "entities-scitem-usables", feature = "interactionconditions"))] Some("InteractionConditionCanReachMovable") => Self::InteractionConditionCanReachMovable(b.alloc_nested::<InteractionConditionCanReachMovable>(inst, true)),
-            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-spaceships", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "globalshopparams", feature = "harvestable", feature = "interactionconditions", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("InteractionConditionEntityIsAttachedToInteractor") => Self::InteractionConditionEntityIsAttachedToInteractor(b.alloc_nested::<InteractionConditionEntityIsAttachedToInteractor>(inst, true)),
+            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-spaceships", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "globalshopparams", feature = "harvestable", feature = "interactionconditions", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("InteractionConditionEntityIsAttachedToInteractor") => Self::InteractionConditionEntityIsAttachedToInteractor(b.alloc_nested::<InteractionConditionEntityIsAttachedToInteractor>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "contracts", feature = "crafting", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-usables", feature = "gamemode", feature = "harvestable", feature = "interactionconditions", feature = "level", feature = "loadoutkits", feature = "megamap", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes"))] Some("InteractionConditionEntityIsHeldByInteractor") => Self::InteractionConditionEntityIsHeldByInteractor(b.alloc_nested::<InteractionConditionEntityIsHeldByInteractor>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_character", feature = "entities-area", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-dev", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-prop", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-suit", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "interactionconditions", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("InteractionConditionEntityIsAttachedToOtherActor") => Self::InteractionConditionEntityIsAttachedToOtherActor(b.alloc_nested::<InteractionConditionEntityIsAttachedToOtherActor>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_character", feature = "entities-area", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-dev", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-prop", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-suit", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "interactionconditions", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("InteractionConditionEntityIsHeldByOtherActor") => Self::InteractionConditionEntityIsHeldByOtherActor(b.alloc_nested::<InteractionConditionEntityIsHeldByOtherActor>(inst, true)),
@@ -163641,7 +163750,7 @@ impl InteractionConditionParamsPtr {
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_character", feature = "entities-area", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-destruction", feature = "entities-dev", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-externalinventory", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-orbgn", feature = "entities-scitem-prop", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-suit", feature = "entities-scitem-template", feature = "entities-scitem-usables", feature = "entities-scitem-vehicles", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "interactionconditions", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "mining", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "missionscenarios", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas", feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought", feature = "ui-uiconfig_starcitizen"))] Some("InteractionConditionEntityTags") => Self::InteractionConditionEntityTags(b.alloc_nested::<InteractionConditionEntityTags>(inst, true)),
             #[cfg(any(feature = "actor-actors", feature = "actorstatuscomponent", feature = "actorstatuscomponent-globalactorstatusparams", feature = "actorstatuscomponent-medicaltieritemconfig", feature = "actorstatuscomponent-playerstatus", feature = "actorstatuscomponent-playerstatus_aiboss", feature = "actorstatuscomponent-playerstatus_aibosselite", feature = "actorstatuscomponent-playerstatusai", feature = "actorstatuscomponent-playerstatusai_110", feature = "actorstatuscomponent-playerstatusai_120", feature = "actorstatuscomponent-playerstatusai_130", feature = "actorstatuscomponent-playerstatusai_140", feature = "actorstatuscomponent-playerstatusai_150", feature = "actorstatuscomponent-playerstatusai_160", feature = "actorstatuscomponent-playerstatusai_170", feature = "actorstatuscomponent-playerstatusai_180", feature = "actorstatuscomponent-playerstatusai_190", feature = "actorstatuscomponent-playerstatusai_captain", feature = "actorstatuscomponent-playerstatusai_elite", feature = "actorstatuscomponent-playerstatusai_juggernaut", feature = "actorstatuscomponent-playerstatusai_juggernaut_elite", feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission", feature = "actorstatuscomponent-playerstatusai_vanduul", feature = "actorstatuscomponent-playerstatusai_vlk_adult", feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", feature = "actorstatuscomponent-playerstatusai_vlk_juvi", feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex", feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated", feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", feature = "actorstatuscomponent-playerstatusai_yormandi", feature = "actorstatuscomponent-playerstatuscorpse", feature = "actorstatuscomponent-playerstatuscreature", feature = "actorstatuscomponent-playerstatusea", feature = "actorstatuscomponent-playerstatuspu", feature = "actorstatuscomponent-powersuitstatus", feature = "actorstatuscomponent-powersuitstatus_combat", feature = "actorstatuscomponent-transportstatus", feature = "aiwavecollection", feature = "ammoparams", feature = "areaservices", feature = "autospawn", feature = "cargomanifest", feature = "commsnotifications", feature = "communicationsystem", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-animatedcharacterstatue_kopion", feature = "entities-animatedcharacterstatue_marok", feature = "entities-animatedcharacterstatue_valakkar", feature = "entities-animentity_character", feature = "entities-area", feature = "entities-audio", feature = "entities-basebuilding", feature = "entities-cinematiclabelwithvehicle", feature = "entities-commodities", feature = "entities-decorations", feature = "entities-destruction", feature = "entities-dev", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-mineable", feature = "entities-navpoint_dynamic_spawnedbarge", feature = "entities-scitem-atc", feature = "entities-scitem-cargo", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-fauna", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-harvestables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-missionstorage", feature = "entities-scitem-prop", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-spawers", feature = "entities-scitem-starmarine", feature = "entities-scitem-suit", feature = "entities-scitem-template", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entities-ui", feature = "entitlementpolicies", feature = "factions", feature = "fuelparams", feature = "gamemode", feature = "globalcommsnotificationparams", feature = "globallogoutparams", feature = "globalshopparams", feature = "harvestable", feature = "instancedinterior", feature = "interactionconditions", feature = "inventorycontainers", feature = "item", feature = "itemresourcenetwork", feature = "journalentry", feature = "lawsystem", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "mining", feature = "missionbroker", feature = "missiondata", feature = "missiongiver", feature = "missionscenarios", feature = "npcpool", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes", feature = "reputation", feature = "resourcetypedatabase", feature = "sglobalsalvagerepairbeamparams", feature = "ssolarsystem", feature = "starmap", feature = "ui-buildingblocks", feature = "ui-graphs", feature = "ui-mobiglas"))] Some("InteractionConditionIsAttachedToItemPort") => Self::InteractionConditionIsAttachedToItemPort(b.alloc_nested::<InteractionConditionIsAttachedToItemPort>(inst, true)),
             #[cfg(feature = "dormant")] Some("InteractionConditionSwapOnly") => Self::InteractionConditionSwapOnly(b.alloc_nested::<InteractionConditionSwapOnly>(inst, true)),
-            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-basebuilding", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-doors", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "globalshopparams", feature = "harvestable", feature = "interactionconditions", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("InteractionConditionSwapAvailable") => Self::InteractionConditionSwapAvailable(b.alloc_nested::<InteractionConditionSwapAvailable>(inst, true)),
+            #[cfg(any(feature = "actor-actors", feature = "aiwavecollection", feature = "autospawn", feature = "contracts", feature = "crafting", feature = "crewmanifest", feature = "entities-basebuilding", feature = "entities-entityspawners", feature = "entities-groundvehicles", feature = "entities-haulingentityclass", feature = "entities-scitem-carryables", feature = "entities-scitem-characters", feature = "entities-scitem-consumables", feature = "entities-scitem-default_lensdisplay", feature = "entities-scitem-default_lensdisplay_pu", feature = "entities-scitem-doors", feature = "entities-scitem-flair", feature = "entities-scitem-fps_devices", feature = "entities-scitem-gameplayinteractables", feature = "entities-scitem-human", feature = "entities-scitem-itembanks", feature = "entities-scitem-lootables", feature = "entities-scitem-mission_entities", feature = "entities-scitem-ships", feature = "entities-scitem-shopdisplays", feature = "entities-scitem-starmarine", feature = "entities-scitem-usables", feature = "entities-scitem-weapons", feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", feature = "entities-spaceships", feature = "entities-test", feature = "entitlementpolicies", feature = "factions", feature = "gamemode", feature = "globalshopparams", feature = "harvestable", feature = "interactionconditions", feature = "journalentry", feature = "level", feature = "loadoutkits", feature = "lootgeneration", feature = "megamap", feature = "missionbroker", feature = "missiondata", feature = "npcpool", feature = "player", feature = "reputation", feature = "ui-buildingblocks", feature = "ui-graphs"))] Some("InteractionConditionSwapAvailable") => Self::InteractionConditionSwapAvailable(b.alloc_nested::<InteractionConditionSwapAvailable>(inst, true)),
             #[cfg(feature = "entities-scitem-usables")] Some("InteractionConditionAvailableSpaceInLinkedUsableItem") => Self::InteractionConditionAvailableSpaceInLinkedUsableItem(b.alloc_nested::<InteractionConditionAvailableSpaceInLinkedUsableItem>(inst, true)),
             #[cfg(any(feature = "entities-scitem-carryables", feature = "entities-scitem-usables", feature = "player", feature = "playerchoicemenuitems", feature = "playerchoicemenutypes"))] Some("InteractionConditionLinkedUsableItemHasAttachment") => Self::InteractionConditionLinkedUsableItemHasAttachment(b.alloc_nested::<InteractionConditionLinkedUsableItemHasAttachment>(inst, true)),
             #[cfg(feature = "entities-scitem-usables")] Some("InteractionConditionLinkedUsableHasTag") => Self::InteractionConditionLinkedUsableHasTag(b.alloc_nested::<InteractionConditionLinkedUsableHasTag>(inst, true)),
@@ -167374,9 +167483,12 @@ pub enum SEntityContextBasePtr {
         feature = "ui-graphs"
     ))]
     SEntityLinkedContext(Handle<SEntityLinkedContext>),
-    #[cfg(feature = "entities-scitem-gameplayinteractables")]
+    #[cfg(any(
+        feature = "actor-actors",
+        feature = "entities-scitem-gameplayinteractables"
+    ))]
     SEntityItemportContext(Handle<SEntityItemportContext>),
-    #[cfg(feature = "dormant")]
+    #[cfg(feature = "entities-scitem-characters")]
     SEntityAttachableParentContext(Handle<SEntityAttachableParentContext>),
     #[cfg(any(
         feature = "actor-actors",
@@ -167675,11 +167787,14 @@ impl SEntityContextBasePtr {
             Some("SEntityLinkedContext") => {
                 Self::SEntityLinkedContext(b.alloc_nested::<SEntityLinkedContext>(inst, true))
             }
-            #[cfg(feature = "entities-scitem-gameplayinteractables")]
+            #[cfg(any(
+                feature = "actor-actors",
+                feature = "entities-scitem-gameplayinteractables"
+            ))]
             Some("SEntityItemportContext") => {
                 Self::SEntityItemportContext(b.alloc_nested::<SEntityItemportContext>(inst, true))
             }
-            #[cfg(feature = "dormant")]
+            #[cfg(feature = "entities-scitem-characters")]
             Some("SEntityAttachableParentContext") => Self::SEntityAttachableParentContext(
                 b.alloc_nested::<SEntityAttachableParentContext>(inst, true),
             ),
@@ -168303,6 +168418,7 @@ pub enum SBaseCargoUnitPtr {
         feature = "entities-scitem-atc",
         feature = "entities-scitem-cargo",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-consumables",
         feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-flair",
@@ -168899,6 +169015,7 @@ impl SBaseCargoUnitPtr {
                 feature = "entities-scitem-atc",
                 feature = "entities-scitem-cargo",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-consumables",
                 feature = "entities-scitem-default_lensdisplay",
                 feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-flair",
@@ -174964,6 +175081,8 @@ pub enum LightningTargetModePtr {
         feature = "roomsystem"
     ))]
     LightningTargetMode_Internal(Handle<LightningTargetMode_Internal>),
+    #[cfg(feature = "roomsystem")]
+    LightningTargetMode_InternalPlanet(Handle<LightningTargetMode_InternalPlanet>),
     /// Runtime pointer to a subclass whose feature was disabled at
     /// compile time, or a type the generator doesn't know about.
     /// Use `Datacore::db()` + the two indices to walk the raw instance.
@@ -175026,6 +175145,10 @@ impl LightningTargetModePtr {
             ))]
             Some("LightningTargetMode_Internal") => Self::LightningTargetMode_Internal(
                 b.alloc_nested::<LightningTargetMode_Internal>(inst, true),
+            ),
+            #[cfg(feature = "roomsystem")]
+            Some("LightningTargetMode_InternalPlanet") => Self::LightningTargetMode_InternalPlanet(
+                b.alloc_nested::<LightningTargetMode_InternalPlanet>(inst, true),
             ),
             _ => Self::Unknown {
                 struct_index: r.struct_index,
@@ -176222,10 +176345,15 @@ pub enum EntityClassList_BasePtr {
     EntityClassList_RecordRef(Handle<EntityClassList_RecordRef>),
     #[cfg(any(
         feature = "actor-actors",
+        feature = "aiwavecollection",
+        feature = "autospawn",
+        feature = "contracts",
         feature = "crewmanifest",
+        feature = "entities-groundvehicles",
         feature = "entities-spaceships",
         feature = "harvestable",
-        feature = "lootgeneration"
+        feature = "lootgeneration",
+        feature = "npcpool"
     ))]
     EntityClassList_Manual(Handle<EntityClassList_Manual>),
     /// Runtime pointer to a subclass whose feature was disabled at
@@ -176255,10 +176383,15 @@ impl EntityClassList_BasePtr {
             ),
             #[cfg(any(
                 feature = "actor-actors",
+                feature = "aiwavecollection",
+                feature = "autospawn",
+                feature = "contracts",
                 feature = "crewmanifest",
+                feature = "entities-groundvehicles",
                 feature = "entities-spaceships",
                 feature = "harvestable",
-                feature = "lootgeneration"
+                feature = "lootgeneration",
+                feature = "npcpool"
             ))]
             Some("EntityClassList_Manual") => {
                 Self::EntityClassList_Manual(b.alloc_nested::<EntityClassList_Manual>(inst, true))
@@ -176569,14 +176702,10 @@ pub enum LootArchetypeV3_BasePtr {
     LootArchetypeV3_NoRef(Handle<LootArchetypeV3_NoRef>),
     #[cfg(any(
         feature = "actor-actors",
-        feature = "aiwavecollection",
         feature = "autospawn",
         feature = "commsnotifications",
         feature = "contracts",
-        feature = "crewmanifest",
-        feature = "entities-groundvehicles",
         feature = "entities-scitem-mission_entities",
-        feature = "entities-spaceships",
         feature = "harvestable",
         feature = "lootgeneration",
         feature = "npcpool"
@@ -176619,14 +176748,10 @@ impl LootArchetypeV3_BasePtr {
             }
             #[cfg(any(
                 feature = "actor-actors",
-                feature = "aiwavecollection",
                 feature = "autospawn",
                 feature = "commsnotifications",
                 feature = "contracts",
-                feature = "crewmanifest",
-                feature = "entities-groundvehicles",
                 feature = "entities-scitem-mission_entities",
-                feature = "entities-spaceships",
                 feature = "harvestable",
                 feature = "lootgeneration",
                 feature = "npcpool"
@@ -176740,14 +176865,10 @@ pub enum LootArchetypeV3Selector_BasePtr {
     LootArchetypeV3Selector_NoRef(Handle<LootArchetypeV3Selector_NoRef>),
     #[cfg(any(
         feature = "actor-actors",
-        feature = "aiwavecollection",
         feature = "autospawn",
         feature = "commsnotifications",
         feature = "contracts",
-        feature = "crewmanifest",
-        feature = "entities-groundvehicles",
         feature = "entities-scitem-mission_entities",
-        feature = "entities-spaceships",
         feature = "harvestable",
         feature = "lootgeneration",
         feature = "npcpool"
@@ -176755,10 +176876,15 @@ pub enum LootArchetypeV3Selector_BasePtr {
     LootArchetypeV3Selector_Tags(Handle<LootArchetypeV3Selector_Tags>),
     #[cfg(any(
         feature = "actor-actors",
+        feature = "aiwavecollection",
+        feature = "autospawn",
+        feature = "contracts",
         feature = "crewmanifest",
+        feature = "entities-groundvehicles",
         feature = "entities-spaceships",
         feature = "harvestable",
-        feature = "lootgeneration"
+        feature = "lootgeneration",
+        feature = "npcpool"
     ))]
     LootArchetypeV3Selector_EntityClasses(Handle<LootArchetypeV3Selector_EntityClasses>),
     /// Runtime pointer to a subclass whose feature was disabled at
@@ -176784,14 +176910,10 @@ impl LootArchetypeV3Selector_BasePtr {
             ),
             #[cfg(any(
                 feature = "actor-actors",
-                feature = "aiwavecollection",
                 feature = "autospawn",
                 feature = "commsnotifications",
                 feature = "contracts",
-                feature = "crewmanifest",
-                feature = "entities-groundvehicles",
                 feature = "entities-scitem-mission_entities",
-                feature = "entities-spaceships",
                 feature = "harvestable",
                 feature = "lootgeneration",
                 feature = "npcpool"
@@ -176801,10 +176923,15 @@ impl LootArchetypeV3Selector_BasePtr {
             ),
             #[cfg(any(
                 feature = "actor-actors",
+                feature = "aiwavecollection",
+                feature = "autospawn",
+                feature = "contracts",
                 feature = "crewmanifest",
+                feature = "entities-groundvehicles",
                 feature = "entities-spaceships",
                 feature = "harvestable",
-                feature = "lootgeneration"
+                feature = "lootgeneration",
+                feature = "npcpool"
             ))]
             Some("LootArchetypeV3Selector_EntityClasses") => {
                 Self::LootArchetypeV3Selector_EntityClasses(
@@ -176835,17 +176962,10 @@ pub enum ArchetypeOptionalDataV3_BasePtr {
     ArchetypeOptionalDataV3_SpawnWith(Handle<ArchetypeOptionalDataV3_SpawnWith>),
     #[cfg(any(
         feature = "actor-actors",
-        feature = "aiwavecollection",
-        feature = "autospawn",
         feature = "commsnotifications",
-        feature = "contracts",
-        feature = "crewmanifest",
-        feature = "entities-groundvehicles",
         feature = "entities-scitem-mission_entities",
-        feature = "entities-spaceships",
         feature = "harvestable",
-        feature = "lootgeneration",
-        feature = "npcpool"
+        feature = "lootgeneration"
     ))]
     ArchetypeOptionalDataV3_StackSize(Handle<ArchetypeOptionalDataV3_StackSize>),
     /// Runtime pointer to a subclass whose feature was disabled at
@@ -176875,17 +176995,10 @@ impl ArchetypeOptionalDataV3_BasePtr {
             ),
             #[cfg(any(
                 feature = "actor-actors",
-                feature = "aiwavecollection",
-                feature = "autospawn",
                 feature = "commsnotifications",
-                feature = "contracts",
-                feature = "crewmanifest",
-                feature = "entities-groundvehicles",
                 feature = "entities-scitem-mission_entities",
-                feature = "entities-spaceships",
                 feature = "harvestable",
-                feature = "lootgeneration",
-                feature = "npcpool"
+                feature = "lootgeneration"
             ))]
             Some("ArchetypeOptionalDataV3_StackSize") => Self::ArchetypeOptionalDataV3_StackSize(
                 b.alloc_nested::<ArchetypeOptionalDataV3_StackSize>(inst, true),
@@ -176979,12 +177092,9 @@ pub enum LootTableOptionalDataV3_BasePtr {
     LootTableOptionalDataV3_ChoiceLimit(Handle<LootTableOptionalDataV3_ChoiceLimit>),
     #[cfg(any(
         feature = "actor-actors",
-        feature = "aiwavecollection",
         feature = "autospawn",
+        feature = "commsnotifications",
         feature = "contracts",
-        feature = "crewmanifest",
-        feature = "entities-groundvehicles",
-        feature = "entities-spaceships",
         feature = "harvestable",
         feature = "lootgeneration",
         feature = "npcpool"
@@ -177041,12 +177151,9 @@ impl LootTableOptionalDataV3_BasePtr {
             }
             #[cfg(any(
                 feature = "actor-actors",
-                feature = "aiwavecollection",
                 feature = "autospawn",
+                feature = "commsnotifications",
                 feature = "contracts",
-                feature = "crewmanifest",
-                feature = "entities-groundvehicles",
-                feature = "entities-spaceships",
                 feature = "harvestable",
                 feature = "lootgeneration",
                 feature = "npcpool"
@@ -177092,7 +177199,7 @@ pub enum LootV3SecondaryChoicesRecordRef_BasePtr {
     LootV3SecondaryChoicesRecordRef_SingleLayer(
         Handle<LootV3SecondaryChoicesRecordRef_SingleLayer>,
     ),
-    #[deprecated(note = "no record in 5.0.0-ptu.13228337 uses this type")]
+    #[deprecated(note = "no record in 5.0.0-ptu.13248297 uses this type")]
     #[cfg(any(feature = "actor-actors", feature = "harvestable"))]
     LootV3SecondaryChoicesRecordRef_MultiLayer(Handle<LootV3SecondaryChoicesRecordRef_MultiLayer>),
     /// Runtime pointer to a subclass whose feature was disabled at
@@ -177312,17 +177419,10 @@ pub enum QuantityRange_BasePtr {
     QuantityRange_NoRef(Handle<QuantityRange_NoRef>),
     #[cfg(any(
         feature = "actor-actors",
-        feature = "aiwavecollection",
-        feature = "autospawn",
         feature = "commsnotifications",
-        feature = "contracts",
-        feature = "crewmanifest",
-        feature = "entities-groundvehicles",
         feature = "entities-scitem-mission_entities",
-        feature = "entities-spaceships",
         feature = "harvestable",
-        feature = "lootgeneration",
-        feature = "npcpool"
+        feature = "lootgeneration"
     ))]
     QuantityRange_Linear(Handle<QuantityRange_Linear>),
     /// Runtime pointer to a subclass whose feature was disabled at
@@ -177348,17 +177448,10 @@ impl QuantityRange_BasePtr {
             }
             #[cfg(any(
                 feature = "actor-actors",
-                feature = "aiwavecollection",
-                feature = "autospawn",
                 feature = "commsnotifications",
-                feature = "contracts",
-                feature = "crewmanifest",
-                feature = "entities-groundvehicles",
                 feature = "entities-scitem-mission_entities",
-                feature = "entities-spaceships",
                 feature = "harvestable",
-                feature = "lootgeneration",
-                feature = "npcpool"
+                feature = "lootgeneration"
             ))]
             Some("QuantityRange_Linear") => {
                 Self::QuantityRange_Linear(b.alloc_nested::<QuantityRange_Linear>(inst, true))
@@ -197777,6 +197870,7 @@ pub enum ScanProcedureParamsPtr {
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
         feature = "entities-scitem-controlpanels",
+        feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-fps_devices",
@@ -198103,6 +198197,7 @@ pub enum ScanProcedureParamsPtr {
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
         feature = "entities-scitem-controlpanels",
+        feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-fps_devices",
@@ -199148,6 +199243,7 @@ pub enum ScanProcedureParamsPtr {
         feature = "entities-scitem-characters",
         feature = "entities-scitem-consumables",
         feature = "entities-scitem-controlpanels",
+        feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-fps_devices",
@@ -200852,6 +200948,7 @@ impl ScanProcedureParamsPtr {
                 feature = "entities-scitem-characters",
                 feature = "entities-scitem-consumables",
                 feature = "entities-scitem-controlpanels",
+                feature = "entities-scitem-default_lensdisplay",
                 feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-doors",
                 feature = "entities-scitem-fps_devices",
@@ -201184,6 +201281,7 @@ impl ScanProcedureParamsPtr {
                 feature = "entities-scitem-characters",
                 feature = "entities-scitem-consumables",
                 feature = "entities-scitem-controlpanels",
+                feature = "entities-scitem-default_lensdisplay",
                 feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-doors",
                 feature = "entities-scitem-fps_devices",
@@ -202255,6 +202353,7 @@ impl ScanProcedureParamsPtr {
                 feature = "entities-scitem-characters",
                 feature = "entities-scitem-consumables",
                 feature = "entities-scitem-controlpanels",
+                feature = "entities-scitem-default_lensdisplay",
                 feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-doors",
                 feature = "entities-scitem-fps_devices",
@@ -205543,6 +205642,7 @@ pub enum SBaseInteractionGameplayTriggerPtr {
     #[cfg(any(
         feature = "actor-actors",
         feature = "commsnotifications",
+        feature = "entities-scitem-characters",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-salvageablerepairable"
@@ -206335,6 +206435,7 @@ impl SBaseInteractionGameplayTriggerPtr {
             #[cfg(any(
                 feature = "actor-actors",
                 feature = "commsnotifications",
+                feature = "entities-scitem-characters",
                 feature = "entities-scitem-doors",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-salvageablerepairable"
@@ -215722,6 +215823,8 @@ pub enum SWeaponActionParamsPtr {
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-starmarine",
@@ -216372,6 +216475,8 @@ impl SWeaponActionParamsPtr {
                 feature = "entities-entityspawners",
                 feature = "entities-groundvehicles",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-starmarine",
@@ -219875,7 +219980,7 @@ pub enum SecurityClearanceTokenDataPtr {
         feature = "megamap"
     ))]
     SecurityClearanceTokenData_Ownership(Handle<SecurityClearanceTokenData_Ownership>),
-    #[deprecated(note = "no record in 5.0.0-ptu.13228337 uses this type")]
+    #[deprecated(note = "no record in 5.0.0-ptu.13248297 uses this type")]
     #[cfg(feature = "lawsystem")]
     SecurityClearanceTokenData_Instance(Handle<SecurityClearanceTokenData_Instance>),
     #[cfg(any(feature = "lawsystem", feature = "missiondata"))]
@@ -222884,6 +222989,8 @@ pub enum WeaponProceduralClipBasePtr {
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -222921,6 +223028,8 @@ pub enum WeaponProceduralClipBasePtr {
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -222958,6 +223067,8 @@ pub enum WeaponProceduralClipBasePtr {
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -222997,6 +223108,8 @@ pub enum WeaponProceduralClipBasePtr {
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -223034,6 +223147,8 @@ pub enum WeaponProceduralClipBasePtr {
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -223071,6 +223186,8 @@ pub enum WeaponProceduralClipBasePtr {
         feature = "entities-entityspawners",
         feature = "entities-groundvehicles",
         feature = "entities-scitem-carryables",
+        feature = "entities-scitem-default_lensdisplay",
+        feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-human",
         feature = "entities-scitem-mission_entities",
@@ -223122,6 +223239,8 @@ impl WeaponProceduralClipBasePtr {
                 feature = "entities-entityspawners",
                 feature = "entities-groundvehicles",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -223161,6 +223280,8 @@ impl WeaponProceduralClipBasePtr {
                 feature = "entities-entityspawners",
                 feature = "entities-groundvehicles",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -223200,6 +223321,8 @@ impl WeaponProceduralClipBasePtr {
                 feature = "entities-entityspawners",
                 feature = "entities-groundvehicles",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -223243,6 +223366,8 @@ impl WeaponProceduralClipBasePtr {
                 feature = "entities-entityspawners",
                 feature = "entities-groundvehicles",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -223282,6 +223407,8 @@ impl WeaponProceduralClipBasePtr {
                 feature = "entities-entityspawners",
                 feature = "entities-groundvehicles",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -223321,6 +223448,8 @@ impl WeaponProceduralClipBasePtr {
                 feature = "entities-entityspawners",
                 feature = "entities-groundvehicles",
                 feature = "entities-scitem-carryables",
+                feature = "entities-scitem-default_lensdisplay",
+                feature = "entities-scitem-default_lensdisplay_pu",
                 feature = "entities-scitem-gameplayinteractables",
                 feature = "entities-scitem-human",
                 feature = "entities-scitem-mission_entities",
@@ -223413,7 +223542,7 @@ pub enum WeatherEffects_AtmospherePtr {
     WeatherEffects_Atmosphere(Handle<WeatherEffects_Atmosphere>),
     #[cfg(any(feature = "entities-environment", feature = "roomsystem"))]
     WeatherEffects_Atmosphere_PropertyValue(Handle<WeatherEffects_Atmosphere_PropertyValue>),
-    #[deprecated(note = "no record in 5.0.0-ptu.13228337 uses this type")]
+    #[deprecated(note = "no record in 5.0.0-ptu.13248297 uses this type")]
     #[cfg(feature = "roomsystem")]
     WeatherEffects_Atmosphere_MultiPropertyValue(
         Handle<WeatherEffects_Atmosphere_MultiPropertyValue>,
@@ -223775,7 +223904,7 @@ impl SMobiGlasAppParamsBasePtr {
 }
 
 /// Field `SFlashlightParams.lightCookie`, whose target type differs between builds
-/// (4.10.3-live.13165946, 5.0.0-ptu.13228337).
+/// (4.10.3-live.13220821, 5.0.0-ptu.13248297).
 ///
 /// Each variant is one target type; the runtime type name picks it.
 #[derive(Debug, Clone)]
@@ -224840,7 +224969,7 @@ impl SFlashlightParams_light_cookie {
 }
 
 /// Field `SFlashlightSplitParams.lightCookie`, whose target type differs between builds
-/// (4.10.3-live.13165946, 5.0.0-ptu.13228337).
+/// (4.10.3-live.13220821, 5.0.0-ptu.13248297).
 ///
 /// Each variant is one target type; the runtime type name picks it.
 #[derive(Debug, Clone)]

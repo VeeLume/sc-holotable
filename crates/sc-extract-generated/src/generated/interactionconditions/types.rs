@@ -58,7 +58,7 @@ impl<'a> Extract<'a> for InteractionConditionCanAffordItem {
 /// DCB type: `InteractionConditionEntityIsInZeroG`
 /// Inherits from: `InteractionConditionParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct InteractionConditionEntityIsInZeroG {
     /// `conditionDisplay` (StrongPointer)
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
@@ -97,7 +97,7 @@ impl<'a> Extract<'a> for InteractionConditionEntityIsInZeroG {
 /// DCB type: `InteractionConditionEntityIsInAtmosphere`
 /// Inherits from: `InteractionConditionParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct InteractionConditionEntityIsInAtmosphere {
     /// `conditionDisplay` (StrongPointer)
     pub condition_display: Option<Handle<ConditionDisplayParams>>,

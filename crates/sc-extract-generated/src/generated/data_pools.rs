@@ -225,6 +225,8 @@ pub struct DataPools {
     pub entities_scitem_airlocks: super::entities_scitem_airlocks::EntitiesScitemAirlocksPools,
     #[cfg(feature = "entities-scitem-carryables")]
     pub entities_scitem_carryables: super::entities_scitem_carryables::EntitiesScitemCarryablesPools,
+    #[cfg(feature = "entities-scitem-characters")]
+    pub entities_scitem_characters: super::entities_scitem_characters::EntitiesScitemCharactersPools,
     #[cfg(feature = "entities-scitem-commsreceiver")]
     pub entities_scitem_commsreceiver: super::entities_scitem_commsreceiver::EntitiesScitemCommsreceiverPools,
     #[cfg(feature = "entities-scitem-default_lensdisplay_pu")]

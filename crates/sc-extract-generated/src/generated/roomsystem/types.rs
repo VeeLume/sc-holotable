@@ -1189,6 +1189,63 @@ impl<'a> Extract<'a> for LightningTargetMode {
     }
 }
 
+/// DCB type: `LightningTargetMode_InternalPlanet`
+/// Inherits from: `LightningTargetMode`
+///
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+pub struct LightningTargetMode_InternalPlanet {
+    /// `enable` (Boolean)
+    pub enable: bool,
+    /// `minimumInterval` (Single)
+    pub minimum_interval: f32,
+    /// `referenceInterval` (Single)
+    pub reference_interval: f32,
+    /// `length` (Class)
+    pub length: Option<Handle<Range>>,
+    /// `scaleMultiplier` (Single)
+    pub scale_multiplier: f32,
+    /// `intensity` (Single)
+    pub intensity: f32,
+    /// `distanceRange` (Class)
+    pub distance_range: Option<Handle<Range>>,
+}
+
+impl Pooled for LightningTargetMode_InternalPlanet {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.roomsystem.lightning_target_mode_internal_planet
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.roomsystem.lightning_target_mode_internal_planet
+    }
+}
+
+impl<'a> Extract<'a> for LightningTargetMode_InternalPlanet {
+    const TYPE_NAME: &'static str = "LightningTargetMode_InternalPlanet";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            enable: inst.get_bool("enable").unwrap_or_default(),
+            minimum_interval: inst.get_f32("minimumInterval").unwrap_or_default(),
+            reference_interval: inst.get_f32("referenceInterval").unwrap_or_default(),
+            length: match inst.get("length") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+            scale_multiplier: inst.get_f32("scaleMultiplier").unwrap_or_default(),
+            intensity: inst.get_f32("intensity").unwrap_or_default(),
+            distance_range: match inst.get("distanceRange") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `ApparentTemperatureParams`
 pub struct ApparentTemperatureParams {
     /// `heatIndexBlendThreshold` (Double)
@@ -1667,7 +1724,7 @@ impl<'a> Extract<'a> for RadiationBehavior_AsteroidInverseSquareSurfaceRadiation
 }
 
 /// DCB type: `WeatherEffects_Atmosphere_Property`
-#[deprecated(note = "no record in 5.0.0-ptu.13228337 uses this type")]
+#[deprecated(note = "no record in 5.0.0-ptu.13248297 uses this type")]
 pub struct WeatherEffects_Atmosphere_Property {
     /// `type` (EnumChoice)
     pub r#type: AtmosphereStatePropertyType,
@@ -1702,14 +1759,14 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_Property {
 
 /// DCB type: `WeatherEffects_Atmosphere_MultiPropertyValue`
 /// Inherits from: `WeatherEffects_Atmosphere`
-#[deprecated(note = "no record in 5.0.0-ptu.13228337 uses this type")]
+#[deprecated(note = "no record in 5.0.0-ptu.13248297 uses this type")]
 pub struct WeatherEffects_Atmosphere_MultiPropertyValue {
     /// `spaceLoopEffect` (Class)
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
     /// `properties` (Class (array))
     pub properties: Vec<Handle<WeatherEffects_Atmosphere_Property>>,
     /// `causesPuddles` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub causes_puddles: bool,
 }
 
@@ -1768,7 +1825,7 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_MultiPropertyValue {
 /// DCB type: `WeatherEffects_Atmosphere_PlanetRain`
 /// Inherits from: `WeatherEffects_Atmosphere`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct WeatherEffects_Atmosphere_PlanetRain {
     /// `spaceLoopEffect` (Class)
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
@@ -1803,7 +1860,7 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_PlanetRain {
 /// DCB type: `WeatherEffects_Atmosphere_PlanetSnow`
 /// Inherits from: `WeatherEffects_Atmosphere`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct WeatherEffects_Atmosphere_PlanetSnow {
     /// `spaceLoopEffect` (Class)
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,

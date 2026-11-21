@@ -21,7 +21,7 @@ use super::super::*;
 /// DCB type: `ShipTrafficComponentParams`
 /// Inherits from: `DataForgeComponentParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct ShipTrafficComponentParams {
     /// `Geometry` (Class)
     pub geometry: Option<Handle<GlobalResourceCGF>>,

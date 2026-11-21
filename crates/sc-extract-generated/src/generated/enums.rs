@@ -3404,7 +3404,7 @@ pub enum BB_BindingsBuiltInVariableTypeNumber {
     AspectRatio,
     /// DCB value: `ScreenFadeAlpha`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     ScreenFadeAlpha,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
@@ -8992,31 +8992,31 @@ impl ContractIntParamType {
 pub enum ContractScope {
     /// DCB value: `Universe`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Universe,
     /// DCB value: `SolarSystem`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     SolarSystem,
     /// DCB value: `PlanetarySystem`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     PlanetarySystem,
     /// DCB value: `PlanetaryBody`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     PlanetaryBody,
     /// DCB value: `Sector`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Sector,
     /// DCB value: `Cluster`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Cluster,
     /// DCB value: `Location`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Location,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
@@ -23126,7 +23126,7 @@ impl EItemPortAttachImplType {
 pub enum EItemPortAttachRotationLimitAxis {
     /// DCB value: `Default`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Default,
     /// DCB value: `None`
     None,
@@ -23876,7 +23876,7 @@ pub enum EItemSubType {
     WeaponControl,
     /// DCB value: `Creature_Large`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Creature_Large,
     /// DCB value: `UNDEFINED`
     UNDEFINED,
@@ -24284,13 +24284,13 @@ pub enum EItemType {
     Char_Clothing_Hat,
     /// DCB value: `Char_Clothing_Liner`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Char_Clothing_Liner,
     /// DCB value: `Char_Clothing_Mask`
     Char_Clothing_Mask,
     /// DCB value: `Char_Clothing_Hood`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Char_Clothing_Hood,
     /// DCB value: `Char_Clothing_Jumpsuit`
     Char_Clothing_Jumpsuit,
@@ -24616,7 +24616,7 @@ pub enum EItemType {
     WeaponMount,
     /// DCB value: `Creature_Large`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Creature_Large,
     /// DCB value: `UNDEFINED`
     UNDEFINED,
@@ -26808,39 +26808,39 @@ pub enum EMeshChunks {
     theta_pouch06_zone,
     /// DCB value: `theta_pouch07_zone`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     theta_pouch07_zone,
     /// DCB value: `theta_pouch08_zone`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     theta_pouch08_zone,
     /// DCB value: `theta_pouch09_zone`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     theta_pouch09_zone,
     /// DCB value: `theta_pouch10_zone`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     theta_pouch10_zone,
     /// DCB value: `theta_pouch11_zone`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     theta_pouch11_zone,
     /// DCB value: `theta_pouch12_zone`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     theta_pouch12_zone,
     /// DCB value: `theta_pouch13_zone`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     theta_pouch13_zone,
     /// DCB value: `theta_pouch14_zone`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     theta_pouch14_zone,
     /// DCB value: `theta_pouch15_zone`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     theta_pouch15_zone,
     /// DCB value: `theta_body_chest_zone`
     theta_body_chest_zone,
@@ -26855,7 +26855,7 @@ pub enum EMeshChunks {
     /// DCB value: `pcg_mouth`
     pcg_mouth,
     /// DCB value: `UNDEFINED`
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     UNDEFINED,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
@@ -36335,43 +36335,43 @@ impl ElectricalStatePropertyType {
 pub enum EncounterPreset {
     /// DCB value: `SocialEasy`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     SocialEasy,
     /// DCB value: `SocialMedium`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     SocialMedium,
     /// DCB value: `SocialHard`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     SocialHard,
     /// DCB value: `SocialVeryHard`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     SocialVeryHard,
     /// DCB value: `SocialImpossible`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     SocialImpossible,
     /// DCB value: `CombatEasy`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     CombatEasy,
     /// DCB value: `CombatMedium`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     CombatMedium,
     /// DCB value: `CombatHard`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     CombatHard,
     /// DCB value: `CombatVeryHard`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     CombatVeryHard,
     /// DCB value: `CombatImpossible`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     CombatImpossible,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
@@ -41207,19 +41207,19 @@ impl LocalizationUse {
 pub enum LocationClass {
     /// DCB value: `Invalid`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Invalid,
     /// DCB value: `Sector`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Sector,
     /// DCB value: `Cluster`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Cluster,
     /// DCB value: `Location`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Location,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
@@ -42039,15 +42039,15 @@ impl MinimumInfluenceFactorOperation {
 pub enum MissionBoardAvailability {
     /// DCB value: `None`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     None,
     /// DCB value: `Notice`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Notice,
     /// DCB value: `Career`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Career,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
@@ -47821,91 +47821,91 @@ impl eContextualCommunicationCriteria {
 pub enum eDCMissionObjectiveFlags {
     /// DCB value: `Hidden`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Hidden,
     /// DCB value: `SilentUpdates`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     SilentUpdates,
     /// DCB value: `ShowInLog`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     ShowInLog,
     /// DCB value: `MarkerHidden`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     MarkerHidden,
     /// DCB value: `DisplayMarkerDistance`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     DisplayMarkerDistance,
     /// DCB value: `BountyMarker`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     BountyMarker,
     /// DCB value: `AutoAddNewPlayers`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     AutoAddNewPlayers,
     /// DCB value: `RemoveOnShipSoftDeath`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     RemoveOnShipSoftDeath,
     /// DCB value: `TimerCountUp`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     TimerCountUp,
     /// DCB value: `TimerShowMilliseconds`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     TimerShowMilliseconds,
     /// DCB value: `ShowProgress`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     ShowProgress,
     /// DCB value: `HiddenInUI`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     HiddenInUI,
     /// DCB value: `RespectInheritedVisibility`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     RespectInheritedVisibility,
     /// DCB value: `IgnoredForInheritedVisibility`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     IgnoredForInheritedVisibility,
     /// DCB value: `HideInLogWhenNotAtLocation`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     HideInLogWhenNotAtLocation,
     /// DCB value: `HideInUIWhenNotAtLocation`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     HideInUIWhenNotAtLocation,
     /// DCB value: `HideMarkerWhenNotAtLocation`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     HideMarkerWhenNotAtLocation,
     /// DCB value: `LocalOnlyObjective`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     LocalOnlyObjective,
     /// DCB value: `ParentOr`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     ParentOr,
     /// DCB value: `ParentAnd`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     ParentAnd,
     /// DCB value: `OverallPhaseObjective`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     OverallPhaseObjective,
     /// DCB value: `AutoComplete`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     AutoComplete,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
@@ -47981,15 +47981,15 @@ impl eDCMissionObjectiveFlags {
 pub enum eDCObjectiveCommCondition {
     /// DCB value: `Simultaneous`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     Simultaneous,
     /// DCB value: `HUDNotificationFirst`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     HUDNotificationFirst,
     /// DCB value: `CommsNotificationFirst`
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     CommsNotificationFirst,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),

@@ -35,6 +35,7 @@ pub struct RoomsystemPools {
     pub lightning_behavior: Vec<Option<LightningBehavior>>,
     pub lightning_behavior_effect: Vec<Option<LightningBehavior_Effect>>,
     pub lightning_target_mode: Vec<Option<LightningTargetMode>>,
+    pub lightning_target_mode_internal_planet: Vec<Option<LightningTargetMode_InternalPlanet>>,
     pub apparent_temperature_params: Vec<Option<ApparentTemperatureParams>>,
     pub global_gas_params: Vec<Option<GlobalGasParams>>,
     pub global_room_state_params: Vec<Option<GlobalRoomStateParams>>,

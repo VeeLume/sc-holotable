@@ -59,8 +59,6 @@ pub struct DormantPools {
         Vec<Option<BaseBuildingValidationPointComponentParams>>,
     pub player_base_params: Vec<Option<PlayerBaseParams>>,
     pub base_building_structure_params: Vec<Option<BaseBuildingStructureParams>>,
-    pub bindings_operations_integer_string_font_style_pair:
-        Vec<Option<BindingsOperations_IntegerStringFontStylePair>>,
     pub building_blocks_string_localized_pair: Vec<Option<BuildingBlocks_StringLocalizedPair>>,
     pub building_blocks_bindings_field_base: Vec<Option<BuildingBlocks_BindingsFieldBase>>,
     pub building_blocks_bindings_operation_base: Vec<Option<BuildingBlocks_BindingsOperationBase>>,
@@ -77,8 +75,6 @@ pub struct DormantPools {
         Vec<Option<BuildingBlocks_BindingsNumberBoxFalloff>>,
     pub building_blocks_bindings_number_from_integer_progress:
         Vec<Option<BuildingBlocks_BindingsNumberFromIntegerProgress>>,
-    pub bindings_operations_string_from_integer_switch_font_style:
-        Vec<Option<BindingsOperations_StringFromIntegerSwitchFontStyle>>,
     pub building_blocks_bindings_localization_from_string_switch:
         Vec<Option<BuildingBlocks_BindingsLocalizationFromStringSwitch>>,
     pub building_blocks_bindings_localized_random_from_integer:
@@ -527,7 +523,6 @@ pub struct DormantPools {
     pub sstate_auto_change_random_delay_offset: Vec<Option<SStateAutoChangeRandomDelayOffset>>,
     pub srange_state_modifier: Vec<Option<SRangeStateModifier>>,
     pub spower_source_state_modifier: Vec<Option<SPowerSourceStateModifier>>,
-    pub sentity_attachable_parent_context: Vec<Option<SEntityAttachableParentContext>>,
     pub sprison_sentence_state_modifier: Vec<Option<SPrisonSentenceStateModifier>>,
     pub attachable_state_modifier_base: Vec<Option<AttachableStateModifierBase>>,
     pub landing_system_state_modifier_base: Vec<Option<LandingSystemStateModifierBase>>,
