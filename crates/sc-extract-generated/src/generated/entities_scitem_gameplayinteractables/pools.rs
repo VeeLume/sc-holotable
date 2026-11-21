@@ -16,7 +16,6 @@ use super::super::*;
 pub struct EntitiesScitemGameplayinteractablesPools {
     pub soffset_position_params: Vec<Option<SOffsetPositionParams>>,
     pub spawner_prerequisite_or: Vec<Option<SpawnerPrerequisite_OR>>,
-    pub sentity_itemport_context: Vec<Option<SEntityItemportContext>>,
     pub delivery_locker_component_params: Vec<Option<DeliveryLockerComponentParams>>,
     pub mission_board_type_career: Vec<Option<MissionBoardType_Career>>,
     pub mission_board_type_notice: Vec<Option<MissionBoardType_Notice>>,

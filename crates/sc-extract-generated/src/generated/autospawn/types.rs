@@ -21,7 +21,7 @@ use super::super::*;
 /// DCB type: `AutoSpawnTargetClass`
 /// Inherits from: `AutoSpawnClass`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct AutoSpawnTargetClass {
     /// `npcClass` (Reference)
     pub npc_class: Option<CigGuid>,
@@ -51,7 +51,7 @@ impl<'a> Extract<'a> for AutoSpawnTargetClass {
 /// DCB type: `ScheduleAreaAssignment`
 /// Inherits from: `OnSpawnAssignment`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct ScheduleAreaAssignment {
     /// `areaPositiveTags` (Class)
     pub area_positive_tags: Option<Handle<TagList>>,
@@ -92,7 +92,7 @@ impl<'a> Extract<'a> for ScheduleAreaAssignment {
 
 /// DCB type: `EncounterIndexEntry`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct EncounterIndexEntry {
     /// `encounterPreset` (EnumChoice)
     pub encounter_preset: EncounterPreset,
@@ -135,7 +135,7 @@ impl<'a> Extract<'a> for EncounterIndexEntry {
 
 /// DCB type: `EncounterIndex`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct EncounterIndex {
     /// `encounters` (Class (array))
     pub encounters: Vec<Handle<EncounterIndexEntry>>,

@@ -21,7 +21,7 @@ use super::super::*;
 /// DCB type: `LocationFactionContextData`
 /// Inherits from: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationFactionContextData {
     /// `factionIdentity` (Reference)
     pub faction_identity: Option<CigGuid>,
@@ -51,7 +51,7 @@ impl<'a> Extract<'a> for LocationFactionContextData {
 /// DCB type: `LocationLootGenerationContextData`
 /// Inherits from: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationLootGenerationContextData {
     /// `themes` (Reference (array))
     pub themes: Vec<CigGuid>,
@@ -98,7 +98,7 @@ impl<'a> Extract<'a> for LocationLootGenerationContextData {
 /// DCB type: `LifetimeOverrideHierarchicalData`
 /// Inherits from: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LifetimeOverrideHierarchicalData {
     /// `debugInfo` (String)
     pub debug_info: String,
@@ -134,7 +134,7 @@ impl<'a> Extract<'a> for LifetimeOverrideHierarchicalData {
 /// DCB type: `GeometryBaseHierarchicalData`
 /// Inherits from: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct GeometryBaseHierarchicalData {
     /// `ExternalWear` (Single)
     pub external_wear: f32,
@@ -175,7 +175,7 @@ impl<'a> Extract<'a> for GeometryBaseHierarchicalData {
 
 /// DCB type: `HierarchicalContextualDataPresetRecord`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct HierarchicalContextualDataPresetRecord {
     /// `HCDs` (StrongPointer (array))
     pub hcds: Vec<HierarchicalContextualDataPtr>,

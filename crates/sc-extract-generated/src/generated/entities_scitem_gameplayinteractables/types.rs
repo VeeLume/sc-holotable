@@ -21,7 +21,7 @@ use super::super::*;
 /// DCB type: `SOffsetPositionParams`
 /// Inherits from: `SHazardAreaPositionParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct SOffsetPositionParams {
     /// `offset` (Class)
     pub offset: Option<Handle<Vec3>>,
@@ -85,51 +85,6 @@ impl<'a> Extract<'a> for SpawnerPrerequisite_OR {
                     arr.filter_map(|v| match v {
                         Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
                             Some(BaseSpawnerPrerequisitePtr::from_ref(b, r))
-                        }
-                        _ => None,
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `SEntityItemportContext`
-/// Inherits from: `SEntityContextBase`
-///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
-pub struct SEntityItemportContext {
-    /// `itemPorts` (WeakPointer (array))
-    pub item_ports: Vec<Handle<SItemPortDef>>,
-}
-
-impl Pooled for SEntityItemportContext {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_gameplayinteractables
-            .sentity_itemport_context
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_gameplayinteractables
-            .sentity_itemport_context
-    }
-}
-
-impl<'a> Extract<'a> for SEntityItemportContext {
-    const TYPE_NAME: &'static str = "SEntityItemportContext";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            item_ports: inst
-                .get_array("itemPorts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(b.alloc_nested::<SItemPortDef>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
                         }
                         _ => None,
                     })
@@ -367,7 +322,7 @@ impl<'a> Extract<'a> for DeliveryLockerComponentParams {
 /// DCB type: `MissionBoardType_Career`
 /// Inherits from: `MissionBoardType_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct MissionBoardType_Career {
     /// `guildFactionReputation` (Reference)
     pub guild_faction_reputation: Option<CigGuid>,
@@ -416,7 +371,7 @@ impl<'a> Extract<'a> for MissionBoardType_Career {
 /// DCB type: `MissionBoardType_Notice`
 /// Inherits from: `MissionBoardType_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct MissionBoardType_Notice {}
 
 impl Pooled for MissionBoardType_Notice {
@@ -442,7 +397,7 @@ impl<'a> Extract<'a> for MissionBoardType_Notice {
 /// DCB type: `EntityComponentMissionBoardUIProvider`
 /// Inherits from: `DataForgeComponentParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct EntityComponentMissionBoardUIProvider {
     /// `boardType` (StrongPointer)
     pub board_type: Option<MissionBoardType_BasePtr>,

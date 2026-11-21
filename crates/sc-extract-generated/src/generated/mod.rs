@@ -229,6 +229,8 @@ pub mod entities_scitem_actormovables;
 pub mod entities_scitem_airlocks;
 #[cfg(feature = "entities-scitem-carryables")]
 pub mod entities_scitem_carryables;
+#[cfg(feature = "entities-scitem-characters")]
+pub mod entities_scitem_characters;
 #[cfg(feature = "entities-scitem-commsreceiver")]
 pub mod entities_scitem_commsreceiver;
 #[cfg(feature = "entities-scitem-default_lensdisplay_pu")]
@@ -737,6 +739,8 @@ pub use entities_scitem_actormovables::*;
 pub use entities_scitem_airlocks::*;
 #[cfg(feature = "entities-scitem-carryables")]
 pub use entities_scitem_carryables::*;
+#[cfg(feature = "entities-scitem-characters")]
+pub use entities_scitem_characters::*;
 #[cfg(feature = "entities-scitem-commsreceiver")]
 pub use entities_scitem_commsreceiver::*;
 #[cfg(feature = "entities-scitem-default_lensdisplay_pu")]
@@ -1140,6 +1144,7 @@ pub use zerogtraversalgraph::*;
 // feature: entities-scitem-actormovables
 // feature: entities-scitem-airlocks
 // feature: entities-scitem-carryables
+// feature: entities-scitem-characters
 // feature: entities-scitem-commsreceiver
 // feature: entities-scitem-default_lensdisplay_pu
 // feature: entities-scitem-deliveryitemportmanager

@@ -308,7 +308,7 @@ impl<'a> Extract<'a> for SubsumptionConversationLinkComponentParams {
 /// DCB type: `ProxyNavigationVolumeParams`
 /// Inherits from: `DataForgeComponentParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct ProxyNavigationVolumeParams {}
 
 impl Pooled for ProxyNavigationVolumeParams {
@@ -1237,40 +1237,6 @@ impl<'a> Extract<'a> for BaseBuildingStructureParams {
     }
 }
 
-/// DCB type: `BindingsOperations_IntegerStringFontStylePair`
-pub struct BindingsOperations_IntegerStringFontStylePair {
-    /// `first` (Int64)
-    pub first: i64,
-    /// `second` (Reference)
-    pub second: Option<CigGuid>,
-}
-
-impl Pooled for BindingsOperations_IntegerStringFontStylePair {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .dormant
-            .bindings_operations_integer_string_font_style_pair
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .dormant
-            .bindings_operations_integer_string_font_style_pair
-    }
-}
-
-impl<'a> Extract<'a> for BindingsOperations_IntegerStringFontStylePair {
-    const TYPE_NAME: &'static str = "BindingsOperations_IntegerStringFontStylePair";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            first: inst.get_i64("first").unwrap_or_default(),
-            second: inst
-                .get("second")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-        }
-    }
-}
-
 /// DCB type: `BuildingBlocks_StringLocalizedPair`
 pub struct BuildingBlocks_StringLocalizedPair {
     /// `first` (String)
@@ -1405,7 +1371,7 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsBooleanFromStringSwitch {
 /// DCB type: `BuildingBlocks_BindingsBooleanBooleanSelect`
 /// Inherits from: `BuildingBlocks_BindingsBooleanBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct BuildingBlocks_BindingsBooleanBooleanSelect {
     /// `isTrue` (Boolean)
     pub is_true: bool,
@@ -1706,69 +1672,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsNumberFromIntegerProgress {
                 _ => None,
             },
             current_input: match inst.get("currentInput") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_BindingsIntegerBasePtr::from_ref(b, r))
-                }
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `BindingsOperations_StringFromIntegerSwitchFontStyle`
-/// Inherits from: `BuildingBlocks_BindingsStringBase`
-pub struct BindingsOperations_StringFromIntegerSwitchFontStyle {
-    /// `values` (Class (array))
-    pub values: Vec<Handle<BindingsOperations_IntegerStringFontStylePair>>,
-    /// `defaultValue` (Reference)
-    pub default_value: Option<CigGuid>,
-    /// `input` (WeakPointer)
-    pub input: Option<BuildingBlocks_BindingsIntegerBasePtr>,
-}
-
-impl Pooled for BindingsOperations_StringFromIntegerSwitchFontStyle {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .dormant
-            .bindings_operations_string_from_integer_switch_font_style
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .dormant
-            .bindings_operations_string_from_integer_switch_font_style
-    }
-}
-
-impl<'a> Extract<'a> for BindingsOperations_StringFromIntegerSwitchFontStyle {
-    const TYPE_NAME: &'static str = "BindingsOperations_StringFromIntegerSwitchFontStyle";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            values: inst
-                .get_array("values")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(
-                            b.alloc_nested::<BindingsOperations_IntegerStringFontStylePair>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ),
-                        ),
-                        Value::ClassRef(r) => Some(
-                            b.alloc_nested::<BindingsOperations_IntegerStringFontStylePair>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ),
-                        ),
-                        _ => None,
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
-            default_value: inst
-                .get("defaultValue")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            input: match inst.get("input") {
                 Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
                     Some(BuildingBlocks_BindingsIntegerBasePtr::from_ref(b, r))
                 }
@@ -8582,7 +8485,7 @@ impl<'a> Extract<'a> for ArmouryTerminalParams {
 /// DCB type: `DynamicEditorVariablesComponentParams`
 /// Inherits from: `DataForgeComponentParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct DynamicEditorVariablesComponentParams {}
 
 impl Pooled for DynamicEditorVariablesComponentParams {
@@ -11864,7 +11767,7 @@ pub struct EntityComponentSpawnClosetParams {
     pub default_doors_open: bool,
     /// `autoSpawnsRecords` (Reference (array))
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub auto_spawns_records: Vec<CigGuid>,
 }
 
@@ -11941,7 +11844,7 @@ pub struct EntityComponentSpawnClosetTransitManagerParams {
     pub default_doors_open: bool,
     /// `autoSpawnsRecords` (Reference (array))
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub auto_spawns_records: Vec<CigGuid>,
 }
 
@@ -13465,7 +13368,7 @@ impl<'a> Extract<'a> for DefaultBlueprintSelection_Base_NonRef {
 /// DCB type: `CraftingModifierType_Base_NonRef`
 /// Inherits from: `CraftingModifierType_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct CraftingModifierType_Base_NonRef {}
 
 impl Pooled for CraftingModifierType_Base_NonRef {
@@ -13487,7 +13390,7 @@ impl<'a> Extract<'a> for CraftingModifierType_Base_NonRef {
 /// DCB type: `CraftingModifierCondition_Base_NonRef`
 /// Inherits from: `CraftingModifierCondition_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct CraftingModifierCondition_Base_NonRef {}
 
 impl Pooled for CraftingModifierCondition_Base_NonRef {
@@ -13509,7 +13412,7 @@ impl<'a> Extract<'a> for CraftingModifierCondition_Base_NonRef {
 /// DCB type: `CraftingModifierCondition_ProcessTypes`
 /// Inherits from: `CraftingModifierCondition_Base_NonRef`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct CraftingModifierCondition_ProcessTypes {
     /// `processTypes` (EnumChoice (array))
     pub process_types: Vec<ECraftingProcessType>,
@@ -13542,7 +13445,7 @@ impl<'a> Extract<'a> for CraftingModifierCondition_ProcessTypes {
 /// DCB type: `CraftingModifierCondition_BlueprintWhitelist`
 /// Inherits from: `CraftingModifierCondition_Base_NonRef`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct CraftingModifierCondition_BlueprintWhitelist {
     /// `blueprintWhitelist` (Reference (array))
     pub blueprint_whitelist: Vec<CigGuid>,
@@ -13633,7 +13536,7 @@ impl<'a> Extract<'a> for CraftingQualityDistributionUniform {
 /// DCB type: `CraftingQualityLocationOverrideEntry_Base_NonRef`
 /// Inherits from: `CraftingQualityLocationOverrideEntry_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct CraftingQualityLocationOverrideEntry_Base_NonRef {}
 
 impl Pooled for CraftingQualityLocationOverrideEntry_Base_NonRef {
@@ -14454,7 +14357,7 @@ impl<'a> Extract<'a> for SStreamingObjectContainerComponentParams {
 /// DCB type: `SHelperPositionParams`
 /// Inherits from: `SHazardAreaPositionParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct SHelperPositionParams {
     /// `helperName` (String)
     pub helper_name: String,
@@ -14825,7 +14728,7 @@ impl<'a> Extract<'a> for SRenderToTextureViewBaseParams {
 /// DCB type: `GreenZoneContextData`
 /// Inherits from: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct GreenZoneContextData {
     /// `greenZoneSettings` (Class)
     pub green_zone_settings: Option<Handle<GreenZoneFlagsDef>>,
@@ -15008,7 +14911,7 @@ impl<'a> Extract<'a> for RearmRefuelTerminalParams {
 /// DCB type: `SEntityComponentBlendedRectangleSmoothingTerrainModifierParams`
 /// Inherits from: `DataForgeComponentParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct SEntityComponentBlendedRectangleSmoothingTerrainModifierParams {
     /// `lengthX` (Single)
     pub length_x: f32,
@@ -17193,7 +17096,7 @@ impl<'a> Extract<'a> for SEntitiesGroupComponentParams {
 /// DCB type: `LocationLawContextData`
 /// Inherits from: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationLawContextData {
     /// `jurisdiction` (Reference)
     pub jurisdiction: Option<CigGuid>,
@@ -17223,7 +17126,7 @@ impl<'a> Extract<'a> for LocationLawContextData {
 /// DCB type: `LocationCraftingQualityContextData`
 /// Inherits from: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCraftingQualityContextData {
     /// `qualityOverride` (Reference)
     pub quality_override: Option<CigGuid>,
@@ -17253,7 +17156,7 @@ impl<'a> Extract<'a> for LocationCraftingQualityContextData {
 /// DCB type: `LocationManufacturerContextData`
 /// Inherits from: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationManufacturerContextData {
     /// `manufacturer` (Reference)
     pub manufacturer: Option<CigGuid>,
@@ -17283,7 +17186,7 @@ impl<'a> Extract<'a> for LocationManufacturerContextData {
 /// DCB type: `LocationHarvestableHostContextData`
 /// Inherits from: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationHarvestableHostContextData {
     /// `slotsProbabilityScale` (Single)
     pub slots_probability_scale: f32,
@@ -18497,7 +18400,7 @@ impl<'a> Extract<'a> for SEntityDensityClassOverridesRef {
 /// DCB type: `SEntityComponentEntityReferenceOverrideMetadataParams`
 /// Inherits from: `DataForgeComponentParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct SEntityComponentEntityReferenceOverrideMetadataParams {}
 
 impl Pooled for SEntityComponentEntityReferenceOverrideMetadataParams {
@@ -21798,7 +21701,7 @@ impl<'a> Extract<'a> for InteractionConditionStaminaRequirement {
 /// DCB type: `SStateAutoChangeRandomDelayOffset`
 /// Inherits from: `SStateAutoChange`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct SStateAutoChangeRandomDelayOffset {
     /// `NextState` (WeakPointer)
     pub next_state: Option<Handle<SInteractionState>>,
@@ -21937,28 +21840,6 @@ impl<'a> Extract<'a> for SPowerSourceStateModifier {
                 _ => None,
             },
         }
-    }
-}
-
-/// DCB type: `SEntityAttachableParentContext`
-/// Inherits from: `SEntityContextBase`
-///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
-pub struct SEntityAttachableParentContext {}
-
-impl Pooled for SEntityAttachableParentContext {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.sentity_attachable_parent_context
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.sentity_attachable_parent_context
-    }
-}
-
-impl<'a> Extract<'a> for SEntityAttachableParentContext {
-    const TYPE_NAME: &'static str = "SEntityAttachableParentContext";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
     }
 }
 
@@ -24763,7 +24644,7 @@ impl<'a> Extract<'a> for LootTableOptionalDataV3_NoRef {
 /// DCB type: `LootV3SecondaryChoiceLayer_NoRef`
 /// Inherits from: `LootV3SecondaryChoiceLayer_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LootV3SecondaryChoiceLayer_NoRef {}
 
 impl Pooled for LootV3SecondaryChoiceLayer_NoRef {
@@ -24785,7 +24666,7 @@ impl<'a> Extract<'a> for LootV3SecondaryChoiceLayer_NoRef {
 /// DCB type: `LootV3SecondaryChoiceLayer_RecordRef`
 /// Inherits from: `LootV3SecondaryChoiceLayer_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LootV3SecondaryChoiceLayer_RecordRef {
     /// `singleLayerRecord` (Reference)
     pub single_layer_record: Option<CigGuid>,
@@ -24855,7 +24736,7 @@ impl<'a> Extract<'a> for QuantityRange_NoRef {
 /// DCB type: `LootThemeSelector_NoRef`
 /// Inherits from: `LootThemeSelector_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LootThemeSelector_NoRef {}
 
 impl Pooled for LootThemeSelector_NoRef {
@@ -24877,7 +24758,7 @@ impl<'a> Extract<'a> for LootThemeSelector_NoRef {
 /// DCB type: `LootSubThemeModifier_NoRef`
 /// Inherits from: `LootSubThemeModifier_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LootSubThemeModifier_NoRef {}
 
 impl Pooled for LootSubThemeModifier_NoRef {
@@ -25546,7 +25427,7 @@ impl<'a> Extract<'a> for AISyncedMeleeAttack {
 /// DCB type: `AutoSpawnClassPool`
 /// Inherits from: `AutoSpawnClass`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct AutoSpawnClassPool {
     /// `classPool` (Reference (array))
     pub class_pool: Vec<CigGuid>,
@@ -25585,7 +25466,7 @@ impl<'a> Extract<'a> for AutoSpawnClassPool {
 /// DCB type: `DefendAreaAssignment`
 /// Inherits from: `OnSpawnAssignment`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct DefendAreaAssignment {
     /// `areaPositiveTags` (Class)
     pub area_positive_tags: Option<Handle<TagList>>,
@@ -25627,7 +25508,7 @@ impl<'a> Extract<'a> for DefendAreaAssignment {
 /// DCB type: `AutoSpawnsDataManual`
 /// Inherits from: `AutoSpawnsData`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct AutoSpawnsDataManual {
     /// `autoSpawnData` (Class)
     pub auto_spawn_data: Option<Handle<AutoSpawnData>>,
@@ -26188,7 +26069,7 @@ impl<'a> Extract<'a> for HaulingOrder_Or {
 /// DCB type: `LocationCondition_ExcludedLocationClass`
 /// Inherits from: `LocationCondition_LocationClassBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_ExcludedLocationClass {
     /// `locationClass` (Reference)
     pub location_class: Option<CigGuid>,
@@ -26218,7 +26099,7 @@ impl<'a> Extract<'a> for LocationCondition_ExcludedLocationClass {
 /// DCB type: `LocationCondition_ExcludedLocationClasses`
 /// Inherits from: `LocationCondition_LocationClassBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_ExcludedLocationClasses {
     /// `locationClasses` (Reference (array))
     pub location_classes: Vec<CigGuid>,
@@ -26257,7 +26138,7 @@ impl<'a> Extract<'a> for LocationCondition_ExcludedLocationClasses {
 /// DCB type: `LocationCondition_SameLocation`
 /// Inherits from: `LocationCondition_OtherLocationBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_SameLocation {
     /// `location` (WeakPointer)
     pub location: Option<Handle<MissionProperty>>,
@@ -26292,7 +26173,7 @@ impl<'a> Extract<'a> for LocationCondition_SameLocation {
 /// DCB type: `DataSetMatchCondition_FactionIdentityDef`
 /// Inherits from: `BaseDataSetMatchCondition`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct DataSetMatchCondition_FactionIdentityDef {
     /// `factionIdentity` (Reference)
     pub faction_identity: Option<CigGuid>,
@@ -26767,7 +26648,7 @@ impl<'a> Extract<'a> for MissionPropertyValue_Investigation {
 /// DCB type: `SpawnClosetSearchOptions_EntityDeclaration`
 /// Inherits from: `SpawnClosetSearchOptionsBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct SpawnClosetSearchOptions_EntityDeclaration {
     /// `entityDeclaration` (Reference)
     pub entity_declaration: Option<CigGuid>,
@@ -26865,7 +26746,7 @@ impl<'a> Extract<'a> for MissionVariableString {
 /// DCB type: `ModuleDeclarationType_Instance`
 /// Inherits from: `ModuleDeclarationType_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct ModuleDeclarationType_Instance {}
 
 impl Pooled for ModuleDeclarationType_Instance {
@@ -26929,7 +26810,7 @@ impl<'a> Extract<'a> for VariableDeclaration_SpawnedEntities {
 /// DCB type: `VariableDeclaration_Objective`
 /// Inherits from: `VariableDeclaration_Base`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct VariableDeclaration_Objective {
     /// `subsumptionVariableName` (String)
     pub subsumption_variable_name: String,
@@ -28622,7 +28503,7 @@ impl<'a> Extract<'a> for SEntityObjectContainerGridProperty {
 /// DCB type: `SEntitySurrogateManagerPhysicsControllerParams`
 /// Inherits from: `SEntityBasePhysicsControllerParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct SEntitySurrogateManagerPhysicsControllerParams {
     /// `Mass` (Single)
     pub mass: f32,
@@ -32684,7 +32565,7 @@ impl<'a> Extract<'a> for GameplayTriggerConditionCheckEntityTag {
 /// DCB type: `GameplayTriggerConditionCheckIsTargetValid`
 /// Inherits from: `GameplayTriggerCondition`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct GameplayTriggerConditionCheckIsTargetValid {}
 
 impl Pooled for GameplayTriggerConditionCheckIsTargetValid {
@@ -32710,7 +32591,7 @@ impl<'a> Extract<'a> for GameplayTriggerConditionCheckIsTargetValid {
 /// DCB type: `GameplayTriggerConditionCheckIsInEditor`
 /// Inherits from: `GameplayTriggerCondition`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct GameplayTriggerConditionCheckIsInEditor {}
 
 impl Pooled for GameplayTriggerConditionCheckIsInEditor {
@@ -32732,7 +32613,7 @@ impl<'a> Extract<'a> for GameplayTriggerConditionCheckIsInEditor {
 /// DCB type: `GameplayTriggerConditionCheckIsInGameSimMode`
 /// Inherits from: `GameplayTriggerCondition`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct GameplayTriggerConditionCheckIsInGameSimMode {}
 
 impl Pooled for GameplayTriggerConditionCheckIsInGameSimMode {
@@ -37191,7 +37072,7 @@ pub struct TransportIIMHangarInterface {
     /// `locInstancedCategoryName` (Locale)
     pub loc_instanced_category_name: LocaleKey,
     /// `useReservationQueue` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub use_reservation_queue: bool,
 }
 

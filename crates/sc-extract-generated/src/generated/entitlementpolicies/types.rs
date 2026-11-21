@@ -440,58 +440,58 @@ pub struct ItemRecoveryEconomyParams {
     pub max_expedited_claim_cost_multiplier: f32,
     /// `cooldownParams` (Class)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub cooldown_params: Option<Handle<ItemRecoveryCooldownParams>>,
     /// `deliveryParams` (Class)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub delivery_params: Option<Handle<ItemRecoveryDeliveryTimeParams>>,
     /// `repairParams` (Class)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub repair_params: Option<Handle<ItemRecoveryRepairParams>>,
     /// `escalatingClaimsParams` (Class)
     pub escalating_claims_params: Option<Handle<ItemRecoveryEscalatingClaimsParams>>,
     /// `overrides` (Class (array))
     pub overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
     /// `baseReclaimTime` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub base_reclaim_time: f32,
     /// `baseDeliveryTime` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub base_delivery_time: f32,
     /// `scalingPriceFloor` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub scaling_price_floor: f32,
     /// `aUECperSecond` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub a_uecper_second: f32,
     /// `defaultLoadoutCooldownMultiplier` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub default_loadout_cooldown_multiplier: f32,
     /// `defaultLoadoutDeliveryTimeMultiplier` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub default_loadout_delivery_time_multiplier: f32,
     /// `vehicleChassisRepairCostMultiplier` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub vehicle_chassis_repair_cost_multiplier: f32,
     /// `vehicleComponentRepairCostMultiplier` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub vehicle_component_repair_cost_multiplier: f32,
     /// `vehicleRepairMissingItemCostMultiplier` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub vehicle_repair_missing_item_cost_multiplier: f32,
     /// `deliverySecondsPerAUEC` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub delivery_seconds_per_auec: f32,
     /// `expeditedDeliverySecondsPerAUEC` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub expedited_delivery_seconds_per_auec: f32,
     /// `defaultLoadoutExpeditedDeliveryTimeMultiplier` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub default_loadout_expedited_delivery_time_multiplier: f32,
     /// `flatMinimumDeliveryTimerSeconds` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub flat_minimum_delivery_timer_seconds: f32,
 }
 
@@ -622,7 +622,7 @@ pub struct ItemRecoveryOverrideGroupDef {
     /// `classes` (Reference (array))
     pub classes: Vec<CigGuid>,
     /// `flatMinimumDeliveryTimerSecondsMultiplier` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub flat_minimum_delivery_timer_seconds_multiplier: f32,
 }
 
@@ -679,7 +679,7 @@ impl<'a> Extract<'a> for ItemRecoveryOverrideGroupDef {
 
 /// DCB type: `ItemRecoveryCooldownParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct ItemRecoveryCooldownParams {
     /// `baseTime` (Single)
     pub base_time: f32,
@@ -716,7 +716,7 @@ impl<'a> Extract<'a> for ItemRecoveryCooldownParams {
 
 /// DCB type: `ItemRecoveryDeliveryTimeParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct ItemRecoveryDeliveryTimeParams {
     /// `baseTime` (Single)
     pub base_time: f32,
@@ -761,7 +761,7 @@ impl<'a> Extract<'a> for ItemRecoveryDeliveryTimeParams {
 
 /// DCB type: `ItemRecoveryRepairParams`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct ItemRecoveryRepairParams {
     /// `vehicleChassisRepairCostMultiplier` (Single)
     pub vehicle_chassis_repair_cost_multiplier: f32,

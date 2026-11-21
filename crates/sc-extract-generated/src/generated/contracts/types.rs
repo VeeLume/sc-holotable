@@ -66,7 +66,7 @@ pub struct ContractGeneratorHandler_LinearSeries {
     pub debug_name: String,
     /// `localGeneratorParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
@@ -169,7 +169,7 @@ pub struct ContractGeneratorHandler_TutorialSeriesDef {
     pub debug_name: String,
     /// `localGeneratorParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
@@ -276,7 +276,7 @@ pub struct ContractGeneratorHandler_List {
     pub debug_name: String,
     /// `localGeneratorParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
@@ -379,7 +379,7 @@ pub struct ContractGeneratorHandler_Legacy {
     pub debug_name: String,
     /// `localGeneratorParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
@@ -794,7 +794,7 @@ pub struct ContractGeneratorHandler_Career {
     pub debug_name: String,
     /// `localGeneratorParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
@@ -1485,7 +1485,7 @@ pub struct ContractResult_CompletionTags {
     pub completion_tags: Vec<Handle<ContractResult_CompletionTag>>,
     /// `splitPointsForParty` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub split_points_for_party: bool,
 }
 
@@ -2457,7 +2457,7 @@ impl<'a> Extract<'a> for HaulingOrder_EntityClasses {
 /// DCB type: `HaulingOrder_CollectOnly`
 /// Inherits from: `HaulingOrderBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct HaulingOrder_CollectOnly {
     /// `pickUpLocation` (WeakPointer)
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
@@ -2869,7 +2869,7 @@ impl<'a> Extract<'a> for HaulingOrderContent_Or {
 /// DCB type: `LocationCondition_RequiredLocationClass`
 /// Inherits from: `LocationCondition_LocationClassBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_RequiredLocationClass {
     /// `locationClass` (Reference)
     pub location_class: Option<CigGuid>,
@@ -2899,7 +2899,7 @@ impl<'a> Extract<'a> for LocationCondition_RequiredLocationClass {
 /// DCB type: `LocationCondition_RequiredLocationClasses`
 /// Inherits from: `LocationCondition_LocationClassBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_RequiredLocationClasses {
     /// `locationClasses` (Reference (array))
     pub location_classes: Vec<CigGuid>,
@@ -2938,7 +2938,7 @@ impl<'a> Extract<'a> for LocationCondition_RequiredLocationClasses {
 /// DCB type: `LocationCondition_RequiredLocationSize`
 /// Inherits from: `LocationCondition_LocationSizeBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_RequiredLocationSize {
     /// `locationSize` (Reference)
     pub location_size: Option<CigGuid>,
@@ -2968,7 +2968,7 @@ impl<'a> Extract<'a> for LocationCondition_RequiredLocationSize {
 /// DCB type: `LocationCondition_ExcludedLocationSize`
 /// Inherits from: `LocationCondition_LocationSizeBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_ExcludedLocationSize {
     /// `locationSize` (Reference)
     pub location_size: Option<CigGuid>,
@@ -2998,7 +2998,7 @@ impl<'a> Extract<'a> for LocationCondition_ExcludedLocationSize {
 /// DCB type: `LocationCondition_RequiredLocationSizes`
 /// Inherits from: `LocationCondition_LocationSizeBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_RequiredLocationSizes {
     /// `locationSizes` (Reference (array))
     pub location_sizes: Vec<CigGuid>,
@@ -3037,7 +3037,7 @@ impl<'a> Extract<'a> for LocationCondition_RequiredLocationSizes {
 /// DCB type: `LocationCondition_ExcludedLocationSizes`
 /// Inherits from: `LocationCondition_LocationSizeBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_ExcludedLocationSizes {
     /// `locationSizes` (Reference (array))
     pub location_sizes: Vec<CigGuid>,
@@ -3076,7 +3076,7 @@ impl<'a> Extract<'a> for LocationCondition_ExcludedLocationSizes {
 /// DCB type: `LocationCondition_RequiredLocationFunction`
 /// Inherits from: `LocationCondition_LocationFunctionBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_RequiredLocationFunction {
     /// `locationFunction` (Reference)
     pub location_function: Option<CigGuid>,
@@ -3110,7 +3110,7 @@ impl<'a> Extract<'a> for LocationCondition_RequiredLocationFunction {
 /// DCB type: `LocationCondition_ExcludedLocationFunction`
 /// Inherits from: `LocationCondition_LocationFunctionBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_ExcludedLocationFunction {
     /// `locationFunction` (Reference)
     pub location_function: Option<CigGuid>,
@@ -3144,7 +3144,7 @@ impl<'a> Extract<'a> for LocationCondition_ExcludedLocationFunction {
 /// DCB type: `LocationCondition_RequiredLocationFunctions`
 /// Inherits from: `LocationCondition_LocationFunctionBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_RequiredLocationFunctions {
     /// `locationFunctions` (Reference (array))
     pub location_functions: Vec<CigGuid>,
@@ -3187,7 +3187,7 @@ impl<'a> Extract<'a> for LocationCondition_RequiredLocationFunctions {
 /// DCB type: `LocationCondition_ExcludedLocationFunctions`
 /// Inherits from: `LocationCondition_LocationFunctionBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_ExcludedLocationFunctions {
     /// `locationFunctions` (Reference (array))
     pub location_functions: Vec<CigGuid>,
@@ -3230,7 +3230,7 @@ impl<'a> Extract<'a> for LocationCondition_ExcludedLocationFunctions {
 /// DCB type: `LocationCondition_RequiredFactionHostility`
 /// Inherits from: `LocationCondition_FactionBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_RequiredFactionHostility {
     /// `hostility` (EnumChoice)
     pub hostility: ReactionType,
@@ -3261,7 +3261,7 @@ impl<'a> Extract<'a> for LocationCondition_RequiredFactionHostility {
 /// DCB type: `LocationCondition_ExcludedFactionHostility`
 /// Inherits from: `LocationCondition_FactionBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_ExcludedFactionHostility {
     /// `hostility` (EnumChoice)
     pub hostility: ReactionType,
@@ -3292,7 +3292,7 @@ impl<'a> Extract<'a> for LocationCondition_ExcludedFactionHostility {
 /// DCB type: `LocationCondition_NotLocation`
 /// Inherits from: `LocationCondition_OtherLocationBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_NotLocation {
     /// `location` (WeakPointer)
     pub location: Option<Handle<MissionProperty>>,
@@ -3327,7 +3327,7 @@ impl<'a> Extract<'a> for LocationCondition_NotLocation {
 /// DCB type: `LocationCondition_NotLocations`
 /// Inherits from: `LocationCondition_OtherLocationBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_NotLocations {
     /// `locations` (WeakPointer (array))
     pub locations: Vec<Handle<MissionProperty>>,
@@ -3368,7 +3368,7 @@ impl<'a> Extract<'a> for LocationCondition_NotLocations {
 /// DCB type: `LocationCondition_SameScope`
 /// Inherits from: `LocationCondition_RelativeLocationBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_SameScope {
     /// `scope` (EnumChoice)
     pub scope: ContractScope,
@@ -3406,7 +3406,7 @@ impl<'a> Extract<'a> for LocationCondition_SameScope {
 /// DCB type: `LocationCondition_DifferentScope`
 /// Inherits from: `LocationCondition_RelativeLocationBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_DifferentScope {
     /// `scope` (EnumChoice)
     pub scope: ContractScope,
@@ -3444,7 +3444,7 @@ impl<'a> Extract<'a> for LocationCondition_DifferentScope {
 /// DCB type: `MissionPropertyValue_ScopedLocation`
 /// Inherits from: `BaseMissionPropertyValue`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct MissionPropertyValue_ScopedLocation {
     /// `factionFilter` (StrongPointer)
     pub faction_filter: Option<LocationCondition_FactionBasePtr>,
@@ -3704,7 +3704,7 @@ impl<'a> Extract<'a> for MissionFlowAction_PickRandomMissionPhase {
 
 /// DCB type: `MissionRandomActionEntry`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct MissionRandomActionEntry {
     /// `action` (StrongPointer)
     pub action: Option<MissionFlowActionBasePtr>,
@@ -3739,7 +3739,7 @@ impl<'a> Extract<'a> for MissionRandomActionEntry {
 /// DCB type: `MissionFlowAction_PickRandomAction`
 /// Inherits from: `MissionFlowActionBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct MissionFlowAction_PickRandomAction {
     /// `actions` (Class (array))
     pub actions: Vec<Handle<MissionRandomActionEntry>>,
@@ -3784,7 +3784,7 @@ impl<'a> Extract<'a> for MissionFlowAction_PickRandomAction {
 /// DCB type: `MissionFlowAction_MultipleActions`
 /// Inherits from: `MissionFlowActionBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct MissionFlowAction_MultipleActions {
     /// `actions` (StrongPointer (array))
     pub actions: Vec<MissionFlowActionBasePtr>,
@@ -3833,7 +3833,7 @@ pub struct MissionPropertyValue_Locations {
     /// `failIfMinAmountNotFound` (Boolean)
     pub fail_if_min_amount_not_found: bool,
     /// `logErrorOnSearchFail` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub log_error_on_search_fail: bool,
 }
 
@@ -3924,7 +3924,7 @@ impl<'a> Extract<'a> for MissionPropertyValue_HaulingOrders {
 /// DCB type: `SpawnClosetSearchOptions_Tags`
 /// Inherits from: `SpawnClosetSearchOptionsBase`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct SpawnClosetSearchOptions_Tags {
     /// `closetPositiveTags` (Class)
     pub closet_positive_tags: Option<Handle<TagList>>,
@@ -3966,7 +3966,7 @@ impl<'a> Extract<'a> for SpawnClosetSearchOptions_Tags {
 /// DCB type: `MissionPropertyValue_AutoSpawns`
 /// Inherits from: `BaseMissionPropertyValue`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct MissionPropertyValue_AutoSpawns {
     /// `autoSpawns` (Reference)
     pub auto_spawns: Option<CigGuid>,
@@ -4194,7 +4194,7 @@ pub struct ContractGeneratorHandler_PVPBountyDef {
     pub debug_name: String,
     /// `localGeneratorParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,

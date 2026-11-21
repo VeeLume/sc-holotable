@@ -297,7 +297,7 @@ impl<'a> Extract<'a> for TransportIconTypes {
 /// DCB type: `TransportVehicleAccessInterface`
 /// Inherits from: `TransportPermissionsInterface`
 ///
-/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
 pub struct TransportVehicleAccessInterface {}
 
 impl Pooled for TransportVehicleAccessInterface {
@@ -513,7 +513,7 @@ pub struct TransportManagerParams {
     pub automated: bool,
     /// `looping` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub looping: bool,
     /// `liveForever` (Boolean)
     pub live_forever: bool,
@@ -548,7 +548,7 @@ pub struct TransportManagerParams {
     /// `holdDoorsDelay` (Single)
     pub hold_doors_delay: f32,
     /// `reservationTime` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub reservation_time: f32,
 }
 
@@ -735,7 +735,7 @@ pub struct TransportNavSplineParams {
     /// `invertForwardOnStart` (Boolean)
     pub invert_forward_on_start: bool,
     /// `invertForward` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub invert_forward: bool,
 }
 
@@ -1077,10 +1077,10 @@ pub struct TransportCarriageParams {
     /// `effects` (Class)
     pub effects: Option<Handle<TransportCarriageEffects>>,
     /// `responsive` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub responsive: bool,
     /// `reverseDirectionWithSpline` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
     pub reverse_direction_with_spline: bool,
 }
 

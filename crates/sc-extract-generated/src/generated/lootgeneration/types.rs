@@ -74,7 +74,7 @@ pub struct LootGenerationGlobalParams {
     pub special_event_archetypes: Vec<Handle<LootGenerationSpecialEventArchetype>>,
     /// `themeCategoryOrdering` (Class)
     ///
-    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
     pub theme_category_ordering: Option<Handle<TagList>>,
 }
 
