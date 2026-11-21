@@ -72,6 +72,10 @@ impl<'a> Extract<'a> for LootGenerationSpecialEventArchetype {
 pub struct LootGenerationGlobalParams {
     /// `specialEventArchetypes` (Class (array))
     pub special_event_archetypes: Vec<Handle<LootGenerationSpecialEventArchetype>>,
+    /// `themeCategoryOrdering` (Class)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub theme_category_ordering: Option<Handle<TagList>>,
 }
 
 impl Pooled for LootGenerationGlobalParams {
@@ -108,6 +112,13 @@ impl<'a> Extract<'a> for LootGenerationGlobalParams {
                     .collect()
                 })
                 .unwrap_or_default(),
+            theme_category_ordering: match inst.get("themeCategoryOrdering") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
         }
     }
 }

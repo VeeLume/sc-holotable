@@ -27,6 +27,10 @@ pub struct ContractGeneratorHandler_ServiceBeacon {
     pub work_in_progress: bool,
     /// `debugName` (String)
     pub debug_name: String,
+    /// `localGeneratorParams` (StrongPointer)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
@@ -60,6 +64,15 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_ServiceBeacon {
                 .get_str("debugName")
                 .map(String::from)
                 .unwrap_or_default(),
+            local_generator_params: match inst.get("localGeneratorParams") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<LocalContractGeneratorParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
             required_active_scenarios: inst
                 .get_array("required_active_scenarios")
                 .map(|arr| {

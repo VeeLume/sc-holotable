@@ -15,6 +15,5 @@ use super::super::*;
 #[derive(Default)]
 pub struct TacticalqueryPools {
     pub tqsinput_dynamic_variable_value: Vec<Option<TQSInputDynamicVariableValue>>,
-    pub tqsweight_input_float_value: Vec<Option<TQSWeightInputFloatValue>>,
     pub tqsweight_input_tag_value: Vec<Option<TQSWeightInputTagValue>>,
 }

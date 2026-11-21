@@ -14,18 +14,18 @@ use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
 
-/// Record index for the `densityclasses` feature.
+/// Record index for the `hcdgrouppreset` feature.
 #[derive(Default)]
-pub struct DensityclassesIndex {
-    pub sentity_density_class_overrides_record:
-        HashMap<CigGuid, Handle<SEntityDensityClassOverridesRecord>>,
+pub struct HcdgrouppresetIndex {
+    pub hierarchical_contextual_data_preset_record:
+        HashMap<CigGuid, Handle<HierarchicalContextualDataPresetRecord>>,
 }
 
-impl DensityclassesIndex {
+impl HcdgrouppresetIndex {
     #[allow(unused_mut)]
     pub fn len(&self) -> usize {
         let mut total = 0usize;
-        total += self.sentity_density_class_overrides_record.len();
+        total += self.hierarchical_contextual_data_preset_record.len();
         total
     }
 

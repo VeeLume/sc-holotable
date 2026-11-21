@@ -22,10 +22,6 @@ pub struct EntitiesEnvironmentPools {
     pub sasteroid_shape_component_params: Vec<Option<SAsteroidShapeComponentParams>>,
     pub fog_volume_component_params: Vec<Option<FogVolumeComponentParams>>,
     pub harvestable_provider_params: Vec<Option<HarvestableProviderParams>>,
-    pub sentity_component_managed_entity_region_params:
-        Vec<Option<SEntityComponentManagedEntityRegionParams>>,
-    pub sentity_component_managed_entity_zone_params:
-        Vec<Option<SEntityComponentManagedEntityZoneParams>>,
     pub procedural_planet_audio_component_params: Vec<Option<ProceduralPlanetAudioComponentParams>>,
     pub planet_ocean_audio_component_params: Vec<Option<PlanetOceanAudioComponentParams>>,
     pub default_sphere_geom: Vec<Option<DefaultSphereGeom>>,
@@ -38,6 +34,8 @@ pub struct EntitiesEnvironmentPools {
     pub texture3_dfield_geom: Vec<Option<Texture3DFieldGeom>>,
     pub quantum_obstacle_params: Vec<Option<QuantumObstacleParams>>,
     pub solar_system_component_params: Vec<Option<SolarSystemComponentParams>>,
+    pub sentity_component_blended_smoothing_terrain_modifier_params:
+        Vec<Option<SEntityComponentBlendedSmoothingTerrainModifierParams>>,
     pub sentity_component_noisy_smoothing_modification_object_params:
         Vec<Option<SEntityComponentNoisySmoothingModificationObjectParams>>,
     pub sentity_component_planet_area_params: Vec<Option<SEntityComponentPlanetAreaParams>>,
@@ -65,4 +63,8 @@ pub struct EntitiesEnvironmentPools {
     pub asteroid_state_ref: Vec<Option<AsteroidStateRef>>,
     pub atmosphere_state_multi_ref: Vec<Option<AtmosphereStateMultiRef>>,
     pub radiation_state: Vec<Option<RadiationState>>,
+    pub sentity_component_managed_entity_region_params:
+        Vec<Option<SEntityComponentManagedEntityRegionParams>>,
+    pub sentity_component_managed_entity_zone_params:
+        Vec<Option<SEntityComponentManagedEntityZoneParams>>,
 }

@@ -449,7 +449,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             && let Some(co) = h.get(pools)
         {
             for entry_h in &co.location_override_list {
-                if let Some(entry) = entry_h.get(pools) {
+                if let sc_extract::generated::CraftingQualityLocationOverrideEntry_BasePtr::CraftingQualityLocationOverrideEntry(h) = entry_h
+                    && let Some(entry) = h.get(pools)
+                {
                     total_entries += 1;
                     if sample_loc_entry.is_none() {
                         sample_loc_entry = Some(format!(

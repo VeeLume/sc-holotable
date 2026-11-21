@@ -17,8 +17,8 @@ use std::collections::HashMap;
 use sc_extract::generated::{
     CraftingQualityDistribution_Base_NonRefPtr, CraftingQualityDistribution_BasePtr,
     CraftingQualityLocationOverride_Base_NonRefPtr, CraftingQualityLocationOverride_BasePtr,
-    CraftingQualityQuantization_Base_NonRefPtr, CraftingQualityQuantization_BasePtr, DataPools,
-    ResourceType, ResourceTypePropertiesPtr,
+    CraftingQualityLocationOverrideEntry_BasePtr, CraftingQualityQuantization_Base_NonRefPtr,
+    CraftingQualityQuantization_BasePtr, DataPools, ResourceType, ResourceTypePropertiesPtr,
 };
 use sc_extract::{Guid, RecordStore};
 use serde::{Deserialize, Serialize};
@@ -146,19 +146,7 @@ impl Quality {
                     ),
                 ) => h
                     .get(pools)
-                    .map(|co| {
-                        co.location_override_list
-                            .iter()
-                            .filter_map(|eh| eh.get(pools))
-                            .map(|e| LocationOverrideEntry {
-                                location: e.location,
-                                distribution: e
-                                    .quality_distribution
-                                    .as_ref()
-                                    .map(|d| build_distribution_ref(d, pools)),
-                            })
-                            .collect()
-                    })
+                    .map(|co| build_location_override_entries(&co.location_override_list, pools))
                     .unwrap_or_default(),
                 _ => Vec::new(),
             };
@@ -405,6 +393,33 @@ fn build_quantization_ref(
     }
 }
 
+/// The entries of an inline location override. Since 5.0 the list holds
+/// polymorphic pointers; only the concrete `CraftingQualityLocationOverrideEntry`
+/// carries a location and a distribution, so any other variant is reported
+/// and skipped.
+fn build_location_override_entries(
+    list: &[CraftingQualityLocationOverrideEntry_BasePtr],
+    pools: &DataPools,
+) -> Vec<LocationOverrideEntry> {
+    use CraftingQualityLocationOverrideEntry_BasePtr as P;
+    list.iter()
+        .filter_map(|eh| match eh {
+            P::CraftingQualityLocationOverrideEntry(h) => h.get(pools),
+            other => {
+                tracing::warn!(entry = ?other, "skipping a location override entry without data");
+                None
+            }
+        })
+        .map(|e| LocationOverrideEntry {
+            location: e.location,
+            distribution: e
+                .quality_distribution
+                .as_ref()
+                .map(|d| build_distribution_ref(d, pools)),
+        })
+        .collect()
+}
+
 fn build_location_override_ref(
     d: &CraftingQualityLocationOverride_BasePtr,
     pools: &DataPools,
@@ -412,19 +427,10 @@ fn build_location_override_ref(
     use CraftingQualityLocationOverride_BasePtr as P;
     match d {
         P::CraftingQualityLocationOverride(h) => match h.get(pools) {
-            Some(co) => LocationOverrideRef::Inline(
-                co.location_override_list
-                    .iter()
-                    .filter_map(|eh| eh.get(pools))
-                    .map(|e| LocationOverrideEntry {
-                        location: e.location,
-                        distribution: e
-                            .quality_distribution
-                            .as_ref()
-                            .map(|d| build_distribution_ref(d, pools)),
-                    })
-                    .collect(),
-            ),
+            Some(co) => LocationOverrideRef::Inline(build_location_override_entries(
+                &co.location_override_list,
+                pools,
+            )),
             None => LocationOverrideRef::Other {
                 type_name: "LocationOverride(empty)".into(),
                 struct_index: 0,

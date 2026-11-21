@@ -14,16 +14,16 @@ use super::super::*;
 /// Pool storage for the `missiondata` feature.
 #[derive(Default)]
 pub struct MissiondataPools {
+    pub mission_location_classes: Vec<Option<MissionLocationClasses>>,
+    pub mission_location_sizes: Vec<Option<MissionLocationSizes>>,
+    pub mission_location_functions: Vec<Option<MissionLocationFunctions>>,
+    pub contract_scope_item: Vec<Option<ContractScope_Item>>,
+    pub contract_scope_global_params: Vec<Option<ContractScopeGlobalParams>>,
     pub entity_cluster_id: Vec<Option<EntityClusterId>>,
     pub entity_cluster_member: Vec<Option<EntityClusterMember>>,
     pub mission_variable_boolean: Vec<Option<MissionVariableBoolean>>,
     pub mission_variable_integer: Vec<Option<MissionVariableInteger>>,
-    pub location_resource_slot: Vec<Option<LocationResourceSlot>>,
-    pub location_entity_type_static_entity: Vec<Option<LocationEntityType_StaticEntity>>,
-    pub module_location_entities_static: Vec<Option<ModuleLocationEntities_Static>>,
-    pub module_declaration_type_mission: Vec<Option<ModuleDeclarationType_Mission>>,
     pub module_declaration_type_location: Vec<Option<ModuleDeclarationType_Location>>,
-    pub variable_declaration_location_entities: Vec<Option<VariableDeclaration_LocationEntities>>,
     pub mission_init_param_boolean: Vec<Option<MissionInitParamBoolean>>,
     pub mission_init_param_integer: Vec<Option<MissionInitParamInteger>>,
     pub mission_init_param_tag: Vec<Option<MissionInitParamTag>>,

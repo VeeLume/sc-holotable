@@ -675,52 +675,6 @@ impl<'a> Extract<'a> for MusicAreaComponentParams {
     }
 }
 
-/// DCB type: `AudioSplineParams`
-/// Inherits from: `DataForgeComponentParams`
-pub struct AudioSplineParams {
-    /// `activatedRoute` (Boolean)
-    pub activated_route: bool,
-    /// `moveTowardsListener` (Boolean)
-    pub move_towards_listener: bool,
-    /// `traversalDuration` (Single)
-    pub traversal_duration: f32,
-    /// `audioRTPCDistanceTravelled` (Class)
-    pub audio_rtpcdistance_travelled: Option<Handle<AudioRtpc>>,
-    /// `activationTag` (Reference)
-    pub activation_tag: Option<CigGuid>,
-}
-
-impl Pooled for AudioSplineParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_audio.audio_spline_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_audio.audio_spline_params
-    }
-}
-
-impl<'a> Extract<'a> for AudioSplineParams {
-    const TYPE_NAME: &'static str = "AudioSplineParams";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            activated_route: inst.get_bool("activatedRoute").unwrap_or_default(),
-            move_towards_listener: inst.get_bool("moveTowardsListener").unwrap_or_default(),
-            traversal_duration: inst.get_f32("traversalDuration").unwrap_or_default(),
-            audio_rtpcdistance_travelled: match inst.get("audioRTPCDistanceTravelled") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            activation_tag: inst
-                .get("activationTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-        }
-    }
-}
-
 /// DCB type: `EntityComponentVibrationAudioPointParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct EntityComponentVibrationAudioPointParams {

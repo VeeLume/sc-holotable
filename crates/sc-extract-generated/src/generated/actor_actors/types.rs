@@ -18,54 +18,6 @@ use svarog_datacore::{Instance, Value};
 
 use super::super::*;
 
-/// DCB type: `SDynamicGroupComponentParams`
-/// Inherits from: `DataForgeComponentParams`
-pub struct SDynamicGroupComponentParams {}
-
-impl Pooled for SDynamicGroupComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.actor_actors.sdynamic_group_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.actor_actors.sdynamic_group_component_params
-    }
-}
-
-impl<'a> Extract<'a> for SDynamicGroupComponentParams {
-    const TYPE_NAME: &'static str = "SDynamicGroupComponentParams";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
-    }
-}
-
-/// DCB type: `ActivityBehaviorComponentParams`
-/// Inherits from: `DataForgeComponentParams`
-pub struct ActivityBehaviorComponentParams {
-    /// `activityData` (Reference)
-    pub activity_data: Option<CigGuid>,
-}
-
-impl Pooled for ActivityBehaviorComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.actor_actors.activity_behavior_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.actor_actors.activity_behavior_component_params
-    }
-}
-
-impl<'a> Extract<'a> for ActivityBehaviorComponentParams {
-    const TYPE_NAME: &'static str = "ActivityBehaviorComponentParams";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            activity_data: inst
-                .get("activityData")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-        }
-    }
-}
-
 /// DCB type: `TerrainTrashCleanupComponentParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct TerrainTrashCleanupComponentParams {

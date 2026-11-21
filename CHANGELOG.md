@@ -13,6 +13,11 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+### Changed
+
+- **Bindings cover LIVE 4.10.3 and PTU 5.0 at once.** `sc-extract` reads both builds with the same types, so apps built on this release keep working when 5.0 reaches LIVE. A type, field or poly variant that 5.0 no longer has, or that no 5.0 record uses, is `#[deprecated]` with the build in the note; expect deprecation warnings where you read one. Two fields changed type between the builds and now take a shape enum (`{Struct}_{field}`): `SFlashlightParams::light_cookie` and `SFlashlightSplitParams::light_cookie` (material in 4.10, texture in 5.0). `CraftingQualityLocationOverride::location_override_list` and `SInteractionState::state_auto_change` now hold the base's `…Ptr` poly enum. `sc_extract::generated::metadata::GENERATED_BUILDS` lists the covered builds, and `Datacore::parse` logs them.
+- **`sc-resources`: location quality overrides read through the 5.0 poly entry.** No change in the result on LIVE; an entry of an unknown subtype is skipped with a `warn!`.
+
 ## [v0.57.0] - 2026-11-17
 
 ### Added

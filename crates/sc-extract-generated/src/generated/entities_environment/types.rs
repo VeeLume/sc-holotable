@@ -527,54 +527,6 @@ impl<'a> Extract<'a> for HarvestableProviderParams {
     }
 }
 
-/// DCB type: `SEntityComponentManagedEntityRegionParams`
-/// Inherits from: `DataForgeComponentParams`
-pub struct SEntityComponentManagedEntityRegionParams {}
-
-impl Pooled for SEntityComponentManagedEntityRegionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_environment
-            .sentity_component_managed_entity_region_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_environment
-            .sentity_component_managed_entity_region_params
-    }
-}
-
-impl<'a> Extract<'a> for SEntityComponentManagedEntityRegionParams {
-    const TYPE_NAME: &'static str = "SEntityComponentManagedEntityRegionParams";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
-    }
-}
-
-/// DCB type: `SEntityComponentManagedEntityZoneParams`
-/// Inherits from: `DataForgeComponentParams`
-pub struct SEntityComponentManagedEntityZoneParams {}
-
-impl Pooled for SEntityComponentManagedEntityZoneParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_environment
-            .sentity_component_managed_entity_zone_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_environment
-            .sentity_component_managed_entity_zone_params
-    }
-}
-
-impl<'a> Extract<'a> for SEntityComponentManagedEntityZoneParams {
-    const TYPE_NAME: &'static str = "SEntityComponentManagedEntityZoneParams";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
-    }
-}
-
 /// DCB type: `ProceduralPlanetAudioComponentParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct ProceduralPlanetAudioComponentParams {
@@ -1174,6 +1126,52 @@ impl<'a> Extract<'a> for SolarSystemComponentParams {
     const TYPE_NAME: &'static str = "SolarSystemComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
+    }
+}
+
+/// DCB type: `SEntityComponentBlendedSmoothingTerrainModifierParams`
+/// Inherits from: `DataForgeComponentParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SEntityComponentBlendedSmoothingTerrainModifierParams {
+    /// `innerRadius` (Single)
+    pub inner_radius: f32,
+    /// `falloff` (Single)
+    pub falloff: f32,
+    /// `threshold` (Single)
+    pub threshold: f32,
+    /// `noiseAmount` (Single)
+    pub noise_amount: f32,
+    /// `noiseFrequency` (Single)
+    pub noise_frequency: f32,
+    /// `seed` (Int32)
+    pub seed: i32,
+}
+
+impl Pooled for SEntityComponentBlendedSmoothingTerrainModifierParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_blended_smoothing_terrain_modifier_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_blended_smoothing_terrain_modifier_params
+    }
+}
+
+impl<'a> Extract<'a> for SEntityComponentBlendedSmoothingTerrainModifierParams {
+    const TYPE_NAME: &'static str = "SEntityComponentBlendedSmoothingTerrainModifierParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            inner_radius: inst.get_f32("innerRadius").unwrap_or_default(),
+            falloff: inst.get_f32("falloff").unwrap_or_default(),
+            threshold: inst.get_f32("threshold").unwrap_or_default(),
+            noise_amount: inst.get_f32("noiseAmount").unwrap_or_default(),
+            noise_frequency: inst.get_f32("noiseFrequency").unwrap_or_default(),
+            seed: inst.get_i32("seed").unwrap_or_default(),
+        }
     }
 }
 
@@ -2239,5 +2237,55 @@ impl<'a> Extract<'a> for RadiationState {
             ),
             hazardous_radiation_rate: inst.get_f32("hazardousRadiationRate").unwrap_or_default(),
         }
+    }
+}
+
+/// DCB type: `SEntityComponentManagedEntityRegionParams`
+/// Inherits from: `DataForgeComponentParams`
+#[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+pub struct SEntityComponentManagedEntityRegionParams {}
+
+impl Pooled for SEntityComponentManagedEntityRegionParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_managed_entity_region_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_managed_entity_region_params
+    }
+}
+
+impl<'a> Extract<'a> for SEntityComponentManagedEntityRegionParams {
+    const TYPE_NAME: &'static str = "SEntityComponentManagedEntityRegionParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `SEntityComponentManagedEntityZoneParams`
+/// Inherits from: `DataForgeComponentParams`
+#[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+pub struct SEntityComponentManagedEntityZoneParams {}
+
+impl Pooled for SEntityComponentManagedEntityZoneParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_managed_entity_zone_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_managed_entity_zone_params
+    }
+}
+
+impl<'a> Extract<'a> for SEntityComponentManagedEntityZoneParams {
+    const TYPE_NAME: &'static str = "SEntityComponentManagedEntityZoneParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
     }
 }

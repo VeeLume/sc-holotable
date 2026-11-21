@@ -20,6 +20,10 @@ use super::super::*;
 
 /// DCB type: `STractorBeamHoloVisualParams`
 pub struct STractorBeamHoloVisualParams {
+    /// `defaultAttachAxesToAlign` (EnumChoice)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub default_attach_axes_to_align: EItemPortAttachRotationLimitAxis,
     /// `minAlignmentValidHolo` (Single)
     pub min_alignment_valid_holo: f32,
     /// `validHoloColor` (Class)
@@ -53,6 +57,9 @@ impl<'a> Extract<'a> for STractorBeamHoloVisualParams {
     const TYPE_NAME: &'static str = "STractorBeamHoloVisualParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
+            default_attach_axes_to_align: EItemPortAttachRotationLimitAxis::from_dcb_str(
+                inst.get_str("defaultAttachAxesToAlign").unwrap_or(""),
+            ),
             min_alignment_valid_holo: inst.get_f32("minAlignmentValidHolo").unwrap_or_default(),
             valid_holo_color: match inst.get("validHoloColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(

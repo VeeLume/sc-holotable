@@ -294,6 +294,28 @@ impl<'a> Extract<'a> for TransportIconTypes {
     }
 }
 
+/// DCB type: `TransportVehicleAccessInterface`
+/// Inherits from: `TransportPermissionsInterface`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct TransportVehicleAccessInterface {}
+
+impl Pooled for TransportVehicleAccessInterface {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.transportsystem.transport_vehicle_access_interface
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.transportsystem.transport_vehicle_access_interface
+    }
+}
+
+impl<'a> Extract<'a> for TransportVehicleAccessInterface {
+    const TYPE_NAME: &'static str = "TransportVehicleAccessInterface";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `TransportCarriageGenericAnnouncement`
 pub struct TransportCarriageGenericAnnouncement {
     /// `postDepartureAnnouncement` (Class)
@@ -489,6 +511,10 @@ impl<'a> Extract<'a> for TransportCarriageAnnouncements {
 pub struct TransportManagerParams {
     /// `automated` (Boolean)
     pub automated: bool,
+    /// `looping` (Boolean)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub looping: bool,
     /// `liveForever` (Boolean)
     pub live_forever: bool,
     /// `carriageClass` (Reference)
@@ -522,6 +548,7 @@ pub struct TransportManagerParams {
     /// `holdDoorsDelay` (Single)
     pub hold_doors_delay: f32,
     /// `reservationTime` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
     pub reservation_time: f32,
 }
 
@@ -539,6 +566,7 @@ impl<'a> Extract<'a> for TransportManagerParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             automated: inst.get_bool("automated").unwrap_or_default(),
+            looping: inst.get_bool("looping").unwrap_or_default(),
             live_forever: inst.get_bool("liveForever").unwrap_or_default(),
             carriage_class: inst
                 .get("carriageClass")
@@ -704,10 +732,11 @@ pub struct TransportNavSplineParams {
     pub end_tag_filter: Option<Handle<TagsDNFTerm>>,
     /// `reversible` (Boolean)
     pub reversible: bool,
-    /// `invertForward` (Boolean)
-    pub invert_forward: bool,
     /// `invertForwardOnStart` (Boolean)
     pub invert_forward_on_start: bool,
+    /// `invertForward` (Boolean)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub invert_forward: bool,
 }
 
 impl Pooled for TransportNavSplineParams {
@@ -752,8 +781,8 @@ impl<'a> Extract<'a> for TransportNavSplineParams {
                 _ => None,
             },
             reversible: inst.get_bool("reversible").unwrap_or_default(),
-            invert_forward: inst.get_bool("invertForward").unwrap_or_default(),
             invert_forward_on_start: inst.get_bool("invertForwardOnStart").unwrap_or_default(),
+            invert_forward: inst.get_bool("invertForward").unwrap_or_default(),
         }
     }
 }
@@ -1039,10 +1068,6 @@ impl<'a> Extract<'a> for TransportCarriageEffects {
 /// DCB type: `TransportCarriageParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct TransportCarriageParams {
-    /// `responsive` (Boolean)
-    pub responsive: bool,
-    /// `reverseDirectionWithSpline` (Boolean)
-    pub reverse_direction_with_spline: bool,
     /// `alignmentPositionalOffset` (Class)
     pub alignment_positional_offset: Option<Handle<Vec3>>,
     /// `alignmentRotationalOffset` (Class)
@@ -1051,6 +1076,12 @@ pub struct TransportCarriageParams {
     pub audio: Option<Handle<TransportCarriageAudio>>,
     /// `effects` (Class)
     pub effects: Option<Handle<TransportCarriageEffects>>,
+    /// `responsive` (Boolean)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub responsive: bool,
+    /// `reverseDirectionWithSpline` (Boolean)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub reverse_direction_with_spline: bool,
 }
 
 impl Pooled for TransportCarriageParams {
@@ -1066,10 +1097,6 @@ impl<'a> Extract<'a> for TransportCarriageParams {
     const TYPE_NAME: &'static str = "TransportCarriageParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            responsive: inst.get_bool("responsive").unwrap_or_default(),
-            reverse_direction_with_spline: inst
-                .get_bool("reverseDirectionWithSpline")
-                .unwrap_or_default(),
             alignment_positional_offset: match inst.get("alignmentPositionalOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
                     Instance::from_inline_data(b.db, struct_index, data),
@@ -1102,6 +1129,10 @@ impl<'a> Extract<'a> for TransportCarriageParams {
                 }
                 _ => None,
             },
+            responsive: inst.get_bool("responsive").unwrap_or_default(),
+            reverse_direction_with_spline: inst
+                .get_bool("reverseDirectionWithSpline")
+                .unwrap_or_default(),
         }
     }
 }

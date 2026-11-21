@@ -305,6 +305,28 @@ impl<'a> Extract<'a> for SubsumptionConversationLinkComponentParams {
     }
 }
 
+/// DCB type: `ProxyNavigationVolumeParams`
+/// Inherits from: `DataForgeComponentParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct ProxyNavigationVolumeParams {}
+
+impl Pooled for ProxyNavigationVolumeParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.proxy_navigation_volume_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.proxy_navigation_volume_params
+    }
+}
+
+impl<'a> Extract<'a> for ProxyNavigationVolumeParams {
+    const TYPE_NAME: &'static str = "ProxyNavigationVolumeParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `Condition_Or`
 /// Inherits from: `AIMotiveCondition`
 pub struct Condition_Or {
@@ -343,68 +365,6 @@ impl<'a> Extract<'a> for Condition_Or {
                     .collect()
                 })
                 .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `Condition_TargetIsShip`
-/// Inherits from: `AIMotiveCondition`
-pub struct Condition_TargetIsShip {
-    /// `id` (Guid)
-    pub id: CigGuid,
-    /// `minSatisfactionDuration` (Single)
-    pub min_satisfaction_duration: f32,
-    /// `isShip` (Boolean)
-    pub is_ship: bool,
-}
-
-impl Pooled for Condition_TargetIsShip {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.condition_target_is_ship
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.condition_target_is_ship
-    }
-}
-
-impl<'a> Extract<'a> for Condition_TargetIsShip {
-    const TYPE_NAME: &'static str = "Condition_TargetIsShip";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            id: inst.get_guid("id").unwrap_or_default(),
-            min_satisfaction_duration: inst.get_f32("minSatisfactionDuration").unwrap_or_default(),
-            is_ship: inst.get_bool("isShip").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `Condition_TargetReachable`
-/// Inherits from: `AIMotiveCondition`
-pub struct Condition_TargetReachable {
-    /// `id` (Guid)
-    pub id: CigGuid,
-    /// `minSatisfactionDuration` (Single)
-    pub min_satisfaction_duration: f32,
-    /// `reachable` (Boolean)
-    pub reachable: bool,
-}
-
-impl Pooled for Condition_TargetReachable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.condition_target_reachable
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.condition_target_reachable
-    }
-}
-
-impl<'a> Extract<'a> for Condition_TargetReachable {
-    const TYPE_NAME: &'static str = "Condition_TargetReachable";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            id: inst.get_guid("id").unwrap_or_default(),
-            min_satisfaction_duration: inst.get_f32("minSatisfactionDuration").unwrap_or_default(),
-            reachable: inst.get_bool("reachable").unwrap_or_default(),
         }
     }
 }
@@ -1442,6 +1402,64 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsBooleanFromStringSwitch {
     }
 }
 
+/// DCB type: `BuildingBlocks_BindingsBooleanBooleanSelect`
+/// Inherits from: `BuildingBlocks_BindingsBooleanBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct BuildingBlocks_BindingsBooleanBooleanSelect {
+    /// `isTrue` (Boolean)
+    pub is_true: bool,
+    /// `isFalse` (Boolean)
+    pub is_false: bool,
+    /// `inputTrue` (WeakPointer)
+    pub input_true: Option<BuildingBlocks_BindingsBooleanBasePtr>,
+    /// `inputFalse` (WeakPointer)
+    pub input_false: Option<BuildingBlocks_BindingsBooleanBasePtr>,
+    /// `input` (WeakPointer)
+    pub input: Option<BuildingBlocks_BindingsBooleanBasePtr>,
+}
+
+impl Pooled for BuildingBlocks_BindingsBooleanBooleanSelect {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .dormant
+            .building_blocks_bindings_boolean_boolean_select
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .dormant
+            .building_blocks_bindings_boolean_boolean_select
+    }
+}
+
+impl<'a> Extract<'a> for BuildingBlocks_BindingsBooleanBooleanSelect {
+    const TYPE_NAME: &'static str = "BuildingBlocks_BindingsBooleanBooleanSelect";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            is_true: inst.get_bool("isTrue").unwrap_or_default(),
+            is_false: inst.get_bool("isFalse").unwrap_or_default(),
+            input_true: match inst.get("inputTrue") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(BuildingBlocks_BindingsBooleanBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            input_false: match inst.get("inputFalse") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(BuildingBlocks_BindingsBooleanBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+            input: match inst.get("input") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(BuildingBlocks_BindingsBooleanBasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `BindingsOperations_DialogueEvent`
 /// Inherits from: `BuildingBlocks_BindingsFieldBase`
 pub struct BindingsOperations_DialogueEvent {
@@ -1693,42 +1711,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsNumberFromIntegerProgress {
                 }
                 _ => None,
             },
-        }
-    }
-}
-
-/// DCB type: `BindingsOperations_StringFromStringCanvas`
-/// Inherits from: `BuildingBlocks_BindingsStringBase`
-pub struct BindingsOperations_StringFromStringCanvas {
-    /// `input` (WeakPointer)
-    pub input: Option<BuildingBlocks_BindingsStringBasePtr>,
-    /// `defaultValue` (Reference)
-    pub default_value: Option<CigGuid>,
-}
-
-impl Pooled for BindingsOperations_StringFromStringCanvas {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.bindings_operations_string_from_string_canvas
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.bindings_operations_string_from_string_canvas
-    }
-}
-
-impl<'a> Extract<'a> for BindingsOperations_StringFromStringCanvas {
-    const TYPE_NAME: &'static str = "BindingsOperations_StringFromStringCanvas";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            input: match inst.get("input") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_BindingsStringBasePtr::from_ref(b, r))
-                }
-                _ => None,
-            },
-            default_value: inst
-                .get("defaultValue")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
         }
     }
 }
@@ -8597,6 +8579,28 @@ impl<'a> Extract<'a> for ArmouryTerminalParams {
     }
 }
 
+/// DCB type: `DynamicEditorVariablesComponentParams`
+/// Inherits from: `DataForgeComponentParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct DynamicEditorVariablesComponentParams {}
+
+impl Pooled for DynamicEditorVariablesComponentParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.dynamic_editor_variables_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.dynamic_editor_variables_component_params
+    }
+}
+
+impl<'a> Extract<'a> for DynamicEditorVariablesComponentParams {
+    const TYPE_NAME: &'static str = "DynamicEditorVariablesComponentParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `LegacyCraftingRecipeList_Direct`
 /// Inherits from: `LegacyCraftingRecipeList_Base`
 pub struct LegacyCraftingRecipeList_Direct {
@@ -11858,6 +11862,10 @@ pub struct EntityComponentSpawnClosetParams {
     pub request_hold_seconds: f32,
     /// `defaultDoorsOpen` (Boolean)
     pub default_doors_open: bool,
+    /// `autoSpawnsRecords` (Reference (array))
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub auto_spawns_records: Vec<CigGuid>,
 }
 
 impl Pooled for EntityComponentSpawnClosetParams {
@@ -11883,6 +11891,19 @@ impl<'a> Extract<'a> for EntityComponentSpawnClosetParams {
             max_spawns_per_minute: inst.get_f32("maxSpawnsPerMinute").unwrap_or_default(),
             request_hold_seconds: inst.get_f32("requestHoldSeconds").unwrap_or_default(),
             default_doors_open: inst.get_bool("defaultDoorsOpen").unwrap_or_default(),
+            auto_spawns_records: inst
+                .get_array("autoSpawnsRecords")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }
@@ -11918,6 +11939,10 @@ pub struct EntityComponentSpawnClosetTransitManagerParams {
     pub request_hold_seconds: f32,
     /// `defaultDoorsOpen` (Boolean)
     pub default_doors_open: bool,
+    /// `autoSpawnsRecords` (Reference (array))
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub auto_spawns_records: Vec<CigGuid>,
 }
 
 impl Pooled for EntityComponentSpawnClosetTransitManagerParams {
@@ -11947,6 +11972,19 @@ impl<'a> Extract<'a> for EntityComponentSpawnClosetTransitManagerParams {
             max_spawns_per_minute: inst.get_f32("maxSpawnsPerMinute").unwrap_or_default(),
             request_hold_seconds: inst.get_f32("requestHoldSeconds").unwrap_or_default(),
             default_doors_open: inst.get_bool("defaultDoorsOpen").unwrap_or_default(),
+            auto_spawns_records: inst
+                .get_array("autoSpawnsRecords")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }
@@ -13424,6 +13462,126 @@ impl<'a> Extract<'a> for DefaultBlueprintSelection_Base_NonRef {
     }
 }
 
+/// DCB type: `CraftingModifierType_Base_NonRef`
+/// Inherits from: `CraftingModifierType_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct CraftingModifierType_Base_NonRef {}
+
+impl Pooled for CraftingModifierType_Base_NonRef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.crafting_modifier_type_base_non_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.crafting_modifier_type_base_non_ref
+    }
+}
+
+impl<'a> Extract<'a> for CraftingModifierType_Base_NonRef {
+    const TYPE_NAME: &'static str = "CraftingModifierType_Base_NonRef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `CraftingModifierCondition_Base_NonRef`
+/// Inherits from: `CraftingModifierCondition_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct CraftingModifierCondition_Base_NonRef {}
+
+impl Pooled for CraftingModifierCondition_Base_NonRef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.crafting_modifier_condition_base_non_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.crafting_modifier_condition_base_non_ref
+    }
+}
+
+impl<'a> Extract<'a> for CraftingModifierCondition_Base_NonRef {
+    const TYPE_NAME: &'static str = "CraftingModifierCondition_Base_NonRef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `CraftingModifierCondition_ProcessTypes`
+/// Inherits from: `CraftingModifierCondition_Base_NonRef`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct CraftingModifierCondition_ProcessTypes {
+    /// `processTypes` (EnumChoice (array))
+    pub process_types: Vec<ECraftingProcessType>,
+}
+
+impl Pooled for CraftingModifierCondition_ProcessTypes {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.crafting_modifier_condition_process_types
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.crafting_modifier_condition_process_types
+    }
+}
+
+impl<'a> Extract<'a> for CraftingModifierCondition_ProcessTypes {
+    const TYPE_NAME: &'static str = "CraftingModifierCondition_ProcessTypes";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            process_types: inst
+                .get_array("processTypes")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(ECraftingProcessType::from_dcb_str))
+                        .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `CraftingModifierCondition_BlueprintWhitelist`
+/// Inherits from: `CraftingModifierCondition_Base_NonRef`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct CraftingModifierCondition_BlueprintWhitelist {
+    /// `blueprintWhitelist` (Reference (array))
+    pub blueprint_whitelist: Vec<CigGuid>,
+}
+
+impl Pooled for CraftingModifierCondition_BlueprintWhitelist {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .dormant
+            .crafting_modifier_condition_blueprint_whitelist
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .dormant
+            .crafting_modifier_condition_blueprint_whitelist
+    }
+}
+
+impl<'a> Extract<'a> for CraftingModifierCondition_BlueprintWhitelist {
+    const TYPE_NAME: &'static str = "CraftingModifierCondition_BlueprintWhitelist";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            blueprint_whitelist: inst
+                .get_array("blueprintWhitelist")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `CraftedItemComponentParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct CraftedItemComponentParams {}
@@ -13469,6 +13627,32 @@ impl<'a> Extract<'a> for CraftingQualityDistributionUniform {
             min: inst.get_i32("min").unwrap_or_default(),
             max: inst.get_i32("max").unwrap_or_default(),
         }
+    }
+}
+
+/// DCB type: `CraftingQualityLocationOverrideEntry_Base_NonRef`
+/// Inherits from: `CraftingQualityLocationOverrideEntry_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct CraftingQualityLocationOverrideEntry_Base_NonRef {}
+
+impl Pooled for CraftingQualityLocationOverrideEntry_Base_NonRef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .dormant
+            .crafting_quality_location_override_entry_base_non_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .dormant
+            .crafting_quality_location_override_entry_base_non_ref
+    }
+}
+
+impl<'a> Extract<'a> for CraftingQualityLocationOverrideEntry_Base_NonRef {
+    const TYPE_NAME: &'static str = "CraftingQualityLocationOverrideEntry_Base_NonRef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
     }
 }
 
@@ -14267,6 +14451,36 @@ impl<'a> Extract<'a> for SStreamingObjectContainerComponentParams {
     }
 }
 
+/// DCB type: `SHelperPositionParams`
+/// Inherits from: `SHazardAreaPositionParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SHelperPositionParams {
+    /// `helperName` (String)
+    pub helper_name: String,
+}
+
+impl Pooled for SHelperPositionParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.shelper_position_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.shelper_position_params
+    }
+}
+
+impl<'a> Extract<'a> for SHelperPositionParams {
+    const TYPE_NAME: &'static str = "SHelperPositionParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            helper_name: inst
+                .get_str("helperName")
+                .map(String::from)
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `SkylineComponentParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct SkylineComponentParams {}
@@ -14608,6 +14822,41 @@ impl<'a> Extract<'a> for SRenderToTextureViewBaseParams {
     }
 }
 
+/// DCB type: `GreenZoneContextData`
+/// Inherits from: `HierarchicalContextualData`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct GreenZoneContextData {
+    /// `greenZoneSettings` (Class)
+    pub green_zone_settings: Option<Handle<GreenZoneFlagsDef>>,
+}
+
+impl Pooled for GreenZoneContextData {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.green_zone_context_data
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.green_zone_context_data
+    }
+}
+
+impl<'a> Extract<'a> for GreenZoneContextData {
+    const TYPE_NAME: &'static str = "GreenZoneContextData";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            green_zone_settings: match inst.get("greenZoneSettings") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GreenZoneFlagsDef>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `CharacterCustomizerControllerParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct CharacterCustomizerControllerParams {}
@@ -14753,6 +15002,59 @@ impl<'a> Extract<'a> for RearmRefuelTerminalParams {
     const TYPE_NAME: &'static str = "RearmRefuelTerminalParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
+    }
+}
+
+/// DCB type: `SEntityComponentBlendedRectangleSmoothingTerrainModifierParams`
+/// Inherits from: `DataForgeComponentParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SEntityComponentBlendedRectangleSmoothingTerrainModifierParams {
+    /// `lengthX` (Single)
+    pub length_x: f32,
+    /// `lengthY` (Single)
+    pub length_y: f32,
+    /// `cornerRadius` (Single)
+    pub corner_radius: f32,
+    /// `falloffWidth` (Single)
+    pub falloff_width: f32,
+    /// `threshold` (Single)
+    pub threshold: f32,
+    /// `noiseAmount` (Single)
+    pub noise_amount: f32,
+    /// `noiseFrequency` (Single)
+    pub noise_frequency: f32,
+    /// `seed` (Int32)
+    pub seed: i32,
+}
+
+impl Pooled for SEntityComponentBlendedRectangleSmoothingTerrainModifierParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .dormant
+            .sentity_component_blended_rectangle_smoothing_terrain_modifier_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .dormant
+            .sentity_component_blended_rectangle_smoothing_terrain_modifier_params
+    }
+}
+
+impl<'a> Extract<'a> for SEntityComponentBlendedRectangleSmoothingTerrainModifierParams {
+    const TYPE_NAME: &'static str =
+        "SEntityComponentBlendedRectangleSmoothingTerrainModifierParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            length_x: inst.get_f32("lengthX").unwrap_or_default(),
+            length_y: inst.get_f32("lengthY").unwrap_or_default(),
+            corner_radius: inst.get_f32("cornerRadius").unwrap_or_default(),
+            falloff_width: inst.get_f32("falloffWidth").unwrap_or_default(),
+            threshold: inst.get_f32("threshold").unwrap_or_default(),
+            noise_amount: inst.get_f32("noiseAmount").unwrap_or_default(),
+            noise_frequency: inst.get_f32("noiseFrequency").unwrap_or_default(),
+            seed: inst.get_i32("seed").unwrap_or_default(),
+        }
     }
 }
 
@@ -16888,6 +17190,128 @@ impl<'a> Extract<'a> for SEntitiesGroupComponentParams {
     }
 }
 
+/// DCB type: `LocationLawContextData`
+/// Inherits from: `HierarchicalContextualData`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationLawContextData {
+    /// `jurisdiction` (Reference)
+    pub jurisdiction: Option<CigGuid>,
+}
+
+impl Pooled for LocationLawContextData {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.location_law_context_data
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.location_law_context_data
+    }
+}
+
+impl<'a> Extract<'a> for LocationLawContextData {
+    const TYPE_NAME: &'static str = "LocationLawContextData";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            jurisdiction: inst
+                .get("jurisdiction")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `LocationCraftingQualityContextData`
+/// Inherits from: `HierarchicalContextualData`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCraftingQualityContextData {
+    /// `qualityOverride` (Reference)
+    pub quality_override: Option<CigGuid>,
+}
+
+impl Pooled for LocationCraftingQualityContextData {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.location_crafting_quality_context_data
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.location_crafting_quality_context_data
+    }
+}
+
+impl<'a> Extract<'a> for LocationCraftingQualityContextData {
+    const TYPE_NAME: &'static str = "LocationCraftingQualityContextData";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            quality_override: inst
+                .get("qualityOverride")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `LocationManufacturerContextData`
+/// Inherits from: `HierarchicalContextualData`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationManufacturerContextData {
+    /// `manufacturer` (Reference)
+    pub manufacturer: Option<CigGuid>,
+}
+
+impl Pooled for LocationManufacturerContextData {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.location_manufacturer_context_data
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.location_manufacturer_context_data
+    }
+}
+
+impl<'a> Extract<'a> for LocationManufacturerContextData {
+    const TYPE_NAME: &'static str = "LocationManufacturerContextData";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            manufacturer: inst
+                .get("manufacturer")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `LocationHarvestableHostContextData`
+/// Inherits from: `HierarchicalContextualData`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationHarvestableHostContextData {
+    /// `slotsProbabilityScale` (Single)
+    pub slots_probability_scale: f32,
+    /// `ignoreParentProbabilityScale` (Boolean)
+    pub ignore_parent_probability_scale: bool,
+}
+
+impl Pooled for LocationHarvestableHostContextData {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.location_harvestable_host_context_data
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.location_harvestable_host_context_data
+    }
+}
+
+impl<'a> Extract<'a> for LocationHarvestableHostContextData {
+    const TYPE_NAME: &'static str = "LocationHarvestableHostContextData";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            slots_probability_scale: inst.get_f32("slotsProbabilityScale").unwrap_or_default(),
+            ignore_parent_probability_scale: inst
+                .get_bool("ignoreParentProbabilityScale")
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `SEntityComponentNavPointParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct SEntityComponentNavPointParams {}
@@ -18067,6 +18491,32 @@ impl<'a> Extract<'a> for SEntityDensityClassOverridesRef {
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
         }
+    }
+}
+
+/// DCB type: `SEntityComponentEntityReferenceOverrideMetadataParams`
+/// Inherits from: `DataForgeComponentParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SEntityComponentEntityReferenceOverrideMetadataParams {}
+
+impl Pooled for SEntityComponentEntityReferenceOverrideMetadataParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .dormant
+            .sentity_component_entity_reference_override_metadata_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .dormant
+            .sentity_component_entity_reference_override_metadata_params
+    }
+}
+
+impl<'a> Extract<'a> for SEntityComponentEntityReferenceOverrideMetadataParams {
+    const TYPE_NAME: &'static str = "SEntityComponentEntityReferenceOverrideMetadataParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
     }
 }
 
@@ -21345,6 +21795,53 @@ impl<'a> Extract<'a> for InteractionConditionStaminaRequirement {
     }
 }
 
+/// DCB type: `SStateAutoChangeRandomDelayOffset`
+/// Inherits from: `SStateAutoChange`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SStateAutoChangeRandomDelayOffset {
+    /// `NextState` (WeakPointer)
+    pub next_state: Option<Handle<SInteractionState>>,
+    /// `Delay` (Single)
+    pub delay: f32,
+    /// `RunWhenStreamedOut` (Boolean)
+    pub run_when_streamed_out: bool,
+    /// `minDelayOffset` (Single)
+    pub min_delay_offset: f32,
+    /// `maxDelayOffset` (Single)
+    pub max_delay_offset: f32,
+}
+
+impl Pooled for SStateAutoChangeRandomDelayOffset {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.sstate_auto_change_random_delay_offset
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.sstate_auto_change_random_delay_offset
+    }
+}
+
+impl<'a> Extract<'a> for SStateAutoChangeRandomDelayOffset {
+    const TYPE_NAME: &'static str = "SStateAutoChangeRandomDelayOffset";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            next_state: match inst.get("NextState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            delay: inst.get_f32("Delay").unwrap_or_default(),
+            run_when_streamed_out: inst.get_bool("RunWhenStreamedOut").unwrap_or_default(),
+            min_delay_offset: inst.get_f32("minDelayOffset").unwrap_or_default(),
+            max_delay_offset: inst.get_f32("maxDelayOffset").unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `SRangeStateModifier`
 /// Inherits from: `SStateModifier`
 pub struct SRangeStateModifier {
@@ -21443,6 +21940,28 @@ impl<'a> Extract<'a> for SPowerSourceStateModifier {
     }
 }
 
+/// DCB type: `SEntityAttachableParentContext`
+/// Inherits from: `SEntityContextBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SEntityAttachableParentContext {}
+
+impl Pooled for SEntityAttachableParentContext {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.sentity_attachable_parent_context
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.sentity_attachable_parent_context
+    }
+}
+
+impl<'a> Extract<'a> for SEntityAttachableParentContext {
+    const TYPE_NAME: &'static str = "SEntityAttachableParentContext";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `SPrisonSentenceStateModifier`
 /// Inherits from: `SStateModifier`
 pub struct SPrisonSentenceStateModifier {
@@ -21483,45 +22002,6 @@ impl<'a> Extract<'a> for SPrisonSentenceStateModifier {
                 }
                 _ => None,
             },
-        }
-    }
-}
-
-/// DCB type: `SItemExpiryStateModifier`
-/// Inherits from: `SStateModifier`
-pub struct SItemExpiryStateModifier {
-    /// `interactionStates` (WeakPointer (array))
-    pub interaction_states: Vec<Handle<SInteractionState>>,
-}
-
-impl Pooled for SItemExpiryStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.sitem_expiry_state_modifier
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.sitem_expiry_state_modifier
-    }
-}
-
-impl<'a> Extract<'a> for SItemExpiryStateModifier {
-    const TYPE_NAME: &'static str = "SItemExpiryStateModifier";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            interaction_states: inst
-                .get_array("interactionStates")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(b.alloc_nested::<SInteractionState>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
-                        _ => None,
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
         }
     }
 }
@@ -24280,6 +24760,58 @@ impl<'a> Extract<'a> for LootTableOptionalDataV3_NoRef {
     }
 }
 
+/// DCB type: `LootV3SecondaryChoiceLayer_NoRef`
+/// Inherits from: `LootV3SecondaryChoiceLayer_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LootV3SecondaryChoiceLayer_NoRef {}
+
+impl Pooled for LootV3SecondaryChoiceLayer_NoRef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.loot_v3_secondary_choice_layer_no_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.loot_v3_secondary_choice_layer_no_ref
+    }
+}
+
+impl<'a> Extract<'a> for LootV3SecondaryChoiceLayer_NoRef {
+    const TYPE_NAME: &'static str = "LootV3SecondaryChoiceLayer_NoRef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LootV3SecondaryChoiceLayer_RecordRef`
+/// Inherits from: `LootV3SecondaryChoiceLayer_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LootV3SecondaryChoiceLayer_RecordRef {
+    /// `singleLayerRecord` (Reference)
+    pub single_layer_record: Option<CigGuid>,
+}
+
+impl Pooled for LootV3SecondaryChoiceLayer_RecordRef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.loot_v3_secondary_choice_layer_record_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.loot_v3_secondary_choice_layer_record_ref
+    }
+}
+
+impl<'a> Extract<'a> for LootV3SecondaryChoiceLayer_RecordRef {
+    const TYPE_NAME: &'static str = "LootV3SecondaryChoiceLayer_RecordRef";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            single_layer_record: inst
+                .get("singleLayerRecord")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
 /// DCB type: `LootV3SecondaryChoiceEntrySelector_NoRef`
 /// Inherits from: `LootV3SecondaryChoiceEntrySelector_Base`
 pub struct LootV3SecondaryChoiceEntrySelector_NoRef {}
@@ -24315,6 +24847,50 @@ impl Pooled for QuantityRange_NoRef {
 
 impl<'a> Extract<'a> for QuantityRange_NoRef {
     const TYPE_NAME: &'static str = "QuantityRange_NoRef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LootThemeSelector_NoRef`
+/// Inherits from: `LootThemeSelector_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LootThemeSelector_NoRef {}
+
+impl Pooled for LootThemeSelector_NoRef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.loot_theme_selector_no_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.loot_theme_selector_no_ref
+    }
+}
+
+impl<'a> Extract<'a> for LootThemeSelector_NoRef {
+    const TYPE_NAME: &'static str = "LootThemeSelector_NoRef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `LootSubThemeModifier_NoRef`
+/// Inherits from: `LootSubThemeModifier_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LootSubThemeModifier_NoRef {}
+
+impl Pooled for LootSubThemeModifier_NoRef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.loot_sub_theme_modifier_no_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.loot_sub_theme_modifier_no_ref
+    }
+}
+
+impl<'a> Extract<'a> for LootSubThemeModifier_NoRef {
+    const TYPE_NAME: &'static str = "LootSubThemeModifier_NoRef";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }
@@ -24967,6 +25543,120 @@ impl<'a> Extract<'a> for AISyncedMeleeAttack {
     }
 }
 
+/// DCB type: `AutoSpawnClassPool`
+/// Inherits from: `AutoSpawnClass`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct AutoSpawnClassPool {
+    /// `classPool` (Reference (array))
+    pub class_pool: Vec<CigGuid>,
+}
+
+impl Pooled for AutoSpawnClassPool {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.auto_spawn_class_pool
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.auto_spawn_class_pool
+    }
+}
+
+impl<'a> Extract<'a> for AutoSpawnClassPool {
+    const TYPE_NAME: &'static str = "AutoSpawnClassPool";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            class_pool: inst
+                .get_array("classPool")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `DefendAreaAssignment`
+/// Inherits from: `OnSpawnAssignment`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct DefendAreaAssignment {
+    /// `areaPositiveTags` (Class)
+    pub area_positive_tags: Option<Handle<TagList>>,
+    /// `areaNegativeTags` (Class)
+    pub area_negative_tags: Option<Handle<TagList>>,
+}
+
+impl Pooled for DefendAreaAssignment {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.defend_area_assignment
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.defend_area_assignment
+    }
+}
+
+impl<'a> Extract<'a> for DefendAreaAssignment {
+    const TYPE_NAME: &'static str = "DefendAreaAssignment";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            area_positive_tags: match inst.get("areaPositiveTags") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+            area_negative_tags: match inst.get("areaNegativeTags") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `AutoSpawnsDataManual`
+/// Inherits from: `AutoSpawnsData`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct AutoSpawnsDataManual {
+    /// `autoSpawnData` (Class)
+    pub auto_spawn_data: Option<Handle<AutoSpawnData>>,
+}
+
+impl Pooled for AutoSpawnsDataManual {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.auto_spawns_data_manual
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.auto_spawns_data_manual
+    }
+}
+
+impl<'a> Extract<'a> for AutoSpawnsDataManual {
+    const TYPE_NAME: &'static str = "AutoSpawnsDataManual";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            auto_spawn_data: match inst.get("autoSpawnData") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AutoSpawnData>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `ContractGenerationParams_RequestOnly`
 /// Inherits from: `ContractGenerationParamsBase`
 pub struct ContractGenerationParams_RequestOnly {}
@@ -25495,6 +26185,140 @@ impl<'a> Extract<'a> for HaulingOrder_Or {
     }
 }
 
+/// DCB type: `LocationCondition_ExcludedLocationClass`
+/// Inherits from: `LocationCondition_LocationClassBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_ExcludedLocationClass {
+    /// `locationClass` (Reference)
+    pub location_class: Option<CigGuid>,
+}
+
+impl Pooled for LocationCondition_ExcludedLocationClass {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.location_condition_excluded_location_class
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.location_condition_excluded_location_class
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_ExcludedLocationClass {
+    const TYPE_NAME: &'static str = "LocationCondition_ExcludedLocationClass";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_class: inst
+                .get("locationClass")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_ExcludedLocationClasses`
+/// Inherits from: `LocationCondition_LocationClassBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_ExcludedLocationClasses {
+    /// `locationClasses` (Reference (array))
+    pub location_classes: Vec<CigGuid>,
+}
+
+impl Pooled for LocationCondition_ExcludedLocationClasses {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.location_condition_excluded_location_classes
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.location_condition_excluded_location_classes
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_ExcludedLocationClasses {
+    const TYPE_NAME: &'static str = "LocationCondition_ExcludedLocationClasses";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_classes: inst
+                .get_array("locationClasses")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `LocationCondition_SameLocation`
+/// Inherits from: `LocationCondition_OtherLocationBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct LocationCondition_SameLocation {
+    /// `location` (WeakPointer)
+    pub location: Option<Handle<MissionProperty>>,
+}
+
+impl Pooled for LocationCondition_SameLocation {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.location_condition_same_location
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.location_condition_same_location
+    }
+}
+
+impl<'a> Extract<'a> for LocationCondition_SameLocation {
+    const TYPE_NAME: &'static str = "LocationCondition_SameLocation";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            location: match inst.get("location") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<MissionProperty>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `DataSetMatchCondition_FactionIdentityDef`
+/// Inherits from: `BaseDataSetMatchCondition`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct DataSetMatchCondition_FactionIdentityDef {
+    /// `factionIdentity` (Reference)
+    pub faction_identity: Option<CigGuid>,
+}
+
+impl Pooled for DataSetMatchCondition_FactionIdentityDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.data_set_match_condition_faction_identity_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.data_set_match_condition_faction_identity_def
+    }
+}
+
+impl<'a> Extract<'a> for DataSetMatchCondition_FactionIdentityDef {
+    const TYPE_NAME: &'static str = "DataSetMatchCondition_FactionIdentityDef";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            faction_identity: inst
+                .get("factionIdentity")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
 /// DCB type: `Investigation_Suspect`
 pub struct Investigation_Suspect {
     /// `name` (Class)
@@ -25940,6 +26764,36 @@ impl<'a> Extract<'a> for MissionPropertyValue_Investigation {
     }
 }
 
+/// DCB type: `SpawnClosetSearchOptions_EntityDeclaration`
+/// Inherits from: `SpawnClosetSearchOptionsBase`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SpawnClosetSearchOptions_EntityDeclaration {
+    /// `entityDeclaration` (Reference)
+    pub entity_declaration: Option<CigGuid>,
+}
+
+impl Pooled for SpawnClosetSearchOptions_EntityDeclaration {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.spawn_closet_search_options_entity_declaration
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.spawn_closet_search_options_entity_declaration
+    }
+}
+
+impl<'a> Extract<'a> for SpawnClosetSearchOptions_EntityDeclaration {
+    const TYPE_NAME: &'static str = "SpawnClosetSearchOptions_EntityDeclaration";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            entity_declaration: inst
+                .get("entityDeclaration")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
 /// DCB type: `MissionVariableFloat`
 /// Inherits from: `MissionVariableBase`
 pub struct MissionVariableFloat {
@@ -26008,40 +26862,25 @@ impl<'a> Extract<'a> for MissionVariableString {
     }
 }
 
-/// DCB type: `ModuleSpawnedEntities_NPC`
-/// Inherits from: `ModuleSpawnedEntities`
-pub struct ModuleSpawnedEntities_NPC {
-    /// `debugName` (String)
-    pub debug_name: String,
-    /// `spawnImmediately` (Boolean)
-    pub spawn_immediately: bool,
-    /// `spawnDescriptionPropertyName` (String)
-    pub spawn_description_property_name: String,
-}
+/// DCB type: `ModuleDeclarationType_Instance`
+/// Inherits from: `ModuleDeclarationType_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct ModuleDeclarationType_Instance {}
 
-impl Pooled for ModuleSpawnedEntities_NPC {
+impl Pooled for ModuleDeclarationType_Instance {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.module_spawned_entities_npc
+        &pools.dormant.module_declaration_type_instance
     }
     fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.module_spawned_entities_npc
+        &mut pools.dormant.module_declaration_type_instance
     }
 }
 
-impl<'a> Extract<'a> for ModuleSpawnedEntities_NPC {
-    const TYPE_NAME: &'static str = "ModuleSpawnedEntities_NPC";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            spawn_immediately: inst.get_bool("spawnImmediately").unwrap_or_default(),
-            spawn_description_property_name: inst
-                .get_str("spawnDescriptionPropertyName")
-                .map(String::from)
-                .unwrap_or_default(),
-        }
+impl<'a> Extract<'a> for ModuleDeclarationType_Instance {
+    const TYPE_NAME: &'static str = "ModuleDeclarationType_Instance";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
     }
 }
 
@@ -26083,6 +26922,47 @@ impl<'a> Extract<'a> for VariableDeclaration_SpawnedEntities {
                     .collect()
                 })
                 .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `VariableDeclaration_Objective`
+/// Inherits from: `VariableDeclaration_Base`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct VariableDeclaration_Objective {
+    /// `subsumptionVariableName` (String)
+    pub subsumption_variable_name: String,
+    /// `declaredObjective` (WeakPointer)
+    pub declared_objective: Option<Handle<MissionObjectiveTreeNode>>,
+}
+
+impl Pooled for VariableDeclaration_Objective {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.variable_declaration_objective
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.variable_declaration_objective
+    }
+}
+
+impl<'a> Extract<'a> for VariableDeclaration_Objective {
+    const TYPE_NAME: &'static str = "VariableDeclaration_Objective";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            subsumption_variable_name: inst
+                .get_str("subsumptionVariableName")
+                .map(String::from)
+                .unwrap_or_default(),
+            declared_objective: match inst.get("declaredObjective") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<MissionObjectiveTreeNode>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
         }
     }
 }
@@ -27735,6 +28615,65 @@ impl<'a> Extract<'a> for SEntityObjectContainerGridProperty {
                 }
                 _ => None,
             },
+        }
+    }
+}
+
+/// DCB type: `SEntitySurrogateManagerPhysicsControllerParams`
+/// Inherits from: `SEntityBasePhysicsControllerParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct SEntitySurrogateManagerPhysicsControllerParams {
+    /// `Mass` (Single)
+    pub mass: f32,
+    /// `compoundingAllowed` (Boolean)
+    pub compounding_allowed: bool,
+    /// `breakableParams` (StrongPointer)
+    pub breakable_params: Option<Handle<SBreakablePhysicsParams>>,
+    /// `gameCollisionClass` (StrongPointer)
+    pub game_collision_class: Option<Handle<SGameCollisionClass>>,
+    /// `spawnBoxScale` (Single)
+    pub spawn_box_scale: f32,
+}
+
+impl Pooled for SEntitySurrogateManagerPhysicsControllerParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .dormant
+            .sentity_surrogate_manager_physics_controller_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .dormant
+            .sentity_surrogate_manager_physics_controller_params
+    }
+}
+
+impl<'a> Extract<'a> for SEntitySurrogateManagerPhysicsControllerParams {
+    const TYPE_NAME: &'static str = "SEntitySurrogateManagerPhysicsControllerParams";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            mass: inst.get_f32("Mass").unwrap_or_default(),
+            compounding_allowed: inst.get_bool("compoundingAllowed").unwrap_or_default(),
+            breakable_params: match inst.get("breakableParams") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SBreakablePhysicsParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            game_collision_class: match inst.get("gameCollisionClass") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SGameCollisionClass>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            spawn_box_scale: inst.get_f32("spawnBoxScale").unwrap_or_default(),
         }
     }
 }
@@ -31398,45 +32337,6 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Root {
     }
 }
 
-/// DCB type: `GameplayTrigger_TargetType_ItemPortName`
-/// Inherits from: `GameplayTrigger_TargetType_Base`
-pub struct GameplayTrigger_TargetType_ItemPortName {
-    /// `optionalTarget` (Boolean)
-    pub optional_target: bool,
-    /// `itemPortName` (String)
-    pub item_port_name: String,
-    /// `nextTarget` (StrongPointer)
-    pub next_target: Option<GameplayTrigger_TargetType_BasePtr>,
-}
-
-impl Pooled for GameplayTrigger_TargetType_ItemPortName {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.gameplay_trigger_target_type_item_port_name
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.gameplay_trigger_target_type_item_port_name
-    }
-}
-
-impl<'a> Extract<'a> for GameplayTrigger_TargetType_ItemPortName {
-    const TYPE_NAME: &'static str = "GameplayTrigger_TargetType_ItemPortName";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            optional_target: inst.get_bool("optionalTarget").unwrap_or_default(),
-            item_port_name: inst
-                .get_str("itemPortName")
-                .map(String::from)
-                .unwrap_or_default(),
-            next_target: match inst.get("nextTarget") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(GameplayTrigger_TargetType_BasePtr::from_ref(b, r))
-                }
-                _ => None,
-            },
-        }
-    }
-}
-
 /// DCB type: `GameplayTrigger_TargetType_LinkedArea`
 /// Inherits from: `GameplayTrigger_TargetType_Base`
 pub struct GameplayTrigger_TargetType_LinkedArea {
@@ -31555,47 +32455,6 @@ impl<'a> Extract<'a> for GameplayTrigger_FilterType_ItemType {
                 .map(|arr| {
                     arr.filter_map(|v| v.as_str().map(EItemSubType::from_dcb_str))
                         .collect()
-                })
-                .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `GameplayTrigger_Executor_SetInteractionState_ByTag`
-/// Inherits from: `GameplayTrigger_Executor_SetInteractionState_Base`
-pub struct GameplayTrigger_Executor_SetInteractionState_ByTag {
-    /// `stateTags` (Reference (array))
-    pub state_tags: Vec<CigGuid>,
-}
-
-impl Pooled for GameplayTrigger_Executor_SetInteractionState_ByTag {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .dormant
-            .gameplay_trigger_executor_set_interaction_state_by_tag
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .dormant
-            .gameplay_trigger_executor_set_interaction_state_by_tag
-    }
-}
-
-impl<'a> Extract<'a> for GameplayTrigger_Executor_SetInteractionState_ByTag {
-    const TYPE_NAME: &'static str = "GameplayTrigger_Executor_SetInteractionState_ByTag";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            state_tags: inst
-                .get_array("stateTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
                 })
                 .unwrap_or_default(),
         }
@@ -31819,6 +32678,80 @@ impl<'a> Extract<'a> for GameplayTriggerConditionCheckEntityTag {
                 })
                 .unwrap_or_default(),
         }
+    }
+}
+
+/// DCB type: `GameplayTriggerConditionCheckIsTargetValid`
+/// Inherits from: `GameplayTriggerCondition`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct GameplayTriggerConditionCheckIsTargetValid {}
+
+impl Pooled for GameplayTriggerConditionCheckIsTargetValid {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .dormant
+            .gameplay_trigger_condition_check_is_target_valid
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .dormant
+            .gameplay_trigger_condition_check_is_target_valid
+    }
+}
+
+impl<'a> Extract<'a> for GameplayTriggerConditionCheckIsTargetValid {
+    const TYPE_NAME: &'static str = "GameplayTriggerConditionCheckIsTargetValid";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `GameplayTriggerConditionCheckIsInEditor`
+/// Inherits from: `GameplayTriggerCondition`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct GameplayTriggerConditionCheckIsInEditor {}
+
+impl Pooled for GameplayTriggerConditionCheckIsInEditor {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.dormant.gameplay_trigger_condition_check_is_in_editor
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.dormant.gameplay_trigger_condition_check_is_in_editor
+    }
+}
+
+impl<'a> Extract<'a> for GameplayTriggerConditionCheckIsInEditor {
+    const TYPE_NAME: &'static str = "GameplayTriggerConditionCheckIsInEditor";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `GameplayTriggerConditionCheckIsInGameSimMode`
+/// Inherits from: `GameplayTriggerCondition`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct GameplayTriggerConditionCheckIsInGameSimMode {}
+
+impl Pooled for GameplayTriggerConditionCheckIsInGameSimMode {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .dormant
+            .gameplay_trigger_condition_check_is_in_game_sim_mode
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .dormant
+            .gameplay_trigger_condition_check_is_in_game_sim_mode
+    }
+}
+
+impl<'a> Extract<'a> for GameplayTriggerConditionCheckIsInGameSimMode {
+    const TYPE_NAME: &'static str = "GameplayTriggerConditionCheckIsInGameSimMode";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
     }
 }
 
@@ -34805,34 +35738,6 @@ impl<'a> Extract<'a> for IWeaponComponentParams {
     }
 }
 
-/// DCB type: `ItemRecoveryCondition_EntityClass`
-/// Inherits from: `ItemRecoverySetConditionDef`
-pub struct ItemRecoveryCondition_EntityClass {
-    /// `classDef` (Reference)
-    pub class_def: Option<CigGuid>,
-}
-
-impl Pooled for ItemRecoveryCondition_EntityClass {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dormant.item_recovery_condition_entity_class
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dormant.item_recovery_condition_entity_class
-    }
-}
-
-impl<'a> Extract<'a> for ItemRecoveryCondition_EntityClass {
-    const TYPE_NAME: &'static str = "ItemRecoveryCondition_EntityClass";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            class_def: inst
-                .get("classDef")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-        }
-    }
-}
-
 /// DCB type: `ItemRecoveryCondition_EntityTag`
 /// Inherits from: `ItemRecoverySetConditionDef`
 pub struct ItemRecoveryCondition_EntityTag {
@@ -36286,6 +37191,7 @@ pub struct TransportIIMHangarInterface {
     /// `locInstancedCategoryName` (Locale)
     pub loc_instanced_category_name: LocaleKey,
     /// `useReservationQueue` (Boolean)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
     pub use_reservation_queue: bool,
 }
 

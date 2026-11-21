@@ -3402,6 +3402,10 @@ pub enum BB_BindingsBuiltInVariableTypeNumber {
     CameraDistance,
     /// DCB value: `AspectRatio`
     AspectRatio,
+    /// DCB value: `ScreenFadeAlpha`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    ScreenFadeAlpha,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
 }
@@ -3417,6 +3421,7 @@ impl BB_BindingsBuiltInVariableTypeNumber {
             "TimerSeconds" => Self::TimerSeconds,
             "CameraDistance" => Self::CameraDistance,
             "AspectRatio" => Self::AspectRatio,
+            "ScreenFadeAlpha" => Self::ScreenFadeAlpha,
             _ => Self::Unrecognized(s.to_string()),
         }
     }
@@ -3428,6 +3433,7 @@ impl BB_BindingsBuiltInVariableTypeNumber {
             Self::TimerSeconds => "TimerSeconds",
             Self::CameraDistance => "CameraDistance",
             Self::AspectRatio => "AspectRatio",
+            Self::ScreenFadeAlpha => "ScreenFadeAlpha",
             Self::Unrecognized(s) => s,
         }
     }
@@ -8976,6 +8982,76 @@ impl ContractIntParamType {
             Self::PersonalCooldownTime => "PersonalCooldownTime",
             Self::PersonalCooldownTimeVariation => "PersonalCooldownTimeVariation",
             Self::TimeToComplete => "TimeToComplete",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `ContractScope`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum ContractScope {
+    /// DCB value: `Universe`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Universe,
+    /// DCB value: `SolarSystem`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    SolarSystem,
+    /// DCB value: `PlanetarySystem`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    PlanetarySystem,
+    /// DCB value: `PlanetaryBody`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    PlanetaryBody,
+    /// DCB value: `Sector`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Sector,
+    /// DCB value: `Cluster`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Cluster,
+    /// DCB value: `Location`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Location,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl ContractScope {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Universe" => Self::Universe,
+            "SolarSystem" => Self::SolarSystem,
+            "PlanetarySystem" => Self::PlanetarySystem,
+            "PlanetaryBody" => Self::PlanetaryBody,
+            "Sector" => Self::Sector,
+            "Cluster" => Self::Cluster,
+            "Location" => Self::Location,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Universe => "Universe",
+            Self::SolarSystem => "SolarSystem",
+            Self::PlanetarySystem => "PlanetarySystem",
+            Self::PlanetaryBody => "PlanetaryBody",
+            Self::Sector => "Sector",
+            Self::Cluster => "Cluster",
+            Self::Location => "Location",
             Self::Unrecognized(s) => s,
         }
     }
@@ -23048,6 +23124,10 @@ impl EItemPortAttachImplType {
 /// DCB enum: `EItemPortAttachRotationLimitAxis`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemPortAttachRotationLimitAxis {
+    /// DCB value: `Default`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Default,
     /// DCB value: `None`
     None,
     /// DCB value: `XAxis`
@@ -23070,6 +23150,7 @@ impl EItemPortAttachRotationLimitAxis {
     /// graceful forward compatibility.
     pub fn from_dcb_str(s: &str) -> Self {
         match s {
+            "Default" => Self::Default,
             "None" => Self::None,
             "XAxis" => Self::XAxis,
             "YAxis" => Self::YAxis,
@@ -23083,6 +23164,7 @@ impl EItemPortAttachRotationLimitAxis {
     /// `from_dcb_str`; round-trips for serialization).
     pub fn as_dcb_str(&self) -> &str {
         match self {
+            Self::Default => "Default",
             Self::None => "None",
             Self::XAxis => "XAxis",
             Self::YAxis => "YAxis",
@@ -23792,6 +23874,10 @@ pub enum EItemSubType {
     Weapon,
     /// DCB value: `WeaponControl`
     WeaponControl,
+    /// DCB value: `Creature_Large`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Creature_Large,
     /// DCB value: `UNDEFINED`
     UNDEFINED,
     /// Unrecognised / newly-added enum value.
@@ -23960,6 +24046,7 @@ impl EItemSubType {
             "Ventilation" => Self::Ventilation,
             "Weapon" => Self::Weapon,
             "WeaponControl" => Self::WeaponControl,
+            "Creature_Large" => Self::Creature_Large,
             "UNDEFINED" => Self::UNDEFINED,
             _ => Self::Unrecognized(s.to_string()),
         }
@@ -24123,6 +24210,7 @@ impl EItemSubType {
             Self::Ventilation => "Ventilation",
             Self::Weapon => "Weapon",
             Self::WeaponControl => "WeaponControl",
+            Self::Creature_Large => "Creature_Large",
             Self::UNDEFINED => "UNDEFINED",
             Self::Unrecognized(s) => s,
         }
@@ -24194,8 +24282,16 @@ pub enum EItemType {
     Char_Clothing_Hands,
     /// DCB value: `Char_Clothing_Hat`
     Char_Clothing_Hat,
+    /// DCB value: `Char_Clothing_Liner`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Char_Clothing_Liner,
     /// DCB value: `Char_Clothing_Mask`
     Char_Clothing_Mask,
+    /// DCB value: `Char_Clothing_Hood`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Char_Clothing_Hood,
     /// DCB value: `Char_Clothing_Jumpsuit`
     Char_Clothing_Jumpsuit,
     /// DCB value: `Char_Clothing_Legs`
@@ -24518,6 +24614,10 @@ pub enum EItemType {
     WheeledController,
     /// DCB value: `WeaponMount`
     WeaponMount,
+    /// DCB value: `Creature_Large`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Creature_Large,
     /// DCB value: `UNDEFINED`
     UNDEFINED,
     /// Unrecognised / newly-added enum value.
@@ -24563,7 +24663,9 @@ impl EItemType {
             "Char_Clothing_Feet" => Self::Char_Clothing_Feet,
             "Char_Clothing_Hands" => Self::Char_Clothing_Hands,
             "Char_Clothing_Hat" => Self::Char_Clothing_Hat,
+            "Char_Clothing_Liner" => Self::Char_Clothing_Liner,
             "Char_Clothing_Mask" => Self::Char_Clothing_Mask,
+            "Char_Clothing_Hood" => Self::Char_Clothing_Hood,
             "Char_Clothing_Jumpsuit" => Self::Char_Clothing_Jumpsuit,
             "Char_Clothing_Legs" => Self::Char_Clothing_Legs,
             "Char_Clothing_Torso_0" => Self::Char_Clothing_Torso_0,
@@ -24725,6 +24827,7 @@ impl EItemType {
             "WeaponRegenPool" => Self::WeaponRegenPool,
             "WheeledController" => Self::WheeledController,
             "WeaponMount" => Self::WeaponMount,
+            "Creature_Large" => Self::Creature_Large,
             "UNDEFINED" => Self::UNDEFINED,
             _ => Self::Unrecognized(s.to_string()),
         }
@@ -24765,7 +24868,9 @@ impl EItemType {
             Self::Char_Clothing_Feet => "Char_Clothing_Feet",
             Self::Char_Clothing_Hands => "Char_Clothing_Hands",
             Self::Char_Clothing_Hat => "Char_Clothing_Hat",
+            Self::Char_Clothing_Liner => "Char_Clothing_Liner",
             Self::Char_Clothing_Mask => "Char_Clothing_Mask",
+            Self::Char_Clothing_Hood => "Char_Clothing_Hood",
             Self::Char_Clothing_Jumpsuit => "Char_Clothing_Jumpsuit",
             Self::Char_Clothing_Legs => "Char_Clothing_Legs",
             Self::Char_Clothing_Torso_0 => "Char_Clothing_Torso_0",
@@ -24927,6 +25032,7 @@ impl EItemType {
             Self::WeaponRegenPool => "WeaponRegenPool",
             Self::WheeledController => "WheeledController",
             Self::WeaponMount => "WeaponMount",
+            Self::Creature_Large => "Creature_Large",
             Self::UNDEFINED => "UNDEFINED",
             Self::Unrecognized(s) => s,
         }
@@ -26688,8 +26794,6 @@ pub enum EMeshChunks {
     theta_l_leg_zone,
     /// DCB value: `theta_r_leg_zone`
     theta_r_leg_zone,
-    /// DCB value: `theta_body_chest_zone`
-    theta_body_chest_zone,
     /// DCB value: `theta_pouch01_zone`
     theta_pouch01_zone,
     /// DCB value: `theta_pouch02_zone`
@@ -26702,6 +26806,44 @@ pub enum EMeshChunks {
     theta_pouch05_zone,
     /// DCB value: `theta_pouch06_zone`
     theta_pouch06_zone,
+    /// DCB value: `theta_pouch07_zone`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    theta_pouch07_zone,
+    /// DCB value: `theta_pouch08_zone`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    theta_pouch08_zone,
+    /// DCB value: `theta_pouch09_zone`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    theta_pouch09_zone,
+    /// DCB value: `theta_pouch10_zone`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    theta_pouch10_zone,
+    /// DCB value: `theta_pouch11_zone`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    theta_pouch11_zone,
+    /// DCB value: `theta_pouch12_zone`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    theta_pouch12_zone,
+    /// DCB value: `theta_pouch13_zone`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    theta_pouch13_zone,
+    /// DCB value: `theta_pouch14_zone`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    theta_pouch14_zone,
+    /// DCB value: `theta_pouch15_zone`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    theta_pouch15_zone,
+    /// DCB value: `theta_body_chest_zone`
+    theta_body_chest_zone,
     /// DCB value: `pcg_eyebrows`
     pcg_eyebrows,
     /// DCB value: `pcg_r_ear`
@@ -26713,6 +26855,7 @@ pub enum EMeshChunks {
     /// DCB value: `pcg_mouth`
     pcg_mouth,
     /// DCB value: `UNDEFINED`
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
     UNDEFINED,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
@@ -26778,13 +26921,22 @@ impl EMeshChunks {
             "theta_r_arm_zone" => Self::theta_r_arm_zone,
             "theta_l_leg_zone" => Self::theta_l_leg_zone,
             "theta_r_leg_zone" => Self::theta_r_leg_zone,
-            "theta_body_chest_zone" => Self::theta_body_chest_zone,
             "theta_pouch01_zone" => Self::theta_pouch01_zone,
             "theta_pouch02_zone" => Self::theta_pouch02_zone,
             "theta_pouch03_zone" => Self::theta_pouch03_zone,
             "theta_pouch04_zone" => Self::theta_pouch04_zone,
             "theta_pouch05_zone" => Self::theta_pouch05_zone,
             "theta_pouch06_zone" => Self::theta_pouch06_zone,
+            "theta_pouch07_zone" => Self::theta_pouch07_zone,
+            "theta_pouch08_zone" => Self::theta_pouch08_zone,
+            "theta_pouch09_zone" => Self::theta_pouch09_zone,
+            "theta_pouch10_zone" => Self::theta_pouch10_zone,
+            "theta_pouch11_zone" => Self::theta_pouch11_zone,
+            "theta_pouch12_zone" => Self::theta_pouch12_zone,
+            "theta_pouch13_zone" => Self::theta_pouch13_zone,
+            "theta_pouch14_zone" => Self::theta_pouch14_zone,
+            "theta_pouch15_zone" => Self::theta_pouch15_zone,
+            "theta_body_chest_zone" => Self::theta_body_chest_zone,
             "pcg_eyebrows" => Self::pcg_eyebrows,
             "pcg_r_ear" => Self::pcg_r_ear,
             "pcg_l_ear" => Self::pcg_l_ear,
@@ -26851,13 +27003,22 @@ impl EMeshChunks {
             Self::theta_r_arm_zone => "theta_r_arm_zone",
             Self::theta_l_leg_zone => "theta_l_leg_zone",
             Self::theta_r_leg_zone => "theta_r_leg_zone",
-            Self::theta_body_chest_zone => "theta_body_chest_zone",
             Self::theta_pouch01_zone => "theta_pouch01_zone",
             Self::theta_pouch02_zone => "theta_pouch02_zone",
             Self::theta_pouch03_zone => "theta_pouch03_zone",
             Self::theta_pouch04_zone => "theta_pouch04_zone",
             Self::theta_pouch05_zone => "theta_pouch05_zone",
             Self::theta_pouch06_zone => "theta_pouch06_zone",
+            Self::theta_pouch07_zone => "theta_pouch07_zone",
+            Self::theta_pouch08_zone => "theta_pouch08_zone",
+            Self::theta_pouch09_zone => "theta_pouch09_zone",
+            Self::theta_pouch10_zone => "theta_pouch10_zone",
+            Self::theta_pouch11_zone => "theta_pouch11_zone",
+            Self::theta_pouch12_zone => "theta_pouch12_zone",
+            Self::theta_pouch13_zone => "theta_pouch13_zone",
+            Self::theta_pouch14_zone => "theta_pouch14_zone",
+            Self::theta_pouch15_zone => "theta_pouch15_zone",
+            Self::theta_body_chest_zone => "theta_body_chest_zone",
             Self::pcg_eyebrows => "pcg_eyebrows",
             Self::pcg_r_ear => "pcg_r_ear",
             Self::pcg_l_ear => "pcg_l_ear",
@@ -36169,6 +36330,94 @@ impl ElectricalStatePropertyType {
     }
 }
 
+/// DCB enum: `EncounterPreset`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum EncounterPreset {
+    /// DCB value: `SocialEasy`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    SocialEasy,
+    /// DCB value: `SocialMedium`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    SocialMedium,
+    /// DCB value: `SocialHard`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    SocialHard,
+    /// DCB value: `SocialVeryHard`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    SocialVeryHard,
+    /// DCB value: `SocialImpossible`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    SocialImpossible,
+    /// DCB value: `CombatEasy`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    CombatEasy,
+    /// DCB value: `CombatMedium`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    CombatMedium,
+    /// DCB value: `CombatHard`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    CombatHard,
+    /// DCB value: `CombatVeryHard`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    CombatVeryHard,
+    /// DCB value: `CombatImpossible`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    CombatImpossible,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl EncounterPreset {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SocialEasy" => Self::SocialEasy,
+            "SocialMedium" => Self::SocialMedium,
+            "SocialHard" => Self::SocialHard,
+            "SocialVeryHard" => Self::SocialVeryHard,
+            "SocialImpossible" => Self::SocialImpossible,
+            "CombatEasy" => Self::CombatEasy,
+            "CombatMedium" => Self::CombatMedium,
+            "CombatHard" => Self::CombatHard,
+            "CombatVeryHard" => Self::CombatVeryHard,
+            "CombatImpossible" => Self::CombatImpossible,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SocialEasy => "SocialEasy",
+            Self::SocialMedium => "SocialMedium",
+            Self::SocialHard => "SocialHard",
+            Self::SocialVeryHard => "SocialVeryHard",
+            Self::SocialImpossible => "SocialImpossible",
+            Self::CombatEasy => "CombatEasy",
+            Self::CombatMedium => "CombatMedium",
+            Self::CombatHard => "CombatHard",
+            Self::CombatVeryHard => "CombatVeryHard",
+            Self::CombatImpossible => "CombatImpossible",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
 /// DCB enum: `EngineeringState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EngineeringState {
@@ -40953,6 +41202,58 @@ impl LocalizationUse {
     }
 }
 
+/// DCB enum: `LocationClass`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum LocationClass {
+    /// DCB value: `Invalid`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Invalid,
+    /// DCB value: `Sector`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Sector,
+    /// DCB value: `Cluster`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Cluster,
+    /// DCB value: `Location`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Location,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl LocationClass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Invalid" => Self::Invalid,
+            "Sector" => Self::Sector,
+            "Cluster" => Self::Cluster,
+            "Location" => Self::Location,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Invalid => "Invalid",
+            Self::Sector => "Sector",
+            Self::Cluster => "Cluster",
+            Self::Location => "Location",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
 /// DCB enum: `MapDisplayFrameType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MapDisplayFrameType {
@@ -41728,6 +42029,52 @@ impl MinimumInfluenceFactorOperation {
         match self {
             Self::GreaterThan => "GreaterThan",
             Self::TimesGreater => "TimesGreater",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `MissionBoardAvailability`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum MissionBoardAvailability {
+    /// DCB value: `None`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    None,
+    /// DCB value: `Notice`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Notice,
+    /// DCB value: `Career`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Career,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl MissionBoardAvailability {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Notice" => Self::Notice,
+            "Career" => Self::Career,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Notice => "Notice",
+            Self::Career => "Career",
             Self::Unrecognized(s) => s,
         }
     }
@@ -47464,6 +47811,212 @@ impl eContextualCommunicationCriteria {
             Self::Target_IsEjected => "Target_IsEjected",
             Self::Target_IsDead => "Target_IsDead",
             Self::Target_IsFriendly => "Target_IsFriendly",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `eDCMissionObjectiveFlags`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum eDCMissionObjectiveFlags {
+    /// DCB value: `Hidden`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Hidden,
+    /// DCB value: `SilentUpdates`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    SilentUpdates,
+    /// DCB value: `ShowInLog`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    ShowInLog,
+    /// DCB value: `MarkerHidden`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    MarkerHidden,
+    /// DCB value: `DisplayMarkerDistance`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    DisplayMarkerDistance,
+    /// DCB value: `BountyMarker`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    BountyMarker,
+    /// DCB value: `AutoAddNewPlayers`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    AutoAddNewPlayers,
+    /// DCB value: `RemoveOnShipSoftDeath`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    RemoveOnShipSoftDeath,
+    /// DCB value: `TimerCountUp`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    TimerCountUp,
+    /// DCB value: `TimerShowMilliseconds`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    TimerShowMilliseconds,
+    /// DCB value: `ShowProgress`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    ShowProgress,
+    /// DCB value: `HiddenInUI`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    HiddenInUI,
+    /// DCB value: `RespectInheritedVisibility`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    RespectInheritedVisibility,
+    /// DCB value: `IgnoredForInheritedVisibility`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    IgnoredForInheritedVisibility,
+    /// DCB value: `HideInLogWhenNotAtLocation`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    HideInLogWhenNotAtLocation,
+    /// DCB value: `HideInUIWhenNotAtLocation`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    HideInUIWhenNotAtLocation,
+    /// DCB value: `HideMarkerWhenNotAtLocation`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    HideMarkerWhenNotAtLocation,
+    /// DCB value: `LocalOnlyObjective`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    LocalOnlyObjective,
+    /// DCB value: `ParentOr`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    ParentOr,
+    /// DCB value: `ParentAnd`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    ParentAnd,
+    /// DCB value: `OverallPhaseObjective`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    OverallPhaseObjective,
+    /// DCB value: `AutoComplete`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    AutoComplete,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl eDCMissionObjectiveFlags {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hidden" => Self::Hidden,
+            "SilentUpdates" => Self::SilentUpdates,
+            "ShowInLog" => Self::ShowInLog,
+            "MarkerHidden" => Self::MarkerHidden,
+            "DisplayMarkerDistance" => Self::DisplayMarkerDistance,
+            "BountyMarker" => Self::BountyMarker,
+            "AutoAddNewPlayers" => Self::AutoAddNewPlayers,
+            "RemoveOnShipSoftDeath" => Self::RemoveOnShipSoftDeath,
+            "TimerCountUp" => Self::TimerCountUp,
+            "TimerShowMilliseconds" => Self::TimerShowMilliseconds,
+            "ShowProgress" => Self::ShowProgress,
+            "HiddenInUI" => Self::HiddenInUI,
+            "RespectInheritedVisibility" => Self::RespectInheritedVisibility,
+            "IgnoredForInheritedVisibility" => Self::IgnoredForInheritedVisibility,
+            "HideInLogWhenNotAtLocation" => Self::HideInLogWhenNotAtLocation,
+            "HideInUIWhenNotAtLocation" => Self::HideInUIWhenNotAtLocation,
+            "HideMarkerWhenNotAtLocation" => Self::HideMarkerWhenNotAtLocation,
+            "LocalOnlyObjective" => Self::LocalOnlyObjective,
+            "ParentOr" => Self::ParentOr,
+            "ParentAnd" => Self::ParentAnd,
+            "OverallPhaseObjective" => Self::OverallPhaseObjective,
+            "AutoComplete" => Self::AutoComplete,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hidden => "Hidden",
+            Self::SilentUpdates => "SilentUpdates",
+            Self::ShowInLog => "ShowInLog",
+            Self::MarkerHidden => "MarkerHidden",
+            Self::DisplayMarkerDistance => "DisplayMarkerDistance",
+            Self::BountyMarker => "BountyMarker",
+            Self::AutoAddNewPlayers => "AutoAddNewPlayers",
+            Self::RemoveOnShipSoftDeath => "RemoveOnShipSoftDeath",
+            Self::TimerCountUp => "TimerCountUp",
+            Self::TimerShowMilliseconds => "TimerShowMilliseconds",
+            Self::ShowProgress => "ShowProgress",
+            Self::HiddenInUI => "HiddenInUI",
+            Self::RespectInheritedVisibility => "RespectInheritedVisibility",
+            Self::IgnoredForInheritedVisibility => "IgnoredForInheritedVisibility",
+            Self::HideInLogWhenNotAtLocation => "HideInLogWhenNotAtLocation",
+            Self::HideInUIWhenNotAtLocation => "HideInUIWhenNotAtLocation",
+            Self::HideMarkerWhenNotAtLocation => "HideMarkerWhenNotAtLocation",
+            Self::LocalOnlyObjective => "LocalOnlyObjective",
+            Self::ParentOr => "ParentOr",
+            Self::ParentAnd => "ParentAnd",
+            Self::OverallPhaseObjective => "OverallPhaseObjective",
+            Self::AutoComplete => "AutoComplete",
+            Self::Unrecognized(s) => s,
+        }
+    }
+}
+
+/// DCB enum: `eDCObjectiveCommCondition`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum eDCObjectiveCommCondition {
+    /// DCB value: `Simultaneous`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    Simultaneous,
+    /// DCB value: `HUDNotificationFirst`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    HUDNotificationFirst,
+    /// DCB value: `CommsNotificationFirst`
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    CommsNotificationFirst,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl eDCObjectiveCommCondition {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Simultaneous" => Self::Simultaneous,
+            "HUDNotificationFirst" => Self::HUDNotificationFirst,
+            "CommsNotificationFirst" => Self::CommsNotificationFirst,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Simultaneous => "Simultaneous",
+            Self::HUDNotificationFirst => "HUDNotificationFirst",
+            Self::CommsNotificationFirst => "CommsNotificationFirst",
             Self::Unrecognized(s) => s,
         }
     }

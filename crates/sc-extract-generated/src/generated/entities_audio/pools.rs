@@ -24,7 +24,6 @@ pub struct EntitiesAudioPools {
     pub entity_component_vehicle_audio_point_params:
         Vec<Option<EntityComponentVehicleAudioPointParams>>,
     pub music_area_component_params: Vec<Option<MusicAreaComponentParams>>,
-    pub audio_spline_params: Vec<Option<AudioSplineParams>>,
     pub entity_component_vibration_audio_point_params:
         Vec<Option<EntityComponentVibrationAudioPointParams>>,
 }

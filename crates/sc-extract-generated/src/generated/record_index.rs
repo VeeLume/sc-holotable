@@ -34,6 +34,8 @@ pub struct RecordIndex {
     pub analytics: super::analytics::AnalyticsIndex,
     #[cfg(feature = "audio")]
     pub audio: super::audio::AudioIndex,
+    #[cfg(feature = "autospawn")]
+    pub autospawn: super::autospawn::AutospawnIndex,
     #[cfg(feature = "awardservice")]
     pub awardservice: super::awardservice::AwardserviceIndex,
     #[cfg(feature = "cameras")]
@@ -66,8 +68,6 @@ pub struct RecordIndex {
     pub conversation: super::conversation::ConversationIndex,
     #[cfg(feature = "crafting")]
     pub crafting: super::crafting::CraftingIndex,
-    #[cfg(feature = "densityclasses")]
-    pub densityclasses: super::densityclasses::DensityclassesIndex,
     #[cfg(feature = "dialoguecontentbank")]
     pub dialoguecontentbank: super::dialoguecontentbank::DialoguecontentbankIndex,
     #[cfg(feature = "dynamiccameraeffects")]
@@ -122,6 +122,8 @@ pub struct RecordIndex {
     pub hardwaremouse: super::hardwaremouse::HardwaremouseIndex,
     #[cfg(feature = "harvestable")]
     pub harvestable: super::harvestable::HarvestableIndex,
+    #[cfg(feature = "hcdgrouppreset")]
+    pub hcdgrouppreset: super::hcdgrouppreset::HcdgrouppresetIndex,
     #[cfg(feature = "hudparams")]
     pub hudparams: super::hudparams::HudparamsIndex,
     #[cfg(feature = "ifcs")]
@@ -319,6 +321,10 @@ impl RecordIndex {
         {
             n += self.audio.len();
         }
+        #[cfg(feature = "autospawn")]
+        {
+            n += self.autospawn.len();
+        }
         #[cfg(feature = "awardservice")]
         {
             n += self.awardservice.len();
@@ -382,10 +388,6 @@ impl RecordIndex {
         #[cfg(feature = "crafting")]
         {
             n += self.crafting.len();
-        }
-        #[cfg(feature = "densityclasses")]
-        {
-            n += self.densityclasses.len();
         }
         #[cfg(feature = "dialoguecontentbank")]
         {
@@ -494,6 +496,10 @@ impl RecordIndex {
         #[cfg(feature = "harvestable")]
         {
             n += self.harvestable.len();
+        }
+        #[cfg(feature = "hcdgrouppreset")]
+        {
+            n += self.hcdgrouppreset.len();
         }
         #[cfg(feature = "hudparams")]
         {

@@ -434,40 +434,65 @@ impl<'a> Extract<'a> for ItemRecoveryNotificationParams {
 pub struct ItemRecoveryEconomyParams {
     /// `globalBrickTimer` (Single)
     pub global_brick_timer: f32,
-    /// `baseReclaimTime` (Single)
-    pub base_reclaim_time: f32,
-    /// `baseDeliveryTime` (Single)
-    pub base_delivery_time: f32,
-    /// `scalingPriceFloor` (Single)
-    pub scaling_price_floor: f32,
-    /// `aUECperSecond` (Single)
-    pub a_uecper_second: f32,
-    /// `defaultLoadoutCooldownMultiplier` (Single)
-    pub default_loadout_cooldown_multiplier: f32,
-    /// `defaultLoadoutDeliveryTimeMultiplier` (Single)
-    pub default_loadout_delivery_time_multiplier: f32,
     /// `claimCostMultiplier` (Single)
     pub claim_cost_multiplier: f32,
-    /// `vehicleChassisRepairCostMultiplier` (Single)
-    pub vehicle_chassis_repair_cost_multiplier: f32,
-    /// `vehicleComponentRepairCostMultiplier` (Single)
-    pub vehicle_component_repair_cost_multiplier: f32,
-    /// `vehicleRepairMissingItemCostMultiplier` (Single)
-    pub vehicle_repair_missing_item_cost_multiplier: f32,
-    /// `deliverySecondsPerAUEC` (Single)
-    pub delivery_seconds_per_auec: f32,
-    /// `expeditedDeliverySecondsPerAUEC` (Single)
-    pub expedited_delivery_seconds_per_auec: f32,
-    /// `defaultLoadoutExpeditedDeliveryTimeMultiplier` (Single)
-    pub default_loadout_expedited_delivery_time_multiplier: f32,
-    /// `flatMinimumDeliveryTimerSeconds` (Single)
-    pub flat_minimum_delivery_timer_seconds: f32,
     /// `maxExpeditedClaimCostMultiplier` (Single)
     pub max_expedited_claim_cost_multiplier: f32,
+    /// `cooldownParams` (Class)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub cooldown_params: Option<Handle<ItemRecoveryCooldownParams>>,
+    /// `deliveryParams` (Class)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub delivery_params: Option<Handle<ItemRecoveryDeliveryTimeParams>>,
+    /// `repairParams` (Class)
+    ///
+    /// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+    pub repair_params: Option<Handle<ItemRecoveryRepairParams>>,
     /// `escalatingClaimsParams` (Class)
     pub escalating_claims_params: Option<Handle<ItemRecoveryEscalatingClaimsParams>>,
     /// `overrides` (Class (array))
     pub overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
+    /// `baseReclaimTime` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub base_reclaim_time: f32,
+    /// `baseDeliveryTime` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub base_delivery_time: f32,
+    /// `scalingPriceFloor` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub scaling_price_floor: f32,
+    /// `aUECperSecond` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub a_uecper_second: f32,
+    /// `defaultLoadoutCooldownMultiplier` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub default_loadout_cooldown_multiplier: f32,
+    /// `defaultLoadoutDeliveryTimeMultiplier` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub default_loadout_delivery_time_multiplier: f32,
+    /// `vehicleChassisRepairCostMultiplier` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub vehicle_chassis_repair_cost_multiplier: f32,
+    /// `vehicleComponentRepairCostMultiplier` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub vehicle_component_repair_cost_multiplier: f32,
+    /// `vehicleRepairMissingItemCostMultiplier` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub vehicle_repair_missing_item_cost_multiplier: f32,
+    /// `deliverySecondsPerAUEC` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub delivery_seconds_per_auec: f32,
+    /// `expeditedDeliverySecondsPerAUEC` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub expedited_delivery_seconds_per_auec: f32,
+    /// `defaultLoadoutExpeditedDeliveryTimeMultiplier` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub default_loadout_expedited_delivery_time_multiplier: f32,
+    /// `flatMinimumDeliveryTimerSeconds` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub flat_minimum_delivery_timer_seconds: f32,
 }
 
 impl Pooled for ItemRecoveryEconomyParams {
@@ -484,39 +509,37 @@ impl<'a> Extract<'a> for ItemRecoveryEconomyParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             global_brick_timer: inst.get_f32("globalBrickTimer").unwrap_or_default(),
-            base_reclaim_time: inst.get_f32("baseReclaimTime").unwrap_or_default(),
-            base_delivery_time: inst.get_f32("baseDeliveryTime").unwrap_or_default(),
-            scaling_price_floor: inst.get_f32("scalingPriceFloor").unwrap_or_default(),
-            a_uecper_second: inst.get_f32("aUECperSecond").unwrap_or_default(),
-            default_loadout_cooldown_multiplier: inst
-                .get_f32("defaultLoadoutCooldownMultiplier")
-                .unwrap_or_default(),
-            default_loadout_delivery_time_multiplier: inst
-                .get_f32("defaultLoadoutDeliveryTimeMultiplier")
-                .unwrap_or_default(),
             claim_cost_multiplier: inst.get_f32("claimCostMultiplier").unwrap_or_default(),
-            vehicle_chassis_repair_cost_multiplier: inst
-                .get_f32("vehicleChassisRepairCostMultiplier")
-                .unwrap_or_default(),
-            vehicle_component_repair_cost_multiplier: inst
-                .get_f32("vehicleComponentRepairCostMultiplier")
-                .unwrap_or_default(),
-            vehicle_repair_missing_item_cost_multiplier: inst
-                .get_f32("vehicleRepairMissingItemCostMultiplier")
-                .unwrap_or_default(),
-            delivery_seconds_per_auec: inst.get_f32("deliverySecondsPerAUEC").unwrap_or_default(),
-            expedited_delivery_seconds_per_auec: inst
-                .get_f32("expeditedDeliverySecondsPerAUEC")
-                .unwrap_or_default(),
-            default_loadout_expedited_delivery_time_multiplier: inst
-                .get_f32("defaultLoadoutExpeditedDeliveryTimeMultiplier")
-                .unwrap_or_default(),
-            flat_minimum_delivery_timer_seconds: inst
-                .get_f32("flatMinimumDeliveryTimerSeconds")
-                .unwrap_or_default(),
             max_expedited_claim_cost_multiplier: inst
                 .get_f32("maxExpeditedClaimCostMultiplier")
                 .unwrap_or_default(),
+            cooldown_params: match inst.get("cooldownParams") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ItemRecoveryCooldownParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+            delivery_params: match inst.get("deliveryParams") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ItemRecoveryDeliveryTimeParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
+            repair_params: match inst.get("repairParams") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ItemRecoveryRepairParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
             escalating_claims_params: match inst.get("escalatingClaimsParams") {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<ItemRecoveryEscalatingClaimsParams>(
@@ -545,6 +568,35 @@ impl<'a> Extract<'a> for ItemRecoveryEconomyParams {
                     .collect()
                 })
                 .unwrap_or_default(),
+            base_reclaim_time: inst.get_f32("baseReclaimTime").unwrap_or_default(),
+            base_delivery_time: inst.get_f32("baseDeliveryTime").unwrap_or_default(),
+            scaling_price_floor: inst.get_f32("scalingPriceFloor").unwrap_or_default(),
+            a_uecper_second: inst.get_f32("aUECperSecond").unwrap_or_default(),
+            default_loadout_cooldown_multiplier: inst
+                .get_f32("defaultLoadoutCooldownMultiplier")
+                .unwrap_or_default(),
+            default_loadout_delivery_time_multiplier: inst
+                .get_f32("defaultLoadoutDeliveryTimeMultiplier")
+                .unwrap_or_default(),
+            vehicle_chassis_repair_cost_multiplier: inst
+                .get_f32("vehicleChassisRepairCostMultiplier")
+                .unwrap_or_default(),
+            vehicle_component_repair_cost_multiplier: inst
+                .get_f32("vehicleComponentRepairCostMultiplier")
+                .unwrap_or_default(),
+            vehicle_repair_missing_item_cost_multiplier: inst
+                .get_f32("vehicleRepairMissingItemCostMultiplier")
+                .unwrap_or_default(),
+            delivery_seconds_per_auec: inst.get_f32("deliverySecondsPerAUEC").unwrap_or_default(),
+            expedited_delivery_seconds_per_auec: inst
+                .get_f32("expeditedDeliverySecondsPerAUEC")
+                .unwrap_or_default(),
+            default_loadout_expedited_delivery_time_multiplier: inst
+                .get_f32("defaultLoadoutExpeditedDeliveryTimeMultiplier")
+                .unwrap_or_default(),
+            flat_minimum_delivery_timer_seconds: inst
+                .get_f32("flatMinimumDeliveryTimerSeconds")
+                .unwrap_or_default(),
         }
     }
 }
@@ -561,8 +613,6 @@ pub struct ItemRecoveryOverrideGroupDef {
     pub max_expedite_cost_multiplier: f32,
     /// `expeditedDeliveryTimeMultiplier` (Single)
     pub expedited_delivery_time_multiplier: f32,
-    /// `flatMinimumDeliveryTimerSecondsMultiplier` (Single)
-    pub flat_minimum_delivery_timer_seconds_multiplier: f32,
     /// `escalationTimerMultiplier` (Single)
     pub escalation_timer_multiplier: f32,
     /// `escalatingClaimCostMultiplier` (Single)
@@ -571,6 +621,9 @@ pub struct ItemRecoveryOverrideGroupDef {
     pub escalating_delivery_timer_multiplier: f32,
     /// `classes` (Reference (array))
     pub classes: Vec<CigGuid>,
+    /// `flatMinimumDeliveryTimerSecondsMultiplier` (Single)
+    #[deprecated(note = "absent from 5.0.0-ptu.13228337")]
+    pub flat_minimum_delivery_timer_seconds_multiplier: f32,
 }
 
 impl Pooled for ItemRecoveryOverrideGroupDef {
@@ -595,9 +648,6 @@ impl<'a> Extract<'a> for ItemRecoveryOverrideGroupDef {
             expedited_delivery_time_multiplier: inst
                 .get_f32("expeditedDeliveryTimeMultiplier")
                 .unwrap_or_default(),
-            flat_minimum_delivery_timer_seconds_multiplier: inst
-                .get_f32("flatMinimumDeliveryTimerSecondsMultiplier")
-                .unwrap_or_default(),
             escalation_timer_multiplier: inst
                 .get_f32("escalationTimerMultiplier")
                 .unwrap_or_default(),
@@ -619,6 +669,129 @@ impl<'a> Extract<'a> for ItemRecoveryOverrideGroupDef {
                     })
                     .collect()
                 })
+                .unwrap_or_default(),
+            flat_minimum_delivery_timer_seconds_multiplier: inst
+                .get_f32("flatMinimumDeliveryTimerSecondsMultiplier")
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ItemRecoveryCooldownParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct ItemRecoveryCooldownParams {
+    /// `baseTime` (Single)
+    pub base_time: f32,
+    /// `scalingPriceFloor` (Single)
+    pub scaling_price_floor: f32,
+    /// `aUECperSecond` (Single)
+    pub a_uecper_second: f32,
+    /// `defaultLoadoutMultiplier` (Single)
+    pub default_loadout_multiplier: f32,
+}
+
+impl Pooled for ItemRecoveryCooldownParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entitlementpolicies.item_recovery_cooldown_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entitlementpolicies.item_recovery_cooldown_params
+    }
+}
+
+impl<'a> Extract<'a> for ItemRecoveryCooldownParams {
+    const TYPE_NAME: &'static str = "ItemRecoveryCooldownParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            base_time: inst.get_f32("baseTime").unwrap_or_default(),
+            scaling_price_floor: inst.get_f32("scalingPriceFloor").unwrap_or_default(),
+            a_uecper_second: inst.get_f32("aUECperSecond").unwrap_or_default(),
+            default_loadout_multiplier: inst
+                .get_f32("defaultLoadoutMultiplier")
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ItemRecoveryDeliveryTimeParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct ItemRecoveryDeliveryTimeParams {
+    /// `baseTime` (Single)
+    pub base_time: f32,
+    /// `scalingPriceFloor` (Single)
+    pub scaling_price_floor: f32,
+    /// `aUECperSecond` (Single)
+    pub a_uecper_second: f32,
+    /// `defaultLoadoutMultiplier` (Single)
+    pub default_loadout_multiplier: f32,
+    /// `expeditedTimeMultiplier` (Single)
+    pub expedited_time_multiplier: f32,
+    /// `expeditedDefaultTimeMultiplier` (Single)
+    pub expedited_default_time_multiplier: f32,
+}
+
+impl Pooled for ItemRecoveryDeliveryTimeParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entitlementpolicies.item_recovery_delivery_time_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entitlementpolicies.item_recovery_delivery_time_params
+    }
+}
+
+impl<'a> Extract<'a> for ItemRecoveryDeliveryTimeParams {
+    const TYPE_NAME: &'static str = "ItemRecoveryDeliveryTimeParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            base_time: inst.get_f32("baseTime").unwrap_or_default(),
+            scaling_price_floor: inst.get_f32("scalingPriceFloor").unwrap_or_default(),
+            a_uecper_second: inst.get_f32("aUECperSecond").unwrap_or_default(),
+            default_loadout_multiplier: inst
+                .get_f32("defaultLoadoutMultiplier")
+                .unwrap_or_default(),
+            expedited_time_multiplier: inst.get_f32("expeditedTimeMultiplier").unwrap_or_default(),
+            expedited_default_time_multiplier: inst
+                .get_f32("expeditedDefaultTimeMultiplier")
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ItemRecoveryRepairParams`
+///
+/// New in 5.0.0-ptu.13228337; absent from 4.10.3-live.13165946.
+pub struct ItemRecoveryRepairParams {
+    /// `vehicleChassisRepairCostMultiplier` (Single)
+    pub vehicle_chassis_repair_cost_multiplier: f32,
+    /// `vehicleComponentRepairCostMultiplier` (Single)
+    pub vehicle_component_repair_cost_multiplier: f32,
+    /// `vehicleRepairMissingItemCostMultiplier` (Single)
+    pub vehicle_repair_missing_item_cost_multiplier: f32,
+}
+
+impl Pooled for ItemRecoveryRepairParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entitlementpolicies.item_recovery_repair_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entitlementpolicies.item_recovery_repair_params
+    }
+}
+
+impl<'a> Extract<'a> for ItemRecoveryRepairParams {
+    const TYPE_NAME: &'static str = "ItemRecoveryRepairParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            vehicle_chassis_repair_cost_multiplier: inst
+                .get_f32("vehicleChassisRepairCostMultiplier")
+                .unwrap_or_default(),
+            vehicle_component_repair_cost_multiplier: inst
+                .get_f32("vehicleComponentRepairCostMultiplier")
+                .unwrap_or_default(),
+            vehicle_repair_missing_item_cost_multiplier: inst
+                .get_f32("vehicleRepairMissingItemCostMultiplier")
                 .unwrap_or_default(),
         }
     }
@@ -693,6 +866,38 @@ impl<'a> Extract<'a> for ItemRecoveryCondition_ItemType {
         Self {
             r#type: EItemType::from_dcb_str(inst.get_str("type").unwrap_or("")),
             sub_type: EItemSubType::from_dcb_str(inst.get_str("subType").unwrap_or("")),
+        }
+    }
+}
+
+/// DCB type: `ItemRecoveryCondition_EntityClass`
+/// Inherits from: `ItemRecoverySetConditionDef`
+pub struct ItemRecoveryCondition_EntityClass {
+    /// `classDef` (Reference)
+    pub class_def: Option<CigGuid>,
+}
+
+impl Pooled for ItemRecoveryCondition_EntityClass {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entitlementpolicies
+            .item_recovery_condition_entity_class
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entitlementpolicies
+            .item_recovery_condition_entity_class
+    }
+}
+
+impl<'a> Extract<'a> for ItemRecoveryCondition_EntityClass {
+    const TYPE_NAME: &'static str = "ItemRecoveryCondition_EntityClass";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            class_def: inst
+                .get("classDef")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
