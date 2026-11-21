@@ -158,7 +158,7 @@ jobs:
               major, minor, patch = versions[-1] if versions else (0, 0, 0)
               bump = os.environ["BUMP"]
               if bump == "auto":
-                  surface = re.search(r"^### (Added|Changed|Removed|Deprecated)\s*\n\s*[-*]", body, re.M)
+                  surface = re.search(r"^### (Added|Changed|Removed|Deprecated)\b[^\n]*\n\s*[-*]", body, re.M)
                   bump = "minor" if surface or os.environ.get("REGEN_REMOVED") == "true" else "patch"
               version = f"v{major}.{minor + 1}.0" if bump == "minor" else f"v{major}.{minor}.{patch + 1}"
               tag = f"sc-holotable/{version}"
