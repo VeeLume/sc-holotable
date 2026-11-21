@@ -208,11 +208,11 @@ pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencies};
 pub use events::{Event, Events, Ladder, LadderKind, LadderTier};
 pub use expand::{
-    Availability, BlueprintReward, Cooldowns, Difficulty, DurationRange, Encounter, EncounterPhase,
-    EntityEncounter, EntitySlot, EventPoints, HandlerKind, HaulingLeg, ItemGroup, ItemReward,
-    LadderPoints, Mission, MissionOrigin, MissionRewards, MissionVar, NpcEncounter, NpcSlot,
-    NpcSpawnCounts, OtherReward, PrereqView, RepReward, RewardAmount, ScripReward, ShipEncounter,
-    ShipSlot, SlotGroup, VarOption, WeightedItems, expand_all,
+    Availability, BlueprintReward, CompletionTagGrant, Cooldowns, Difficulty, DurationRange,
+    Encounter, EncounterPhase, EntityEncounter, EntitySlot, EventPoints, HandlerKind, HaulingLeg,
+    ItemGroup, ItemReward, LadderPoints, Mission, MissionOrigin, MissionRewards, MissionVar,
+    NpcEncounter, NpcSlot, NpcSpawnCounts, OtherReward, PrereqView, RepReward, RewardAmount,
+    ScripReward, ShipEncounter, ShipSlot, SlotGroup, VarOption, WeightedItems, expand_all,
 };
 pub use index::Missions;
 // Re-export the canonical accessor trait (get / iter / len / values) so consumers

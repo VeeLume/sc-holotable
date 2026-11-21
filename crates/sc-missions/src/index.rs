@@ -204,8 +204,11 @@ impl Missions {
         // CompletedContractTags prereqs).
         let mut grantors_by_tag: HashMap<Guid, Vec<Guid>> = HashMap::new();
         for mission in &contracts {
-            for tag in &mission.grants_completion_tags {
-                grantors_by_tag.entry(*tag).or_default().push(mission.id);
+            for grant in &mission.grants_completion_tags {
+                grantors_by_tag
+                    .entry(grant.tag)
+                    .or_default()
+                    .push(mission.id);
             }
         }
 

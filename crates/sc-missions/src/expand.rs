@@ -204,13 +204,15 @@ pub struct Mission {
     /// first-seen-wins deduplication.
     pub mission_span: Vec<Guid>,
 
-    /// Completion tags this mission **grants** on success
+    /// Completion tags this mission **grants** on success, each with what it
+    /// adds to the player's counter for that tag
     /// (`ContractResult_CompletionTags`). These are the edges of the mission
-    /// *chain* graph: a tag granted here can satisfy another mission's
-    /// `CompletedContractTags` prerequisite. Deduplicated, in grant order. Use
+    /// *chain* graph: a tag granted here counts toward another mission's
+    /// [`PrereqView::CompletedContractTags`] gate. One entry per authored
+    /// grant, in grant order, never merged. Use
     /// [`crate::Missions::prerequisite_missions`] to walk a mission's
     /// required tags back to the missions that grant them.
-    pub grants_completion_tags: Vec<Guid>,
+    pub grants_completion_tags: Vec<CompletionTagGrant>,
 
     /// Resolved non-spawn `MissionProperty` values, keyed by the player-facing
     /// `extendedTextToken` — the same token a `~mission(Token|Fmt)` marker in
@@ -578,6 +580,51 @@ pub struct EventPoints {
     pub faction: Option<Guid>,
 }
 
+/// One completion tag a mission grants on success, with how much it adds
+/// (`ContractResult_CompletionTag`). See [`Mission::grants_completion_tags`].
+///
+/// A [`PrereqView::CompletedContractTags`] gate's `required_count` is in the
+/// same unit as `count`, so it is tag points, not runs: grantors of one tag
+/// can add different amounts, and the runs a gate takes depend on which
+/// grantor the player runs. The `completion_tag_grants` example prints both
+/// sides for a few chains.
+///
+/// ```no_run
+/// use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
+/// use sc_missions::{Missions, PrereqView, RecordCollection};
+///
+/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// let install = sc_discovery::discover_primary()?;
+/// let assets = AssetSource::from_install(&install)?;
+/// let data = AssetData::extract(&assets, &AssetConfig::standard())?;
+/// let missions = Missions::build(&Datacore::parse(&assets, &data)?);
+/// for gated in missions.values() {
+///     for p in &gated.prerequisites {
+///         let PrereqView::CompletedContractTags { required_tags, required_count, .. } = p
+///         else {
+///             continue;
+///         };
+///         for grantor in missions.prerequisite_missions(gated).iter().filter_map(|g| missions.get(g)) {
+///             for grant in &grantor.grants_completion_tags {
+///                 if required_tags.contains(&grant.tag) && grant.count > 0 {
+///                     let runs = (required_count + grant.count - 1) / grant.count;
+///                     println!("{}: {runs} runs of {}", gated.debug_name, grantor.debug_name);
+///                 }
+///             }
+///         }
+///     }
+/// }
+/// # Ok(())
+/// # }
+/// ```
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CompletionTagGrant {
+    /// The granted tag (a `Tag` record GUID).
+    pub tag: Guid,
+    /// What one success adds to the player's counter for `tag`.
+    pub count: i32,
+}
+
 /// Points toward one category ladder ([`crate::LadderKind::Category`]).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LadderPoints {
@@ -738,6 +785,9 @@ pub enum PrereqView {
         min_standing: Option<Guid>,
         max_standing: Option<Guid>,
     },
+    /// A mission-chain gate on the player's completion-tag counters.
+    /// `required_count` is tag points, in the unit of
+    /// [`CompletionTagGrant::count`], not runs.
     CompletedContractTags {
         include_when_sharing: bool,
         required_tags: Vec<Guid>,
@@ -1750,9 +1800,8 @@ fn build_expansion(
 fn resolve_granted_completion_tags(
     pools: &DataPools,
     results: Option<&Handle<ContractResults>>,
-) -> Vec<Guid> {
-    let mut seen: HashSet<Guid> = HashSet::new();
-    let mut out: Vec<Guid> = Vec::new();
+) -> Vec<CompletionTagGrant> {
+    let mut out: Vec<CompletionTagGrant> = Vec::new();
     let Some(results) = results.and_then(|h| h.get(pools)) else {
         return out;
     };
@@ -1760,11 +1809,12 @@ fn resolve_granted_completion_tags(
         if let ContractResultBasePtr::ContractResult_CompletionTags(h) = r
             && let Some(ct) = h.get(pools)
         {
-            for tag_h in &ct.completion_tags {
-                if let Some(tag) = tag_h.get(pools).and_then(|t| t.tag)
-                    && seen.insert(tag)
-                {
-                    out.push(tag);
+            for t in ct.completion_tags.iter().filter_map(|h| h.get(pools)) {
+                if let Some(tag) = t.tag {
+                    out.push(CompletionTagGrant {
+                        tag,
+                        count: t.count,
+                    });
                 }
             }
         }
