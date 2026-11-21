@@ -13,6 +13,8 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.58.2] - 2026-11-21
+
 ### Changed (breaking)
 
 - **`Mission::grants_completion_tags` carries what each grant adds.** It is now `Vec<CompletionTagGrant { tag, count }>` instead of `Vec<Guid>`; read `.tag` where you used the GUID. A `PrereqView::CompletedContractTags` gate's `required_count` is in the same unit as `count`, so it is tag points, not runs: Foxwell's ambush ladder grants +1 per run, CleanAir's Alliance Aid missions +150 to +675, and grantors of one tag can add different amounts. Entries are kept as authored, one per grant, no longer deduplicated. The `completion_tag_grants` example prints grants next to the gates that ask for them.
