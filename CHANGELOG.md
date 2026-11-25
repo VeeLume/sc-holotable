@@ -13,6 +13,12 @@ pinned. Both tag kinds are monotonic and immutable.
 
 ## [Unreleased]
 
+## [v0.58.3] - 2026-11-25
+
+### Bindings
+
+- Regenerated from SC 4.10.3-live.13220821 + 5.0.0-ptu.13273298 (`datacore/4.10.3-live.13220821+5.0.0-ptu.13273298`), since `datacore/4.10.3-live.13220821+5.0.0-ptu.13248297`.
+
 ## [v0.58.2] - 2026-11-21
 
 ### Changed (breaking)
