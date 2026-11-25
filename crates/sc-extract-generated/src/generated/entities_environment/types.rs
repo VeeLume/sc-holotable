@@ -1132,7 +1132,7 @@ impl<'a> Extract<'a> for SolarSystemComponentParams {
 /// DCB type: `SEntityComponentBlendedSmoothingTerrainModifierParams`
 /// Inherits from: `DataForgeComponentParams`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct SEntityComponentBlendedSmoothingTerrainModifierParams {
     /// `innerRadius` (Single)
     pub inner_radius: f32,
@@ -2242,7 +2242,7 @@ impl<'a> Extract<'a> for RadiationState {
 
 /// DCB type: `SEntityComponentManagedEntityRegionParams`
 /// Inherits from: `DataForgeComponentParams`
-#[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+#[deprecated(note = "absent from 5.0.0-ptu.13273298")]
 pub struct SEntityComponentManagedEntityRegionParams {}
 
 impl Pooled for SEntityComponentManagedEntityRegionParams {
@@ -2267,7 +2267,7 @@ impl<'a> Extract<'a> for SEntityComponentManagedEntityRegionParams {
 
 /// DCB type: `SEntityComponentManagedEntityZoneParams`
 /// Inherits from: `DataForgeComponentParams`
-#[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+#[deprecated(note = "absent from 5.0.0-ptu.13273298")]
 pub struct SEntityComponentManagedEntityZoneParams {}
 
 impl Pooled for SEntityComponentManagedEntityZoneParams {

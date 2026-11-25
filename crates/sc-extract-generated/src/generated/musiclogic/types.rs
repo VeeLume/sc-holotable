@@ -314,11 +314,11 @@ pub struct MusicLogicConfig {
     pub num_hostiles_on_radar: Option<CigGuid>,
     /// `debugSwitches` (Class (array))
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub debug_switches: Vec<Handle<AudioSwitch>>,
     /// `isTrespassingParameter` (Reference)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub is_trespassing_parameter: Option<CigGuid>,
 }
 

@@ -2098,7 +2098,7 @@ impl<'a> Extract<'a> for DefaultBlueprintSelection_Base {
 
 /// DCB type: `CraftingModifierType_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct CraftingModifierType_Base {}
 
 impl Pooled for CraftingModifierType_Base {
@@ -2119,7 +2119,7 @@ impl<'a> Extract<'a> for CraftingModifierType_Base {
 
 /// DCB type: `CraftingModifierCondition_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct CraftingModifierCondition_Base {}
 
 impl Pooled for CraftingModifierCondition_Base {
@@ -2179,7 +2179,7 @@ impl<'a> Extract<'a> for CraftingQualityDistribution_Base_NonRef {
 
 /// DCB type: `CraftingQualityLocationOverrideEntry_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct CraftingQualityLocationOverrideEntry_Base {}
 
 impl Pooled for CraftingQualityLocationOverrideEntry_Base {
@@ -2507,7 +2507,7 @@ impl<'a> Extract<'a> for EntityClassStaticDataParams {
 
 /// DCB type: `SHazardAreaPositionParams`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct SHazardAreaPositionParams {}
 
 impl Pooled for SHazardAreaPositionParams {
@@ -2530,7 +2530,7 @@ impl<'a> Extract<'a> for SHazardAreaPositionParams {
 pub struct SHazardAreaShapeParams {
     /// `positionParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub position_params: Option<SHazardAreaPositionParamsPtr>,
 }
 
@@ -3634,7 +3634,7 @@ impl<'a> Extract<'a> for EntityComponentHealth_SBaseSequencerTask {
 
 /// DCB type: `HierarchicalContextualData`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct HierarchicalContextualData {}
 
 impl Pooled for HierarchicalContextualData {
@@ -4513,7 +4513,7 @@ impl<'a> Extract<'a> for LootV3SecondaryChoicesRecordRef_Base {
 
 /// DCB type: `LootV3SecondaryChoiceLayer_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LootV3SecondaryChoiceLayer_Base {}
 
 impl Pooled for LootV3SecondaryChoiceLayer_Base {
@@ -4573,7 +4573,7 @@ impl<'a> Extract<'a> for QuantityRange_Base {
 /// DCB type: `LootTheme_NoRef`
 /// Inherits from: `LootTheme_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LootTheme_NoRef {}
 
 impl Pooled for LootTheme_NoRef {
@@ -4594,7 +4594,7 @@ impl<'a> Extract<'a> for LootTheme_NoRef {
 
 /// DCB type: `LootThemeSelector_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LootThemeSelector_Base {}
 
 impl Pooled for LootThemeSelector_Base {
@@ -4615,7 +4615,7 @@ impl<'a> Extract<'a> for LootThemeSelector_Base {
 
 /// DCB type: `LootSubThemeModifier_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LootSubThemeModifier_Base {}
 
 impl Pooled for LootSubThemeModifier_Base {
@@ -4712,7 +4712,7 @@ impl<'a> Extract<'a> for VisibilityConditionDef {
 
 /// DCB type: `AutoSpawnClass`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct AutoSpawnClass {}
 
 impl Pooled for AutoSpawnClass {
@@ -4733,7 +4733,7 @@ impl<'a> Extract<'a> for AutoSpawnClass {
 
 /// DCB type: `AutoSpawnsData`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct AutoSpawnsData {}
 
 impl Pooled for AutoSpawnsData {
@@ -4925,7 +4925,7 @@ impl<'a> Extract<'a> for HaulingOrder_OrOption_Base {
 
 /// DCB type: `LocationCondition_LocationClassBase`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_LocationClassBase {}
 
 impl Pooled for LocationCondition_LocationClassBase {
@@ -4946,7 +4946,7 @@ impl<'a> Extract<'a> for LocationCondition_LocationClassBase {
 
 /// DCB type: `LocationCondition_LocationSizeBase`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_LocationSizeBase {}
 
 impl Pooled for LocationCondition_LocationSizeBase {
@@ -4967,7 +4967,7 @@ impl<'a> Extract<'a> for LocationCondition_LocationSizeBase {
 
 /// DCB type: `LocationCondition_LocationFunctionBase`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_LocationFunctionBase {}
 
 impl Pooled for LocationCondition_LocationFunctionBase {
@@ -4988,7 +4988,7 @@ impl<'a> Extract<'a> for LocationCondition_LocationFunctionBase {
 
 /// DCB type: `LocationCondition_FactionBase`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_FactionBase {}
 
 impl Pooled for LocationCondition_FactionBase {
@@ -5009,7 +5009,7 @@ impl<'a> Extract<'a> for LocationCondition_FactionBase {
 
 /// DCB type: `LocationCondition_OtherLocationBase`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_OtherLocationBase {}
 
 impl Pooled for LocationCondition_OtherLocationBase {
@@ -5030,7 +5030,7 @@ impl<'a> Extract<'a> for LocationCondition_OtherLocationBase {
 
 /// DCB type: `LocationCondition_RelativeLocationBase`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LocationCondition_RelativeLocationBase {}
 
 impl Pooled for LocationCondition_RelativeLocationBase {
@@ -5127,7 +5127,7 @@ impl<'a> Extract<'a> for BaseDataSetMatchCondition {
 
 /// DCB type: `SpawnClosetSearchOptionsBase`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct SpawnClosetSearchOptionsBase {}
 
 impl Pooled for SpawnClosetSearchOptionsBase {
@@ -5167,7 +5167,7 @@ impl<'a> Extract<'a> for LocationEntityType_Base {
 
 /// DCB type: `ModuleLocationEntitiesAcquiringStrategy_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct ModuleLocationEntitiesAcquiringStrategy_Base {}
 
 impl Pooled for ModuleLocationEntitiesAcquiringStrategy_Base {
@@ -5264,7 +5264,7 @@ impl<'a> Extract<'a> for ObjectiveRewardContributionBase {
 
 /// DCB type: `MissionBoardType_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct MissionBoardType_Base {}
 
 impl Pooled for MissionBoardType_Base {

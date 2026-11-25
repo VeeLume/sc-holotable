@@ -2984,6 +2984,50 @@ pub struct MultiFeaturePools {
     ))]
     pub sactor_animation_component_params: Vec<Option<SActorAnimationComponentParams>>,
     #[cfg(any(
+        feature = "actor-actors",
+        feature = "aiwavecollection",
+        feature = "autospawn",
+        feature = "commsnotifications",
+        feature = "contracts",
+        feature = "crewmanifest",
+        feature = "entities-animentity_character",
+        feature = "entities-audio",
+        feature = "entities-entityspawners",
+        feature = "entities-groundvehicles",
+        feature = "entities-spaceships",
+        feature = "entities-test",
+        feature = "entitlementpolicies",
+        feature = "globalcommsnotificationparams",
+        feature = "harvestable",
+        feature = "missionbroker",
+        feature = "missiongiver",
+        feature = "npcpool",
+        feature = "ui-buildingblocks"
+    ))]
+    pub sstate_machine_mannequin_tags: Vec<Option<SStateMachineMannequinTags>>,
+    #[cfg(any(
+        feature = "actor-actors",
+        feature = "aiwavecollection",
+        feature = "autospawn",
+        feature = "commsnotifications",
+        feature = "contracts",
+        feature = "crewmanifest",
+        feature = "entities-animentity_character",
+        feature = "entities-audio",
+        feature = "entities-entityspawners",
+        feature = "entities-groundvehicles",
+        feature = "entities-spaceships",
+        feature = "entities-test",
+        feature = "entitlementpolicies",
+        feature = "globalcommsnotificationparams",
+        feature = "harvestable",
+        feature = "missionbroker",
+        feature = "missiongiver",
+        feature = "npcpool",
+        feature = "ui-buildingblocks"
+    ))]
+    pub sstate_machine_mannequin_tag_def: Vec<Option<SStateMachineMannequinTagDef>>,
+    #[cfg(any(
         feature = "actorstaminacomponent",
         feature = "actorstaminacomponent-actorbreathinghelper"
     ))]
@@ -10963,6 +11007,7 @@ pub struct MultiFeaturePools {
     pub counter_measure_projectile_params: Vec<Option<CounterMeasureProjectileParams>>,
     #[cfg(any(
         feature = "ammoparams",
+        feature = "contracts",
         feature = "entities-scitem-ships",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -16801,12 +16846,16 @@ pub struct MultiFeaturePools {
     ))]
     pub building_blocks_tag_integer_pair: Vec<Option<BuildingBlocks_TagIntegerPair>>,
     #[cfg(any(
+        feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-displayscreens",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
+        feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-mission_entities",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
+        feature = "entitlementpolicies",
         feature = "transitsystem",
         feature = "transportsystem",
         feature = "ui-buildingblocks"
@@ -16838,6 +16887,8 @@ pub struct MultiFeaturePools {
     ))]
     pub building_blocks_tag_string_pair: Vec<Option<BuildingBlocks_TagStringPair>>,
     #[cfg(any(
+        feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-displayscreens",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
@@ -16845,6 +16896,7 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-mission_entities",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
+        feature = "entitlementpolicies",
         feature = "transitsystem",
         feature = "transportsystem",
         feature = "ui-buildingblocks"
@@ -16906,6 +16958,7 @@ pub struct MultiFeaturePools {
     ))]
     pub building_blocks_bindings_path_structure: Vec<Option<BuildingBlocks_BindingsPathStructure>>,
     #[cfg(any(
+        feature = "contracts",
         feature = "entities-scitem-mission_entities",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
@@ -17737,6 +17790,8 @@ pub struct MultiFeaturePools {
     pub building_blocks_bindings_boolean_from_integer_switch:
         Vec<Option<BuildingBlocks_BindingsBooleanFromIntegerSwitch>>,
     #[cfg(any(
+        feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
@@ -17745,6 +17800,7 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-mission_entities",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
+        feature = "entitlementpolicies",
         feature = "transitsystem",
         feature = "transportsystem",
         feature = "ui-buildingblocks",
@@ -25555,6 +25611,8 @@ pub struct MultiFeaturePools {
     pub building_blocks_bindings_tag_from_string_switch:
         Vec<Option<BuildingBlocks_BindingsTagFromStringSwitch>>,
     #[cfg(any(
+        feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-displayscreens",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
@@ -25562,6 +25620,7 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-mission_entities",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
+        feature = "entitlementpolicies",
         feature = "transitsystem",
         feature = "transportsystem",
         feature = "ui-buildingblocks"
@@ -27018,12 +27077,16 @@ pub struct MultiFeaturePools {
     pub building_blocks_bindings_localization_from_integer_switch:
         Vec<Option<BuildingBlocks_BindingsLocalizationFromIntegerSwitch>>,
     #[cfg(any(
+        feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-displayscreens",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
+        feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-mission_entities",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
+        feature = "entitlementpolicies",
         feature = "transitsystem",
         feature = "transportsystem",
         feature = "ui-buildingblocks"
@@ -41208,6 +41271,7 @@ pub struct MultiFeaturePools {
         Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeContentBoxPosition>>,
     #[cfg(any(
         feature = "actor-actors",
+        feature = "aiwavecollection",
         feature = "contracts",
         feature = "entities-basebuilding",
         feature = "entities-environment",
@@ -43062,6 +43126,7 @@ pub struct MultiFeaturePools {
     #[cfg(any(
         feature = "actor-actors",
         feature = "aiwavecollection",
+        feature = "autospawn",
         feature = "contracts",
         feature = "entities-basebuilding",
         feature = "entities-charactercustomizer",
@@ -43078,11 +43143,14 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-ships",
         feature = "entities-scitem-suit",
         feature = "entities-scitem-usables",
+        feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
         feature = "entities-ui",
         feature = "entitlementpolicies",
         feature = "genericmobiterminals",
         feature = "harvestable",
+        feature = "loadoutkits",
+        feature = "npcpool",
         feature = "player",
         feature = "ui-buildingblocks",
         feature = "ui-graphs",
@@ -50780,6 +50848,7 @@ pub struct MultiFeaturePools {
     ))]
     pub building_blocks_trigger_modify_int: Vec<Option<BuildingBlocks_TriggerModifyInt>>,
     #[cfg(any(
+        feature = "contracts",
         feature = "entities-scitem-mission_entities",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
@@ -76015,6 +76084,7 @@ pub struct MultiFeaturePools {
     #[cfg(any(
         feature = "ammoparams",
         feature = "commodityconfiguration",
+        feature = "contracts",
         feature = "entities-scitem-environments",
         feature = "entities-scitem-ships",
         feature = "entities-scitem-weapons",
@@ -91466,6 +91536,8 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
+        feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
         feature = "entitlementpolicies",
         feature = "harvestable"
@@ -102386,6 +102458,7 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-cargo",
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-chipsets",
+        feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
@@ -102679,6 +102752,7 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-carryables",
         feature = "entities-scitem-characters",
         feature = "entities-scitem-chipsets",
+        feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-default_lensdisplay",
         feature = "entities-scitem-default_lensdisplay_pu",
         feature = "entities-scitem-doors",
@@ -102761,12 +102835,15 @@ pub struct MultiFeaturePools {
     pub sentity_traversing_node_type_user_control:
         Vec<Option<SEntityTraversingNodeTypeUserControl>>,
     #[cfg(any(
+        feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
         feature = "entities-scitem-storage",
-        feature = "entities-spaceships"
+        feature = "entities-spaceships",
+        feature = "entitlementpolicies"
     ))]
     pub sentity_traversing_node_type_child_tag: Vec<Option<SEntityTraversingNodeTypeChildTag>>,
     #[cfg(any(
@@ -122363,11 +122440,6 @@ pub struct MultiFeaturePools {
     pub sentity_linked_context: Vec<Option<SEntityLinkedContext>>,
     #[cfg(any(
         feature = "actor-actors",
-        feature = "entities-scitem-gameplayinteractables"
-    ))]
-    pub sentity_itemport_context: Vec<Option<SEntityItemportContext>>,
-    #[cfg(any(
-        feature = "actor-actors",
         feature = "actorstatuscomponent",
         feature = "actorstatuscomponent-globalactorstatusparams",
         feature = "actorstatuscomponent-medicaltieritemconfig",
@@ -134443,6 +134515,7 @@ pub struct MultiFeaturePools {
     pub functionality_modifiers: Vec<Option<FunctionalityModifiers>>,
     #[cfg(any(
         feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
@@ -143757,6 +143830,8 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
+        feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
         feature = "entitlementpolicies",
         feature = "harvestable"
@@ -164040,6 +164115,7 @@ pub struct MultiFeaturePools {
         feature = "actor-actors",
         feature = "aiwavecollection",
         feature = "commsnotifications",
+        feature = "contracts",
         feature = "entities-mastercontrollerentities",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
@@ -164080,6 +164156,8 @@ pub struct MultiFeaturePools {
     ))]
     pub gameplay_trigger_target_type_parent: Vec<Option<GameplayTrigger_TargetType_Parent>>,
     #[cfg(any(
+        feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-mastercontrollerentities",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
@@ -164088,12 +164166,14 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-proximityvolumes",
         feature = "entities-scitem-salvageablerepairable",
         feature = "entities-scitem-ships",
-        feature = "entities-spaceships"
+        feature = "entities-spaceships",
+        feature = "entitlementpolicies"
     ))]
     pub gameplay_trigger_target_type_entity_links:
         Vec<Option<GameplayTrigger_TargetType_EntityLinks>>,
     #[cfg(any(
         feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
@@ -164131,6 +164211,7 @@ pub struct MultiFeaturePools {
         Vec<Option<GameplayTrigger_TargetType_EntityReference>>,
     #[cfg(any(
         feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
@@ -164141,6 +164222,7 @@ pub struct MultiFeaturePools {
     pub gameplay_trigger_target_type_filtered: Vec<Option<GameplayTrigger_TargetType_Filtered>>,
     #[cfg(any(
         feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
@@ -164196,6 +164278,7 @@ pub struct MultiFeaturePools {
         feature = "actor-actors",
         feature = "aiwavecollection",
         feature = "commsnotifications",
+        feature = "contracts",
         feature = "entities-mastercontrollerentities",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
@@ -164234,6 +164317,8 @@ pub struct MultiFeaturePools {
     pub gameplay_trigger_executor_activate_interaction_by_reference:
         Vec<Option<GameplayTrigger_Executor_ActivateInteraction_ByReference>>,
     #[cfg(any(
+        feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-decorations",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
@@ -164242,7 +164327,8 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-proximityvolumes",
         feature = "entities-scitem-salvageablerepairable",
         feature = "entities-scitem-ships",
-        feature = "entities-spaceships"
+        feature = "entities-spaceships",
+        feature = "entitlementpolicies"
     ))]
     pub gameplay_trigger_executor_activate_interaction_by_tag:
         Vec<Option<GameplayTrigger_Executor_ActivateInteraction_ByTag>>,
@@ -164427,11 +164513,14 @@ pub struct MultiFeaturePools {
     ))]
     pub gameplay_trigger_condition_and: Vec<Option<GameplayTriggerConditionAND>>,
     #[cfg(any(
+        feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-scitem-controlpanels",
         feature = "entities-scitem-doors",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
-        feature = "entities-spaceships"
+        feature = "entities-spaceships",
+        feature = "entitlementpolicies"
     ))]
     pub gameplay_trigger_condition_or: Vec<Option<GameplayTriggerConditionOR>>,
     #[cfg(any(
@@ -164445,7 +164534,9 @@ pub struct MultiFeaturePools {
     pub gameplay_trigger_condition_not: Vec<Option<GameplayTriggerConditionNOT>>,
     #[cfg(any(
         feature = "actor-actors",
+        feature = "aiwavecollection",
         feature = "commsnotifications",
+        feature = "contracts",
         feature = "entities-displayscreens",
         feature = "entities-entityspawners",
         feature = "entities-scitem-carryables",
@@ -164458,6 +164549,7 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-ships",
         feature = "entities-scitem-usables",
         feature = "entities-spaceships",
+        feature = "entitlementpolicies",
         feature = "transitsystem"
     ))]
     pub gameplay_trigger_condition_check_state: Vec<Option<GameplayTriggerConditionCheckState>>,
@@ -164533,7 +164625,9 @@ pub struct MultiFeaturePools {
     pub state_set_result: Vec<Option<StateSetResult>>,
     #[cfg(any(
         feature = "actor-actors",
+        feature = "aiwavecollection",
         feature = "commsnotifications",
+        feature = "contracts",
         feature = "entities-displayscreens",
         feature = "entities-entityspawners",
         feature = "entities-mastercontrollerentities",
@@ -164549,12 +164643,15 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-ships",
         feature = "entities-scitem-usables",
         feature = "entities-spaceships",
+        feature = "entitlementpolicies",
         feature = "transitsystem"
     ))]
     pub conditional_option: Vec<Option<ConditionalOption>>,
     #[cfg(any(
         feature = "actor-actors",
+        feature = "aiwavecollection",
         feature = "commsnotifications",
+        feature = "contracts",
         feature = "entities-displayscreens",
         feature = "entities-entityspawners",
         feature = "entities-mastercontrollerentities",
@@ -164570,6 +164667,7 @@ pub struct MultiFeaturePools {
         feature = "entities-scitem-ships",
         feature = "entities-scitem-usables",
         feature = "entities-spaceships",
+        feature = "entitlementpolicies",
         feature = "transitsystem"
     ))]
     pub check_condition_gameplay_trigger: Vec<Option<CheckConditionGameplayTrigger>>,
@@ -164999,6 +165097,7 @@ pub struct MultiFeaturePools {
         feature = "actor-actors",
         feature = "aiwavecollection",
         feature = "commsnotifications",
+        feature = "contracts",
         feature = "entities-fakesmokegrenade_oneshot",
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-ships",
@@ -165008,6 +165107,7 @@ pub struct MultiFeaturePools {
     pub sdetach_self_gameplay_trigger: Vec<Option<SDetachSelfGameplayTrigger>>,
     #[cfg(any(
         feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
@@ -165109,6 +165209,7 @@ pub struct MultiFeaturePools {
     pub triggered_message: Vec<Option<TriggeredMessage>>,
     #[cfg(any(
         feature = "aiwavecollection",
+        feature = "contracts",
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-ships",
         feature = "entities-spaceships",
@@ -173555,6 +173656,7 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
         feature = "entities-scitem-usables",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -173577,6 +173679,7 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
         feature = "entities-scitem-usables",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -173592,6 +173695,7 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
         feature = "entities-scitem-usables",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -173607,6 +173711,7 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
         feature = "entities-scitem-usables",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -173622,6 +173727,7 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
         feature = "entities-scitem-usables",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -173637,6 +173743,7 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
         feature = "entities-scitem-usables",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -173652,6 +173759,7 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
         feature = "entities-scitem-usables",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",
@@ -193587,6 +193695,7 @@ pub struct MultiFeaturePools {
         feature = "entities-haulingentityclass",
         feature = "entities-scitem-gameplayinteractables",
         feature = "entities-scitem-ships",
+        feature = "entities-scitem-spawers",
         feature = "entities-scitem-usables",
         feature = "entities-scitem-weapons",
         feature = "entities-spaceships",

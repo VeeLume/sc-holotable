@@ -1529,11 +1529,11 @@ pub struct SCharacterCustomizerControlParams {
     pub step_transition_time: f32,
     /// `vrZoomedOutStereoStrength` (Single)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub vr_zoomed_out_stereo_strength: f32,
     /// `vrZoomedInStereoStrength` (Single)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub vr_zoomed_in_stereo_strength: f32,
 }
 
