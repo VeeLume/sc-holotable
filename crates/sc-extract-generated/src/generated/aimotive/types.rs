@@ -21,7 +21,7 @@ use super::super::*;
 /// DCB type: `Condition_AudioIntensityHeard`
 /// Inherits from: `AIMotiveCondition`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct Condition_AudioIntensityHeard {
     /// `id` (Guid)
     pub id: CigGuid,
@@ -60,7 +60,7 @@ impl<'a> Extract<'a> for Condition_AudioIntensityHeard {
 /// DCB type: `Condition_Stance`
 /// Inherits from: `AIMotiveCondition`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct Condition_Stance {
     /// `id` (Guid)
     pub id: CigGuid,

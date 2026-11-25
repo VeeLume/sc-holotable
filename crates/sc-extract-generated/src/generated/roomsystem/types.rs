@@ -1192,7 +1192,7 @@ impl<'a> Extract<'a> for LightningTargetMode {
 /// DCB type: `LightningTargetMode_InternalPlanet`
 /// Inherits from: `LightningTargetMode`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct LightningTargetMode_InternalPlanet {
     /// `enable` (Boolean)
     pub enable: bool,
@@ -1724,7 +1724,7 @@ impl<'a> Extract<'a> for RadiationBehavior_AsteroidInverseSquareSurfaceRadiation
 }
 
 /// DCB type: `WeatherEffects_Atmosphere_Property`
-#[deprecated(note = "no record in 5.0.0-ptu.13248297 uses this type")]
+#[deprecated(note = "no record in 5.0.0-ptu.13273298 uses this type")]
 pub struct WeatherEffects_Atmosphere_Property {
     /// `type` (EnumChoice)
     pub r#type: AtmosphereStatePropertyType,
@@ -1759,14 +1759,14 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_Property {
 
 /// DCB type: `WeatherEffects_Atmosphere_MultiPropertyValue`
 /// Inherits from: `WeatherEffects_Atmosphere`
-#[deprecated(note = "no record in 5.0.0-ptu.13248297 uses this type")]
+#[deprecated(note = "no record in 5.0.0-ptu.13273298 uses this type")]
 pub struct WeatherEffects_Atmosphere_MultiPropertyValue {
     /// `spaceLoopEffect` (Class)
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
     /// `properties` (Class (array))
     pub properties: Vec<Handle<WeatherEffects_Atmosphere_Property>>,
     /// `causesPuddles` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub causes_puddles: bool,
 }
 
@@ -1825,7 +1825,7 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_MultiPropertyValue {
 /// DCB type: `WeatherEffects_Atmosphere_PlanetRain`
 /// Inherits from: `WeatherEffects_Atmosphere`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct WeatherEffects_Atmosphere_PlanetRain {
     /// `spaceLoopEffect` (Class)
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
@@ -1860,7 +1860,7 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_PlanetRain {
 /// DCB type: `WeatherEffects_Atmosphere_PlanetSnow`
 /// Inherits from: `WeatherEffects_Atmosphere`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct WeatherEffects_Atmosphere_PlanetSnow {
     /// `spaceLoopEffect` (Class)
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,

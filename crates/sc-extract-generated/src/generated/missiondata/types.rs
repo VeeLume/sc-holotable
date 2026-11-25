@@ -20,7 +20,7 @@ use super::super::*;
 
 /// DCB type: `MissionLocationClasses`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct MissionLocationClasses {
     /// `locationClasses` (Reference (array))
     pub location_classes: Vec<CigGuid>,
@@ -58,7 +58,7 @@ impl<'a> Extract<'a> for MissionLocationClasses {
 
 /// DCB type: `MissionLocationSizes`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct MissionLocationSizes {
     /// `locationSizes` (Reference (array))
     pub location_sizes: Vec<CigGuid>,
@@ -96,7 +96,7 @@ impl<'a> Extract<'a> for MissionLocationSizes {
 
 /// DCB type: `MissionLocationFunctions`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct MissionLocationFunctions {
     /// `locationFunctions` (Reference (array))
     pub location_functions: Vec<CigGuid>,
@@ -134,7 +134,7 @@ impl<'a> Extract<'a> for MissionLocationFunctions {
 
 /// DCB type: `ContractScope_Item`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct ContractScope_Item {
     /// `displayName` (Locale)
     pub display_name: LocaleKey,
@@ -166,7 +166,7 @@ impl<'a> Extract<'a> for ContractScope_Item {
 
 /// DCB type: `ContractScopeGlobalParams`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct ContractScopeGlobalParams {
     /// `location` (StrongPointer)
     pub location: Option<Handle<ContractScope_Item>>,

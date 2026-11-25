@@ -5212,7 +5212,7 @@ pub struct SubsumptionComponentParams {
     pub mastergraph_state_overrides: Vec<Handle<SMastergraphStateOverride>>,
     /// `tokenRuleConfig` (Reference)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub token_rule_config: Option<CigGuid>,
 }
 
@@ -5388,7 +5388,7 @@ pub struct AttentionTargetComponentParams {
     pub attacker_score: f32,
     /// `recentTargetMemoryDuration` (Single)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub recent_target_memory_duration: f32,
 }
 
@@ -14249,6 +14249,10 @@ pub struct SActorAnimationComponentParams {
     pub weapon_term_adjust_enabled: bool,
     /// `consumeIKEnabled` (Boolean)
     pub consume_ikenabled: bool,
+    /// `stateMachineMannequinTags` (StrongPointer)
+    ///
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
+    pub state_machine_mannequin_tags: Option<Handle<SStateMachineMannequinTags>>,
 }
 
 #[cfg(any(
@@ -14304,7 +14308,7 @@ impl Pooled for SActorAnimationComponentParams {
 ))]
 impl<'a> Extract<'a> for SActorAnimationComponentParams {
     const TYPE_NAME: &'static str = "SActorAnimationComponentParams";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             grip_ikenabled: inst.get_bool("gripIKEnabled").unwrap_or_default(),
             weapon_cam_adjust_enabled: inst.get_bool("weaponCamAdjustEnabled").unwrap_or_default(),
@@ -14312,6 +14316,225 @@ impl<'a> Extract<'a> for SActorAnimationComponentParams {
                 .get_bool("weaponTermAdjustEnabled")
                 .unwrap_or_default(),
             consume_ikenabled: inst.get_bool("consumeIKEnabled").unwrap_or_default(),
+            state_machine_mannequin_tags: match inst.get("stateMachineMannequinTags") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SStateMachineMannequinTags>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `SStateMachineMannequinTags`
+///
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "autospawn",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "npcpool",
+    feature = "ui-buildingblocks"
+))]
+pub struct SStateMachineMannequinTags {
+    /// `deathTags` (Class (array))
+    pub death_tags: Vec<Handle<SStateMachineMannequinTagDef>>,
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "autospawn",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "npcpool",
+    feature = "ui-buildingblocks"
+))]
+impl Pooled for SStateMachineMannequinTags {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.multi_feature.sstate_machine_mannequin_tags
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.multi_feature.sstate_machine_mannequin_tags
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "autospawn",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "npcpool",
+    feature = "ui-buildingblocks"
+))]
+impl<'a> Extract<'a> for SStateMachineMannequinTags {
+    const TYPE_NAME: &'static str = "SStateMachineMannequinTags";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            death_tags: inst
+                .get_array("deathTags")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SStateMachineMannequinTagDef>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SStateMachineMannequinTagDef>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `SStateMachineMannequinTagDef`
+///
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "autospawn",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "npcpool",
+    feature = "ui-buildingblocks"
+))]
+pub struct SStateMachineMannequinTagDef {
+    /// `state` (WeakPointer)
+    pub state: Option<Handle<SInteractionState>>,
+    /// `mannequinTag` (String)
+    pub mannequin_tag: String,
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "autospawn",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "npcpool",
+    feature = "ui-buildingblocks"
+))]
+impl Pooled for SStateMachineMannequinTagDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.multi_feature.sstate_machine_mannequin_tag_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.multi_feature.sstate_machine_mannequin_tag_def
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "autospawn",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "npcpool",
+    feature = "ui-buildingblocks"
+))]
+impl<'a> Extract<'a> for SStateMachineMannequinTagDef {
+    const TYPE_NAME: &'static str = "SStateMachineMannequinTagDef";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            state: match inst.get("state") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
+                _ => None,
+            },
+            mannequin_tag: inst
+                .get_str("mannequinTag")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -49693,6 +49916,7 @@ impl<'a> Extract<'a> for CounterMeasureProjectileParams {
 /// Inherits from: `ProjectileParams`
 #[cfg(any(
     feature = "ammoparams",
+    feature = "contracts",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -49721,6 +49945,7 @@ pub struct TachyonProjectileParams {
 
 #[cfg(any(
     feature = "ammoparams",
+    feature = "contracts",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -49737,6 +49962,7 @@ impl Pooled for TachyonProjectileParams {
 
 #[cfg(any(
     feature = "ammoparams",
+    feature = "contracts",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -54620,7 +54846,7 @@ pub struct AmmoParams {
     pub whiz_sound_distance: f32,
     /// `impactAIStimulusDistance` (Single)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub impact_aistimulus_distance: f32,
     /// `ricochetSound` (Class)
     pub ricochet_sound: Option<Handle<GlobalResourceAudio>>,
@@ -70740,12 +70966,16 @@ impl<'a> Extract<'a> for BuildingBlocks_TagIntegerPair {
 
 /// DCB type: `BuildingBlocks_TagLocalizedPair`
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -70760,12 +70990,16 @@ pub struct BuildingBlocks_TagLocalizedPair {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -70780,12 +71014,16 @@ impl Pooled for BuildingBlocks_TagLocalizedPair {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -70959,6 +71197,8 @@ impl<'a> Extract<'a> for BuildingBlocks_TagStringPair {
 
 /// DCB type: `BuildingBlocks_TagTagPair`
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -70966,6 +71206,7 @@ impl<'a> Extract<'a> for BuildingBlocks_TagStringPair {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -70978,6 +71219,8 @@ pub struct BuildingBlocks_TagTagPair {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -70985,6 +71228,7 @@ pub struct BuildingBlocks_TagTagPair {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -70999,6 +71243,8 @@ impl Pooled for BuildingBlocks_TagTagPair {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -71006,6 +71252,7 @@ impl Pooled for BuildingBlocks_TagTagPair {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -71216,6 +71463,7 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsPathStructure {
 /// DCB type: `BuildingBlocks_BindingsPathArrayIndexNumber`
 /// Inherits from: `BuildingBlocks_BindingsPathBase`
 #[cfg(any(
+    feature = "contracts",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -71228,6 +71476,7 @@ pub struct BuildingBlocks_BindingsPathArrayIndexNumber {
 }
 
 #[cfg(any(
+    feature = "contracts",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -71248,6 +71497,7 @@ impl Pooled for BuildingBlocks_BindingsPathArrayIndexNumber {
 }
 
 #[cfg(any(
+    feature = "contracts",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -73885,6 +74135,8 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsBooleanFromIntegerSwitch {
 /// DCB type: `BuildingBlocks_BindingsBooleanFromTagSwitch`
 /// Inherits from: `BuildingBlocks_BindingsBooleanBase`
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -73893,6 +74145,7 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsBooleanFromIntegerSwitch {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks",
@@ -73908,6 +74161,8 @@ pub struct BuildingBlocks_BindingsBooleanFromTagSwitch {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -73916,6 +74171,7 @@ pub struct BuildingBlocks_BindingsBooleanFromTagSwitch {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks",
@@ -73935,6 +74191,8 @@ impl Pooled for BuildingBlocks_BindingsBooleanFromTagSwitch {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
@@ -73943,6 +74201,7 @@ impl Pooled for BuildingBlocks_BindingsBooleanFromTagSwitch {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks",
@@ -100453,6 +100712,8 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsTagFromStringSwitch {
 /// DCB type: `BuildingBlocks_BindingsTagFromTagSwitch`
 /// Inherits from: `BuildingBlocks_BindingsStringBase`
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -100460,6 +100721,7 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsTagFromStringSwitch {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -100474,6 +100736,8 @@ pub struct BuildingBlocks_BindingsTagFromTagSwitch {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -100481,6 +100745,7 @@ pub struct BuildingBlocks_BindingsTagFromTagSwitch {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -100499,6 +100764,8 @@ impl Pooled for BuildingBlocks_BindingsTagFromTagSwitch {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -100506,6 +100773,7 @@ impl Pooled for BuildingBlocks_BindingsTagFromTagSwitch {
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -105358,12 +105626,16 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsLocalizationFromIntegerSwitch {
 /// DCB type: `BuildingBlocks_BindingsLocalizedFromTagSwitch`
 /// Inherits from: `BuildingBlocks_BindingsLocalizedBase`
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -105380,12 +105652,16 @@ pub struct BuildingBlocks_BindingsLocalizedFromTagSwitch {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -105404,12 +105680,16 @@ impl Pooled for BuildingBlocks_BindingsLocalizedFromTagSwitch {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem",
     feature = "transportsystem",
     feature = "ui-buildingblocks"
@@ -153279,6 +153559,7 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeContentBoxPos
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "contracts",
     feature = "entities-basebuilding",
     feature = "entities-environment",
@@ -153313,6 +153594,7 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeTextFieldWidgetStylePreset 
 
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "contracts",
     feature = "entities-basebuilding",
     feature = "entities-environment",
@@ -153353,6 +153635,7 @@ impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeTextFieldWidgetStylePr
 
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "contracts",
     feature = "entities-basebuilding",
     feature = "entities-environment",
@@ -159209,6 +159492,7 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentParameterInputNumber {
 #[cfg(any(
     feature = "actor-actors",
     feature = "aiwavecollection",
+    feature = "autospawn",
     feature = "contracts",
     feature = "entities-basebuilding",
     feature = "entities-charactercustomizer",
@@ -159225,11 +159509,14 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentParameterInputNumber {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "genericmobiterminals",
     feature = "harvestable",
+    feature = "loadoutkits",
+    feature = "npcpool",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
@@ -159245,6 +159532,7 @@ pub struct BuildingBlocks_ComponentParameterInputString {
 #[cfg(any(
     feature = "actor-actors",
     feature = "aiwavecollection",
+    feature = "autospawn",
     feature = "contracts",
     feature = "entities-basebuilding",
     feature = "entities-charactercustomizer",
@@ -159261,11 +159549,14 @@ pub struct BuildingBlocks_ComponentParameterInputString {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "genericmobiterminals",
     feature = "harvestable",
+    feature = "loadoutkits",
+    feature = "npcpool",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
@@ -159287,6 +159578,7 @@ impl Pooled for BuildingBlocks_ComponentParameterInputString {
 #[cfg(any(
     feature = "actor-actors",
     feature = "aiwavecollection",
+    feature = "autospawn",
     feature = "contracts",
     feature = "entities-basebuilding",
     feature = "entities-charactercustomizer",
@@ -159303,11 +159595,14 @@ impl Pooled for BuildingBlocks_ComponentParameterInputString {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-suit",
     feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entities-ui",
     feature = "entitlementpolicies",
     feature = "genericmobiterminals",
     feature = "harvestable",
+    feature = "loadoutkits",
+    feature = "npcpool",
     feature = "player",
     feature = "ui-buildingblocks",
     feature = "ui-graphs",
@@ -215597,6 +215892,7 @@ impl<'a> Extract<'a> for BuildingBlocks_TriggerModifyInt {
 /// DCB type: `BuildingBlocks_TriggerModifyNumber`
 /// Inherits from: `BuildingBlocks_TriggerBase`
 #[cfg(any(
+    feature = "contracts",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -215611,6 +215907,7 @@ pub struct BuildingBlocks_TriggerModifyNumber {
 }
 
 #[cfg(any(
+    feature = "contracts",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -215627,6 +215924,7 @@ impl Pooled for BuildingBlocks_TriggerModifyNumber {
 }
 
 #[cfg(any(
+    feature = "contracts",
     feature = "entities-scitem-mission_entities",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -275442,7 +275740,7 @@ pub struct SubHarvestableConfig {
     pub config_respawn_time_multiplier: f32,
     /// `lootThemes` (Reference (array))
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub loot_themes: Vec<CigGuid>,
     /// `subHarvestables` (Class (array))
     pub sub_harvestables: Vec<Handle<SubHarvestableSlot>>,
@@ -275609,7 +275907,7 @@ impl<'a> Extract<'a> for TaggedSubHarvestableConfig {
 pub struct SubHarvestableMultiConfig {
     /// `lootThemes` (Reference (array))
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub loot_themes: Vec<CigGuid>,
     /// `defaultConfig` (StrongPointer)
     pub default_config: Option<SubHarvestableConfigSingleBasePtr>,
@@ -276179,7 +276477,7 @@ impl<'a> Extract<'a> for HarvestConditionHealth {
 pub struct HarvestDespawnTimerParams {
     /// `useDespawnBehaviour` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub use_despawn_behaviour: bool,
     /// `despawnTimeSeconds` (Int32)
     pub despawn_time_seconds: i32,
@@ -282448,7 +282746,7 @@ pub struct MiningGlobalParams {
     pub default_mass: f32,
     /// `compositionMassMultiplier` (Single)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub composition_mass_multiplier: f32,
     /// `fractureParticleEffect` (Class)
     pub fracture_particle_effect: Option<Handle<GlobalResourceParticle>>,
@@ -288427,11 +288725,11 @@ pub struct ProceduralPlanetAudioData {
     pub first_room_is_planet_room_rtpc: Option<Handle<AudioRtpc>>,
     /// `firstRoomIsPlanetRoomNotIncludingShipsRtpc` (Class)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub first_room_is_planet_room_not_including_ships_rtpc: Option<Handle<AudioRtpc>>,
     /// `firstRoomIsPlanetRoomOrVehicleRoomRtpc` (Class)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub first_room_is_planet_room_or_vehicle_room_rtpc: Option<Handle<AudioRtpc>>,
     /// `effectTagMovementRtpcs` (Class (array))
     pub effect_tag_movement_rtpcs: Vec<Handle<ProceduralPlanetAudioTagAndRtpc>>,
@@ -289684,7 +289982,7 @@ pub struct EntityComponentSpawnClosetRoomParams {
     pub default_doors_open: bool,
     /// `autoSpawnsRecords` (Reference (array))
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub auto_spawns_records: Vec<CigGuid>,
 }
 
@@ -290218,7 +290516,7 @@ pub struct SurfaceRaindropsComponentParams {
     /// `renderNodeLoadoutEntries` (WeakPointer (array))
     pub render_node_loadout_entries: Vec<Handle<SItemPortLoadoutEntryParams>>,
     /// `occluderSettings` (Class)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub occluder_settings: Option<Handle<SurfaceRaindrops_Occluder>>,
 }
 
@@ -291510,7 +291808,7 @@ pub struct SurfaceRaindrops_Override {
     /// `snowEnabled` (Boolean)
     pub snow_enabled: bool,
     /// `useFlatVisor` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub use_flat_visor: bool,
 }
 
@@ -311931,7 +312229,7 @@ impl<'a> Extract<'a> for CrafterDoorStateEvent {
 /// DCB type: `CraftingModifierType_Time`
 /// Inherits from: `CraftingModifierType_Base_NonRef`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "entities-basebuilding",
     feature = "entities-spaceships",
@@ -311973,7 +312271,7 @@ impl<'a> Extract<'a> for CraftingModifierType_Time {
 /// DCB type: `CraftingModifierCondition_BlueprintCategory`
 /// Inherits from: `CraftingModifierCondition_Base_NonRef`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "entities-basebuilding",
     feature = "entities-spaceships",
@@ -312030,7 +312328,7 @@ impl<'a> Extract<'a> for CraftingModifierCondition_BlueprintCategory {
 
 /// DCB type: `CraftingModifierParams`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "entities-basebuilding",
     feature = "entities-spaceships",
@@ -312218,11 +312516,11 @@ pub struct CrafterComponentParams {
     pub interaction_params: Option<Handle<CrafterInteractionParams>>,
     /// `baseCraftingTime` (Single)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub base_crafting_time: f32,
     /// `modifiers` (Class (array))
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub modifiers: Vec<Handle<CraftingModifierParams>>,
 }
 
@@ -312368,7 +312666,7 @@ impl<'a> Extract<'a> for CrafterPagedUIListParams {
 pub struct CrafterUIProviderComponentParams {
     /// `description` (Locale)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub description: LocaleKey,
     /// `blueprintPagedListParams` (Class)
     pub blueprint_paged_list_params: Option<Handle<CrafterPagedUIListParams>>,
@@ -314749,7 +315047,7 @@ pub struct CrewData {
     pub entity_class_definition: Option<CigGuid>,
     /// `npcArchetype` (Reference)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub npc_archetype: Option<CigGuid>,
     /// `outfitTags` (Reference (array))
     pub outfit_tags: Vec<CigGuid>,
@@ -315985,6 +316283,7 @@ impl<'a> Extract<'a> for DamageMacro {
 #[cfg(any(
     feature = "ammoparams",
     feature = "commodityconfiguration",
+    feature = "contracts",
     feature = "entities-scitem-environments",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-weapons",
@@ -316001,6 +316300,7 @@ pub struct DamageParams {
 #[cfg(any(
     feature = "ammoparams",
     feature = "commodityconfiguration",
+    feature = "contracts",
     feature = "entities-scitem-environments",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-weapons",
@@ -316019,6 +316319,7 @@ impl Pooled for DamageParams {
 #[cfg(any(
     feature = "ammoparams",
     feature = "commodityconfiguration",
+    feature = "contracts",
     feature = "entities-scitem-environments",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-weapons",
@@ -335159,7 +335460,7 @@ impl<'a> Extract<'a> for EAPickupParams {
 /// DCB type: `SRootPositionParams`
 /// Inherits from: `SHazardAreaPositionParams`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "actor-actors",
     feature = "ammoparams",
@@ -335249,7 +335550,7 @@ impl<'a> Extract<'a> for SRootPositionParams {
 pub struct SSphereHazardAreaShapeParams {
     /// `positionParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub position_params: Option<SHazardAreaPositionParamsPtr>,
     /// `radius` (Single)
     pub radius: f32,
@@ -335321,7 +335622,7 @@ impl<'a> Extract<'a> for SSphereHazardAreaShapeParams {
 pub struct SBoxHazardAreaShapeParams {
     /// `positionParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub position_params: Option<SHazardAreaPositionParamsPtr>,
     /// `dimensions` (Class)
     pub dimensions: Option<Handle<Vec3>>,
@@ -338780,7 +339081,7 @@ pub struct UIBuildingBlocksEntityComponentParams {
     pub enable_full_screen_mouse: bool,
     /// `forceApplyDefaultStyle` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub force_apply_default_style: bool,
     /// `defaultStyle` (Reference)
     pub default_style: Option<CigGuid>,
@@ -349211,7 +349512,7 @@ pub struct SCommentEntityParams {
     pub color: Option<Handle<SRGB8>>,
     /// `framed` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub framed: bool,
 }
 
@@ -352731,7 +353032,7 @@ pub struct SCEntranceItem {
     pub joint_name: String,
     /// `optionalItemPortName` (String)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub optional_item_port_name: String,
     /// `positionOffset` (Class)
     pub position_offset: Option<Handle<Vec3>>,
@@ -378432,10 +378733,14 @@ pub struct KioskInteractionEntityComponentParams {
     pub auto_close_radius_in_non_foucse_mode: f32,
     /// `disallowLookAway` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub disallow_look_away: bool,
     /// `supportWalkToAlign` (Boolean)
     pub support_walk_to_align: bool,
+    /// `supportWalkToAlignInVR` (Boolean)
+    ///
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
+    pub support_walk_to_align_in_vr: bool,
     /// `openInteraction` (WeakPointer)
     pub open_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `attractTransitions` (Class (array))
@@ -378453,7 +378758,7 @@ pub struct KioskInteractionEntityComponentParams {
     /// `preventForceReactions` (Boolean)
     pub prevent_force_reactions: bool,
     /// `blockLookInputs` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub block_look_inputs: bool,
 }
 
@@ -378608,6 +378913,9 @@ impl<'a> Extract<'a> for KioskInteractionEntityComponentParams {
                 .unwrap_or_default(),
             disallow_look_away: inst.get_bool("disallowLookAway").unwrap_or_default(),
             support_walk_to_align: inst.get_bool("supportWalkToAlign").unwrap_or_default(),
+            support_walk_to_align_in_vr: inst
+                .get_bool("supportWalkToAlignInVR")
+                .unwrap_or_default(),
             open_interaction: match inst.get("openInteraction") {
                 Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
                     Some(b.alloc_nested::<SSharedInteractionParams>(
@@ -378707,10 +379015,10 @@ impl<'a> Extract<'a> for KioskInteractionEntityComponentParams {
 pub struct LocationComponentParams {
     /// `locationClass` (EnumChoice)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub location_class: LocationClass,
     /// `shapeLinkName` (String)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub shape_link_name: String,
 }
 
@@ -379220,6 +379528,8 @@ impl<'a> Extract<'a> for SVehicleObjectMetadataParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "harvestable"
@@ -379234,6 +379544,8 @@ pub struct SMissileObjectMetadataParams {}
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "harvestable"
@@ -379255,6 +379567,8 @@ impl Pooled for SMissileObjectMetadataParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "harvestable"
@@ -379369,10 +379683,10 @@ pub struct SNavPointObjectMetadataParams {
     /// `showInRouteOnly` (Boolean)
     pub show_in_route_only: bool,
     /// `allowHierarchyDuplicates` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub allow_hierarchy_duplicates: bool,
     /// `saveToLocalPlayerObjectDataBank` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub save_to_local_player_object_data_bank: bool,
 }
 
@@ -380075,7 +380389,7 @@ impl<'a> Extract<'a> for SEntityComponentObjectMetadataParams {
 /// DCB type: `SEntityComponentMissionLocationMetadataParams`
 /// Inherits from: `DataForgeComponentParams`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "entities-missionlocationtemplate",
     feature = "entities-objectcontainers"
@@ -380113,7 +380427,7 @@ impl<'a> Extract<'a> for SEntityComponentMissionLocationMetadataParams {
 /// DCB type: `SEntityComponentNavPointMetadataParams`
 /// Inherits from: `DataForgeComponentParams`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "entities-actionarealocationtemplate",
     feature = "entities-baselocationtemplate",
@@ -419678,6 +419992,7 @@ impl<'a> Extract<'a> for EntityPhysicalAudioParams {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -419799,6 +420114,7 @@ pub struct SEntityTraversingNodeTypeItemPort {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -419924,6 +420240,7 @@ impl Pooled for SEntityTraversingNodeTypeItemPort {
     feature = "entities-scitem-cargo",
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -420690,6 +421007,7 @@ impl<'a> Extract<'a> for SEntityTraversingNodeTypeParentEntity {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -420811,6 +421129,7 @@ pub struct SEntityTraversingNodeTypeZoneHostVehicle {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -420940,6 +421259,7 @@ impl Pooled for SEntityTraversingNodeTypeZoneHostVehicle {
     feature = "entities-scitem-carryables",
     feature = "entities-scitem-characters",
     feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-default_lensdisplay",
     feature = "entities-scitem-default_lensdisplay_pu",
     feature = "entities-scitem-doors",
@@ -421133,12 +421453,15 @@ impl<'a> Extract<'a> for SEntityTraversingNodeTypeUserControl {
 /// DCB type: `SEntityTraversingNodeTypeChildTag`
 /// Inherits from: `SEntityTraversingNodeTypeParams`
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 pub struct SEntityTraversingNodeTypeChildTag {
     /// `filterTag` (Reference)
@@ -421148,12 +421471,15 @@ pub struct SEntityTraversingNodeTypeChildTag {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for SEntityTraversingNodeTypeChildTag {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -421165,12 +421491,15 @@ impl Pooled for SEntityTraversingNodeTypeChildTag {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
     feature = "entities-scitem-storage",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for SEntityTraversingNodeTypeChildTag {
     const TYPE_NAME: &'static str = "SEntityTraversingNodeTypeChildTag";
@@ -424697,7 +425026,7 @@ impl<'a> Extract<'a> for Faction {
 
 /// DCB type: `EncounterPresetWeight`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "aiwavecollection",
     feature = "autospawn",
@@ -424761,7 +425090,7 @@ impl<'a> Extract<'a> for EncounterPresetWeight {
 
 /// DCB type: `FactionIdentity`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "aiwavecollection",
     feature = "autospawn",
@@ -424914,11 +425243,11 @@ pub struct FactionReputation {
     pub display_name: LocaleKey,
     /// `description` (Locale)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub description: LocaleKey,
     /// `background` (String)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub background: String,
     /// `GEID` (UInt64)
     pub geid: u64,
@@ -424926,11 +425255,11 @@ pub struct FactionReputation {
     pub logo: String,
     /// `missionBoardLogo` (String)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub mission_board_logo: String,
     /// `guildBanner` (String)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub guild_banner: String,
     /// `hideInDelpihApp` (Boolean)
     pub hide_in_delpih_app: bool,
@@ -435219,7 +435548,7 @@ pub struct RadarOptionParams {
     pub allow_emissions_hud: bool,
     /// `allowFPSPingWave` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub allow_fpsping_wave: bool,
 }
 
@@ -496604,59 +496933,6 @@ impl<'a> Extract<'a> for SEntityLinkedContext {
     }
 }
 
-/// DCB type: `SEntityItemportContext`
-/// Inherits from: `SEntityContextBase`
-///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
-#[cfg(any(
-    feature = "actor-actors",
-    feature = "entities-scitem-gameplayinteractables"
-))]
-pub struct SEntityItemportContext {
-    /// `itemPorts` (WeakPointer (array))
-    pub item_ports: Vec<Handle<SItemPortDef>>,
-}
-
-#[cfg(any(
-    feature = "actor-actors",
-    feature = "entities-scitem-gameplayinteractables"
-))]
-impl Pooled for SEntityItemportContext {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.multi_feature.sentity_itemport_context
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.multi_feature.sentity_itemport_context
-    }
-}
-
-#[cfg(any(
-    feature = "actor-actors",
-    feature = "entities-scitem-gameplayinteractables"
-))]
-impl<'a> Extract<'a> for SEntityItemportContext {
-    const TYPE_NAME: &'static str = "SEntityItemportContext";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            item_ports: inst
-                .get_array("itemPorts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(b.alloc_nested::<SItemPortDef>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
-                        _ => None,
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `SEntityTraversalNodeContext`
 /// Inherits from: `SEntityContextBase`
 #[cfg(any(
@@ -498046,7 +498322,7 @@ pub struct SLinkedInteractionStateChangedStateModifier {
     pub on_change_state_tag_states: Vec<Handle<SLinkedInteractionStateTags>>,
     /// `elseState` (WeakPointer)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub else_state: Option<Handle<SInteractionState>>,
     /// `nullEntityState` (WeakPointer)
     pub null_entity_state: Option<Handle<SInteractionState>>,
@@ -519092,7 +519368,7 @@ pub struct SItemPortDef {
     pub detach_direction: Option<Handle<Vec3>>,
     /// `attachAxesToAlign` (EnumChoice)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub attach_axes_to_align: EItemPortAttachRotationLimitAxis,
 }
 
@@ -540241,6 +540517,7 @@ impl<'a> Extract<'a> for FunctionalityModifiers {
 /// Inherits from: `ItemResourceDynamicResourceBase`
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -540250,6 +540527,7 @@ pub struct ItemResourceDynamicResourceFuelTank {}
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -540266,6 +540544,7 @@ impl Pooled for ItemResourceDynamicResourceFuelTank {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -560039,7 +560318,7 @@ impl<'a> Extract<'a> for AdvancedLootConstraints {
 pub struct LootConstraints {
     /// `themes` (Reference (array))
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub themes: Vec<CigGuid>,
     /// `poolFilter` (Reference)
     pub pool_filter: Option<CigGuid>,
@@ -561691,7 +561970,7 @@ pub struct LootV3SecondaryChoiceEntry {
     pub selector: Option<LootV3SecondaryChoiceEntrySelector_BasePtr>,
     /// `subThemeModifier` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub sub_theme_modifier: Option<LootSubThemeModifier_BasePtr>,
 }
 
@@ -561873,7 +562152,7 @@ impl<'a> Extract<'a> for LootV3SecondaryChoicesRecordRef_SingleLayer {
 
 /// DCB type: `LootV3SecondaryChoicesRecordRef_MultiLayer`
 /// Inherits from: `LootV3SecondaryChoicesRecordRef_Base`
-#[deprecated(note = "no record in 5.0.0-ptu.13248297 uses this type")]
+#[deprecated(note = "no record in 5.0.0-ptu.13273298 uses this type")]
 #[cfg(any(feature = "actor-actors", feature = "harvestable"))]
 pub struct LootV3SecondaryChoicesRecordRef_MultiLayer {
     /// `multiLayerRecord` (Reference)
@@ -561910,7 +562189,7 @@ impl<'a> Extract<'a> for LootV3SecondaryChoicesRecordRef_MultiLayer {
 /// DCB type: `LootV3SecondaryChoicesLayer`
 /// Inherits from: `LootV3SecondaryChoiceLayer_NoRef`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "actor-actors",
     feature = "aiwavecollection",
@@ -562122,7 +562401,7 @@ impl<'a> Extract<'a> for QuantityRange_Linear {
 
 /// DCB type: `LootThemeRecord`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "actor-actors",
     feature = "aiwavecollection",
@@ -562193,7 +562472,7 @@ impl<'a> Extract<'a> for LootThemeRecord {
 /// DCB type: `LootTheme_Manual`
 /// Inherits from: `LootTheme_NoRef`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "actor-actors",
     feature = "aiwavecollection",
@@ -562290,7 +562569,7 @@ impl<'a> Extract<'a> for LootTheme_Manual {
 /// DCB type: `LootThemeSelector_Tags`
 /// Inherits from: `LootThemeSelector_NoRef`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "harvestable",
     feature = "hcdgrouppreset",
@@ -562338,7 +562617,7 @@ impl<'a> Extract<'a> for LootThemeSelector_Tags {
 /// DCB type: `LootSubThemeModifier_Ignore`
 /// Inherits from: `LootSubThemeModifier_NoRef`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "harvestable",
     feature = "hcdgrouppreset",
@@ -576591,7 +576870,7 @@ impl<'a> Extract<'a> for AIMeleeCombatConfig {
 
 /// DCB type: `NPCClassPoolEntry`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "aiwavecollection",
     feature = "autospawn",
@@ -576650,7 +576929,7 @@ impl<'a> Extract<'a> for NPCClassPoolEntry {
 
 /// DCB type: `NPCClassPool`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "aiwavecollection",
     feature = "autospawn",
@@ -576721,7 +577000,7 @@ impl<'a> Extract<'a> for NPCClassPool {
 
 /// DCB type: `NPCIdentityToArchetype`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "aiwavecollection",
     feature = "autospawn",
@@ -576792,7 +577071,7 @@ impl<'a> Extract<'a> for NPCIdentityToArchetype {
 
 /// DCB type: `NPCArchetype`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "aiwavecollection",
     feature = "autospawn",
@@ -576863,7 +577142,7 @@ impl<'a> Extract<'a> for NPCArchetype {
 
 /// DCB type: `NPCArchetypeWeight`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "autospawn", feature = "contracts"))]
 pub struct NPCArchetypeWeight {
     /// `weight` (Single)
@@ -576899,7 +577178,7 @@ impl<'a> Extract<'a> for NPCArchetypeWeight {
 /// DCB type: `AutoSpawnArchetype`
 /// Inherits from: `AutoSpawnClass`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "autospawn", feature = "contracts"))]
 pub struct AutoSpawnArchetype {
     /// `archetype` (Class (array))
@@ -576946,7 +577225,7 @@ impl<'a> Extract<'a> for AutoSpawnArchetype {
 
 /// DCB type: `OnSpawnAssignment`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "autospawn", feature = "contracts"))]
 pub struct OnSpawnAssignment {
     /// `areaPositiveTags` (Class)
@@ -576990,7 +577269,7 @@ impl<'a> Extract<'a> for OnSpawnAssignment {
 
 /// DCB type: `AutoSpawnData`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "autospawn", feature = "contracts"))]
 pub struct AutoSpawnData {
     /// `class` (StrongPointer)
@@ -577092,7 +577371,7 @@ impl<'a> Extract<'a> for AutoSpawnData {
 
 /// DCB type: `AutoSpawn`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "autospawn", feature = "contracts"))]
 pub struct AutoSpawn {
     /// `autoSpawnData` (Class)
@@ -577128,7 +577407,7 @@ impl<'a> Extract<'a> for AutoSpawn {
 /// DCB type: `AutoSpawnsDataRef`
 /// Inherits from: `AutoSpawnsData`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "autospawn", feature = "contracts"))]
 pub struct AutoSpawnsDataRef {
     /// `record` (Reference)
@@ -577160,7 +577439,7 @@ impl<'a> Extract<'a> for AutoSpawnsDataRef {
 
 /// DCB type: `AutoSpawns`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "autospawn", feature = "contracts"))]
 pub struct AutoSpawns {
     /// `autoSpawnData` (StrongPointer (array))
@@ -577443,10 +577722,10 @@ pub struct LocationMissionLimit {
     /// `maxMissionInstances` (Int32)
     pub max_mission_instances: i32,
     /// `dependentParentTags` (Class)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub dependent_parent_tags: Option<Handle<TagList>>,
     /// `dependentChildTags` (Class)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub dependent_child_tags: Option<Handle<TagList>>,
 }
 
@@ -577606,15 +577885,15 @@ impl<'a> Extract<'a> for SMissionLocationModule {
 pub struct MissionLocationData {
     /// `locationClass` (Reference)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub location_class: Option<CigGuid>,
     /// `locationSize` (Reference)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub location_size: Option<CigGuid>,
     /// `locationFunction` (Reference)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub location_function: Option<CigGuid>,
     /// `generalTags` (Class)
     pub general_tags: Option<Handle<MissionLocationTags>>,
@@ -578049,7 +578328,7 @@ impl<'a> Extract<'a> for MissionOrganization {
 
 /// DCB type: `MissionLocationClass`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "contracts", feature = "missiondata"))]
 pub struct MissionLocationClass {
     /// `scopesVisibleTo` (EnumChoice (array))
@@ -578084,7 +578363,7 @@ impl<'a> Extract<'a> for MissionLocationClass {
 
 /// DCB type: `MissionLocationSize`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "contracts", feature = "missiondata"))]
 pub struct MissionLocationSize {}
 
@@ -578108,7 +578387,7 @@ impl<'a> Extract<'a> for MissionLocationSize {
 
 /// DCB type: `MissionLocationFunction`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "contracts", feature = "missiondata"))]
 pub struct MissionLocationFunction {}
 
@@ -578254,7 +578533,7 @@ pub struct ContractAvailability {
     pub hide_in_mobi_glas: bool,
     /// `missionBoardAvailability` (EnumChoice)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub mission_board_availability: MissionBoardAvailability,
 }
 
@@ -578383,7 +578662,7 @@ impl<'a> Extract<'a> for ContractLifeTime {
 
 /// DCB type: `LocalContractGeneratorParams`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "contracts", feature = "servicebeacon"))]
 pub struct LocalContractGeneratorParams {
     /// `scope` (EnumChoice)
@@ -578445,7 +578724,7 @@ pub struct ContractGeneratorHandlerBase {
     pub debug_name: String,
     /// `localGeneratorParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
@@ -579736,11 +580015,11 @@ impl<'a> Extract<'a> for BlueprintReward {
 pub struct BlueprintPoolRecord {
     /// `blueprintPoolDisplayName` (Locale)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub blueprint_pool_display_name: LocaleKey,
     /// `useFirstElementAsDisplayName` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub use_first_element_as_display_name: bool,
     /// `blueprintRewards` (Class (array))
     pub blueprint_rewards: Vec<Handle<BlueprintReward>>,
@@ -582255,7 +582534,7 @@ pub struct MissionPropertyValue_Location {
     /// `resourceTags` (Reference (array))
     pub resource_tags: Vec<CigGuid>,
     /// `logErrorOnSearchFail` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub log_error_on_search_fail: bool,
 }
 
@@ -582617,7 +582896,7 @@ pub struct SpawnDescription_Ship {
     pub concurrent_amount: i32,
     /// `crewInheritsLocationFaction` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub crew_inherits_location_faction: bool,
     /// `includeLocationAISpawnTags` (Boolean)
     pub include_location_aispawn_tags: bool,
@@ -583667,10 +583946,10 @@ pub struct LocationResourceSlot {
     pub auto_consume_if_player_at_location: bool,
     /// `numberOfResourceSlotsPerEntity` (Int32)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub number_of_resource_slots_per_entity: i32,
     /// `resourceSlotTag` (Reference)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub resource_slot_tag: Option<CigGuid>,
 }
 
@@ -583906,7 +584185,7 @@ impl<'a> Extract<'a> for LocationEntityDeclaration {
 /// DCB type: `ModuleLocationEntitiesAcquiringStrategy_ExactCount`
 /// Inherits from: `ModuleLocationEntitiesAcquiringStrategy_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "contracts", feature = "missiondata"))]
 pub struct ModuleLocationEntitiesAcquiringStrategy_ExactCount {
     /// `count` (Int32)
@@ -583940,7 +584219,7 @@ impl<'a> Extract<'a> for ModuleLocationEntitiesAcquiringStrategy_ExactCount {
 /// DCB type: `ModuleLocationEntitiesAcquiringStrategy_AllSuitable`
 /// Inherits from: `ModuleLocationEntitiesAcquiringStrategy_Base`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "contracts", feature = "missiondata"))]
 pub struct ModuleLocationEntitiesAcquiringStrategy_AllSuitable {
     /// `minCount` (Int32)
@@ -583989,7 +584268,7 @@ pub struct ModuleLocationEntities {
     pub optional: bool,
     /// `acquiringStrategy` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub acquiring_strategy: Option<ModuleLocationEntitiesAcquiringStrategy_BasePtr>,
 }
 
@@ -584044,7 +584323,7 @@ pub struct ModuleLocationEntities_Static {
     pub optional: bool,
     /// `acquiringStrategy` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub acquiring_strategy: Option<ModuleLocationEntitiesAcquiringStrategy_BasePtr>,
     /// `entityDeclarations` (Reference (array))
     pub entity_declarations: Vec<CigGuid>,
@@ -584359,7 +584638,7 @@ pub struct ModuleDeclaration {
     pub spawned_entities: Vec<ModuleSpawnedEntitiesPtr>,
     /// `declaredObjectives` (Class (array))
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub declared_objectives: Vec<Handle<MissionObjectiveTreeNode>>,
     /// `declaredVariables` (StrongPointer (array))
     pub declared_variables: Vec<VariableDeclaration_BasePtr>,
@@ -588858,7 +589137,7 @@ impl<'a> Extract<'a> for AbstractMissionInitParam {
 
 /// DCB type: `MissionObjectiveTreeNode`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "contracts",
     feature = "missiondata",
@@ -591164,6 +591443,8 @@ impl<'a> Extract<'a> for SMineableEntryTrackerParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "harvestable"
@@ -591178,6 +591459,8 @@ pub struct SMissileEntryTrackerParams {}
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "harvestable"
@@ -591199,6 +591482,8 @@ impl Pooled for SMissileEntryTrackerParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
     feature = "entitlementpolicies",
     feature = "harvestable"
@@ -652229,7 +652514,7 @@ pub struct SReputationStandingParams {
     pub icon: String,
     /// `missionBoardIcon` (String)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub mission_board_icon: String,
     /// `minReputation` (Int64)
     pub min_reputation: i64,
@@ -663399,7 +663684,7 @@ pub struct SEntityComponentRoomConnectorParams {
     pub bounds_offset: Option<Handle<Vec3>>,
     /// `rotation` (Class)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub rotation: Option<Handle<Ang3>>,
     /// `orientationMode` (EnumChoice)
     pub orientation_mode: RoomConnectorOrientationMode,
@@ -671407,6 +671692,7 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Base {
     feature = "actor-actors",
     feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -671432,6 +671718,7 @@ pub struct GameplayTrigger_TargetType_PresetReference {
     feature = "actor-actors",
     feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -671461,6 +671748,7 @@ impl Pooled for GameplayTrigger_TargetType_PresetReference {
     feature = "actor-actors",
     feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -671605,6 +671893,8 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Parent {
 /// DCB type: `GameplayTrigger_TargetType_EntityLinks`
 /// Inherits from: `GameplayTrigger_TargetType_Base`
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -671613,7 +671903,8 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Parent {
     feature = "entities-scitem-proximityvolumes",
     feature = "entities-scitem-salvageablerepairable",
     feature = "entities-scitem-ships",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 pub struct GameplayTrigger_TargetType_EntityLinks {
     /// `optionalTarget` (Boolean)
@@ -671623,6 +671914,8 @@ pub struct GameplayTrigger_TargetType_EntityLinks {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -671631,7 +671924,8 @@ pub struct GameplayTrigger_TargetType_EntityLinks {
     feature = "entities-scitem-proximityvolumes",
     feature = "entities-scitem-salvageablerepairable",
     feature = "entities-scitem-ships",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for GameplayTrigger_TargetType_EntityLinks {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -671647,6 +671941,8 @@ impl Pooled for GameplayTrigger_TargetType_EntityLinks {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -671655,7 +671951,8 @@ impl Pooled for GameplayTrigger_TargetType_EntityLinks {
     feature = "entities-scitem-proximityvolumes",
     feature = "entities-scitem-salvageablerepairable",
     feature = "entities-scitem-ships",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for GameplayTrigger_TargetType_EntityLinks {
     const TYPE_NAME: &'static str = "GameplayTrigger_TargetType_EntityLinks";
@@ -671676,6 +671973,7 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_EntityLinks {
 /// Inherits from: `GameplayTrigger_TargetType_Base`
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -671694,6 +671992,7 @@ pub struct GameplayTrigger_TargetType_ItemPortAll {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -671718,6 +672017,7 @@ impl Pooled for GameplayTrigger_TargetType_ItemPortAll {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -671939,6 +672239,7 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_EntityReference {
 /// Inherits from: `GameplayTrigger_TargetType_Base`
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -671959,6 +672260,7 @@ pub struct GameplayTrigger_TargetType_Filtered {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -671977,6 +672279,7 @@ impl Pooled for GameplayTrigger_TargetType_Filtered {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -672021,6 +672324,7 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Filtered {
 /// Inherits from: `GameplayTrigger_FilterType_Base`
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -672037,6 +672341,7 @@ pub struct GameplayTrigger_FilterType_EntityTag {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -672055,6 +672360,7 @@ impl Pooled for GameplayTrigger_FilterType_EntityTag {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -672279,6 +672585,7 @@ impl<'a> Extract<'a> for ActivateInteractionGameplayTrigger {
     feature = "actor-actors",
     feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -672298,6 +672605,7 @@ pub struct GameplayTrigger_Executor_ActivateInteraction_ByName {
     feature = "actor-actors",
     feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -672325,6 +672633,7 @@ impl Pooled for GameplayTrigger_Executor_ActivateInteraction_ByName {
     feature = "actor-actors",
     feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-mastercontrollerentities",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
@@ -672456,6 +672765,8 @@ impl<'a> Extract<'a> for GameplayTrigger_Executor_ActivateInteraction_ByReferenc
 /// DCB type: `GameplayTrigger_Executor_ActivateInteraction_ByTag`
 /// Inherits from: `GameplayTrigger_Executor_ActivateInteraction_Base`
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-decorations",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -672464,7 +672775,8 @@ impl<'a> Extract<'a> for GameplayTrigger_Executor_ActivateInteraction_ByReferenc
     feature = "entities-scitem-proximityvolumes",
     feature = "entities-scitem-salvageablerepairable",
     feature = "entities-scitem-ships",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 pub struct GameplayTrigger_Executor_ActivateInteraction_ByTag {
     /// `interactionLinkingTag` (Reference)
@@ -672474,6 +672786,8 @@ pub struct GameplayTrigger_Executor_ActivateInteraction_ByTag {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-decorations",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -672482,7 +672796,8 @@ pub struct GameplayTrigger_Executor_ActivateInteraction_ByTag {
     feature = "entities-scitem-proximityvolumes",
     feature = "entities-scitem-salvageablerepairable",
     feature = "entities-scitem-ships",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for GameplayTrigger_Executor_ActivateInteraction_ByTag {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -672498,6 +672813,8 @@ impl Pooled for GameplayTrigger_Executor_ActivateInteraction_ByTag {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-decorations",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -672506,7 +672823,8 @@ impl Pooled for GameplayTrigger_Executor_ActivateInteraction_ByTag {
     feature = "entities-scitem-proximityvolumes",
     feature = "entities-scitem-salvageablerepairable",
     feature = "entities-scitem-ships",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for GameplayTrigger_Executor_ActivateInteraction_ByTag {
     const TYPE_NAME: &'static str = "GameplayTrigger_Executor_ActivateInteraction_ByTag";
@@ -673502,11 +673820,14 @@ impl<'a> Extract<'a> for GameplayTriggerConditionAND {
 /// DCB type: `GameplayTriggerConditionOR`
 /// Inherits from: `GameplayTriggerCondition`
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 pub struct GameplayTriggerConditionOR {
     /// `inputs` (StrongPointer (array))
@@ -673514,11 +673835,14 @@ pub struct GameplayTriggerConditionOR {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 impl Pooled for GameplayTriggerConditionOR {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
@@ -673530,11 +673854,14 @@ impl Pooled for GameplayTriggerConditionOR {
 }
 
 #[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
-    feature = "entities-spaceships"
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
 ))]
 impl<'a> Extract<'a> for GameplayTriggerConditionOR {
     const TYPE_NAME: &'static str = "GameplayTriggerConditionOR";
@@ -673614,7 +673941,9 @@ impl<'a> Extract<'a> for GameplayTriggerConditionNOT {
 /// Inherits from: `GameplayTriggerCondition`
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-scitem-carryables",
@@ -673627,6 +673956,7 @@ impl<'a> Extract<'a> for GameplayTriggerConditionNOT {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem"
 ))]
 pub struct GameplayTriggerConditionCheckState {
@@ -673636,7 +673966,9 @@ pub struct GameplayTriggerConditionCheckState {
 
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-scitem-carryables",
@@ -673649,6 +673981,7 @@ pub struct GameplayTriggerConditionCheckState {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem"
 ))]
 impl Pooled for GameplayTriggerConditionCheckState {
@@ -673662,7 +673995,9 @@ impl Pooled for GameplayTriggerConditionCheckState {
 
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-scitem-carryables",
@@ -673675,6 +674010,7 @@ impl Pooled for GameplayTriggerConditionCheckState {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem"
 ))]
 impl<'a> Extract<'a> for GameplayTriggerConditionCheckState {
@@ -674224,7 +674560,9 @@ impl<'a> Extract<'a> for StateSetResult {
 /// DCB type: `ConditionalOption`
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-mastercontrollerentities",
@@ -674240,6 +674578,7 @@ impl<'a> Extract<'a> for StateSetResult {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem"
 ))]
 pub struct ConditionalOption {
@@ -674253,7 +674592,9 @@ pub struct ConditionalOption {
 
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-mastercontrollerentities",
@@ -674269,6 +674610,7 @@ pub struct ConditionalOption {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem"
 ))]
 impl Pooled for ConditionalOption {
@@ -674282,7 +674624,9 @@ impl Pooled for ConditionalOption {
 
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-mastercontrollerentities",
@@ -674298,6 +674642,7 @@ impl Pooled for ConditionalOption {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem"
 ))]
 impl<'a> Extract<'a> for ConditionalOption {
@@ -674342,7 +674687,9 @@ impl<'a> Extract<'a> for ConditionalOption {
 /// Inherits from: `SBaseInteractionGameplayTrigger`
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-mastercontrollerentities",
@@ -674358,6 +674705,7 @@ impl<'a> Extract<'a> for ConditionalOption {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem"
 ))]
 pub struct CheckConditionGameplayTrigger {
@@ -674371,7 +674719,9 @@ pub struct CheckConditionGameplayTrigger {
 
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-mastercontrollerentities",
@@ -674387,6 +674737,7 @@ pub struct CheckConditionGameplayTrigger {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem"
 ))]
 impl Pooled for CheckConditionGameplayTrigger {
@@ -674400,7 +674751,9 @@ impl Pooled for CheckConditionGameplayTrigger {
 
 #[cfg(any(
     feature = "actor-actors",
+    feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-displayscreens",
     feature = "entities-entityspawners",
     feature = "entities-mastercontrollerentities",
@@ -674416,6 +674769,7 @@ impl Pooled for CheckConditionGameplayTrigger {
     feature = "entities-scitem-ships",
     feature = "entities-scitem-usables",
     feature = "entities-spaceships",
+    feature = "entitlementpolicies",
     feature = "transitsystem"
 ))]
 impl<'a> Extract<'a> for CheckConditionGameplayTrigger {
@@ -676235,7 +676589,7 @@ pub struct SDetachItemGameplayTrigger {
     pub impulse_strength: f32,
     /// `impulseStrengthVariance` (Single)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub impulse_strength_variance: f32,
 }
 
@@ -676320,6 +676674,7 @@ impl<'a> Extract<'a> for SDetachItemGameplayTrigger {
     feature = "actor-actors",
     feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-fakesmokegrenade_oneshot",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
@@ -676337,6 +676692,7 @@ pub struct SDetachSelfGameplayTrigger {
     feature = "actor-actors",
     feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-fakesmokegrenade_oneshot",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
@@ -676356,6 +676712,7 @@ impl Pooled for SDetachSelfGameplayTrigger {
     feature = "actor-actors",
     feature = "aiwavecollection",
     feature = "commsnotifications",
+    feature = "contracts",
     feature = "entities-fakesmokegrenade_oneshot",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
@@ -676382,6 +676739,7 @@ impl<'a> Extract<'a> for SDetachSelfGameplayTrigger {
 /// Inherits from: `SBaseInteractionGameplayTrigger`
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -676391,6 +676749,7 @@ pub struct SClearResourceContainerGameplayTrigger {}
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -676411,6 +676770,7 @@ impl Pooled for SClearResourceContainerGameplayTrigger {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -676479,7 +676839,7 @@ impl<'a> Extract<'a> for SResetKeypadInputGameplayTrigger {
 /// DCB type: `RegenerateKeypadCodeGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "entities-scitem-controlpanels",
     feature = "entities-scitem-doors",
@@ -677025,6 +677385,7 @@ impl<'a> Extract<'a> for TriggeredMessage {
 /// Inherits from: `TriggeredWarning`
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -677041,6 +677402,7 @@ pub struct TriggeredWarningAdd {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -677057,6 +677419,7 @@ impl Pooled for TriggeredWarningAdd {
 
 #[cfg(any(
     feature = "aiwavecollection",
+    feature = "contracts",
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-ships",
     feature = "entities-spaceships",
@@ -683598,7 +683961,7 @@ pub struct SItemDefinition {
     pub ignored_attach_axis: EItemPortAttachRotationLimitAxis,
     /// `attachAxesToAlign` (EnumChoice)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub attach_axes_to_align: EItemPortAttachRotationLimitAxis,
     /// `attachCheckCenterOfMass` (Boolean)
     pub attach_check_center_of_mass: bool,
@@ -713965,6 +714328,7 @@ impl<'a> Extract<'a> for SCItemMiningControllerParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714014,6 +714378,7 @@ pub struct SCItemMissileParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714037,6 +714402,7 @@ impl Pooled for SCItemMissileParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714290,6 +714656,7 @@ impl<'a> Extract<'a> for SCItemBombParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714319,6 +714686,7 @@ pub struct SShakeParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714342,6 +714710,7 @@ impl Pooled for SShakeParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714383,6 +714752,7 @@ impl<'a> Extract<'a> for SShakeParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714416,6 +714786,7 @@ pub struct SOrdnanceClusterParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714439,6 +714810,7 @@ impl Pooled for SOrdnanceClusterParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714472,6 +714844,7 @@ impl<'a> Extract<'a> for SOrdnanceClusterParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714499,6 +714872,7 @@ pub struct SGuidanceAndControlPhaseParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714522,6 +714896,7 @@ impl Pooled for SGuidanceAndControlPhaseParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714562,6 +714937,7 @@ impl<'a> Extract<'a> for SGuidanceAndControlPhaseParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714605,6 +714981,7 @@ pub struct SGuidanceAndControlParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714628,6 +715005,7 @@ impl Pooled for SGuidanceAndControlParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714692,6 +715070,7 @@ impl<'a> Extract<'a> for SGuidanceAndControlParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714719,6 +715098,7 @@ pub struct SOrdnanceEmissionsParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714742,6 +715122,7 @@ impl Pooled for SOrdnanceEmissionsParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714770,6 +715151,7 @@ impl<'a> Extract<'a> for SOrdnanceEmissionsParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714795,6 +715177,7 @@ pub struct SOrdnanceAudioParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -714818,6 +715201,7 @@ impl Pooled for SOrdnanceAudioParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -782361,7 +782745,7 @@ pub struct SSCRadarContactProperites {
     pub death_params: Option<Handle<SCSignatureDeathParams>>,
     /// `taggedEmissionModifierParams` (Class (array))
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub tagged_emission_modifier_params: Vec<Handle<SCSignatureTaggedEmissionModifier>>,
     /// `scanBounds` (StrongPointer)
     pub scan_bounds: Option<Handle<SSCSignatureSystemScanBounds>>,
@@ -784376,7 +784760,7 @@ impl<'a> Extract<'a> for SCSignatureDeathParams {
 
 /// DCB type: `SCSignatureTaggedEmissionModifier`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(
     feature = "actor-actors",
     feature = "actorstatuscomponent",
@@ -793299,7 +793683,7 @@ pub struct StarMapAmenityTypeEntry {
     pub icon: String,
     /// `requiredEntity` (Reference)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub required_entity: Option<CigGuid>,
 }
 
@@ -794301,7 +794685,7 @@ pub struct StarMapObject {
     pub override_permanent: StarmapBoolOverride,
     /// `skipCollisionCheckIfInArrivalRadius` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub skip_collision_check_if_in_arrival_radius: bool,
     /// `minimumDisplaySize` (Single)
     pub minimum_display_size: f32,
@@ -795095,7 +795479,7 @@ impl<'a> Extract<'a> for StarMapQuantumTravelDataParams {
 
 /// DCB type: `StarMapPresetVisibilitySettings`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "starmap", feature = "starmappreset"))]
 pub struct StarMapPresetVisibilitySettings {
     /// `hideInStarmap` (Boolean)
@@ -795140,7 +795524,7 @@ impl<'a> Extract<'a> for StarMapPresetVisibilitySettings {
 
 /// DCB type: `StarMapPresetDisplaySettings`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "starmap", feature = "starmappreset"))]
 pub struct StarMapPresetDisplaySettings {
     /// `description` (Locale)
@@ -795219,7 +795603,7 @@ impl<'a> Extract<'a> for StarMapPresetDisplaySettings {
 
 /// DCB type: `StarMapPresetRadarSettings`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "starmap", feature = "starmappreset"))]
 pub struct StarMapPresetRadarSettings {
     /// `isScannable` (Boolean)
@@ -795259,7 +795643,7 @@ impl<'a> Extract<'a> for StarMapPresetRadarSettings {
 
 /// DCB type: `StarMapPreset`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 #[cfg(any(feature = "starmap", feature = "starmappreset"))]
 pub struct StarMapPreset {
     /// `type` (Reference)
@@ -800834,6 +801218,7 @@ impl<'a> Extract<'a> for TakeDownConfig {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -800883,6 +801268,7 @@ pub struct STargetingParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -800906,6 +801292,7 @@ impl Pooled for STargetingParams {
     feature = "entities-haulingentityclass",
     feature = "entities-scitem-gameplayinteractables",
     feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
     feature = "entities-scitem-usables",
     feature = "entities-scitem-weapons",
     feature = "entities-spaceships",
@@ -822766,7 +823153,7 @@ pub struct SUsableEnterTransitionParams {
     pub holster_weapon: bool,
     /// `holsterAll` (Boolean)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub holster_all: bool,
     /// `enterInteraction` (WeakPointer)
     pub enter_interaction: Option<Handle<SSharedInteractionParams>>,
@@ -843639,7 +844026,7 @@ pub struct WeatherEffects_Atmosphere_PropertyValue {
     /// `interpolationRange` (Class)
     pub interpolation_range: Option<Handle<Range>>,
     /// `causesPuddles` (Boolean)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub causes_puddles: bool,
 }
 
@@ -844596,7 +844983,7 @@ impl<'a> Extract<'a> for SSCShipStatusAppParams {
 }
 
 /// DCB type: `SurfaceRaindrops_Occluder`
-#[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+#[deprecated(note = "absent from 5.0.0-ptu.13273298")]
 #[cfg(any(
     feature = "actor-actors",
     feature = "actorstatuscomponent",
@@ -844975,7 +845362,7 @@ impl<'a> Extract<'a> for SurfaceRaindrops_Occluder {
 }
 
 /// DCB type: `SEAGlobalEventLoadouts`
-#[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+#[deprecated(note = "absent from 5.0.0-ptu.13273298")]
 #[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
 pub struct SEAGlobalEventLoadouts {
     /// `loadouts` (Reference (array))
@@ -845015,7 +845402,7 @@ impl<'a> Extract<'a> for SEAGlobalEventLoadouts {
 }
 
 /// DCB type: `LootV3SecondaryChoicesMultiLayerRecord`
-#[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+#[deprecated(note = "absent from 5.0.0-ptu.13273298")]
 #[cfg(any(
     feature = "actor-actors",
     feature = "harvestable",

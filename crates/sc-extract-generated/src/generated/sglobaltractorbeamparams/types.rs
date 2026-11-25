@@ -22,7 +22,7 @@ use super::super::*;
 pub struct STractorBeamHoloVisualParams {
     /// `defaultAttachAxesToAlign` (EnumChoice)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub default_attach_axes_to_align: EItemPortAttachRotationLimitAxis,
     /// `minAlignmentValidHolo` (Single)
     pub min_alignment_valid_holo: f32,

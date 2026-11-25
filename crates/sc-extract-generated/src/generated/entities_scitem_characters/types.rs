@@ -21,7 +21,7 @@ use super::super::*;
 /// DCB type: `SEntityAttachableParentContext`
 /// Inherits from: `SEntityContextBase`
 ///
-/// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+/// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
 pub struct SEntityAttachableParentContext {}
 
 impl Pooled for SEntityAttachableParentContext {

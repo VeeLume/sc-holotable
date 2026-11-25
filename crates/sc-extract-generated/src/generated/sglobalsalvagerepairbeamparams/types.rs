@@ -235,7 +235,7 @@ pub struct SSalvageRepairCardParams {
     /// `maxDistScreenPosScale` (Single)
     pub max_dist_screen_pos_scale: f32,
     /// `attachPointLerpSpeed` (Single)
-    #[deprecated(note = "absent from 5.0.0-ptu.13248297")]
+    #[deprecated(note = "absent from 5.0.0-ptu.13273298")]
     pub attach_point_lerp_speed: f32,
 }
 

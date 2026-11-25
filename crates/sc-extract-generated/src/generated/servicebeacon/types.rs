@@ -29,7 +29,7 @@ pub struct ContractGeneratorHandler_ServiceBeacon {
     pub debug_name: String,
     /// `localGeneratorParams` (StrongPointer)
     ///
-    /// New in 5.0.0-ptu.13248297; absent from 4.10.3-live.13220821.
+    /// New in 5.0.0-ptu.13273298; absent from 4.10.3-live.13220821.
     pub local_generator_params: Option<Handle<LocalContractGeneratorParams>>,
     /// `required_active_scenarios` (Reference (array))
     pub required_active_scenarios: Vec<CigGuid>,
